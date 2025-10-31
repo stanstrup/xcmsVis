@@ -11,55 +11,9 @@ The goal is to implement all the plots in xcms as ggplot2 plots so they can be m
 
 ## Current Tasks
 
-1) run pkgdown and fix any errors
-2) use markdown-style in man pages
-3) Split away your future tasks section to a seperate file. this seem like token burn to read all this in every time.
+**All initial setup tasks are complete!** See `completed_tasks.md` for the full list of 13 completed tasks.
 
-## Future Tasks
-
-### Add More Plotting Functions
-
-Implement ggplot2 versions of additional XCMS plotting functions:
-
-- `plotQC()` - Quality control diagnostics
-  - `mzdevhist`, `rtdevhist`, `mzdevmass`, `mzdevtime`
-  - `mzdevsample`, `rtdevsample`
-- `plotChromPeaks()` - Chromatographic peak visualization
-- `plotChromPeakImage()` - Peak intensity heatmap
-- `plotChromPeakDensity()` - Peak density visualization
-- `plotEIC()` - Extracted ion chromatograms
-- `plotTIC()` - Total ion chromatogram
-- `plotBPC()` - Base peak chromatogram
-- `plotMsData()` - Mass spec data display
-- `plotFeatureGroups()` - Feature grouping visualization
-
-### Expand Vignettes
-
-- Add examples for each new plotting function to the comparison vignette
-- Create dedicated vignettes for:
-  - Interactive plotting with plotly
-  - Quality control workflows
-  - Complete LC-MS data analysis visualization
-
-### Add Real Data Examples
-
-- Download example data from Metabonaut tutorials
-- Include small example datasets in package
-- Create reproducible examples that don't require external data
-
-### Improve Testing
-
-- Create mock XCMSnExp objects for unit tests
-- Test all function parameters
-- Add visual regression tests
-- Test plotly interactivity
-
-### Long-term Goals
-
-- Complete XCMS plotting suite
-- Add shiny apps for interactive exploration
-- Performance optimization for large datasets
-- Submit to Bioconductor
+**Future development tasks** are documented in `future_tasks.md`.
 
 ## Development Workflow
 
