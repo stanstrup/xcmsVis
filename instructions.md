@@ -7,22 +7,9 @@ The goal is to implement all the plots in xcms as ggplot2 plots so they can be m
 
 **Motivation**: https://github.com/sneumann/xcms/issues/551
 
-## Completed Tasks
+**Note**: For completed tasks, see `completed_tasks.md`
 
-All initial setup tasks have been completed. See `completed_tasks.md` for details:
-
-1. ✅ Made the folder a git repo
-2. ✅ Familiarized with XCMS codebase
-3. ✅ Following XCMS package conventions
-4. ✅ Created package structure with pkgdown
-5. ✅ Implemented gplotAdjustedRtime
-6. ✅ Created comparison vignette
-7. ✅ Moved completed tasks to separate file
-8. ✅ Updated instructions
-9. ✅ Set main as default branch
-10. ✅ Set up GitHub Actions CI
-
-## Current/Remaining Tasks
+## Current Tasks
 
 ### 12. Support xcmsExperiment objects
 - **Status**: 🔄 To Do
@@ -39,29 +26,51 @@ All initial setup tasks have been completed. See `completed_tasks.md` for detail
   - Ensure GitHub Actions workflow builds it automatically
   - Verify deployment to GitHub Pages
 
-## Next Steps
+## Future Tasks
 
-### Short-term Goals
+### Add More Plotting Functions
 
-1. **Complete xcmsExperiment support** - Ensure all functions work with xcmsExperiment objects
-2. **Generate pkgdown site** - Build and deploy documentation
-3. **Add more plotting functions** - Implement ggplot2 versions of:
-   - `plotQC()` - Quality control diagnostics
-   - `plotChromPeaks()` - Chromatographic peak visualization
-   - `plotChromPeakImage()` - Peak intensity heatmap
-   - `plotChromPeakDensity()` - Peak density visualization
-   - `plotEIC()` - Extracted ion chromatograms
+Implement ggplot2 versions of additional XCMS plotting functions:
 
-4. **Expand vignettes** - Add examples for each new plotting function
-5. **Add real data examples** - Download and include example data from Metabonaut tutorials
-6. **Improve testing** - Create mock XCMSnExp objects for unit tests
+- `plotQC()` - Quality control diagnostics
+  - `mzdevhist`, `rtdevhist`, `mzdevmass`, `mzdevtime`
+  - `mzdevsample`, `rtdevsample`
+- `plotChromPeaks()` - Chromatographic peak visualization
+- `plotChromPeakImage()` - Peak intensity heatmap
+- `plotChromPeakDensity()` - Peak density visualization
+- `plotEIC()` - Extracted ion chromatograms
+- `plotTIC()` - Total ion chromatogram
+- `plotBPC()` - Base peak chromatogram
+- `plotMsData()` - Mass spec data display
+- `plotFeatureGroups()` - Feature grouping visualization
+
+### Expand Vignettes
+
+- Add examples for each new plotting function to the comparison vignette
+- Create dedicated vignettes for:
+  - Interactive plotting with plotly
+  - Quality control workflows
+  - Complete LC-MS data analysis visualization
+
+### Add Real Data Examples
+
+- Download example data from Metabonaut tutorials
+- Include small example datasets in package
+- Create reproducible examples that don't require external data
+
+### Improve Testing
+
+- Create mock XCMSnExp objects for unit tests
+- Test all function parameters
+- Add visual regression tests
+- Test plotly interactivity
 
 ### Long-term Goals
 
-1. **Complete XCMS plotting suite** - Implement all remaining XCMS plotting functions
-2. **Add interactive features** - Create shiny apps for interactive exploration
-3. **Performance optimization** - Optimize for large datasets
-4. **Submit to Bioconductor** - Prepare and submit package to Bioconductor
+- Complete XCMS plotting suite
+- Add shiny apps for interactive exploration
+- Performance optimization for large datasets
+- Submit to Bioconductor
 
 ## Development Workflow
 
@@ -77,6 +86,7 @@ All initial setup tasks have been completed. See `completed_tasks.md` for detail
 8. Add examples to vignette
 9. Update NEWS.md
 10. Run `devtools::check()`
+11. Move task from this file to `completed_tasks.md` when done
 
 ### Testing Commands
 
@@ -113,6 +123,7 @@ pkgdown::build_site()
 - Include tooltip text for plotly compatibility
 - Write comprehensive roxygen2 documentation
 - Add examples (even if marked `\dontrun`)
+- When tasks are completed, move them to `completed_tasks.md`
 
 ## Git Workflow
 
@@ -121,3 +132,4 @@ pkgdown::build_site()
 - GitHub Actions will automatically:
   - Run R CMD check on push/PR
   - Deploy pkgdown site on push to main
+- Always commit with co-authorship footer when using Claude Code
