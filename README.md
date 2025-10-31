@@ -9,7 +9,7 @@ Modern, interactive visualizations for XCMS metabolomics data using ggplot2.
 - Modern, publication-ready visualizations
 - Interactive plots through plotly integration
 - Consistent styling across all plots
-- Full compatibility with XCMSnExp objects
+- Full compatibility with both XCMSnExp and XcmsExperiment objects
 
 This package complements the [XCMS package](https://github.com/sneumann/xcms) by reimplementing its base graphics plots using ggplot2.
 
@@ -40,16 +40,22 @@ Future releases will include ggplot2 versions of:
 library(xcmsVis)
 library(xcms)
 
-# Load your XCMSnExp object
-# data <- readMSData(...)
-# Perform peak detection, alignment, etc.
+# Works with XcmsExperiment (XCMS v4+)
+xdata <- readMsExperiment(files = mzml_files)
+# ... perform peak detection, alignment, etc.
 
-# Create an interactive retention time adjustment plot
-p <- gplotAdjustedRtime(data, color_by = sample_group)
+# Create retention time adjustment plot
+p <- gplotAdjustedRtime(xdata, color_by = sample_group)
+print(p)
 
 # Make it interactive
 library(plotly)
 ggplotly(p, tooltip = "text")
+
+# Also works with XCMSnExp (XCMS v3)
+xdata_v3 <- readMSData(files = mzml_files, mode = "onDisk")
+# ... perform XCMS workflow
+p <- gplotAdjustedRtime(xdata_v3, color_by = sample_group)
 ```
 
 ## Motivation
