@@ -6,10 +6,13 @@
 #' implementation of XCMS's `plotAdjustedRtime()` function, enabling
 #' modern visualization and interactive plotting capabilities.
 #'
-#' @param object An `XCMSnExp` object with retention time adjustment results.
-#' @param color_by Column name from `pData(object)` to use for coloring lines.
+#' @param object An `XCMSnExp` or `XcmsExperiment` object with retention time
+#'   adjustment results.
+#' @param color_by Column name from sample metadata to use for coloring lines.
 #'   This should be provided as an unquoted column name (e.g., `sample_group`).
-#' @param include_columns Character vector of column names from `pData(object)`
+#'   For XCMSnExp objects, this comes from `pData(object)`. For XcmsExperiment
+#'   objects, this comes from `sampleData(object)`.
+#' @param include_columns Character vector of column names from sample metadata
 #'   to include in the tooltip text. If `NULL` (default), all columns are included.
 #' @param adjustedRtime Logical, whether to use adjusted retention times on the
 #'   x-axis. Default is `TRUE`.
@@ -49,11 +52,12 @@
 #'
 #' @export
 #' @importFrom methods is
-#' @importFrom xcms rtime hasAdjustedRtime fromFile pData processHistory processParam chromPeaks chromPeakData featureDefinitions fileNames
+#' @importFrom xcms rtime hasAdjustedRtime fromFile processHistory processParam
+#' @importFrom MsExperiment sampleData
 #' @importFrom tibble tibble
 #' @importFrom tidyr separate pivot_wider pivot_longer unnest
 #' @importFrom dplyr %>% mutate filter select bind_rows bind_cols right_join group_by group_nest
-#' @importFrom purrr map map_lgl pluck map2
+#' @importFrom purrr map map_lgl pluck map2 imap_dfr
 #' @importFrom ggplot2 ggplot aes geom_line geom_point theme_bw
 gplotAdjustedRtime <- function(object,
                                 color_by,
@@ -61,13 +65,14 @@ gplotAdjustedRtime <- function(object,
                                 adjustedRtime = TRUE) {
 
   # Input validation
-  if (!is(object, "XCMSnExp")) {
-    stop("'object' has to be an 'XCMSnExp' object.")
-  }
+  .validate_xcms_object(object)
 
   if (!hasAdjustedRtime(object)) {
     warning("No alignment/retention time correction results present.")
   }
+
+  # Get sample metadata (works with both object types)
+  sample_data <- .get_sample_data(object)
 
   # Get raw and adjusted retention times
   rt_noadj <- rtime(object, adjusted = FALSE, bySample = FALSE) %>%
@@ -95,7 +100,7 @@ gplotAdjustedRtime <- function(object,
     mutate(fromFile = as.integer(gsub("^F(.*)", "\\1", fromFile)))
 
   # Add sample metadata
-  rts <- pData(object) %>%
+  rts <- sample_data %>%
     mutate(fromFile = from_files) %>%
     right_join(rts, by = "fromFile", multiple = "all")
 
@@ -154,12 +159,12 @@ gplotAdjustedRtime <- function(object,
 
   # Add tooltip text for interactive plotting
   if (is.null(include_columns)) {
-    include_columns <- colnames(pData(object))
+    include_columns <- colnames(sample_data)
   }
 
   rts <- rts %>%
     select(all_of(include_columns)) %>%
-    purrr::imap_dfr(~ paste(.y, .x, sep = ": ")) %>%
+    imap_dfr(~ paste(.y, .x, sep = ": ")) %>%
     tidyr::unite(text, sep = "<br>") %>%
     bind_cols(rts, .)
 

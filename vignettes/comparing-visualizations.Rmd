@@ -45,6 +45,8 @@ library(plotly)
 
 For this example, we'll use data from the Metabonaut tutorials. These are LC-MS metabolomics data files suitable for demonstrating XCMS workflows.
 
+**Note**: All xcmsVis functions work with both `XCMSnExp` (XCMS version 3) and `XcmsExperiment` (XCMS version 4+) objects.
+
 ```{r load_data, eval=FALSE}
 # Example using Metabonaut tutorial data
 # Download from: https://github.com/rformassspectrometry/Metabonaut
@@ -56,7 +58,19 @@ mzml_files <- list.files(
   full.names = TRUE
 )
 
-# Create sample metadata
+# Option 1: Using XcmsExperiment (XCMS version 4+, recommended)
+library(MsExperiment)
+xdata <- readMsExperiment(files = mzml_files)
+
+# Add sample metadata
+sampleData(xdata) <- data.frame(
+  sample_name = basename(mzml_files),
+  sample_group = rep(c("control", "treatment"), each = 3),
+  sample_type = "sample"
+)
+
+# Option 2: Using XCMSnExp (XCMS version 3, legacy)
+library(MSnbase)
 pd <- data.frame(
   sample_name = basename(mzml_files),
   sample_group = rep(c("control", "treatment"), each = 3),
@@ -64,7 +78,6 @@ pd <- data.frame(
   stringsAsFactors = FALSE
 )
 
-# Read MS data
 raw_data <- readMSData(
   files = mzml_files,
   pdata = new("NAnnotatedDataFrame", pd),
