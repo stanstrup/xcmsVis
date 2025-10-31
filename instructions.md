@@ -11,12 +11,7 @@ The goal is to implement all the plots in xcms as ggplot2 plots so they can be m
 
 ## Current Tasks
 
-### 13. Generate pkgdown page
-- **Status**: 🔄 To Do
-- **Details**: Build and deploy the pkgdown documentation site
-  - Run `pkgdown::build_site()` locally
-  - Ensure GitHub Actions workflow builds it automatically
-  - Verify deployment to GitHub Pages
+**All initial setup tasks are complete!** See `completed_tasks.md` for the full list of 13 completed tasks.
 
 ## Future Tasks
 
