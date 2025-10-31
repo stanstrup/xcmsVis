@@ -133,16 +133,22 @@ This document lists all tasks that have been completed from the original `instru
 - **Date**: 2025-10-31
 - **Details**:
   - Created index.md for pkgdown home page
-  - Verified _pkgdown.yml configuration is complete
-  - GitHub Actions workflow already configured for automatic deployment
-  - Created PKGDOWN_INSTRUCTIONS.md with detailed build and deployment instructions
-  - Site structure ready with:
-    - Home page (index.md)
-    - Function reference (via roxygen2)
-    - Vignettes (comparing-visualizations.Rmd)
-    - Changelog (NEWS.md)
+  - Fixed _pkgdown.yml configuration
+  - Installed R 4.5.1 in WSL
+  - Installed system dependencies (libcurl, libxml2, fontconfig, etc.)
+  - Installed pkgdown, devtools, roxygen2 and dependencies
+  - Created gplotAdjustedRtime.Rd man file
+  - Built pkgdown site locally (docs/ folder)
+  - GitHub Actions workflow configured for automatic deployment
+  - Created PKGDOWN_INSTRUCTIONS.md with detailed build instructions
+  - Created installation scripts (install_r_latest.sh, install_system_deps.sh)
+  - Site includes:
+    - Home page (index.html)
+    - News/changelog page
+    - Function reference structure
+    - Package documentation
   - Site will automatically build and deploy on push to main branch
-  - Manual build command: `pkgdown::build_site()`
+  - Manual build command: `Rscript -e ".libPaths('~/R/library'); pkgdown::build_site()"`
 
 ---
 
