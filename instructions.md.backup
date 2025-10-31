@@ -1,0 +1,17 @@
+Your purpose is to make an R package, xcmsVis, that should be a parallel package to the XCMS package.
+The goal is to implement all the plots in xcms as ggplot2 plots so they can be made interactive. Some discussion and motivation can be found here: https://github.com/sneumann/xcms/issues/551
+
+Make a plan to accomplish the following:
+
+1) make the folder a git repo
+2) familiarize yourself with the xcms code base: https://github.com/sneumann/xcms
+3) follow XCMS package conventions as closely as possible paying attention the the methods and object types.
+4) create the package structure including a pkgdown page taking inspiration from /mnt/c/Users/tmh331/Desktop/gits/remoteUpdater
+5) implement gplotAdjustedRtime found here: /mnt/c/Users/tmh331/Desktop/gits/_Introduction to Nutritional Metabolomics/inm-booklet/scripts/funs.R
+6) make a vignette comparing gplotAdjustedRtime to xcms's gplotAdjustedRtime with an example. Use datasets used in the tutorials from here: https://github.com/rformassspectrometry/Metabonaut. This vignette should be ready to add more comparisons to.
+8) when you have accomplished a point from this file move the instruction to a file listing accomplished tasks.
+9) Update your instructions
+10) use main as the default branch
+11) this needs to run on github actions instead of gitlab CI.
+12) use an xcmsExperiment objects as the input for examples and make sure the functions worg with xcmsExperiment objects.
+13) generate the pkgdown page

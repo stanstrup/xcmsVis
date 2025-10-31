@@ -1,0 +1,12 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.git$
+^\.gitignore$
+^\.claude$
+^CLAUDE\.md$
+^instructions\.md$
+^completed_tasks\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$

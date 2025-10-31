@@ -1,0 +1,266 @@
+---
+title: "Comparing xcmsVis and XCMS Visualization Approaches"
+author: "xcmsVis Package"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{Comparing xcmsVis and XCMS Visualization Approaches}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 6,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# Introduction
+
+This vignette demonstrates the differences between the original XCMS plotting functions and their ggplot2-based equivalents in `xcmsVis`. The main advantages of the ggplot2 approach include:
+
+- **Modern aesthetics**: Clean, publication-ready graphics
+- **Interactivity**: Easy conversion to interactive plots using `plotly`
+- **Consistency**: Uniform styling across all visualizations
+- **Flexibility**: Easy customization using standard ggplot2 syntax
+
+# Setup
+
+```{r libraries}
+library(xcms)
+library(xcmsVis)
+library(ggplot2)
+library(plotly)
+```
+
+# Data Preparation
+
+For this example, we'll use data from the Metabonaut tutorials. These are LC-MS metabolomics data files suitable for demonstrating XCMS workflows.
+
+```{r load_data, eval=FALSE}
+# Example using Metabonaut tutorial data
+# Download from: https://github.com/rformassspectrometry/Metabonaut
+
+# Load mzML files
+mzml_files <- list.files(
+  path = "path/to/mzML/files",
+  pattern = "\\.mzML$",
+  full.names = TRUE
+)
+
+# Create sample metadata
+pd <- data.frame(
+  sample_name = basename(mzml_files),
+  sample_group = rep(c("control", "treatment"), each = 3),
+  sample_type = "sample",
+  stringsAsFactors = FALSE
+)
+
+# Read MS data
+raw_data <- readMSData(
+  files = mzml_files,
+  pdata = new("NAnnotatedDataFrame", pd),
+  mode = "onDisk"
+)
+```
+
+```{r example_workflow, eval=FALSE}
+# Peak detection
+cwp <- CentWaveParam(
+  peakwidth = c(20, 80),
+  ppm = 30
+)
+xdata <- findChromPeaks(raw_data, param = cwp)
+
+# Retention time alignment
+xdata <- adjustRtime(
+  xdata,
+  param = PeakGroupsParam(
+    minFraction = 0.9,
+    smooth = "loess",
+    span = 0.6,
+    subset = which(pd$sample_type == "sample")
+  )
+)
+
+# Correspondence (peak grouping)
+pdp <- PeakDensityParam(
+  sampleGroups = pd$sample_group,
+  minFraction = 0.8,
+  bw = 30
+)
+xdata <- groupChromPeaks(xdata, param = pdp)
+```
+
+# Comparing plotAdjustedRtime and gplotAdjustedRtime
+
+## Original XCMS Version
+
+The original `plotAdjustedRtime()` function from XCMS uses base R graphics:
+
+```{r original_plot, eval=FALSE}
+# Base R graphics version
+plotAdjustedRtime(
+  xdata,
+  col = rainbow(nrow(pData(xdata))),
+  peakGroupsCol = "grey"
+)
+```
+
+**Characteristics:**
+- Uses base R graphics system
+- Limited customization options
+- Not easily made interactive
+- Coloring requires manual color specification
+
+## xcmsVis ggplot2 Version
+
+The `gplotAdjustedRtime()` function provides a modern alternative:
+
+```{r ggplot_version, eval=FALSE}
+# ggplot2 version
+p <- gplotAdjustedRtime(
+  xdata,
+  color_by = sample_group
+)
+print(p)
+
+# Add custom styling
+p <- p +
+  labs(
+    title = "Retention Time Correction",
+    x = "Adjusted Retention Time (s)",
+    y = "RT Adjustment (s)",
+    color = "Sample Group"
+  ) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1")
+
+print(p)
+```
+
+**Advantages:**
+- Modern ggplot2 aesthetics
+- Easy to customize using standard ggplot2 syntax
+- Automatic legend generation
+- Publication-ready output
+
+## Interactive Visualization
+
+One of the key advantages of the ggplot2 approach is easy conversion to interactive plots:
+
+```{r interactive, eval=FALSE}
+# Convert to interactive plotly plot
+p_interactive <- ggplotly(p, tooltip = "text")
+p_interactive
+```
+
+The interactive version allows you to:
+
+- Hover over data points to see sample information
+- Zoom into regions of interest
+- Pan across the plot
+- Toggle samples on/off by clicking the legend
+- Export as static image
+
+# Detailed Feature Comparison
+
+## Feature-by-Feature Breakdown
+
+| Feature | XCMS `plotAdjustedRtime` | xcmsVis `gplotAdjustedRtime` |
+|---------|--------------------------|------------------------------|
+| Graphics system | Base R | ggplot2 |
+| Interactivity | No | Yes (via plotly) |
+| Color by variable | Manual colors only | Automatic by grouping variable |
+| Customization | Limited parameters | Full ggplot2 customization |
+| Tooltips | No | Yes (sample metadata) |
+| Publication quality | Basic | High |
+| Legend | Manual | Automatic |
+| Theme support | No | Yes |
+
+## Use Cases
+
+### When to use XCMS's plotAdjustedRtime:
+
+- Quick diagnostic checks during analysis
+- When base R graphics are preferred
+- In existing workflows that rely on base graphics
+
+### When to use xcmsVis's gplotAdjustedRtime:
+
+- Creating publication figures
+- Interactive data exploration
+- When you need to customize appearance
+- When analyzing complex experiments with many sample groups
+- For presentations and reports
+
+# Code Comparison Example
+
+Here's a side-by-side comparison of creating a styled plot:
+
+## XCMS Approach
+
+```{r xcms_styled, eval=FALSE}
+# Requires manual color management and layout
+colors <- rainbow(nrow(pData(xdata)))
+plotAdjustedRtime(
+  xdata,
+  col = colors,
+  lwd = 2,
+  peakGroupsCol = "#00000040",
+  main = "RT Correction"
+)
+legend(
+  "topleft",
+  legend = unique(pData(xdata)$sample_group),
+  col = colors,
+  lwd = 2,
+  bty = "n"
+)
+```
+
+## xcmsVis Approach
+
+```{r xcmsvis_styled, eval=FALSE}
+# Clean, declarative syntax
+gplotAdjustedRtime(xdata, color_by = sample_group) +
+  labs(
+    title = "RT Correction",
+    x = "Adjusted RT (s)",
+    y = "RT Adjustment (s)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "top")
+```
+
+# Future Additions
+
+This vignette will be expanded as more plotting functions are added to xcmsVis:
+
+- `gplotQC()` - Quality control plots
+- `gplotChromPeaks()` - Chromatographic peak visualization
+- `gplotChromPeakDensity()` - Peak density visualization
+- `gplotEIC()` - Extracted ion chromatograms
+- And more!
+
+# Session Information
+
+```{r session_info}
+sessionInfo()
+```
+
+# References
+
+- XCMS GitHub Repository: https://github.com/sneumann/xcms
+- Original Feature Request: https://github.com/sneumann/xcms/issues/551
+- Metabonaut Tutorials: https://github.com/rformassspectrometry/Metabonaut
+- ggplot2 Documentation: https://ggplot2.tidyverse.org/
+- plotly for R: https://plotly.com/r/

@@ -1,0 +1,42 @@
+url: https://yourusername.github.io/xcmsVis
+template:
+  bootstrap: 5
+  bootswatch: cosmo
+
+navbar:
+  structure:
+    left:  [home, reference, articles, news]
+    right: [github]
+  components:
+    home:
+      icon: fas fa-home fa-lg
+      aria-label: Home
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    articles:
+      text: Vignettes
+      menu:
+      - text: Comparing Visualization Approaches
+        href: articles/comparing-visualizations.html
+    news:
+      text: Changelog
+      href: news/index.html
+    github:
+      icon: fab fa-github fa-lg
+      aria-label: GitHub repository
+      href: https://github.com/yourusername/xcmsVis
+
+news:
+  cran_dates: false
+
+reference:
+  - title: Retention Time Alignment Visualization
+    desc: Functions for visualizing retention time correction
+    contents:
+      - gplotAdjustedRtime
+  - title: Future Functions
+    desc: Planned implementations (coming soon)
+    contents:
+      - starts_with("gplot")
