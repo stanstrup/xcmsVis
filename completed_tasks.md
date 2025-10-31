@@ -114,21 +114,34 @@ This document lists all tasks that have been completed from the original `instru
 - **Date**: 2025-10-31
 - **Details**: Set up GitHub Actions workflows (see task #8 above)
 
+### 12. Add support for xcmsExperiment objects
+- **Status**: ✅ Complete
+- **Date**: 2025-10-31
+- **Details**:
+  - Researched XcmsExperiment class structure and differences from XCMSnExp
+  - Created utility functions (.get_sample_data, .validate_xcms_object) in R/utils.R
+  - Updated gplotAdjustedRtime() to work with both object types
+  - Added MsExperiment to package dependencies
+  - Updated all documentation to reflect dual object support
+  - Updated vignette with examples for both XCMSnExp and XcmsExperiment
+  - Updated README with usage examples for both object types
+  - Bumped package version to 0.2.0
+  - Key difference: XCMSnExp uses pData(), XcmsExperiment uses sampleData()
+
 ---
 
 ## Summary Statistics
 
-- **Total tasks from original list**: 11 (numbered 1-13, skipping 7)
-- **Completed**: 11
-- **Remaining**: 2 (tasks #12 and #13)
-- **Completion rate**: 85%
+- **Total tasks from original list**: 12 (numbered 1-13, skipping 7)
+- **Completed**: 12
+- **Remaining**: 1 (task #13)
+- **Completion rate**: 92%
 
 ---
 
 ## Next Milestone
 
-The next major tasks are:
-1. **Task #12**: Add support for xcmsExperiment objects
-2. **Task #13**: Generate and deploy pkgdown documentation site
+The final task from the original instructions is:
+1. **Task #13**: Generate and deploy pkgdown documentation site
 
-See `instructions.md` for details on these and future tasks.
+See `instructions.md` for details on this and future tasks.

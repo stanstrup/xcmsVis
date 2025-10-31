@@ -11,14 +11,6 @@ The goal is to implement all the plots in xcms as ggplot2 plots so they can be m
 
 ## Current Tasks
 
-### 12. Support xcmsExperiment objects
-- **Status**: 🔄 To Do
-- **Details**: Update functions to work with both XCMSnExp and xcmsExperiment objects
-  - xcmsExperiment is the newer XCMS object type
-  - Need to add method dispatch for both object types
-  - Update documentation and examples
-  - Test compatibility with xcmsExperiment
-
 ### 13. Generate pkgdown page
 - **Status**: 🔄 To Do
 - **Details**: Build and deploy the pkgdown documentation site
