@@ -11,7 +11,9 @@ The goal is to implement all the plots in xcms as ggplot2 plots so they can be m
 
 ## Current Tasks
 
-**All initial setup tasks are complete!** See `completed_tasks.md` for the full list of 13 completed tasks.
+1) run pkgdown and fix any errors
+2) use markdown-style in man pages
+3) Split away your future tasks section to a seperate file. this seem like token burn to read all this in every time.
 
 ## Future Tasks
 

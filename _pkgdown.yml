@@ -32,11 +32,7 @@ news:
   cran_dates: false
 
 reference:
-  - title: Retention Time Alignment Visualization
-    desc: Functions for visualizing retention time correction
+  - title: Visualization Functions
+    desc: ggplot2 versions of XCMS plotting functions
     contents:
       - gplotAdjustedRtime
-  - title: Future Functions
-    desc: Planned implementations (coming soon)
-    contents:
-      - starts_with("gplot")
