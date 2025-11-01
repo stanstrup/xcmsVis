@@ -12,7 +12,7 @@ Description: Provides modern, interactive visualizations for XCMS metabolomics d
     XCMSnExp and XcmsExperiment objects and following XCMS conventions for methods
     and object types.
 License: MIT + file LICENSE
-URL: https://github.com/stanstrup/xcmsVis
+URL: https://stanstrup.github.io/xcmsVis, https://github.com/stanstrup/xcmsVis
 BugReports: https://github.com/stanstrup/xcmsVis/issues
 Encoding: UTF-8
 LazyData: true

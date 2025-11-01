@@ -28,7 +28,7 @@ jobs:
           node-version: 'lts/*'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Make prepare-news.sh executable
         run: chmod +x ./prepare-news.sh

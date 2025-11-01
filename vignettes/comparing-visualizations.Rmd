@@ -75,6 +75,14 @@ cwp <- CentWaveParam(
 )
 xdata <- findChromPeaks(xdata, param = cwp)
 
+# Initial correspondence (peak grouping) before alignment
+pdp <- PeakDensityParam(
+  sampleGroups = sampleData(xdata)$sample_group,
+  minFraction = 0.4,
+  bw = 30
+)
+xdata <- groupChromPeaks(xdata, param = pdp)
+
 # Retention time alignment using peak groups
 xdata <- adjustRtime(
   xdata,
@@ -86,12 +94,7 @@ xdata <- adjustRtime(
   )
 )
 
-# Correspondence (peak grouping)
-pdp <- PeakDensityParam(
-  sampleGroups = sampleData(xdata)$sample_group,
-  minFraction = 0.4,
-  bw = 30
-)
+# Re-do correspondence after alignment
 xdata <- groupChromPeaks(xdata, param = pdp)
 ```
 

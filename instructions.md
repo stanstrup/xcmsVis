@@ -2,9 +2,21 @@
 
 **See `CLAUDE.md` for development workflow, conventions, and resources.**
 
-1) ✅ ~~Remove everything else than the "Current Tasks" section from this file~~
-2) Remove eval=FALSE from the vignette. We want to see the plots! Also make sure it actually works!
-3) Don't bother with XCMSnExp in the examples/vignettes, but make tests that make sure it works. In fact make sure all functions have tests.
-4) Cleanup temporary files
-5) Semantic versioning should be setup like in remoteUpdater. Also NEWS.md is not compatible with pkgdown. Look at remoteUpdater for the right setup of pkgdown and semantic release. Make the same setup, including GitHub Actions.
-6) When this works, and only when it is confirmed to work, push to https://github.com/stanstrup
+1) fix the github pipeline. fetch yourself the result
+2) fix following warning when making the pkgdown site:
+✖ URLs not ok.
+  In DESCRIPTION, URL is missing package url
+  (https://stanstrup.github.io/xcmsVis).
+  See details in `vignette(pkgdown::metadata)`.
+3) error when making the vignette. please try and fix until it works:
+Error
+: 
+! in callr subprocess.
+Caused by error in `.f(.x[[i]], ...)`:
+! Failed to render vignettes/comparing-visualizations.Rmd.
+✖ Quitting from comparing-visualizations.Rmd:70-96 [example_workflow]
+Caused by error:
+! No feature definitions present in 'object'. Please perform first a correspondence analysis using 'groupChromPeaks'
+ℹ See `$stdout` and `$stderr` for standard output and error.
+Type .Last.error to see the more details.
+  
