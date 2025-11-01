@@ -1,0 +1,32 @@
+{
+  "name": "xcmsvis",
+  "version": "0.2.0",
+  "description": "Modern Visualization for XCMS Data",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "man": "man"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stanstrup/xcmsVis.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/stanstrup/xcmsVis/issues"
+  },
+  "homepage": "https://github.com/stanstrup/xcmsVis#readme",
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.1",
+    "semantic-release": "^25.0.1"
+  }
+}

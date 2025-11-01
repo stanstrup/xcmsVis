@@ -1,25 +1,25 @@
-# xcmsVis 0.2.0
+## Changes in v0.2.0
 
-## New Features
+### Features
 
-* Added support for `XcmsExperiment` objects (XCMS version 4+)
-* `gplotAdjustedRtime()` now works with both `XCMSnExp` and `XcmsExperiment` objects
-* Created internal utility functions for object type handling
+* Support for both XCMSnExp and XcmsExperiment objects
+* Add utility functions for object type handling (.get_sample_data, .validate_xcms_object)
+* Comprehensive test suite with faahKO example data
+* Working vignette with executable code examples using faahKO data
+* pkgdown documentation site
 
-## Bug Fixes
+### Bug Fixes
 
-* Updated sample metadata extraction to handle both object types correctly
+* Fix vignette to use real data instead of eval=FALSE examples
+* Update sample metadata extraction to handle both object types correctly
 
-## Documentation
+## Changes in v0.1.0
 
-* Updated function documentation to reflect support for both object types
-* Added utility functions for cleaner code architecture
+### Features
 
-# xcmsVis 0.1.0
-
-## Initial Release
-
-* Initial package setup
-* Implemented `gplotAdjustedRtime()` - ggplot2 version of XCMS's `plotAdjustedRtime()`
-* Added pkgdown documentation site
-* Created comparison vignette
+* Initial release
+* Implement gplotAdjustedRtime() function
+* ggplot2 visualization of retention time adjustment
+* Interactive tooltip support for plotly
+* Complete package infrastructure (CI/CD, documentation, tests)
+* Comparison vignette showing XCMS vs xcmsVis approaches

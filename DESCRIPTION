@@ -12,8 +12,8 @@ Description: Provides modern, interactive visualizations for XCMS metabolomics d
     XCMSnExp and XcmsExperiment objects and following XCMS conventions for methods
     and object types.
 License: MIT + file LICENSE
-URL: https://github.com/yourusername/xcmsVis
-BugReports: https://github.com/yourusername/xcmsVis/issues
+URL: https://github.com/stanstrup/xcmsVis
+BugReports: https://github.com/stanstrup/xcmsVis/issues
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.3
@@ -35,6 +35,7 @@ Suggests:
     knitr,
     rmarkdown,
     BiocStyle,
-    MSnbase
+    MSnbase,
+    faahKO
 VignetteBuilder: knitr
 biocViews: Metabolomics, MassSpectrometry, Visualization

@@ -4,7 +4,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is an R package project named `xcmsVis`, currently in initial setup phase. The project uses RStudio as the development environment.
+This is an R package project named `xcmsVis`, a parallel package to XCMS that provides ggplot2 implementations of XCMS plotting functions for modern, interactive visualizations.
+
+## Project Task Management
+
+**IMPORTANT**: This project uses a structured task management system to minimize token usage:
+
+- **`instructions.md`**: Contains ONLY current/active tasks. Keep this file as lightweight as possible.
+- **`completed_tasks.md`**: Archive of all completed tasks with detailed documentation.
+- **`future_tasks.md`**: Long-term development roadmap and planned features.
+
+When working on tasks:
+1. Check `instructions.md` for current work
+2. Move completed tasks to `completed_tasks.md` with details
+3. Keep `instructions.md` minimal to reduce token consumption
+4. Reference other files for context rather than duplicating information
 
 ## R Package Development Commands
 
@@ -73,3 +87,56 @@ The project follows standard R package conventions:
 - Strip trailing whitespace (configured in .Rproj file)
 - Auto-append newline to files (configured in .Rproj file)
 - Use UTF-8 encoding
+
+## Testing Requirements
+
+**IMPORTANT**: All functions MUST have comprehensive tests:
+- Test compatibility with both XCMSnExp and XcmsExperiment objects
+- Even if examples/vignettes focus on XcmsExperiment, tests must verify XCMSnExp works
+- Write tests in `tests/testthat/test-*.R` files
+- Use `testthat::test_file()` to run individual test files
+- Ensure all major code paths are covered
+
+## Adding New Functions
+
+When implementing new XCMS plotting functions:
+
+1. Identify XCMS plotting function to implement
+2. Locate source code in XCMS GitHub: https://github.com/sneumann/xcms
+3. Study the function's purpose, parameters, and output
+4. Implement ggplot2 version in `R/gplot*.R`
+5. Add roxygen2 documentation
+6. Update NAMESPACE if needed
+7. Add tests in `tests/testthat/test-*.R` (REQUIRED - test both object types)
+8. Add examples to vignette (focus on XcmsExperiment)
+9. Update NEWS.md
+10. Run `devtools::check()`
+11. Move task from instructions.md to `completed_tasks.md` when done
+
+## Key Resources
+
+- **XCMS Repository**: https://github.com/sneumann/xcms
+- **Metabonaut Tutorials**: https://github.com/rformassspectrometry/Metabonaut
+- **Original Discussion**: https://github.com/sneumann/xcms/issues/551
+- **Package Structure Reference**: `/mnt/c/Users/tmh331/Desktop/gits/remoteUpdater`
+- **Function Reference**: `/mnt/c/Users/tmh331/Desktop/gits/_Introduction to Nutritional Metabolomics/inm-booklet/scripts/funs.R`
+
+## Important Conventions
+
+- Follow XCMS conventions for object types and methods
+- Maintain compatibility with both XCMSnExp and xcmsExperiment objects
+- Use consistent naming: `gplot*` prefix for all plotting functions
+- Include tooltip text for plotly compatibility
+- Write comprehensive roxygen2 documentation
+- Add examples (even if marked `\dontrun`)
+- When tasks are completed, move them to `completed_tasks.md`
+
+## Git Workflow
+
+- Default branch: `main`
+- Use conventional commits (see semantic-release configuration)
+- GitHub Actions will automatically:
+  - Run R CMD check on push/PR
+  - Deploy pkgdown site on push to main
+  - Create releases via semantic-release
+- Always commit with co-authorship footer when using Claude Code

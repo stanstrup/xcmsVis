@@ -39,75 +39,57 @@ library(xcms)
 library(xcmsVis)
 library(ggplot2)
 library(plotly)
+library(faahKO)
+library(MsExperiment)
 ```
 
 # Data Preparation
 
-For this example, we'll use data from the Metabonaut tutorials. These are LC-MS metabolomics data files suitable for demonstrating XCMS workflows.
+For this example, we'll use the faahKO package, which contains example LC-MS data from an analysis of fatty acid amide hydrolase (FAAH) knockout mice.
 
-**Note**: All xcmsVis functions work with both `XCMSnExp` (XCMS version 3) and `XcmsExperiment` (XCMS version 4+) objects.
+**Note**: All xcmsVis functions work with `XcmsExperiment` (XCMS version 4+) objects. They also maintain backward compatibility with `XCMSnExp` (XCMS version 3) objects.
 
-```{r load_data, eval=FALSE}
-# Example using Metabonaut tutorial data
-# Download from: https://github.com/rformassspectrometry/Metabonaut
+```{r load_data}
+# Get example CDF files from faahKO package
+cdf_files <- dir(system.file("cdf", package = "faahKO"),
+                  recursive = TRUE, full.names = TRUE)
 
-# Load mzML files
-mzml_files <- list.files(
-  path = "path/to/mzML/files",
-  pattern = "\\.mzML$",
-  full.names = TRUE
-)
+# For this vignette, we'll use a subset for faster processing
+# Using 3 samples from each group
+cdf_files <- cdf_files[c(1:3, 7:9)]
 
-# Option 1: Using XcmsExperiment (XCMS version 4+, recommended)
-library(MsExperiment)
-xdata <- readMsExperiment(files = mzml_files)
+# Load data as XcmsExperiment
+xdata <- readMsExperiment(spectraFiles = cdf_files)
 
 # Add sample metadata
-sampleData(xdata) <- data.frame(
-  sample_name = basename(mzml_files),
-  sample_group = rep(c("control", "treatment"), each = 3),
-  sample_type = "sample"
-)
-
-# Option 2: Using XCMSnExp (XCMS version 3, legacy)
-library(MSnbase)
-pd <- data.frame(
-  sample_name = basename(mzml_files),
-  sample_group = rep(c("control", "treatment"), each = 3),
-  sample_type = "sample",
-  stringsAsFactors = FALSE
-)
-
-raw_data <- readMSData(
-  files = mzml_files,
-  pdata = new("NAnnotatedDataFrame", pd),
-  mode = "onDisk"
-)
+sample_group <- rep(c("KO", "WT"), each = 3)
+sampleData(xdata)$sample_name <- basename(cdf_files)
+sampleData(xdata)$sample_group <- sample_group
 ```
 
-```{r example_workflow, eval=FALSE}
-# Peak detection
+```{r example_workflow}
+# Peak detection using CentWave algorithm
 cwp <- CentWaveParam(
   peakwidth = c(20, 80),
-  ppm = 30
+  ppm = 25
 )
-xdata <- findChromPeaks(raw_data, param = cwp)
+xdata <- findChromPeaks(xdata, param = cwp)
 
-# Retention time alignment
+# Retention time alignment using peak groups
 xdata <- adjustRtime(
   xdata,
   param = PeakGroupsParam(
-    minFraction = 0.9,
+    minFraction = 0.4,
     smooth = "loess",
-    span = 0.6,
-    subset = which(pd$sample_type == "sample")
+    span = 0.2,
+    family = "gaussian"
   )
 )
 
 # Correspondence (peak grouping)
 pdp <- PeakDensityParam(
-  sampleGroups = pd$sample_group,
-  minFraction = 0.8,
+  sampleGroups = sampleData(xdata)$sample_group,
+  minFraction = 0.4,
   bw = 30
 )
 xdata <- groupChromPeaks(xdata, param = pdp)
@@ -119,11 +101,11 @@ xdata <- groupChromPeaks(xdata, param = pdp)
 
 The original `plotAdjustedRtime()` function from XCMS uses base R graphics:
 
-```{r original_plot, eval=FALSE}
+```{r original_plot}
 # Base R graphics version
 plotAdjustedRtime(
   xdata,
-  col = rainbow(nrow(pData(xdata))),
+  col = rep(c("#E41A1C", "#377EB8"), each = 3),
   peakGroupsCol = "grey"
 )
 ```
@@ -138,7 +120,7 @@ plotAdjustedRtime(
 
 The `gplotAdjustedRtime()` function provides a modern alternative:
 
-```{r ggplot_version, eval=FALSE}
+```{r ggplot_version, fig.height=5, fig.width=7}
 # ggplot2 version
 p <- gplotAdjustedRtime(
   xdata,
@@ -172,6 +154,8 @@ One of the key advantages of the ggplot2 approach is easy conversion to interact
 
 ```{r interactive, eval=FALSE}
 # Convert to interactive plotly plot
+# Note: Interactivity doesn't render in static vignettes,
+# but works when run interactively in R
 p_interactive <- ggplotly(p, tooltip = "text")
 p_interactive
 ```
@@ -221,9 +205,9 @@ Here's a side-by-side comparison of creating a styled plot:
 
 ## XCMS Approach
 
-```{r xcms_styled, eval=FALSE}
+```{r xcms_styled}
 # Requires manual color management and layout
-colors <- rainbow(nrow(pData(xdata)))
+colors <- rep(c("#E41A1C", "#377EB8"), each = 3)
 plotAdjustedRtime(
   xdata,
   col = colors,
@@ -233,8 +217,8 @@ plotAdjustedRtime(
 )
 legend(
   "topleft",
-  legend = unique(pData(xdata)$sample_group),
-  col = colors,
+  legend = c("KO", "WT"),
+  col = c("#E41A1C", "#377EB8"),
   lwd = 2,
   bty = "n"
 )
@@ -242,7 +226,7 @@ legend(
 
 ## xcmsVis Approach
 
-```{r xcmsvis_styled, eval=FALSE}
+```{r xcmsvis_styled, fig.height=5, fig.width=7}
 # Clean, declarative syntax
 gplotAdjustedRtime(xdata, color_by = sample_group) +
   labs(
