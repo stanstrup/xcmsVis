@@ -23,12 +23,14 @@ Depends:
 Imports:
     xcms (>= 3.0.0),
     MsExperiment,
+    Spectra,
     ggplot2,
     tibble,
     tidyr,
     dplyr,
     purrr,
-    methods
+    methods,
+    Biobase
 Suggests:
     plotly,
     testthat (>= 3.0.0),

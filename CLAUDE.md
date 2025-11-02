@@ -134,17 +134,42 @@ When implementing new XCMS plotting functions:
 ## Git Workflow
 
 - Default branch: `main`
-- Use conventional commits (see semantic-release configuration)
+- **ALWAYS use semantic-release commit message format** (conventional commits):
+  - `feat:` - New feature (triggers minor version bump)
+  - `fix:` - Bug fix (triggers patch version bump)
+  - `docs:` - Documentation changes only
+  - `style:` - Code style changes (formatting, etc.)
+  - `refactor:` - Code refactoring
+  - `test:` - Adding or updating tests
+  - `chore:` - Maintenance tasks
+  - Example: `feat: add gplotEIC function for extracted ion chromatograms`
 - GitHub Actions will automatically:
   - Run R CMD check on push/PR
   - Deploy pkgdown site on push to main
-  - Create releases via semantic-release
+  - Create releases via semantic-release based on commit messages
 - Always commit with co-authorship footer when using Claude Code
 
-## Pre-Push Checklist
+## Pre-Commit Checklist
 
-**IMPORTANT**: Before pushing to GitHub, ALWAYS verify that pkgdown builds successfully:
+**IMPORTANT**: Before committing changes, ALWAYS run these checks in order:
 
+### 1. Regenerate Documentation
+```r
+# Update NAMESPACE and .Rd files from roxygen2 comments
+roxygen2::roxygenize()
+```
+
+This ensures all function documentation and imports are up to date.
+
+### 2. R CMD Check
+```r
+# Check package for errors, warnings, and notes
+devtools::check()
+```
+
+Fix all errors and warnings before committing. Address notes if relevant.
+
+### 3. Build pkgdown Site
 ```r
 # Load all package code
 devtools::load_all()
@@ -159,7 +184,14 @@ Check for:
 - All function documentation displays properly
 - No broken links or missing references
 
-Only push to GitHub after confirming pkgdown builds without errors.
+Only commit after all three checks pass successfully.
+
+## Pre-Push Checklist
+
+After committing, verify everything is working before pushing to GitHub:
+- Ensure `devtools::check()` passes with no errors/warnings
+- Ensure `pkgdown::build_site()` completes without errors
+- Review git status to ensure no unintended files are included
 
 ## Task Management
 

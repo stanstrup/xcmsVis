@@ -53,10 +53,11 @@
 #' @export
 #' @importFrom methods is
 #' @importFrom xcms rtime hasAdjustedRtime fromFile processHistory processParam
-#' @importFrom MsExperiment sampleData
-#' @importFrom tibble tibble
+#' @importFrom MsExperiment sampleData spectra
+#' @importFrom Spectra spectraData
+#' @importFrom tibble tibble as_tibble rownames_to_column
 #' @importFrom tidyr separate pivot_wider pivot_longer unnest unite
-#' @importFrom dplyr %>% mutate filter select bind_rows bind_cols right_join group_by group_nest rename
+#' @importFrom dplyr %>% mutate filter select bind_rows bind_cols right_join left_join group_by group_nest rename pull all_of join_by
 #' @importFrom purrr map map_lgl pluck map2 imap_dfr
 #' @importFrom ggplot2 ggplot aes geom_line geom_point theme_bw
 gplotAdjustedRtime <- function(object,
@@ -91,6 +92,18 @@ gplotAdjustedRtime <- function(object,
 
 
   # Get the peak groups matrix and prepare for plotting
+  # Find which processHistory element contains PeakGroupsParam
+  which_is_groups <- object %>%
+    processHistory() %>%
+    map(processParam) %>%
+    map_lgl(~ is(., "PeakGroupsParam")) %>%
+    which()
+
+  if (length(which_is_groups) == 0) {
+    stop("No PeakGroupsParam found in processHistory. ",
+         "Retention time adjustment may not have been performed with peak groups.")
+  }
+
   pkGroup <- object %>%
     processHistory() %>%
     map(processParam) %>%
