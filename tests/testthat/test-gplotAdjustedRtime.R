@@ -146,3 +146,149 @@ test_that("gplotAdjustedRtime plot has correct structure", {
   expect_true("rt_deviation" %in% colnames(plot_data))
   expect_true("tooltip_text" %in% colnames(plot_data))
 })
+
+test_that("gplotAdjustedRtime works with filterFile", {
+  skip_if_not_installed("xcms")
+  skip_if_not_installed("MsExperiment")
+  skip_if_not_installed("faahKO")
+
+  # Load example data
+  cdf_files <- dir(system.file("cdf", package = "faahKO"),
+                   recursive = TRUE, full.names = TRUE)
+  cdf_files <- cdf_files[c(1:3, 7:9)]  # 6 files total
+
+  # Create XcmsExperiment object
+  xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
+  MsExperiment::sampleData(xdata)$sample_group <- rep(c("KO", "WT"), each = 3)
+
+  # Perform peak detection
+  cwp <- xcms::CentWaveParam(peakwidth = c(20, 80), ppm = 25)
+  xdata <- xcms::findChromPeaks(xdata, param = cwp)
+
+  # Group peaks before alignment
+  pdp <- xcms::PeakDensityParam(
+    sampleGroups = MsExperiment::sampleData(xdata)$sample_group,
+    minFraction = 0.4,
+    bw = 30
+  )
+  xdata <- xcms::groupChromPeaks(xdata, param = pdp)
+
+  # Filter to subset of files
+  xdata_filtered <- MsExperiment::filterFile(xdata, c(2:5))
+
+  # Perform retention time adjustment on filtered data
+  pgp <- xcms::PeakGroupsParam(minFraction = 0.4)
+  xdata_filtered <- xcms::adjustRtime(xdata_filtered, param = pgp)
+
+  # Test that function works with filtered data
+  p <- gplotAdjustedRtime(xdata_filtered, color_by = sample_group)
+  expect_s3_class(p, "ggplot")
+})
+
+test_that("gplotAdjustedRtime works with subset parameter in PeakGroupsParam", {
+  skip_if_not_installed("xcms")
+  skip_if_not_installed("MsExperiment")
+  skip_if_not_installed("faahKO")
+
+  # Load example data
+  cdf_files <- dir(system.file("cdf", package = "faahKO"),
+                   recursive = TRUE, full.names = TRUE)
+  cdf_files <- cdf_files[c(1:3, 7:9)]  # 6 files total
+
+  # Create XcmsExperiment object
+  xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
+  MsExperiment::sampleData(xdata)$sample_group <- rep(c("KO", "WT"), each = 3)
+
+  # Perform peak detection
+  cwp <- xcms::CentWaveParam(peakwidth = c(20, 80), ppm = 25)
+  xdata <- xcms::findChromPeaks(xdata, param = cwp)
+
+  # Group peaks before alignment
+  pdp <- xcms::PeakDensityParam(
+    sampleGroups = MsExperiment::sampleData(xdata)$sample_group,
+    minFraction = 0.4,
+    bw = 30
+  )
+  xdata <- xcms::groupChromPeaks(xdata, param = pdp)
+
+  # Perform retention time adjustment with subset parameter
+  pgp <- xcms::PeakGroupsParam(
+    minFraction = 0.4,
+    subset = c(1, 2, 3, 5)  # Use only specific samples for alignment
+  )
+  xdata <- xcms::adjustRtime(xdata, param = pgp)
+
+  # Test that function works with subset
+  p <- gplotAdjustedRtime(xdata, color_by = sample_group)
+  expect_s3_class(p, "ggplot")
+})
+
+test_that("gplotAdjustedRtime works without filterFile (full dataset)", {
+  skip_if_not_installed("xcms")
+  skip_if_not_installed("MsExperiment")
+  skip_if_not_installed("faahKO")
+
+  # Load example data
+  cdf_files <- dir(system.file("cdf", package = "faahKO"),
+                   recursive = TRUE, full.names = TRUE)
+  cdf_files <- cdf_files[c(1:3, 7:9)]  # 6 files total
+
+  # Create XcmsExperiment object
+  xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
+  MsExperiment::sampleData(xdata)$sample_group <- rep(c("KO", "WT"), each = 3)
+
+  # Perform peak detection
+  cwp <- xcms::CentWaveParam(peakwidth = c(20, 80), ppm = 25)
+  xdata <- xcms::findChromPeaks(xdata, param = cwp)
+
+  # Group peaks before alignment
+  pdp <- xcms::PeakDensityParam(
+    sampleGroups = MsExperiment::sampleData(xdata)$sample_group,
+    minFraction = 0.4,
+    bw = 30
+  )
+  xdata <- xcms::groupChromPeaks(xdata, param = pdp)
+
+  # Perform retention time adjustment on full dataset
+  pgp <- xcms::PeakGroupsParam(minFraction = 0.4)
+  xdata <- xcms::adjustRtime(xdata, param = pgp)
+
+  # Test that function works with full dataset
+  p <- gplotAdjustedRtime(xdata, color_by = sample_group)
+  expect_s3_class(p, "ggplot")
+})
+
+test_that("gplotAdjustedRtime works without subset in PeakGroupsParam", {
+  skip_if_not_installed("xcms")
+  skip_if_not_installed("MsExperiment")
+  skip_if_not_installed("faahKO")
+
+  # Load example data
+  cdf_files <- dir(system.file("cdf", package = "faahKO"),
+                   recursive = TRUE, full.names = TRUE)
+  cdf_files <- cdf_files[1:2]  # Only 2 files for speed
+
+  # Create XcmsExperiment object
+  xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
+  MsExperiment::sampleData(xdata)$sample_group <- c("KO", "WT")
+
+  # Perform peak detection
+  cwp <- xcms::CentWaveParam(peakwidth = c(20, 80), ppm = 25)
+  xdata <- xcms::findChromPeaks(xdata, param = cwp)
+
+  # Group peaks before alignment
+  pdp <- xcms::PeakDensityParam(
+    sampleGroups = MsExperiment::sampleData(xdata)$sample_group,
+    minFraction = 0.4,
+    bw = 30
+  )
+  xdata <- xcms::groupChromPeaks(xdata, param = pdp)
+
+  # Perform retention time adjustment WITHOUT subset parameter
+  pgp <- xcms::PeakGroupsParam(minFraction = 0.4)  # No subset
+  xdata <- xcms::adjustRtime(xdata, param = pgp)
+
+  # Test that function works without subset
+  p <- gplotAdjustedRtime(xdata, color_by = sample_group)
+  expect_s3_class(p, "ggplot")
+})

@@ -153,6 +153,13 @@ When implementing new XCMS plotting functions:
 
 **IMPORTANT**: Before committing changes, ALWAYS run these checks in order:
 
+### 0. Update DESCRIPTION (if needed)
+
+When modifying functions, check if DESCRIPTION needs updates:
+- Add new package dependencies to `Imports:` if using new packages
+- Update `Suggests:` for optional dependencies (testing, vignettes)
+- Ensure all imported packages are listed
+
 ### 1. Regenerate Documentation
 ```r
 # Update NAMESPACE and .Rd files from roxygen2 comments
@@ -185,6 +192,29 @@ Check for:
 - No broken links or missing references
 
 Only commit after all three checks pass successfully.
+
+### 4. Reinstall Package
+```r
+# Reinstall the package to ensure all changes are properly loaded
+devtools::install()
+```
+
+This ensures the package is fully functional after your changes.
+
+### 5. Commit Changes
+
+After all checks pass, commit your changes using semantic-release format:
+- Use conventional commit messages (feat:, fix:, docs:, etc.)
+- Always include co-authorship footer when using Claude Code
+- Example:
+```bash
+git add -A
+git commit -m "feat: add new visualization function
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+```
 
 ## Pre-Push Checklist
 

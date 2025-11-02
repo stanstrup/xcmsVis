@@ -6,6 +6,13 @@
 ^CLAUDE\.md$
 ^instructions\.md$
 ^completed_tasks\.md$
+^future_tasks\.md$
+^index\.md$
+^package\.json$
+^package-lock\.json$
+^prepare-news\.sh$
+^\.releaserc\.json$
+^node_modules$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$

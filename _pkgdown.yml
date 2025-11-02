@@ -18,6 +18,8 @@ navbar:
     articles:
       text: Vignettes
       menu:
+      - text: gplotAdjustedRtime - Retention Time Adjustment
+        href: articles/gplotAdjustedRtime.html
       - text: Comparing Visualization Approaches
         href: articles/comparing-visualizations.html
     news:

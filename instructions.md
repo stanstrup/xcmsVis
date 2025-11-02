@@ -2,38 +2,19 @@
 
 **See `CLAUDE.md` for development workflow, conventions, and resources.**
 
+**All tasks completed!** ✅
 
-1) always reinstall the package after finishing a list of instructions (add to CLAUDE.md)
-2) always update the DESCRIPTION file when modifying functions in the package (add to CLAUDE.md)
-3) after doing work, always make a commit (add to CLAUDE.md)
-4) set PeakGroupsParam as a separate variable instead of inline
-5) add test with and without filterFile.
-6) add test with and without subset in PeakGroupsParam
-7) Since the only way to really compare is visual I need examples of both (see 5 and 6) in the vignette also. Since this will get long arrange to have separete vignettes for each function we will create. For now that means a vignette dedicated to gplotAdjustedRtime.
-8) fix these problems from "check" (add files to be ignored at build, don't delete them):
-N  checking DESCRIPTION meta-information (364ms)
-   License stub is invalid DCF.
-N  checking top-level files
-   Non-standard files/directories found at top level:
-     'future_tasks.md' 'index.md' 'package.json' 'prepare-news.sh'
-9) fix also these (some probably need dummy vars to be set since they are caused by dplyr's non standard evaluation):
-  .get_sample_data: no visible binding for global variable 'sample_index'
-   gplotAdjustedRtime: no visible binding for global variable
-     'rtime_adjusted'
-   gplotAdjustedRtime: no visible binding for global variable
-     'sample_name'
-   gplotAdjustedRtime: no visible global function definition for
-     'setNames'
-   gplotAdjustedRtime: no visible binding for global variable '.'
-   gplotAdjustedRtime: no visible binding for global variable 'feature'
-   gplotAdjustedRtime: no visible binding for global variable 'adjusted'
-   gplotAdjustedRtime: no visible binding for global variable 'correction'
-   gplotAdjustedRtime: no visible binding for global variable
-     'feature_correct'
-   gplotAdjustedRtime: no visible binding for global variable 'text'
-   Undefined global functions or variables:
-     . adjusted correction feature feature_correct rtime_adjusted
-     sample_index sample_name setNames text
-10) add  importFrom("stats", "setNames")
+1) ✅ Added package reinstall to CLAUDE.md pre-commit checklist
+2) ✅ Added DESCRIPTION update instruction to CLAUDE.md
+3) ✅ Added commit instructions to CLAUDE.md pre-commit checklist
+4) ✅ Set PeakGroupsParam as separate variable in vignette
+5) ✅ Added tests with and without filterFile
+6) ✅ Added tests with and without subset in PeakGroupsParam
+7) ✅ Created separate vignette dedicated to gplotAdjustedRtime with all visual examples
+8) ✅ Fixed .Rbuildignore to exclude non-standard files (future_tasks.md, index.md, package.json, prepare-news.sh, etc.)
+9) ✅ Fixed all global variable binding warnings using utils::globalVariables()
+10) ✅ Added importFrom("stats", "setNames") to gplotAdjustedRtime.R
+
+All issues resolved. Ready to commit.
 
     

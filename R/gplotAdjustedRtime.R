@@ -52,6 +52,7 @@
 #'
 #' @export
 #' @importFrom methods is
+#' @importFrom stats setNames
 #' @importFrom xcms rtime hasAdjustedRtime fromFile processHistory processParam
 #' @importFrom MsExperiment sampleData spectra
 #' @importFrom Spectra spectraData

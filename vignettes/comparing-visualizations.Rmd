@@ -89,16 +89,14 @@ pdp <- PeakDensityParam(
 xdata <- groupChromPeaks(xdata, param = pdp)
 
 # Retention time alignment using peak groups
-xdata <- adjustRtime(
-  xdata,
-  param = PeakGroupsParam(
-    minFraction = 0.4,
-    smooth = "loess",
-    span = 0.2,
-    family = "gaussian",
-    subset = c(1,2,3,5) # to test that the function works correctly with subsets
-  )
+pgp <- PeakGroupsParam(
+  minFraction = 0.4,
+  smooth = "loess",
+  span = 0.2,
+  family = "gaussian",
+  subset = c(1,2,3,5) # to test that the function works correctly with subsets
 )
+xdata <- adjustRtime(xdata, param = pgp)
 
 # Re-do correspondence after alignment
 xdata <- groupChromPeaks(xdata, param = pdp)

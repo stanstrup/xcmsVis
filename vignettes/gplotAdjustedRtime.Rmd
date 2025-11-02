@@ -1,0 +1,303 @@
+---
+title: "Visualizing Retention Time Adjustment with gplotAdjustedRtime"
+author: "xcmsVis Package"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{Visualizing Retention Time Adjustment with gplotAdjustedRtime}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 6,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# Introduction
+
+This vignette demonstrates the `gplotAdjustedRtime()` function, which provides a modern ggplot2-based visualization of retention time correction in LC-MS metabolomics data. The function is designed to work with both `XcmsExperiment` (XCMS v4+) and `XCMSnExp` (XCMS v3) objects.
+
+# Setup
+
+```{r libraries}
+library(xcms)
+library(xcmsVis)
+library(ggplot2)
+library(plotly)
+library(faahKO)
+library(MsExperiment)
+```
+
+# Basic Usage
+
+## Data Preparation
+
+We'll use the faahKO package, which contains example LC-MS data from an analysis of fatty acid amide hydrolase (FAAH) knockout mice.
+
+```{r load_data}
+# Get example CDF files from faahKO package
+cdf_files <- dir(system.file("cdf", package = "faahKO"),
+                  recursive = TRUE, full.names = TRUE)
+
+# For this vignette, we'll use a subset for faster processing
+# Using 3 samples from each group
+cdf_files <- cdf_files[c(1:3, 7:9)]
+
+# Load data as XcmsExperiment
+xdata <- readMsExperiment(spectraFiles = cdf_files)
+
+# Add sample metadata
+sample_group <- rep(c("KO", "WT"), each = 3)
+sampleData(xdata)$sample_name <- basename(cdf_files)
+sampleData(xdata)$sample_group <- sample_group
+```
+
+## XCMS Workflow
+
+The proper XCMS workflow for retention time adjustment using peak groups is:
+
+1. Peak detection
+2. Initial correspondence (grouping)
+3. Retention time adjustment
+4. Re-do correspondence
+
+```{r xcms_workflow}
+# Peak detection using CentWave algorithm
+cwp <- CentWaveParam(
+  peakwidth = c(20, 80),
+  ppm = 25
+)
+xdata <- findChromPeaks(xdata, param = cwp)
+
+# Initial correspondence (peak grouping) before alignment
+pdp <- PeakDensityParam(
+  sampleGroups = sampleData(xdata)$sample_group,
+  minFraction = 0.4,
+  bw = 30
+)
+xdata <- groupChromPeaks(xdata, param = pdp)
+
+# Retention time alignment using peak groups
+pgp <- PeakGroupsParam(
+  minFraction = 0.4,
+  smooth = "loess",
+  span = 0.2,
+  family = "gaussian"
+)
+xdata <- adjustRtime(xdata, param = pgp)
+
+# Re-do correspondence after alignment
+xdata <- groupChromPeaks(xdata, param = pdp)
+```
+
+## Creating the Plot
+
+```{r basic_plot, fig.height=5, fig.width=7}
+# Create basic plot
+p <- gplotAdjustedRtime(xdata, color_by = sample_group)
+print(p)
+```
+
+The plot shows:
+- **Lines**: One per sample, showing RT deviation across the chromatographic run
+- **Grey circles**: Individual peaks used for alignment
+- **Grey dashed lines**: Connect peaks from the same feature across samples
+
+## Customizing the Plot
+
+Since `gplotAdjustedRtime()` returns a ggplot object, you can easily customize it:
+
+```{r customized_plot, fig.height=5, fig.width=7}
+p +
+  labs(
+    title = "Retention Time Correction - faahKO Dataset",
+    x = "Adjusted Retention Time (s)",
+    y = "RT Adjustment (s)",
+    color = "Sample Group"
+  ) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1") +
+  theme(legend.position = "top")
+```
+
+## Interactive Visualization
+
+Convert to an interactive plotly plot:
+
+```{r interactive, eval=FALSE}
+# Make it interactive
+p_interactive <- ggplotly(p, tooltip = "text")
+p_interactive
+```
+
+# Advanced Use Cases
+
+## With filterFile()
+
+Sometimes you may want to filter samples before alignment:
+
+```{r with_filter, fig.height=5, fig.width=7}
+# Filter to specific samples (files 2-5)
+xdata_filtered <- filterFile(xdata, c(2:5))
+
+# The plot works seamlessly with filtered data
+p_filtered <- gplotAdjustedRtime(xdata_filtered, color_by = sample_group)
+print(p_filtered + labs(title = "RT Correction - Filtered Dataset"))
+```
+
+## With subset Parameter in PeakGroupsParam
+
+You can use only specific samples for alignment calculation while keeping all samples in the dataset:
+
+```{r with_subset}
+# Reload fresh data
+cdf_files <- dir(system.file("cdf", package = "faahKO"),
+                  recursive = TRUE, full.names = TRUE)
+cdf_files <- cdf_files[c(1:3, 7:9)]
+
+xdata2 <- readMsExperiment(spectraFiles = cdf_files)
+sampleData(xdata2)$sample_group <- rep(c("KO", "WT"), each = 3)
+
+# Peak detection and grouping
+cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)
+xdata2 <- findChromPeaks(xdata2, param = cwp)
+
+pdp <- PeakDensityParam(
+  sampleGroups = sampleData(xdata2)$sample_group,
+  minFraction = 0.4,
+  bw = 30
+)
+xdata2 <- groupChromPeaks(xdata2, param = pdp)
+
+# Use subset parameter to align using only specific samples
+pgp_subset <- PeakGroupsParam(
+  minFraction = 0.4,
+  smooth = "loess",
+  span = 0.2,
+  family = "gaussian",
+  subset = c(1, 2, 3, 5)  # Exclude sample 4 from alignment calculation
+)
+xdata2 <- adjustRtime(xdata2, param = pgp_subset)
+xdata2 <- groupChromPeaks(xdata2, param = pdp)
+```
+
+```{r plot_subset, fig.height=5, fig.width=7}
+# Plot shows all samples, but alignment was based on subset
+p_subset <- gplotAdjustedRtime(xdata2, color_by = sample_group)
+print(p_subset + labs(title = "RT Correction - Using Subset for Alignment"))
+```
+
+## Without filterFile (Full Dataset)
+
+For comparison, here's the same workflow without filtering:
+
+```{r without_filter}
+# Reload fresh data
+cdf_files <- dir(system.file("cdf", package = "faahKO"),
+                  recursive = TRUE, full.names = TRUE)
+cdf_files <- cdf_files[c(1:3, 7:9)]
+
+xdata3 <- readMsExperiment(spectraFiles = cdf_files)
+sampleData(xdata3)$sample_group <- rep(c("KO", "WT"), each = 3)
+
+# Full workflow without filtering
+cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)
+xdata3 <- findChromPeaks(xdata3, param = cwp)
+
+pdp <- PeakDensityParam(
+  sampleGroups = sampleData(xdata3)$sample_group,
+  minFraction = 0.4,
+  bw = 30
+)
+xdata3 <- groupChromPeaks(xdata3, param = pdp)
+
+pgp <- PeakGroupsParam(minFraction = 0.4)
+xdata3 <- adjustRtime(xdata3, param = pgp)
+xdata3 <- groupChromPeaks(xdata3, param = pdp)
+```
+
+```{r plot_full, fig.height=5, fig.width=7}
+p_full <- gplotAdjustedRtime(xdata3, color_by = sample_group)
+print(p_full + labs(title = "RT Correction - Full Dataset"))
+```
+
+## Without subset Parameter
+
+For comparison, here's alignment without the subset parameter:
+
+```{r without_subset}
+# Reload fresh data
+cdf_files <- dir(system.file("cdf", package = "faahKO"),
+                  recursive = TRUE, full.names = TRUE)
+cdf_files <- cdf_files[1:2]  # Just 2 files for speed
+
+xdata4 <- readMsExperiment(spectraFiles = cdf_files)
+sampleData(xdata4)$sample_group <- c("KO", "WT")
+
+# Workflow without subset parameter
+cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)
+xdata4 <- findChromPeaks(xdata4, param = cwp)
+
+pdp <- PeakDensityParam(
+  sampleGroups = sampleData(xdata4)$sample_group,
+  minFraction = 0.4,
+  bw = 30
+)
+xdata4 <- groupChromPeaks(xdata4, param = pdp)
+
+# No subset parameter - use all samples
+pgp_no_subset <- PeakGroupsParam(minFraction = 0.4)
+xdata4 <- adjustRtime(xdata4, param = pgp_no_subset)
+xdata4 <- groupChromPeaks(xdata4, param = pdp)
+```
+
+```{r plot_no_subset, fig.height=5, fig.width=7}
+p_no_subset <- gplotAdjustedRtime(xdata4, color_by = sample_group)
+print(p_no_subset + labs(title = "RT Correction - Without Subset Parameter"))
+```
+
+# Comparison with Original XCMS plotAdjustedRtime
+
+The original XCMS `plotAdjustedRtime()` uses base R graphics:
+
+```{r original_plot}
+# Base R graphics version
+plotAdjustedRtime(
+  xdata,
+  col = as.factor(sampleData(xdata)$sample_group),
+  peakGroupsCol = "grey"
+)
+```
+
+**Advantages of `gplotAdjustedRtime()`:**
+
+- Modern ggplot2 aesthetics
+- Easy customization using standard ggplot2 syntax
+- Interactive plotting via plotly
+- Automatic legend generation
+- Consistent with other ggplot2-based visualizations
+- Publication-ready output
+
+# Session Information
+
+```{r session_info}
+sessionInfo()
+```
+
+# References
+
+- XCMS GitHub Repository: https://github.com/sneumann/xcms
+- Original Feature Request: https://github.com/sneumann/xcms/issues/551
+- faahKO package: Bioconductor example dataset
+- ggplot2 Documentation: https://ggplot2.tidyverse.org/
+- plotly for R: https://plotly.com/r/

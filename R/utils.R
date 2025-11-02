@@ -1,3 +1,16 @@
+# Global variables used in NSE (non-standard evaluation) contexts
+utils::globalVariables(c(
+  ".",
+  "adjusted",
+  "correction",
+  "feature",
+  "feature_correct",
+  "rtime_adjusted",
+  "sample_index",
+  "sample_name",
+  "text"
+))
+
 #' Get sample data from XCMS object
 #'
 #' Internal helper to handle both XCMSnExp and XcmsExperiment objects
