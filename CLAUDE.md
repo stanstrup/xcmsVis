@@ -140,3 +140,27 @@ When implementing new XCMS plotting functions:
   - Deploy pkgdown site on push to main
   - Create releases via semantic-release
 - Always commit with co-authorship footer when using Claude Code
+
+## Pre-Push Checklist
+
+**IMPORTANT**: Before pushing to GitHub, ALWAYS verify that pkgdown builds successfully:
+
+```r
+# Load all package code
+devtools::load_all()
+
+# Build pkgdown site locally
+pkgdown::build_site()
+```
+
+Check for:
+- No errors during site build
+- All vignettes render correctly
+- All function documentation displays properly
+- No broken links or missing references
+
+Only push to GitHub after confirming pkgdown builds without errors.
+
+## Task Management
+
+**IMPORTANT**: Do NOT start working on new tasks from instructions.md unless explicitly told to do so by the user. Wait for the user to give the go-ahead before proceeding with tasks.

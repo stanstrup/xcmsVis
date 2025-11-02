@@ -7,3 +7,4 @@ docs/
 inst/doc
 node_modules/
 package-lock.json
+.claude/

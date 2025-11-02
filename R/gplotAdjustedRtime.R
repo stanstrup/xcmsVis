@@ -55,8 +55,8 @@
 #' @importFrom xcms rtime hasAdjustedRtime fromFile processHistory processParam
 #' @importFrom MsExperiment sampleData
 #' @importFrom tibble tibble
-#' @importFrom tidyr separate pivot_wider pivot_longer unnest
-#' @importFrom dplyr %>% mutate filter select bind_rows bind_cols right_join group_by group_nest
+#' @importFrom tidyr separate pivot_wider pivot_longer unnest unite
+#' @importFrom dplyr %>% mutate filter select bind_rows bind_cols right_join group_by group_nest rename
 #' @importFrom purrr map map_lgl pluck map2 imap_dfr
 #' @importFrom ggplot2 ggplot aes geom_line geom_point theme_bw
 gplotAdjustedRtime <- function(object,
@@ -74,52 +74,21 @@ gplotAdjustedRtime <- function(object,
   # Get sample metadata (works with both object types)
   sample_data <- .get_sample_data(object)
 
-  # Get raw and adjusted retention times
-  rt_noadj <- rtime(object, adjusted = FALSE, bySample = FALSE) %>%
-    {tibble(names = names(.), rt = .)} %>%
-    separate(col = "names", sep = "\\.", into = c("fromFile", "spectrum"))
 
-  rt_adj <- rtime(object, adjusted = adjustedRtime, bySample = FALSE) %>%
-    {tibble(names = names(.), rt = .)} %>%
-    separate(col = "names", sep = "\\.", into = c("fromFile", "spectrum"))
+  rts <- object %>%
+            spectra %>%
+            spectraData %>%
+            as.data.frame %>%
+            left_join(sample_data, by = c(dataOrigin = "spectraOrigin")) %>%
+            as_tibble %>%
+            select(fromFile, raw = rtime, adjusted = rtime_adjusted )
 
-  from_files <- fromFile(object) %>%
-    names() %>%
-    unique() %>%
-    gsub("F(.*)\\..*", "\\1", .) %>%
-    unique() %>%
-    as.numeric()
-
-  # Combine raw and adjusted retention times
-  rts <- bind_rows(raw = rt_noadj, adjusted = rt_adj, .id = "adjusted") %>%
-    pivot_wider(
-      id_cols = c("fromFile", "spectrum"),
-      names_from = adjusted,
-      values_from = rt
-    ) %>%
-    mutate(fromFile = as.integer(gsub("^F(.*)", "\\1", fromFile)))
 
   # Add sample metadata
   rts <- sample_data %>%
-    mutate(fromFile = from_files) %>%
-    right_join(rts, by = "fromFile", multiple = "all")
+          as_tibble %>%
+          right_join(rts, by = "fromFile", multiple = "all")
 
-  # Find which process step used PeakGroupsParam
-  which_is_groups <- object %>%
-    processHistory() %>%
-    map(processParam) %>%
-    map_lgl(is, "PeakGroupsParam") %>%
-    which()
-
-  # Extract peak groups used for alignment
-  subset_selected <- object %>%
-    processHistory() %>%
-    map(processParam) %>%
-    pluck(which_is_groups)
-
-  subset_selected <- subset_selected@subset
-
-  files <- from_files[subset_selected]
 
   # Get the peak groups matrix and prepare for plotting
   pkGroup <- object %>%
@@ -127,10 +96,17 @@ gplotAdjustedRtime <- function(object,
     map(processParam) %>%
     pluck(which_is_groups) %>%
     xcms:::peakGroupsMatrix() %>%
-    as.data.frame() %>%
-    setNames(., files) %>%
-    tibble::rownames_to_column("feature") %>%
-    tibble::as_tibble() %>%
+    as.data.frame()
+
+   new_names <-
+   tibble(sample_name = colnames(pkGroup)) %>%
+    left_join(sample_data, by = join_by(sample_name)) %>%
+     pull(fromFile)
+
+  pkGroup <- pkGroup %>%
+    setNames(., new_names) %>%
+    rownames_to_column("feature") %>%
+    as_tibble() %>%
     pivot_longer(-feature, names_to = "fromFile", values_to = "rtime") %>%
     mutate(fromFile = as.integer(fromFile)) %>%
     group_by(fromFile) %>%
@@ -139,6 +115,7 @@ gplotAdjustedRtime <- function(object,
   # Calculate adjusted retention times for peak groups
   good_peaks <- rts %>%
     select(fromFile, raw, adjusted) %>%
+    filter(fromFile %in% pkGroup$fromFile) %>%
     group_by(fromFile) %>%
     group_nest(.key = "correction") %>%
     right_join(pkGroup, by = "fromFile") %>%
@@ -154,7 +131,7 @@ gplotAdjustedRtime <- function(object,
     ) %>%
     select(-correction) %>%
     unnest(cols = c(feature, feature_correct)) %>%
-    dplyr::rename(raw = rtime) %>%
+    rename(raw = rtime) %>%
     filter(!is.na(raw))
 
   # Add tooltip text for interactive plotting
@@ -165,7 +142,7 @@ gplotAdjustedRtime <- function(object,
   rts <- rts %>%
     select(all_of(include_columns)) %>%
     imap_dfr(~ paste(.y, .x, sep = ": ")) %>%
-    tidyr::unite(text, sep = "<br>") %>%
+    unite(text, sep = "<br>") %>%
     bind_cols(rts, .)
 
   # Create the plot
@@ -186,7 +163,7 @@ gplotAdjustedRtime <- function(object,
       aes(x = adjusted, y = adjusted - raw),
       inherit.aes = FALSE,
       color = "grey",
-      shape = 1
+      shape = 19
     ) +
     geom_line(
       data = good_peaks,

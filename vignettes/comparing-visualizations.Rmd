@@ -67,6 +67,11 @@ sampleData(xdata)$sample_name <- basename(cdf_files)
 sampleData(xdata)$sample_group <- sample_group
 ```
 
+```{r filter_samples}
+xdata <- filterFile(xdata, c(2:6))
+```
+
+
 ```{r example_workflow}
 # Peak detection using CentWave algorithm
 cwp <- CentWaveParam(
@@ -90,7 +95,8 @@ xdata <- adjustRtime(
     minFraction = 0.4,
     smooth = "loess",
     span = 0.2,
-    family = "gaussian"
+    family = "gaussian",
+    subset = c(1,2,3,5) # to test that the function works correctly with subsets
   )
 )
 
@@ -108,7 +114,7 @@ The original `plotAdjustedRtime()` function from XCMS uses base R graphics:
 # Base R graphics version
 plotAdjustedRtime(
   xdata,
-  col = rep(c("#E41A1C", "#377EB8"), each = 3),
+  col = as.factor(sampleData(xdata)$sample_group),
   peakGroupsCol = "grey"
 )
 ```

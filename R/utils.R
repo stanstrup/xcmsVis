@@ -6,11 +6,15 @@
 #' @return data.frame with sample metadata
 #' @keywords internal
 #' @importFrom MsExperiment sampleData
+#' @importFrom Biobase pData
 .get_sample_data <- function(object) {
   if (is(object, "XcmsExperiment")) {
-    as.data.frame(MsExperiment::sampleData(object))
+    object %>%
+      sampleData %>%
+      as.data.frame %>%
+      rename(fromFile = sample_index)
   } else if (is(object, "XCMSnExp")) {
-    xcms::pData(object)
+    pData(object)
   } else {
     stop("Object must be XcmsExperiment or XCMSnExp", call. = FALSE)
   }
