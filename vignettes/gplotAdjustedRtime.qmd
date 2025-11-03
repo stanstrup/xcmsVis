@@ -98,7 +98,7 @@ The proper XCMS workflow for retention time adjustment using peak groups is:
 1. Peak detection (already done above)
 2. Initial correspondence (grouping)
 3. Retention time adjustment
-4. Re-do correspondence
+4. (Re-do correspondence after alignment - not needed for visualization)
 
 ```{r xcms_workflow}
 # Work with a copy for the basic workflow
@@ -116,8 +116,8 @@ pgp <- PeakGroupsParam(
 )
 xdata <- adjustRtime(xdata, param = pgp)
 
-# Re-do correspondence after alignment
-xdata <- groupChromPeaks(xdata, param = pdp)
+# Note: Second groupChromPeaks after alignment is typically done for downstream
+# analysis (fillChromPeaks, feature tables), but not needed for RT visualization
 ```
 
 ## Creating the Plot
@@ -207,13 +207,18 @@ xdata_filtered <- xdata_peaks
 # Filter to specific samples (files 2-5)
 xdata_filtered <- filterFile(xdata_filtered, c(2:5))
 
-# Group peaks after filtering (reuse pdp from above)
-xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp)
+# Group peaks after filtering (need new pdp for filtered samples)
+sample_data_filtered <- xcmsVis:::.get_sample_data(xdata_filtered)
+pdp_filtered <- PeakDensityParam(
+  sampleGroups = sample_data_filtered$sample_group,
+  minFraction = 0.4,
+  bw = 30
+)
+xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp_filtered)
 
 # Align filtered data
 pgp_filter <- PeakGroupsParam(minFraction = 0.4)
 xdata_filtered <- adjustRtime(xdata_filtered, param = pgp_filter)
-xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp)
 ```
 
 <div class="row">
@@ -270,7 +275,6 @@ pgp_subset <- PeakGroupsParam(
   subset = c(1, 2, 3, 5)  # Exclude sample 4 from alignment calculation
 )
 xdata_subset <- adjustRtime(xdata_subset, param = pgp_subset)
-xdata_subset <- groupChromPeaks(xdata_subset, param = pdp)
 ```
 
 <div class="row">
@@ -321,7 +325,6 @@ xdata_no_subset <- groupChromPeaks(xdata_no_subset, param = pdp)
 # Align without subset parameter (use all samples)
 pgp_no_subset <- PeakGroupsParam(minFraction = 0.4)
 xdata_no_subset <- adjustRtime(xdata_no_subset, param = pgp_no_subset)
-xdata_no_subset <- groupChromPeaks(xdata_no_subset, param = pdp)
 ```
 
 <div class="row">
