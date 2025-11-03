@@ -119,8 +119,10 @@ xdata <- groupChromPeaks(xdata, param = pdp)
 
 ## Creating the Plot
 
-::: {.columns}
-::: {.column width="48%"}
+<div style="display: flex; gap: 1em;">
+
+<div style="flex: 1;">
+
 ### Original XCMS Version
 
 ```{r original_plot}
@@ -134,13 +136,11 @@ plotAdjustedRtime(
   peakGroupsCol = "grey"
 )
 ```
-:::
 
-::: {.column width="4%"}
-<!-- spacer -->
-:::
+</div>
 
-::: {.column width="48%"}
+<div style="flex: 1;">
+
 ### xcmsVis ggplot2 Version
 
 ```{r ggplot_version}
@@ -151,8 +151,10 @@ plotAdjustedRtime(
 p <- gplotAdjustedRtime(xdata, color_by = sample_group)
 print(p)
 ```
-:::
-:::
+
+</div>
+
+</div>
 
 The plot shows:
 - **Lines**: One per sample, showing RT deviation across the chromatographic run
@@ -212,8 +214,10 @@ xdata_filtered <- adjustRtime(xdata_filtered, param = pgp_filter)
 xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp)
 ```
 
-::: {.columns}
-::: {.column width="48%"}
+<div style="display: flex; gap: 1em;">
+
+<div style="flex: 1;">
+
 ### Original XCMS
 
 ```{r original_filtered}
@@ -226,13 +230,11 @@ plotAdjustedRtime(
   peakGroupsCol = "grey"
 )
 ```
-:::
 
-::: {.column width="4%"}
-<!-- spacer -->
-:::
+</div>
 
-::: {.column width="48%"}
+<div style="flex: 1;">
+
 ### xcmsVis Version
 
 ```{r ggplot_filtered}
@@ -242,8 +244,10 @@ plotAdjustedRtime(
 p_filtered <- gplotAdjustedRtime(xdata_filtered, color_by = sample_group)
 print(p_filtered)
 ```
-:::
-:::
+
+</div>
+
+</div>
 
 ## With subset Parameter in PeakGroupsParam
 
@@ -268,8 +272,10 @@ xdata_subset <- adjustRtime(xdata_subset, param = pgp_subset)
 xdata_subset <- groupChromPeaks(xdata_subset, param = pdp)
 ```
 
-::: {.columns}
-::: {.column width="48%"}
+<div style="display: flex; gap: 1em;">
+
+<div style="flex: 1;">
+
 ### Original XCMS
 
 ```{r original_subset}
@@ -282,13 +288,11 @@ plotAdjustedRtime(
   peakGroupsCol = "grey"
 )
 ```
-:::
 
-::: {.column width="4%"}
-<!-- spacer -->
-:::
+</div>
 
-::: {.column width="48%"}
+<div style="flex: 1;">
+
 ### xcmsVis Version
 
 ```{r ggplot_subset}
@@ -298,8 +302,10 @@ plotAdjustedRtime(
 p_subset <- gplotAdjustedRtime(xdata_subset, color_by = sample_group)
 print(p_subset)
 ```
-:::
-:::
+
+</div>
+
+</div>
 
 ## Without subset Parameter (All Samples)
 
@@ -318,8 +324,10 @@ xdata_no_subset <- adjustRtime(xdata_no_subset, param = pgp_no_subset)
 xdata_no_subset <- groupChromPeaks(xdata_no_subset, param = pdp)
 ```
 
-::: {.columns}
-::: {.column width="48%"}
+<div style="display: flex; gap: 1em;">
+
+<div style="flex: 1;">
+
 ### Original XCMS
 
 ```{r original_no_subset}
@@ -332,13 +340,11 @@ plotAdjustedRtime(
   peakGroupsCol = "grey"
 )
 ```
-:::
 
-::: {.column width="4%"}
-<!-- spacer -->
-:::
+</div>
 
-::: {.column width="48%"}
+<div style="flex: 1;">
+
 ### xcmsVis Version
 
 ```{r ggplot_no_subset}
@@ -348,8 +354,10 @@ plotAdjustedRtime(
 p_no_subset <- gplotAdjustedRtime(xdata_no_subset, color_by = sample_group)
 print(p_no_subset)
 ```
-:::
-:::
+
+</div>
+
+</div>
 
 # Advantages of gplotAdjustedRtime
 
