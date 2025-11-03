@@ -79,6 +79,14 @@ cwp <- CentWaveParam(
   ppm = 25
 )
 xdata_peaks <- findChromPeaks(xdata_raw, param = cwp)
+
+# Create PeakDensityParam once (reused across all examples)
+sample_data <- xcmsVis:::.get_sample_data(xdata_peaks)
+pdp <- PeakDensityParam(
+  sampleGroups = sample_data$sample_group,
+  minFraction = 0.4,
+  bw = 30
+)
 ```
 
 # Basic Usage
@@ -96,14 +104,7 @@ The proper XCMS workflow for retention time adjustment using peak groups is:
 # Work with a copy for the basic workflow
 xdata <- xdata_peaks
 
-sample_data <- xcmsVis:::.get_sample_data(xdata) # helper function that works with both XCMSnExp and XcmsExperiment
-
 # Initial correspondence (peak grouping) before alignment
-pdp <- PeakDensityParam(
-  sampleGroups = sample_data$sample_group,
-  minFraction = 0.4,
-  bw = 30
-)
 xdata <- groupChromPeaks(xdata, param = pdp)
 
 # Retention time alignment using peak groups
@@ -206,7 +207,7 @@ xdata_filtered <- xdata_peaks
 # Filter to specific samples (files 2-5)
 xdata_filtered <- filterFile(xdata_filtered, c(2:5))
 
-# Group peaks before filtering
+# Group peaks after filtering (reuse pdp from above)
 xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp)
 
 # Align filtered data
@@ -257,7 +258,7 @@ You can use only specific samples for alignment calculation while keeping all sa
 # Work with a fresh copy
 xdata_subset <- xdata_peaks
 
-# Group peaks
+# Group peaks (reuse pdp from above)
 xdata_subset <- groupChromPeaks(xdata_subset, param = pdp)
 
 # Use subset parameter to align using only specific samples
@@ -314,7 +315,7 @@ For comparison, here's alignment using all samples:
 # Work with a fresh copy
 xdata_no_subset <- xdata_peaks
 
-# Group peaks
+# Group peaks (reuse pdp from above)
 xdata_no_subset <- groupChromPeaks(xdata_no_subset, param = pdp)
 
 # Align without subset parameter (use all samples)
