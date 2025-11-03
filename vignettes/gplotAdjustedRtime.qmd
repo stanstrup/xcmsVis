@@ -66,7 +66,7 @@ sampleData(xdata_raw)$sample_group <- sample_group
 Data can also be of the old style "XCMSnExp" (not run) from MSnbase.
 ```{r coerce}
 #| eval: false
-xdata_raw <- as(xdata_raw, "XCMSnExp")
+xdata_raw <- as(as(xdata_raw, "XcmsExperiment"), "XCMSnExp")
 ```
 
 
@@ -96,9 +96,11 @@ The proper XCMS workflow for retention time adjustment using peak groups is:
 # Work with a copy for the basic workflow
 xdata <- xdata_peaks
 
+sample_data <- xcmsVis:::.get_sample_data(xdata) # helper function that works with both XCMSnExp and XcmsExperiment
+
 # Initial correspondence (peak grouping) before alignment
 pdp <- PeakDensityParam(
-  sampleGroups = sampleData(xdata)$sample_group,
+  sampleGroups = sample_data$sample_group,
   minFraction = 0.4,
   bw = 30
 )
@@ -129,9 +131,11 @@ xdata <- groupChromPeaks(xdata, param = pdp)
 #| fig-width: 5
 #| fig-alt: "Retention time adjustment plot from XCMS showing RT deviation vs adjusted retention time. Six colored lines represent individual samples (3 KO and 3 WT), with grey circles indicating alignment peaks and dashed grey lines connecting corresponding features across samples."
 # Base R graphics version
+sample_data <- xcmsVis:::.get_sample_data(xdata)
+
 plotAdjustedRtime(
   xdata,
-  col = as.factor(sampleData(xdata)$sample_group),
+  col = as.factor(sample_data$sample_group),
   peakGroupsCol = "grey"
 )
 ```
@@ -220,9 +224,11 @@ xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp)
 #| fig-height: 4
 #| fig-width: 5
 #| fig-alt: "XCMS retention time adjustment plot for filtered dataset (files 2-5 only). Four colored lines show RT deviation patterns for the subset of samples, with grey alignment peaks and feature connections."
+sample_data <- xcmsVis:::.get_sample_data(xdata_filtered)
+
 plotAdjustedRtime(
   xdata_filtered,
-  col = as.factor(sampleData(xdata_filtered)$sample_group),
+  col = as.factor(sample_data$sample_group),
   peakGroupsCol = "grey"
 )
 ```
@@ -275,9 +281,11 @@ xdata_subset <- groupChromPeaks(xdata_subset, param = pdp)
 #| fig-height: 4
 #| fig-width: 5
 #| fig-alt: "XCMS retention time adjustment plot using subset parameter. All six samples are shown, but alignment was calculated using only samples 1, 2, 3, and 5, excluding sample 4. Grey alignment peaks and feature connections indicate which peaks were used."
+sample_data <- xcmsVis:::.get_sample_data(xdata_subset)
+
 plotAdjustedRtime(
   xdata_subset,
-  col = as.factor(sampleData(xdata_subset)$sample_group),
+  col = as.factor(sample_data$sample_group),
   peakGroupsCol = "grey"
 )
 ```
@@ -324,9 +332,11 @@ xdata_no_subset <- groupChromPeaks(xdata_no_subset, param = pdp)
 #| fig-height: 4
 #| fig-width: 5
 #| fig-alt: "XCMS retention time adjustment plot without subset parameter, using all six samples for alignment calculation. Colored lines show RT deviation for each sample, with grey circles and dashed lines marking alignment peaks and feature correspondences."
+sample_data <- xcmsVis:::.get_sample_data(xdata_no_subset)
+
 plotAdjustedRtime(
   xdata_no_subset,
-  col = as.factor(sampleData(xdata_no_subset)$sample_group),
+  col = as.factor(sample_data$sample_group),
   peakGroupsCol = "grey"
 )
 ```
