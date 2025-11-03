@@ -1,0 +1,35 @@
+/* Increase content width and reduce margins for better layout */
+
+/* Main content container */
+.container {
+  max-width: 1400px !important;
+}
+
+/* Reduce left and right padding */
+.col-md-9 {
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+}
+
+/* Adjust sidebar spacing */
+.col-md-3 {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+/* Make the page wrapper wider */
+body {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Adjust article/vignette content width */
+article {
+  max-width: 100%;
+}
+
+/* Ensure row content uses full width */
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
