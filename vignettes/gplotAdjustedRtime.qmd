@@ -119,9 +119,8 @@ xdata <- groupChromPeaks(xdata, param = pdp)
 
 ## Creating the Plot
 
-<div style="display: flex; gap: 1em;">
-
-<div style="flex: 1;">
+<div class="row">
+<div class="col-md-6">
 
 ### Original XCMS Version
 
@@ -138,8 +137,7 @@ plotAdjustedRtime(
 ```
 
 </div>
-
-<div style="flex: 1;">
+<div class="col-md-6">
 
 ### xcmsVis ggplot2 Version
 
@@ -153,7 +151,6 @@ print(p)
 ```
 
 </div>
-
 </div>
 
 The plot shows:
@@ -214,9 +211,8 @@ xdata_filtered <- adjustRtime(xdata_filtered, param = pgp_filter)
 xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp)
 ```
 
-<div style="display: flex; gap: 1em;">
-
-<div style="flex: 1;">
+<div class="row">
+<div class="col-md-6">
 
 ### Original XCMS
 
@@ -232,8 +228,7 @@ plotAdjustedRtime(
 ```
 
 </div>
-
-<div style="flex: 1;">
+<div class="col-md-6">
 
 ### xcmsVis Version
 
@@ -246,7 +241,6 @@ print(p_filtered)
 ```
 
 </div>
-
 </div>
 
 ## With subset Parameter in PeakGroupsParam
@@ -272,9 +266,8 @@ xdata_subset <- adjustRtime(xdata_subset, param = pgp_subset)
 xdata_subset <- groupChromPeaks(xdata_subset, param = pdp)
 ```
 
-<div style="display: flex; gap: 1em;">
-
-<div style="flex: 1;">
+<div class="row">
+<div class="col-md-6">
 
 ### Original XCMS
 
@@ -290,8 +283,7 @@ plotAdjustedRtime(
 ```
 
 </div>
-
-<div style="flex: 1;">
+<div class="col-md-6">
 
 ### xcmsVis Version
 
@@ -304,7 +296,6 @@ print(p_subset)
 ```
 
 </div>
-
 </div>
 
 ## Without subset Parameter (All Samples)
@@ -324,9 +315,8 @@ xdata_no_subset <- adjustRtime(xdata_no_subset, param = pgp_no_subset)
 xdata_no_subset <- groupChromPeaks(xdata_no_subset, param = pdp)
 ```
 
-<div style="display: flex; gap: 1em;">
-
-<div style="flex: 1;">
+<div class="row">
+<div class="col-md-6">
 
 ### Original XCMS
 
@@ -342,8 +332,7 @@ plotAdjustedRtime(
 ```
 
 </div>
-
-<div style="flex: 1;">
+<div class="col-md-6">
 
 ### xcmsVis Version
 
@@ -356,7 +345,6 @@ print(p_no_subset)
 ```
 
 </div>
-
 </div>
 
 # Advantages of gplotAdjustedRtime
