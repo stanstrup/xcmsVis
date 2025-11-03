@@ -79,7 +79,7 @@ When creating R package files, follow this structure:
 - `vignettes/` - Long-form documentation
 - `data/` - Package datasets
 - `inst/` - Additional files to be installed
-- `docs/research/` - Research documentation and implementation guides (not part of package)
+- `dev-docs/` - Research documentation and implementation guides (not part of package, ignored by R CMD build)
 
 ## Code Style
 
@@ -121,7 +121,7 @@ When implementing new XCMS plotting functions:
 - **Original Discussion**: https://github.com/sneumann/xcms/issues/551
 - **Package Structure Reference**: `/mnt/c/Users/tmh331/Desktop/gits/remoteUpdater`
 - **Function Reference**: `/mnt/c/Users/tmh331/Desktop/gits/_Introduction to Nutritional Metabolomics/inm-booklet/scripts/funs.R`
-- **S4 Implementation Guide**: `docs/research/` - Comprehensive guides for implementing S4 methods like XCMS
+- **S4 Implementation Guide**: `dev-docs/` - Comprehensive guides for implementing S4 methods like XCMS
 
 ## Important Conventions
 

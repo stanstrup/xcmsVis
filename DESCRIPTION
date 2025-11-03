@@ -42,3 +42,7 @@ Suggests:
     faahKO
 VignetteBuilder: quarto
 biocViews: Metabolomics, MassSpectrometry, Visualization
+Collate: 
+    'utils.R'
+    'AllGenerics.R'
+    'gplotAdjustedRtime-methods.R'

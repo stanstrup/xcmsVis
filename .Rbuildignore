@@ -8,6 +8,7 @@
 ^completed_tasks\.md$
 ^future_tasks\.md$
 ^index\.md$
+^dev-docs$
 ^package\.json$
 ^package-lock\.json$
 ^prepare-news\.sh$
