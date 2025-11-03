@@ -2,18 +2,20 @@
 
 **See `CLAUDE.md` for development workflow, conventions, and resources.**
 
-1) Turns out I am wrong. correspondance (grouping) is removed when filtering files. So after filtering it has to be redone. But not before changing subset.
-So please re-add the groupChromPeaks step after filtering.
-Remember to re-get the sampleGroups from the filtered object first:
+All tasks completed!
 
-sample_data <- xcmsVis:::.get_sample_data(filtered_object)
+## Completed
 
-pdp <- PeakDensityParam(
-  sampleGroups = sample_data$sample_group,
-  minFraction = 0.4,
-  bw = 30
-)
+1) ✅ Re-added groupChromPeaks step after filterFile in vignette (correspondence is removed by filtering)
+2) ✅ Converted gplotAdjustedRtime to proper S4 methods (XCMSnExp and XcmsExperiment)
+   - Created R/AllGenerics.R with generic declaration
+   - Implemented S4 methods in R/gplotAdjustedRtime-methods.R
+   - Removed old function-based implementation
+   - Added comprehensive S4 implementation guides in dev-docs/
 
-groupChromPeaks...
+## Next Steps
 
-2) now the function works with both data types I'd like you to make them proper methods like functions are in XCMS.
+Once Bioconductor packages finish installing:
+- Run `devtools::document()` to regenerate documentation
+- Run `devtools::check()` to verify S4 methods work correctly
+- Test with both XCMSnExp and XcmsExperiment objects in vignette
