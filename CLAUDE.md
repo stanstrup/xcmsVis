@@ -226,3 +226,14 @@ After committing, verify everything is working before pushing to GitHub:
 ## Task Management
 
 **IMPORTANT**: Do NOT start working on new tasks from instructions.md unless explicitly told to do so by the user. Wait for the user to give the go-ahead before proceeding with tasks.
+
+**CRITICAL**: Make commits frequently after completing each task or logical unit of work:
+- Commit after each completed task from instructions.md
+- Don't batch multiple tasks into one commit
+- Use semantic commit format for each commit (feat:, fix:, docs:, etc.)
+- This provides better granularity and makes it easier to track changes
+- Example workflow:
+  1. Complete task 1 → commit
+  2. Complete task 2 → commit
+  3. Complete task 3 → commit
+  etc.
