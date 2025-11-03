@@ -82,6 +82,7 @@ xdata_peaks <- findChromPeaks(xdata_raw, param = cwp)
 
 # Initial correspondence (peak grouping) - done once for all examples
 sample_data <- xcmsVis:::.get_sample_data(xdata_peaks)
+
 pdp <- PeakDensityParam(
   sampleGroups = sample_data$sample_group,
   minFraction = 0.4,
@@ -205,7 +206,14 @@ xdata_filtered <- xdata_grouped
 # Filter to specific samples (files 2-5)
 xdata_filtered <- filterFile(xdata_filtered, c(2:5))
 
-# Peak groups are preserved after filtering - no need to re-group
+# Filtering removes correspondence - need to re-group with filtered samples
+sample_data_filtered <- xcmsVis:::.get_sample_data(xdata_filtered)
+pdp_filtered <- PeakDensityParam(
+  sampleGroups = sample_data_filtered$sample_group,
+  minFraction = 0.4,
+  bw = 30
+)
+xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp_filtered)
 
 # Align filtered data
 pgp_filter <- PeakGroupsParam(minFraction = 0.4)
