@@ -131,12 +131,19 @@ gplotAdjustedRtime <- function(object,
     right_join(pkGroup, by = "fromFile") %>%
     mutate(
       feature_correct = map2(
-        feature, correction,
-        ~ tibble(
-          adjusted = xcms:::.applyRtAdjustment(
-            ..1$rtime, ..2$raw, ..2$adjusted
-          )
-        )
+        feature,
+        correction,
+        function(feat, corr) {
+          feat %>%
+            mutate(
+              adjusted = xcms:::.applyRtAdjustment(
+                rtime,
+                corr$raw,
+                corr$adjusted
+              )
+            ) %>%
+            select(adjusted)
+        }
       )
     ) %>%
     select(-correction) %>%

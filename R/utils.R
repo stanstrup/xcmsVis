@@ -5,6 +5,7 @@ utils::globalVariables(c(
   "correction",
   "feature",
   "feature_correct",
+  "rtime",
   "rtime_adjusted",
   "sample_index",
   "sample_name",
