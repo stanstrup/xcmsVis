@@ -28,8 +28,9 @@ utils::globalVariables(c(
   if (is(object, "XcmsExperiment")) {
     out <- object %>%
       sampleData %>%
-      as.data.frame %>%
-      rename(fromFile = sample_index)
+      as.data.frame
+    # XcmsExperiment doesn't have sample_index, add it as row index
+    out$fromFile <- seq_len(nrow(out))
   } else if (is(object, "XCMSnExp")) {
     out <- pData(object) %>%
             rename(fromFile = sample_index)

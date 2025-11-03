@@ -1,11 +1,10 @@
 test_that(".validate_xcms_object accepts XcmsExperiment", {
-  skip_if_not_installed("MsExperiment")
 
-  # Create a minimal XcmsExperiment
-  xdata <- MsExperiment::MsExperiment()
+  # Create a minimal XcmsExperiment (need to convert from MsExperiment)
+  xdata <- as(MsExperiment::MsExperiment(), "XcmsExperiment")
 
-  # Should not throw error
-  expect_true(.validate_xcms_object(xdata))
+  # Should not throw error (returns invisible(TRUE))
+  expect_no_error(.validate_xcms_object(xdata))
 })
 
 test_that(".validate_xcms_object rejects invalid objects", {
@@ -21,15 +20,18 @@ test_that(".validate_xcms_object rejects invalid objects", {
 })
 
 test_that(".get_sample_data works with XcmsExperiment", {
-  skip_if_not_installed("MsExperiment")
 
-  # Create XcmsExperiment with sample data
-  xdata <- MsExperiment::MsExperiment()
-  sd <- data.frame(
+  # Create MsExperiment then convert to XcmsExperiment
+  ms_exp <- MsExperiment::MsExperiment()
+  # sampleData needs to be a DataFrame, not data.frame
+  sd <- S4Vectors::DataFrame(
     sample_name = c("sample1", "sample2"),
     sample_group = c("A", "B")
   )
-  MsExperiment::sampleData(xdata) <- sd
+  MsExperiment::sampleData(ms_exp) <- sd
+
+  # Convert to XcmsExperiment
+  xdata <- as(ms_exp, "XcmsExperiment")
 
   # Get sample data
   result <- .get_sample_data(xdata)
@@ -41,9 +43,6 @@ test_that(".get_sample_data works with XcmsExperiment", {
 })
 
 test_that(".get_sample_data works with XCMSnExp", {
-  skip_if_not_installed("xcms")
-  skip_if_not_installed("MSnbase")
-  skip_if_not_installed("faahKO")
 
   # Load example data to create XCMSnExp
   cdf_files <- dir(system.file("cdf", package = "faahKO"),
@@ -58,7 +57,7 @@ test_that(".get_sample_data works with XCMSnExp", {
 
   raw_data <- MSnbase::readMSData(
     files = cdf_files,
-    pdata = new("NAnnotatedDataFrame", pd),
+    pdata = new("AnnotatedDataFrame", pd),
     mode = "onDisk"
   )
 

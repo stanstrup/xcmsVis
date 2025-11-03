@@ -1,10 +1,6 @@
 # Helper function to get shared test data
 # Returns the data loaded once in setup-shared-data.R
 get_shared_data <- function() {
-  skip_if_not_installed("xcms")
-  skip_if_not_installed("MsExperiment")
-  skip_if_not_installed("MSnbase")
-  skip_if_not_installed("faahKO")
 
   # Check if shared data exists (loaded in setup-shared-data.R)
   if (!exists(".shared_test_data") || is.null(.shared_test_data)) {
@@ -28,7 +24,7 @@ prepare_for_alignment <- function(xdata, sample_groups) {
 perform_alignment <- function(xdata, subset = NULL, filter_files = NULL) {
   # Filter files if requested
   if (!is.null(filter_files)) {
-    xdata <- MsExperiment::filterFile(xdata, filter_files)
+    xdata <- xcms::filterFile(xdata, filter_files)
   }
 
   # Create PeakGroupsParam with or without subset
@@ -45,16 +41,14 @@ perform_alignment <- function(xdata, subset = NULL, filter_files = NULL) {
 # ---- Basic validation tests ----
 
 test_that("gplotAdjustedRtime requires valid XCMS object", {
+  # With S4 methods, invalid objects fail at method dispatch
   expect_error(
     gplotAdjustedRtime("not an XCMS object"),
-    "'object' must be an 'XCMSnExp' or 'XcmsExperiment' object"
+    "unable to find an inherited method"
   )
 })
 
 test_that("gplotAdjustedRtime handles missing color_by gracefully", {
-  skip_if_not_installed("xcms")
-  skip_if_not_installed("MsExperiment")
-  skip_if_not_installed("faahKO")
 
   # Load minimal data
   cdf_files <- dir(system.file("cdf", package = "faahKO"),
@@ -110,7 +104,7 @@ test_that("gplotAdjustedRtime: XcmsExperiment + with subset + with filterFile", 
   data <- get_shared_data()
   xdata <- prepare_for_alignment(data$xdata_exp, data$sample_groups)
   # Note: Filter first, then subset refers to filtered indices
-  xdata_filtered <- MsExperiment::filterFile(xdata, c(1:4))
+  xdata_filtered <- xcms::filterFile(xdata, c(1:4))
   xdata_filtered <- perform_alignment(xdata_filtered, subset = c(1, 2), filter_files = NULL)
 
   p <- gplotAdjustedRtime(xdata_filtered, color_by = sample_group)
@@ -152,7 +146,7 @@ test_that("gplotAdjustedRtime: XCMSnExp + with subset + with filterFile", {
   data <- get_shared_data()
   xdata <- prepare_for_alignment(data$xdata_snexp, data$sample_groups)
   # Note: Filter first, then subset refers to filtered indices
-  xdata_filtered <- MsExperiment::filterFile(xdata, c(1:4))
+  xdata_filtered <- xcms::filterFile(xdata, c(1:4))
   xdata_filtered <- perform_alignment(xdata_filtered, subset = c(1, 2), filter_files = NULL)
 
   p <- gplotAdjustedRtime(xdata_filtered, color_by = sample_group)

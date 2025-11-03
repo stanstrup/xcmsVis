@@ -158,6 +158,7 @@ print(p)
 </div>
 
 The plot shows:
+
 - **Lines**: One per sample, showing RT deviation across the chromatographic run
 - **Grey circles**: Individual peaks used for alignment
 - **Grey dashed lines**: Connect peaks from the same feature across samples
@@ -192,6 +193,8 @@ Convert to an interactive plotly plot:
 p_interactive <- ggplotly(p, tooltip = "text")
 p_interactive
 ```
+
+Note that you can hover over a line and see the file path and metadata.
 
 # Advanced Use Cases
 

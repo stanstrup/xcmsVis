@@ -33,7 +33,7 @@ if (requireNamespace("xcms", quietly = TRUE) &&
   # Create XCMSnExp object
   raw_data <- MSnbase::readMSData(
     files = cdf_files,
-    pdata = new("NAnnotatedDataFrame", pd),
+    pdata = new("AnnotatedDataFrame", pd),
     mode = "onDisk"
   )
 
