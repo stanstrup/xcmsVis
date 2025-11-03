@@ -18,3 +18,4 @@
 ^docs$
 ^pkgdown$
 ^\.github$
+^vignettes/\.quarto$
