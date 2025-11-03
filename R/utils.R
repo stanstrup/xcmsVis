@@ -22,15 +22,20 @@ utils::globalVariables(c(
 #' @importFrom Biobase pData
 .get_sample_data <- function(object) {
   if (is(object, "XcmsExperiment")) {
-    object %>%
+    out <- object %>%
       sampleData %>%
       as.data.frame %>%
       rename(fromFile = sample_index)
   } else if (is(object, "XCMSnExp")) {
-    pData(object)
+    out <- pData(object)
   } else {
     stop("Object must be XcmsExperiment or XCMSnExp", call. = FALSE)
   }
+
+
+   out$spectraOrigin_base <- basename(out$spectraOrigin)
+
+  return(out)
 }
 
 #' Validate XCMS object type

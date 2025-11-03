@@ -113,12 +113,13 @@ gplotAdjustedRtime <- function(object,
     as.data.frame()
 
    new_names <-
-   tibble(sample_name = colnames(pkGroup)) %>%
-    left_join(sample_data, by = join_by(sample_name)) %>%
+   tibble(spectraOrigin_base = colnames(pkGroup)) %>%
+    left_join(sample_data, by = join_by(spectraOrigin_base)) %>%
      pull(fromFile)
 
   pkGroup <- pkGroup %>%
-    setNames(., new_names) %>%
+    select(which(!is.na(new_names))) %>%  # if you filter after RT adjustment you no longer have the metadata.
+    setNames(., na.omit(new_names)) %>%
     rownames_to_column("feature") %>%
     as_tibble() %>%
     pivot_longer(-feature, names_to = "fromFile", values_to = "rtime") %>%
