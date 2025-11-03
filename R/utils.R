@@ -11,7 +11,8 @@ utils::globalVariables(c(
   "sample_name",
   "text",
   "retentionTime",
-  "dataOrigin"
+  "dataOrigin",
+  "spectraOrigin_base"
 ))
 
 #' Get sample data from XCMS object
@@ -51,7 +52,8 @@ utils::globalVariables(c(
 #' @keywords internal
 #' @importFrom MsExperiment spectra
 #' @importFrom Spectra spectraData
-#' @importFrom xcms rtime fData
+#' @importFrom xcms rtime
+#' @importFrom MSnbase fData
 #' @importFrom tibble rownames_to_column
 #' @importFrom dplyr mutate rename left_join
 .get_spectra_data <- function(object) {

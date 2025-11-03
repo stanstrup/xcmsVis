@@ -3,7 +3,7 @@
 
 #' @rdname gplotAdjustedRtime
 #' @importFrom methods is
-#' @importFrom stats setNames
+#' @importFrom stats setNames na.omit
 #' @importFrom xcms rtime hasAdjustedRtime fromFile processHistory processParam
 #' @importFrom MsExperiment sampleData
 #' @importFrom tibble tibble as_tibble rownames_to_column

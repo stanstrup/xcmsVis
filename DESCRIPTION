@@ -23,6 +23,7 @@ Depends:
 Imports:
     xcms (>= 3.0.0),
     MsExperiment,
+    MSnbase,
     Spectra,
     ggplot2,
     tibble,
@@ -38,7 +39,6 @@ Suggests:
     rmarkdown,
     quarto,
     BiocStyle,
-    MSnbase,
     faahKO
 VignetteBuilder: quarto
 biocViews: Metabolomics, MassSpectrometry, Visualization
