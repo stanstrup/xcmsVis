@@ -8,6 +8,16 @@ format:
     toc-location: left
     code-fold: false
     theme: cosmo
+    max-width: 1400px
+    margin-left: 50px
+    margin-right: 50px
+    css: |
+      .quarto-title-block {
+        max-width: 1400px;
+      }
+      #quarto-content {
+        max-width: 1400px;
+      }
 vignette: >
   %\VignetteIndexEntry{Visualizing Retention Time Adjustment with gplotAdjustedRtime}
   %\VignetteEngine{quarto::html}
