@@ -10,6 +10,17 @@ get_shared_data <- function() {
   .shared_test_data
 }
 
+# Helper to get sample groups from xdata object
+get_sample_groups <- function(xdata) {
+  if (is(xdata, "XcmsExperiment")) {
+    MsExperiment::sampleData(xdata)$sample_group
+  } else if (is(xdata, "XCMSnExp")) {
+    Biobase::pData(xdata)$sample_group
+  } else {
+    stop("Object must be XcmsExperiment or XCMSnExp")
+  }
+}
+
 # Helper to prepare object for alignment (group peaks)
 prepare_for_alignment <- function(xdata, sample_groups) {
   pdp <- xcms::PeakDensityParam(
@@ -25,6 +36,15 @@ perform_alignment <- function(xdata, subset = NULL, filter_files = NULL) {
   # Filter files if requested
   if (!is.null(filter_files)) {
     xdata <- xcms::filterFile(xdata, filter_files)
+
+    # filterFile removes correspondence, must re-group
+    sample_groups <- get_sample_groups(xdata)
+    pdp <- xcms::PeakDensityParam(
+      sampleGroups = sample_groups,
+      minFraction = 0.4,
+      bw = 30
+    )
+    xdata <- xcms::groupChromPeaks(xdata, param = pdp)
   }
 
   # Create PeakGroupsParam with or without subset
@@ -55,8 +75,17 @@ test_that("gplotAdjustedRtime handles missing color_by gracefully", {
                    recursive = TRUE, full.names = TRUE)[1:2]
 
   xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
+  MsExperiment::sampleData(xdata)$sample_group <- c("A", "B")
   cwp <- xcms::CentWaveParam(peakwidth = c(20, 80), ppm = 25)
   xdata <- xcms::findChromPeaks(xdata, param = cwp)
+
+  # Need to group before adjustRtime
+  pdp <- xcms::PeakDensityParam(
+    sampleGroups = MsExperiment::sampleData(xdata)$sample_group,
+    minFraction = 0.4,
+    bw = 30
+  )
+  xdata <- xcms::groupChromPeaks(xdata, param = pdp)
   xdata <- xcms::adjustRtime(xdata, param = xcms::PeakGroupsParam(minFraction = 0.4))
 
   # Test without color_by (should error)
@@ -105,6 +134,11 @@ test_that("gplotAdjustedRtime: XcmsExperiment + with subset + with filterFile", 
   xdata <- prepare_for_alignment(data$xdata_exp, data$sample_groups)
   # Note: Filter first, then subset refers to filtered indices
   xdata_filtered <- xcms::filterFile(xdata, c(1:4))
+
+  # filterFile removes correspondence, must re-group
+  sample_groups_filtered <- get_sample_groups(xdata_filtered)
+  xdata_filtered <- prepare_for_alignment(xdata_filtered, sample_groups_filtered)
+
   xdata_filtered <- perform_alignment(xdata_filtered, subset = c(1, 2), filter_files = NULL)
 
   p <- gplotAdjustedRtime(xdata_filtered, color_by = sample_group)
@@ -147,6 +181,11 @@ test_that("gplotAdjustedRtime: XCMSnExp + with subset + with filterFile", {
   xdata <- prepare_for_alignment(data$xdata_snexp, data$sample_groups)
   # Note: Filter first, then subset refers to filtered indices
   xdata_filtered <- xcms::filterFile(xdata, c(1:4))
+
+  # filterFile removes correspondence, must re-group
+  sample_groups_filtered <- get_sample_groups(xdata_filtered)
+  xdata_filtered <- prepare_for_alignment(xdata_filtered, sample_groups_filtered)
+
   xdata_filtered <- perform_alignment(xdata_filtered, subset = c(1, 2), filter_files = NULL)
 
   p <- gplotAdjustedRtime(xdata_filtered, color_by = sample_group)
