@@ -38,46 +38,52 @@ library(faahKO)
 library(MsExperiment)
 ```
 
-# Basic Usage
-
-## Data Preparation
+# Data Preparation
 
 We'll use the faahKO package, which contains example LC-MS data from an analysis of fatty acid amide hydrolase (FAAH) knockout mice.
 
 ```{r load_data}
-# Get example CDF files from faahKO package
+# Get example CDF files from faahKO package (load once, reuse throughout)
 cdf_files <- dir(system.file("cdf", package = "faahKO"),
                   recursive = TRUE, full.names = TRUE)
 
-# For this vignette, we'll use a subset for faster processing
-# Using 3 samples from each group
+# Using 3 samples from each group (6 total)
 cdf_files <- cdf_files[c(1:3, 7:9)]
 
 # Load data as XcmsExperiment
-xdata <- readMsExperiment(spectraFiles = cdf_files)
+xdata_raw <- readMsExperiment(spectraFiles = cdf_files)
 
 # Add sample metadata
 sample_group <- rep(c("KO", "WT"), each = 3)
-sampleData(xdata)$sample_name <- basename(cdf_files)
-sampleData(xdata)$sample_group <- sample_group
+sampleData(xdata_raw)$sample_name <- basename(cdf_files)
+sampleData(xdata_raw)$sample_group <- sample_group
 ```
 
-## XCMS Workflow
+## Peak Detection (performed once)
+
+```{r peak_detection}
+# Peak detection using CentWave algorithm (done once for efficiency)
+cwp <- CentWaveParam(
+  peakwidth = c(20, 80),
+  ppm = 25
+)
+xdata_peaks <- findChromPeaks(xdata_raw, param = cwp)
+```
+
+# Basic Usage
+
+## Complete XCMS Workflow
 
 The proper XCMS workflow for retention time adjustment using peak groups is:
 
-1. Peak detection
+1. Peak detection (already done above)
 2. Initial correspondence (grouping)
 3. Retention time adjustment
 4. Re-do correspondence
 
 ```{r xcms_workflow}
-# Peak detection using CentWave algorithm
-cwp <- CentWaveParam(
-  peakwidth = c(20, 80),
-  ppm = 25
-)
-xdata <- findChromPeaks(xdata, param = cwp)
+# Work with a copy for the basic workflow
+xdata <- xdata_peaks
 
 # Initial correspondence (peak grouping) before alignment
 pdp <- PeakDensityParam(
@@ -102,11 +108,34 @@ xdata <- groupChromPeaks(xdata, param = pdp)
 
 ## Creating the Plot
 
-```{r basic_plot, fig.height=5, fig.width=7}
-# Create basic plot
+:::::: {.columns}
+::: {.column width="48%"}
+### Original XCMS Version
+
+```{r original_plot, fig.height=4, fig.width=5}
+# Base R graphics version
+plotAdjustedRtime(
+  xdata,
+  col = as.factor(sampleData(xdata)$sample_group),
+  peakGroupsCol = "grey"
+)
+```
+:::
+
+::: {.column width="4%"}
+<!-- spacer -->
+:::
+
+::: {.column width="48%"}
+### xcmsVis ggplot2 Version
+
+```{r ggplot_version, fig.height=4, fig.width=5}
+# ggplot2 version
 p <- gplotAdjustedRtime(xdata, color_by = sample_group)
 print(p)
 ```
+:::
+::::::
 
 The plot shows:
 - **Lines**: One per sample, showing RT deviation across the chromatographic run
@@ -146,38 +175,59 @@ p_interactive
 
 Sometimes you may want to filter samples before alignment:
 
-```{r with_filter, fig.height=5, fig.width=7}
-# Filter to specific samples (files 2-5)
-xdata_filtered <- filterFile(xdata, c(2:5))
+```{r with_filter}
+# Work with a fresh copy from peak-detected data
+xdata_filtered <- xdata_peaks
 
-# The plot works seamlessly with filtered data
-p_filtered <- gplotAdjustedRtime(xdata_filtered, color_by = sample_group)
-print(p_filtered + labs(title = "RT Correction - Filtered Dataset"))
+# Group peaks before filtering
+xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp)
+
+# Filter to specific samples (files 2-5)
+xdata_filtered <- filterFile(xdata_filtered, c(2:5))
+
+# Align filtered data
+pgp_filter <- PeakGroupsParam(minFraction = 0.4)
+xdata_filtered <- adjustRtime(xdata_filtered, param = pgp_filter)
+xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp)
 ```
+
+:::::: {.columns}
+::: {.column width="48%"}
+### Original XCMS
+
+```{r original_filtered, fig.height=4, fig.width=5}
+plotAdjustedRtime(
+  xdata_filtered,
+  col = as.factor(sampleData(xdata_filtered)$sample_group),
+  peakGroupsCol = "grey"
+)
+```
+:::
+
+::: {.column width="4%"}
+<!-- spacer -->
+:::
+
+::: {.column width="48%"}
+### xcmsVis Version
+
+```{r ggplot_filtered, fig.height=4, fig.width=5}
+p_filtered <- gplotAdjustedRtime(xdata_filtered, color_by = sample_group)
+print(p_filtered)
+```
+:::
+::::::
 
 ## With subset Parameter in PeakGroupsParam
 
 You can use only specific samples for alignment calculation while keeping all samples in the dataset:
 
 ```{r with_subset}
-# Reload fresh data
-cdf_files <- dir(system.file("cdf", package = "faahKO"),
-                  recursive = TRUE, full.names = TRUE)
-cdf_files <- cdf_files[c(1:3, 7:9)]
+# Work with a fresh copy
+xdata_subset <- xdata_peaks
 
-xdata2 <- readMsExperiment(spectraFiles = cdf_files)
-sampleData(xdata2)$sample_group <- rep(c("KO", "WT"), each = 3)
-
-# Peak detection and grouping
-cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)
-xdata2 <- findChromPeaks(xdata2, param = cwp)
-
-pdp <- PeakDensityParam(
-  sampleGroups = sampleData(xdata2)$sample_group,
-  minFraction = 0.4,
-  bw = 30
-)
-xdata2 <- groupChromPeaks(xdata2, param = pdp)
+# Group peaks
+xdata_subset <- groupChromPeaks(xdata_subset, param = pdp)
 
 # Use subset parameter to align using only specific samples
 pgp_subset <- PeakGroupsParam(
@@ -187,99 +237,84 @@ pgp_subset <- PeakGroupsParam(
   family = "gaussian",
   subset = c(1, 2, 3, 5)  # Exclude sample 4 from alignment calculation
 )
-xdata2 <- adjustRtime(xdata2, param = pgp_subset)
-xdata2 <- groupChromPeaks(xdata2, param = pdp)
+xdata_subset <- adjustRtime(xdata_subset, param = pgp_subset)
+xdata_subset <- groupChromPeaks(xdata_subset, param = pdp)
 ```
 
-```{r plot_subset, fig.height=5, fig.width=7}
-# Plot shows all samples, but alignment was based on subset
-p_subset <- gplotAdjustedRtime(xdata2, color_by = sample_group)
-print(p_subset + labs(title = "RT Correction - Using Subset for Alignment"))
-```
+:::::: {.columns}
+::: {.column width="48%"}
+### Original XCMS
 
-## Without filterFile (Full Dataset)
-
-For comparison, here's the same workflow without filtering:
-
-```{r without_filter}
-# Reload fresh data
-cdf_files <- dir(system.file("cdf", package = "faahKO"),
-                  recursive = TRUE, full.names = TRUE)
-cdf_files <- cdf_files[c(1:3, 7:9)]
-
-xdata3 <- readMsExperiment(spectraFiles = cdf_files)
-sampleData(xdata3)$sample_group <- rep(c("KO", "WT"), each = 3)
-
-# Full workflow without filtering
-cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)
-xdata3 <- findChromPeaks(xdata3, param = cwp)
-
-pdp <- PeakDensityParam(
-  sampleGroups = sampleData(xdata3)$sample_group,
-  minFraction = 0.4,
-  bw = 30
-)
-xdata3 <- groupChromPeaks(xdata3, param = pdp)
-
-pgp <- PeakGroupsParam(minFraction = 0.4)
-xdata3 <- adjustRtime(xdata3, param = pgp)
-xdata3 <- groupChromPeaks(xdata3, param = pdp)
-```
-
-```{r plot_full, fig.height=5, fig.width=7}
-p_full <- gplotAdjustedRtime(xdata3, color_by = sample_group)
-print(p_full + labs(title = "RT Correction - Full Dataset"))
-```
-
-## Without subset Parameter
-
-For comparison, here's alignment without the subset parameter:
-
-```{r without_subset}
-# Reload fresh data
-cdf_files <- dir(system.file("cdf", package = "faahKO"),
-                  recursive = TRUE, full.names = TRUE)
-cdf_files <- cdf_files[1:2]  # Just 2 files for speed
-
-xdata4 <- readMsExperiment(spectraFiles = cdf_files)
-sampleData(xdata4)$sample_group <- c("KO", "WT")
-
-# Workflow without subset parameter
-cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)
-xdata4 <- findChromPeaks(xdata4, param = cwp)
-
-pdp <- PeakDensityParam(
-  sampleGroups = sampleData(xdata4)$sample_group,
-  minFraction = 0.4,
-  bw = 30
-)
-xdata4 <- groupChromPeaks(xdata4, param = pdp)
-
-# No subset parameter - use all samples
-pgp_no_subset <- PeakGroupsParam(minFraction = 0.4)
-xdata4 <- adjustRtime(xdata4, param = pgp_no_subset)
-xdata4 <- groupChromPeaks(xdata4, param = pdp)
-```
-
-```{r plot_no_subset, fig.height=5, fig.width=7}
-p_no_subset <- gplotAdjustedRtime(xdata4, color_by = sample_group)
-print(p_no_subset + labs(title = "RT Correction - Without Subset Parameter"))
-```
-
-# Comparison with Original XCMS plotAdjustedRtime
-
-The original XCMS `plotAdjustedRtime()` uses base R graphics:
-
-```{r original_plot}
-# Base R graphics version
+```{r original_subset, fig.height=4, fig.width=5}
 plotAdjustedRtime(
-  xdata,
-  col = as.factor(sampleData(xdata)$sample_group),
+  xdata_subset,
+  col = as.factor(sampleData(xdata_subset)$sample_group),
   peakGroupsCol = "grey"
 )
 ```
+:::
 
-**Advantages of `gplotAdjustedRtime()`:**
+::: {.column width="4%"}
+<!-- spacer -->
+:::
+
+::: {.column width="48%"}
+### xcmsVis Version
+
+```{r ggplot_subset, fig.height=4, fig.width=5}
+p_subset <- gplotAdjustedRtime(xdata_subset, color_by = sample_group)
+print(p_subset)
+```
+:::
+::::::
+
+## Without subset Parameter (All Samples)
+
+For comparison, here's alignment using all samples:
+
+```{r without_subset}
+# Work with a fresh copy
+xdata_no_subset <- xdata_peaks
+
+# Group peaks
+xdata_no_subset <- groupChromPeaks(xdata_no_subset, param = pdp)
+
+# Align without subset parameter (use all samples)
+pgp_no_subset <- PeakGroupsParam(minFraction = 0.4)
+xdata_no_subset <- adjustRtime(xdata_no_subset, param = pgp_no_subset)
+xdata_no_subset <- groupChromPeaks(xdata_no_subset, param = pdp)
+```
+
+:::::: {.columns}
+::: {.column width="48%"}
+### Original XCMS
+
+```{r original_no_subset, fig.height=4, fig.width=5}
+plotAdjustedRtime(
+  xdata_no_subset,
+  col = as.factor(sampleData(xdata_no_subset)$sample_group),
+  peakGroupsCol = "grey"
+)
+```
+:::
+
+::: {.column width="4%"}
+<!-- spacer -->
+:::
+
+::: {.column width="48%"}
+### xcmsVis Version
+
+```{r ggplot_no_subset, fig.height=4, fig.width=5}
+p_no_subset <- gplotAdjustedRtime(xdata_no_subset, color_by = sample_group)
+print(p_no_subset)
+```
+:::
+::::::
+
+# Advantages of gplotAdjustedRtime
+
+**Compared to XCMS's `plotAdjustedRtime()`:**
 
 - Modern ggplot2 aesthetics
 - Easy customization using standard ggplot2 syntax
