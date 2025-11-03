@@ -14,7 +14,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
+```{r setup}
+#| include: false
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -62,8 +63,9 @@ sampleData(xdata_raw)$sample_group <- sample_group
 ```
 
 
-Data can also be of the old style "XCMSnExp" (not run).
-```{r coerce, eval = FALSE}
+Data can also be of the old style "XCMSnExp" (not run) from MSnbase.
+```{r coerce}
+#| eval: false
 xdata_raw <- as(xdata_raw, "XCMSnExp")
 ```
 
@@ -121,7 +123,10 @@ xdata <- groupChromPeaks(xdata, param = pdp)
 ::: {.column width="48%"}
 ### Original XCMS Version
 
-```{r original_plot, fig.height=4, fig.width=5, fig.alt="Retention time adjustment plot from XCMS showing RT deviation vs adjusted retention time. Six colored lines represent individual samples (3 KO and 3 WT), with grey circles indicating alignment peaks and dashed grey lines connecting corresponding features across samples."}
+```{r original_plot}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "Retention time adjustment plot from XCMS showing RT deviation vs adjusted retention time. Six colored lines represent individual samples (3 KO and 3 WT), with grey circles indicating alignment peaks and dashed grey lines connecting corresponding features across samples."
 # Base R graphics version
 plotAdjustedRtime(
   xdata,
@@ -138,7 +143,10 @@ plotAdjustedRtime(
 ::: {.column width="48%"}
 ### xcmsVis ggplot2 Version
 
-```{r ggplot_version, fig.height=4, fig.width=5, fig.alt="Modern ggplot2 version of retention time adjustment plot showing RT deviation vs adjusted retention time. Six colored lines distinguish KO and WT sample groups, with grey circles marking alignment peaks and dashed grey lines connecting corresponding features."}
+```{r ggplot_version}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "Modern ggplot2 version of retention time adjustment plot showing RT deviation vs adjusted retention time. Six colored lines distinguish KO and WT sample groups, with grey circles marking alignment peaks and dashed grey lines connecting corresponding features."
 # ggplot2 version
 p <- gplotAdjustedRtime(xdata, color_by = sample_group)
 print(p)
@@ -155,7 +163,10 @@ The plot shows:
 
 Since `gplotAdjustedRtime()` returns a ggplot object, you can easily customize it:
 
-```{r customized_plot, fig.height=5, fig.width=7, fig.alt="Customized retention time adjustment plot with minimal theme and Set1 color palette. Plot titled 'Retention Time Correction - faahKO Dataset' shows RT adjustment in seconds vs adjusted retention time, with KO and WT groups color-coded and legend positioned at top."}
+```{r customized_plot}
+#| fig-height: 5
+#| fig-width: 7
+#| fig-alt: "Customized retention time adjustment plot with minimal theme and Set1 color palette. Plot titled 'Retention Time Correction - faahKO Dataset' shows RT adjustment in seconds vs adjusted retention time, with KO and WT groups color-coded and legend positioned at top."
 p +
   labs(
     title = "Retention Time Correction - faahKO Dataset",
@@ -172,7 +183,8 @@ p +
 
 Convert to an interactive plotly plot:
 
-```{r interactive, fig.alt="Interactive plotly version of the retention time adjustment plot. Hovering over data points reveals detailed sample information including file name, sample group, and exact RT values. Users can zoom, pan, and interact with the visualization."}
+```{r interactive}
+#| fig-alt: "Interactive plotly version of the retention time adjustment plot. Hovering over data points reveals detailed sample information including file name, sample group, and exact RT values. Users can zoom, pan, and interact with the visualization."
 # Make it interactive
 p_interactive <- ggplotly(p, tooltip = "text")
 p_interactive
@@ -204,7 +216,10 @@ xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp)
 ::: {.column width="48%"}
 ### Original XCMS
 
-```{r original_filtered, fig.height=4, fig.width=5, fig.alt="XCMS retention time adjustment plot for filtered dataset (files 2-5 only). Four colored lines show RT deviation patterns for the subset of samples, with grey alignment peaks and feature connections."}
+```{r original_filtered}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "XCMS retention time adjustment plot for filtered dataset (files 2-5 only). Four colored lines show RT deviation patterns for the subset of samples, with grey alignment peaks and feature connections."
 plotAdjustedRtime(
   xdata_filtered,
   col = as.factor(sampleData(xdata_filtered)$sample_group),
@@ -220,7 +235,10 @@ plotAdjustedRtime(
 ::: {.column width="48%"}
 ### xcmsVis Version
 
-```{r ggplot_filtered, fig.height=4, fig.width=5, fig.alt="ggplot2 retention time adjustment plot for filtered dataset. Four lines display RT corrections for samples 2-5, color-coded by KO/WT group, with grey alignment peaks and feature connections."}
+```{r ggplot_filtered}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "ggplot2 retention time adjustment plot for filtered dataset. Four lines display RT corrections for samples 2-5, color-coded by KO/WT group, with grey alignment peaks and feature connections."
 p_filtered <- gplotAdjustedRtime(xdata_filtered, color_by = sample_group)
 print(p_filtered)
 ```
@@ -254,7 +272,10 @@ xdata_subset <- groupChromPeaks(xdata_subset, param = pdp)
 ::: {.column width="48%"}
 ### Original XCMS
 
-```{r original_subset, fig.height=4, fig.width=5, fig.alt="XCMS retention time adjustment plot using subset parameter. All six samples are shown, but alignment was calculated using only samples 1, 2, 3, and 5, excluding sample 4. Grey alignment peaks and feature connections indicate which peaks were used."}
+```{r original_subset}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "XCMS retention time adjustment plot using subset parameter. All six samples are shown, but alignment was calculated using only samples 1, 2, 3, and 5, excluding sample 4. Grey alignment peaks and feature connections indicate which peaks were used."
 plotAdjustedRtime(
   xdata_subset,
   col = as.factor(sampleData(xdata_subset)$sample_group),
@@ -270,7 +291,10 @@ plotAdjustedRtime(
 ::: {.column width="48%"}
 ### xcmsVis Version
 
-```{r ggplot_subset, fig.height=4, fig.width=5, fig.alt="ggplot2 retention time adjustment plot with subset alignment. Six colored lines represent all samples (KO and WT groups), but RT correction was calculated using only a subset (samples 1, 2, 3, 5). Grey points show alignment peaks used."}
+```{r ggplot_subset}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "ggplot2 retention time adjustment plot with subset alignment. Six colored lines represent all samples (KO and WT groups), but RT correction was calculated using only a subset (samples 1, 2, 3, 5). Grey points show alignment peaks used."
 p_subset <- gplotAdjustedRtime(xdata_subset, color_by = sample_group)
 print(p_subset)
 ```
@@ -298,7 +322,10 @@ xdata_no_subset <- groupChromPeaks(xdata_no_subset, param = pdp)
 ::: {.column width="48%"}
 ### Original XCMS
 
-```{r original_no_subset, fig.height=4, fig.width=5, fig.alt="XCMS retention time adjustment plot without subset parameter, using all six samples for alignment calculation. Colored lines show RT deviation for each sample, with grey circles and dashed lines marking alignment peaks and feature correspondences."}
+```{r original_no_subset}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "XCMS retention time adjustment plot without subset parameter, using all six samples for alignment calculation. Colored lines show RT deviation for each sample, with grey circles and dashed lines marking alignment peaks and feature correspondences."
 plotAdjustedRtime(
   xdata_no_subset,
   col = as.factor(sampleData(xdata_no_subset)$sample_group),
@@ -314,7 +341,10 @@ plotAdjustedRtime(
 ::: {.column width="48%"}
 ### xcmsVis Version
 
-```{r ggplot_no_subset, fig.height=4, fig.width=5, fig.alt="ggplot2 retention time adjustment plot with all samples used for alignment. Six lines color-coded by sample group (KO and WT) display RT corrections, with grey alignment peaks and feature connections showing comprehensive alignment across all samples."}
+```{r ggplot_no_subset}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "ggplot2 retention time adjustment plot with all samples used for alignment. Six lines color-coded by sample group (KO and WT) display RT corrections, with grey alignment peaks and feature connections showing comprehensive alignment across all samples."
 p_no_subset <- gplotAdjustedRtime(xdata_no_subset, color_by = sample_group)
 print(p_no_subset)
 ```
