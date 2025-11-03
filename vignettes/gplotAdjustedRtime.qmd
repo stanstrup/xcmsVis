@@ -80,13 +80,14 @@ cwp <- CentWaveParam(
 )
 xdata_peaks <- findChromPeaks(xdata_raw, param = cwp)
 
-# Create PeakDensityParam once (reused across all examples)
+# Initial correspondence (peak grouping) - done once for all examples
 sample_data <- xcmsVis:::.get_sample_data(xdata_peaks)
 pdp <- PeakDensityParam(
   sampleGroups = sample_data$sample_group,
   minFraction = 0.4,
   bw = 30
 )
+xdata_grouped <- groupChromPeaks(xdata_peaks, param = pdp)
 ```
 
 # Basic Usage
@@ -96,16 +97,13 @@ pdp <- PeakDensityParam(
 The proper XCMS workflow for retention time adjustment using peak groups is:
 
 1. Peak detection (already done above)
-2. Initial correspondence (grouping)
+2. Initial correspondence (grouping - already done above)
 3. Retention time adjustment
 4. (Re-do correspondence after alignment - not needed for visualization)
 
 ```{r xcms_workflow}
-# Work with a copy for the basic workflow
-xdata <- xdata_peaks
-
-# Initial correspondence (peak grouping) before alignment
-xdata <- groupChromPeaks(xdata, param = pdp)
+# Work with a copy of the grouped data
+xdata <- xdata_grouped
 
 # Retention time alignment using peak groups
 pgp <- PeakGroupsParam(
@@ -201,20 +199,13 @@ p_interactive
 Sometimes you may want to filter samples before alignment:
 
 ```{r with_filter}
-# Work with a fresh copy from peak-detected data
-xdata_filtered <- xdata_peaks
+# Work with a fresh copy from grouped data
+xdata_filtered <- xdata_grouped
 
 # Filter to specific samples (files 2-5)
 xdata_filtered <- filterFile(xdata_filtered, c(2:5))
 
-# Group peaks after filtering (need new pdp for filtered samples)
-sample_data_filtered <- xcmsVis:::.get_sample_data(xdata_filtered)
-pdp_filtered <- PeakDensityParam(
-  sampleGroups = sample_data_filtered$sample_group,
-  minFraction = 0.4,
-  bw = 30
-)
-xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp_filtered)
+# Peak groups are preserved after filtering - no need to re-group
 
 # Align filtered data
 pgp_filter <- PeakGroupsParam(minFraction = 0.4)
@@ -260,11 +251,8 @@ print(p_filtered)
 You can use only specific samples for alignment calculation while keeping all samples in the dataset:
 
 ```{r with_subset}
-# Work with a fresh copy
-xdata_subset <- xdata_peaks
-
-# Group peaks (reuse pdp from above)
-xdata_subset <- groupChromPeaks(xdata_subset, param = pdp)
+# Work with a fresh copy of grouped data
+xdata_subset <- xdata_grouped
 
 # Use subset parameter to align using only specific samples
 pgp_subset <- PeakGroupsParam(
@@ -316,11 +304,8 @@ print(p_subset)
 For comparison, here's alignment using all samples:
 
 ```{r without_subset}
-# Work with a fresh copy
-xdata_no_subset <- xdata_peaks
-
-# Group peaks (reuse pdp from above)
-xdata_no_subset <- groupChromPeaks(xdata_no_subset, param = pdp)
+# Work with a fresh copy of grouped data
+xdata_no_subset <- xdata_grouped
 
 # Align without subset parameter (use all samples)
 pgp_no_subset <- PeakGroupsParam(minFraction = 0.4)
