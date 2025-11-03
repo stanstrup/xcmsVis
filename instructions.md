@@ -2,25 +2,18 @@
 
 **See `CLAUDE.md` for development workflow, conventions, and resources.**
 
-✅ implement a helper function that works with both XcmsExperiment and XCMSnExp to replace:
+1) Turns out I am wrong. correspondance (grouping) is removed when filtering files. So after filtering it has to be redone. But not before changing subset.
+So please re-add the groupChromPeaks step after filtering.
+Remember to re-get the sampleGroups from the filtered object first:
 
-```
-object %>%
-            spectra %>%
-            spectraData %>%
-            as.data.frame
-```
+sample_data <- xcmsVis:::.get_sample_data(filtered_object)
 
-XCMSnExp needs:
-fData(xdata) %>%
-         mutate(rtime_adjusted = rtime(xdata, adjusted = TRUE)) %>%
-         rownames_to_column("fromFile") %>%
-         mutate(fromFile = as.integer(gsub("^F(.*?)\\.S.*", "\\1", fromFile))) %>%
-         left_join(pData(xdata), by = c(fromFile = "sample_index")) %>%
-         dplyr::rename(rtime = "retentionTime")
+pdp <- PeakDensityParam(
+  sampleGroups = sample_data$sample_group,
+  minFraction = 0.4,
+  bw = 30
+)
 
-XcmsExperiment needs the current version:
-spectraData(spectra(xdata2)) %>% as.data.frame
+groupChromPeaks...
 
-
-✅ convert to pipelines where I nested.
+2) now the function works with both data types I'd like you to make them proper methods like functions are in XCMS.
