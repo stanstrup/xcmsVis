@@ -1,14 +1,16 @@
 ---
 title: "Visualizing Retention Time Adjustment with gplotAdjustedRtime"
 author: "xcmsVis Package"
-date: "`r Sys.Date()`"
-output:
-  BiocStyle::html_document:
+date: today
+format:
+  html:
     toc: true
-    toc_float: true
+    toc-location: left
+    code-fold: false
+    theme: cosmo
 vignette: >
   %\VignetteIndexEntry{Visualizing Retention Time Adjustment with gplotAdjustedRtime}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -59,6 +61,13 @@ sampleData(xdata_raw)$sample_name <- basename(cdf_files)
 sampleData(xdata_raw)$sample_group <- sample_group
 ```
 
+
+Data can also be of the old style "XCMSnExp" (not run).
+```{r coerce, eval = FALSE}
+xdata_raw <- as(xdata_raw, "XCMSnExp")
+```
+
+
 ## Peak Detection (performed once)
 
 ```{r peak_detection}
@@ -108,7 +117,7 @@ xdata <- groupChromPeaks(xdata, param = pdp)
 
 ## Creating the Plot
 
-:::::: {.columns}
+::: {.columns}
 ::: {.column width="48%"}
 ### Original XCMS Version
 
@@ -135,7 +144,7 @@ p <- gplotAdjustedRtime(xdata, color_by = sample_group)
 print(p)
 ```
 :::
-::::::
+:::
 
 The plot shows:
 - **Lines**: One per sample, showing RT deviation across the chromatographic run
@@ -163,7 +172,7 @@ p +
 
 Convert to an interactive plotly plot:
 
-```{r interactive, eval=FALSE}
+```{r interactive}
 # Make it interactive
 p_interactive <- ggplotly(p, tooltip = "text")
 p_interactive
@@ -179,11 +188,11 @@ Sometimes you may want to filter samples before alignment:
 # Work with a fresh copy from peak-detected data
 xdata_filtered <- xdata_peaks
 
-# Group peaks before filtering
-xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp)
-
 # Filter to specific samples (files 2-5)
 xdata_filtered <- filterFile(xdata_filtered, c(2:5))
+
+# Group peaks before filtering
+xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp)
 
 # Align filtered data
 pgp_filter <- PeakGroupsParam(minFraction = 0.4)
@@ -191,7 +200,7 @@ xdata_filtered <- adjustRtime(xdata_filtered, param = pgp_filter)
 xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp)
 ```
 
-:::::: {.columns}
+::: {.columns}
 ::: {.column width="48%"}
 ### Original XCMS
 
@@ -216,7 +225,7 @@ p_filtered <- gplotAdjustedRtime(xdata_filtered, color_by = sample_group)
 print(p_filtered)
 ```
 :::
-::::::
+:::
 
 ## With subset Parameter in PeakGroupsParam
 
@@ -241,7 +250,7 @@ xdata_subset <- adjustRtime(xdata_subset, param = pgp_subset)
 xdata_subset <- groupChromPeaks(xdata_subset, param = pdp)
 ```
 
-:::::: {.columns}
+::: {.columns}
 ::: {.column width="48%"}
 ### Original XCMS
 
@@ -266,7 +275,7 @@ p_subset <- gplotAdjustedRtime(xdata_subset, color_by = sample_group)
 print(p_subset)
 ```
 :::
-::::::
+:::
 
 ## Without subset Parameter (All Samples)
 
@@ -285,7 +294,7 @@ xdata_no_subset <- adjustRtime(xdata_no_subset, param = pgp_no_subset)
 xdata_no_subset <- groupChromPeaks(xdata_no_subset, param = pdp)
 ```
 
-:::::: {.columns}
+::: {.columns}
 ::: {.column width="48%"}
 ### Original XCMS
 
@@ -310,7 +319,7 @@ p_no_subset <- gplotAdjustedRtime(xdata_no_subset, color_by = sample_group)
 print(p_no_subset)
 ```
 :::
-::::::
+:::
 
 # Advantages of gplotAdjustedRtime
 

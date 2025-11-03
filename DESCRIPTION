@@ -36,8 +36,9 @@ Suggests:
     testthat (>= 3.0.0),
     knitr,
     rmarkdown,
+    quarto,
     BiocStyle,
     MSnbase,
     faahKO
-VignetteBuilder: knitr
+VignetteBuilder: quarto
 biocViews: Metabolomics, MassSpectrometry, Visualization
