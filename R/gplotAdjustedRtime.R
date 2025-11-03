@@ -54,9 +54,8 @@
 #' @importFrom methods is
 #' @importFrom stats setNames
 #' @importFrom xcms rtime hasAdjustedRtime fromFile processHistory processParam
-#' @importFrom MsExperiment sampleData spectra
-#' @importFrom Spectra spectraData
-#' @importFrom tibble tibble as_tibble rownames_to_column
+#' @importFrom MsExperiment sampleData
+#' @importFrom tibble tibble as_tibble
 #' @importFrom tidyr separate pivot_wider pivot_longer unnest unite
 #' @importFrom dplyr %>% mutate filter select bind_rows bind_cols right_join left_join group_by group_nest rename pull all_of join_by
 #' @importFrom purrr map map_lgl pluck map2 imap_dfr
@@ -76,20 +75,16 @@ gplotAdjustedRtime <- function(object,
   # Get sample metadata (works with both object types)
   sample_data <- .get_sample_data(object)
 
-
-  rts <- object %>%
-            spectra %>%
-            spectraData %>%
-            as.data.frame %>%
-            left_join(sample_data, by = c(dataOrigin = "spectraOrigin")) %>%
-            as_tibble %>%
-            select(fromFile, raw = rtime, adjusted = rtime_adjusted )
-
+  # Get spectra data (works with both object types)
+  rts <- .get_spectra_data(object) %>%
+    left_join(sample_data, by = c(dataOrigin = "spectraOrigin")) %>%
+    as_tibble() %>%
+    select(fromFile, raw = rtime, adjusted = rtime_adjusted)
 
   # Add sample metadata
   rts <- sample_data %>%
-          as_tibble %>%
-          right_join(rts, by = "fromFile", multiple = "all")
+    as_tibble() %>%
+    right_join(rts, by = "fromFile", multiple = "all")
 
 
   # Get the peak groups matrix and prepare for plotting
