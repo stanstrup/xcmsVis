@@ -30,7 +30,8 @@ utils::globalVariables(c(
       as.data.frame %>%
       rename(fromFile = sample_index)
   } else if (is(object, "XCMSnExp")) {
-    out <- pData(object)
+    out <- pData(object) %>%
+            rename(fromFile = sample_index)
   } else {
     stop("Object must be XcmsExperiment or XCMSnExp", call. = FALSE)
   }
@@ -68,7 +69,8 @@ utils::globalVariables(c(
       rownames_to_column("fromFile") %>%
       mutate(fromFile = as.integer(gsub("^F(.*?)\\.S.*", "\\1", fromFile))) %>%
       left_join(sample_data, by = c(fromFile = "sample_index")) %>%
-      rename(rtime = retentionTime)
+      rename(rtime = retentionTime, dataOrigin = "spectraOrigin") %>%
+      select(-fromFile)
   } else {
     stop("Object must be XcmsExperiment or XCMSnExp", call. = FALSE)
   }
