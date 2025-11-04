@@ -30,6 +30,7 @@ test_that(".get_sample_data works with XcmsExperiment", {
   xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
   MsExperiment::sampleData(xdata)$sample_name <- c("sample1", "sample2")
   MsExperiment::sampleData(xdata)$sample_group <- c("KO", "WT")
+  xdata <- as(xdata, "XcmsExperiment")
 
   # Get sample data
   result <- .get_sample_data(xdata)
@@ -47,11 +48,11 @@ test_that(".get_sample_data works with XCMSnExp", {
   # Load example data to create XCMSnExp
   cdf_files <- dir(system.file("cdf", package = "faahKO"),
                    recursive = TRUE, full.names = TRUE)
-  cdf_files <- cdf_files[1:2]
+  cdf_files <- cdf_files[c(1:2, 7:8)]
 
   pd <- data.frame(
     sample_name = basename(cdf_files),
-    sample_group = c("KO", "WT"),
+    sample_group = c("KO", "KO", "WT", "WT"),
     stringsAsFactors = FALSE
   )
 
@@ -60,6 +61,9 @@ test_that(".get_sample_data works with XCMSnExp", {
     pdata = new("AnnotatedDataFrame", pd),
     mode = "onDisk"
   )
+
+
+
 
   # Get sample data
   result <- .get_sample_data(raw_data)
