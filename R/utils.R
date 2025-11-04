@@ -24,13 +24,15 @@ utils::globalVariables(c(
 #' @keywords internal
 #' @importFrom MsExperiment sampleData
 #' @importFrom Biobase pData
+#' @importFrom dplyr rename
 .get_sample_data <- function(object) {
   .validate_xcms_object(object)
 
   if (is(object, "XcmsExperiment")) {
     out <- object %>%
       sampleData %>%
-      as.data.frame
+      as.data.frame %>%
+      rename(fromFile = sample_index)
 
   } else if (is(object, "XCMSnExp")) {
 
@@ -65,20 +67,27 @@ utils::globalVariables(c(
 
   if (is(object, "XcmsExperiment")) {
     out <- object %>%
-      spectra() %>%
-      spectraData() %>%
-      as.data.frame()
+            spectra() %>%
+            spectraData() %>%
+            as.data.frame()
+
   } else if (is(object, "XCMSnExp")) {
     # Get sample data for joining
-    sample_data <- pData(object)
+    sample_data <- pData(object)[,c("sample_index", "spectraOrigin")]
 
-    out <- fData(object) %>%
-      mutate(rtime_adjusted = rtime(object, adjusted = TRUE)) %>%
-      rownames_to_column("fromFile") %>%
-      mutate(fromFile = as.integer(gsub("^F(.*?)\\.S.*", "\\1", fromFile))) %>%
-      left_join(sample_data, by = c(fromFile = "sample_index")) %>%
-      rename(rtime = retentionTime, dataOrigin = "spectraOrigin") %>%
-      select(-fromFile)
+    out <- fData(object)
+
+          if(!("retentionTime_adjusted" %in% names(object))){ # not sure why it is there sometimes and sometimes not
+           out <- out %>%
+                    mutate(retentionTime_adjusted = rtime(object, adjusted = TRUE))
+          }
+
+     out <- out %>%
+            rownames_to_column("fromFile") %>%
+            mutate(fromFile = as.integer(gsub("^F(.*?)\\.S.*", "\\1", fromFile))) %>%
+            left_join(sample_data, by = c(fromFile = "sample_index")) %>%
+            rename(rtime = retentionTime, rtime_adjusted = retentionTime_adjusted, dataOrigin = "spectraOrigin") %>%
+            select(-fromFile)
   }
 
   return(out)
