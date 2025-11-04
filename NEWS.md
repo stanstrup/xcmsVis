@@ -1,3 +1,15 @@
+# 1.0.0  (2025-11-01)
+
+
+### Bug Fixes
+
+* correct GitHub Actions workflow and vignette workflow ([6dd52fd](https://github.com/stanstrup/xcmsVis/commit/6dd52fd2db53b6188958caa3e12cb3f4b18f7625))
+
+
+### Features
+
+* add semantic versioning and improve package infrastructure ([86a0704](https://github.com/stanstrup/xcmsVis/commit/86a0704ec2618a84806e8ed8e8c94e223ee100a7))
+
 ## Changes in v0.2.0
 
 ### Features
