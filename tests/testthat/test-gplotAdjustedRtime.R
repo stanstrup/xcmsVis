@@ -70,14 +70,7 @@ test_that("gplotAdjustedRtime requires valid XCMS object", {
 
 test_that("gplotAdjustedRtime handles missing color_by gracefully", {
 
-  # Load minimal data
-  cdf_files <- dir(system.file("cdf", package = "faahKO"),
-                   recursive = TRUE, full.names = TRUE)[1:2]
-
-  xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
-  MsExperiment::sampleData(xdata)$sample_group <- c("A", "B")
-  cwp <- xcms::CentWaveParam(peakwidth = c(20, 80), ppm = 25)
-  xdata <- xcms::findChromPeaks(xdata, param = cwp)
+  xdata <- get_shared_data()$xdata_exp
 
   # Need to group before adjustRtime
   pdp <- xcms::PeakDensityParam(
@@ -88,11 +81,11 @@ test_that("gplotAdjustedRtime handles missing color_by gracefully", {
   xdata <- xcms::groupChromPeaks(xdata, param = pdp)
   xdata <- xcms::adjustRtime(xdata, param = xcms::PeakGroupsParam(minFraction = 0.4))
 
-  # Test without color_by (should error)
-  expect_error(
-    gplotAdjustedRtime(xdata),
-    "argument \"color_by\" is missing"
+  # Test without color_by (should be fine, all will be grey)
+  expect_no_failure(
+    gplotAdjustedRtime(xdata)
   )
+
 })
 
 # ---- Comprehensive combination tests ----
