@@ -30,15 +30,9 @@ if (requireNamespace("xcms", quietly = TRUE) &&
   # Perform peak detection on XcmsExperiment
   xdata_exp <- xcms::findChromPeaks(xdata_exp, param = cwp)
 
-  # Create XCMSnExp object
-  raw_data <- MSnbase::readMSData(
-    files = cdf_files,
-    pdata = new("AnnotatedDataFrame", pd),
-    mode = "onDisk"
-  )
 
   # Perform peak detection on XCMSnExp
-  xdata_snexp <- xcms::findChromPeaks(raw_data, param = cwp)
+  xdata_snexp <- as(as(xdata_exp, "XcmsExperiment"), "XCMSnExp")
 
   # Store in global environment for tests to access
   # Note: These will be available to all tests in this session
