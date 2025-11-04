@@ -31,8 +31,6 @@ utils::globalVariables(c(
     out <- object %>%
       sampleData %>%
       as.data.frame
-    # XcmsExperiment doesn't have sample_index, add it as row index
-    out$fromFile <- seq_len(nrow(out))
 
   } else if (is(object, "XCMSnExp")) {
 
