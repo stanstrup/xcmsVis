@@ -25,19 +25,24 @@ utils::globalVariables(c(
 #' @importFrom MsExperiment sampleData
 #' @importFrom Biobase pData
 .get_sample_data <- function(object) {
+  .validate_xcms_object(object)
+
   if (is(object, "XcmsExperiment")) {
     out <- object %>%
       sampleData %>%
       as.data.frame
     # XcmsExperiment doesn't have sample_index, add it as row index
     out$fromFile <- seq_len(nrow(out))
+
   } else if (is(object, "XCMSnExp")) {
+
     out <- pData(object) %>%
             rename(fromFile = sample_index)
-  } else {
-    stop("Object must be XcmsExperiment or XCMSnExp", call. = FALSE)
+
   }
 
+
+  if(is.null(out$spectraOrigin)) stop("No files defined in object!", call. = FALSE)
 
    out$spectraOrigin_base <- basename(out$spectraOrigin)
 
@@ -58,6 +63,8 @@ utils::globalVariables(c(
 #' @importFrom tibble rownames_to_column
 #' @importFrom dplyr mutate rename left_join
 .get_spectra_data <- function(object) {
+  .validate_xcms_object(object)
+
   if (is(object, "XcmsExperiment")) {
     out <- object %>%
       spectra() %>%
@@ -74,8 +81,6 @@ utils::globalVariables(c(
       left_join(sample_data, by = c(fromFile = "sample_index")) %>%
       rename(rtime = retentionTime, dataOrigin = "spectraOrigin") %>%
       select(-fromFile)
-  } else {
-    stop("Object must be XcmsExperiment or XCMSnExp", call. = FALSE)
   }
 
   return(out)

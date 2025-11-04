@@ -3,7 +3,5 @@
 **See `CLAUDE.md` for development workflow, conventions, and resources.**
 
 
-Remaining test failures (7 failures, all related to sample_index column):
-    - XCMSnExp tests failing with "Column `sample_index` doesn't exist" in .get_sample_data()
-    - XcmsExperiment test failing with spectraOrigin not being character vector
-    - User will handle sample_index column issues
+1) in some tests e.g. ".get_sample_data works with XcmsExperiment" you have an object without any files. That won't work. reod that.
+2) in utils.R instead of separate check for "Object must be XcmsExperiment or XCMSnExp" you can use .validate_xcms_object and put it as the first check in the function.

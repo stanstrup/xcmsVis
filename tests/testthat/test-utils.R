@@ -21,17 +21,15 @@ test_that(".validate_xcms_object rejects invalid objects", {
 
 test_that(".get_sample_data works with XcmsExperiment", {
 
-  # Create MsExperiment then convert to XcmsExperiment
-  ms_exp <- MsExperiment::MsExperiment()
-  # sampleData needs to be a DataFrame, not data.frame
-  sd <- S4Vectors::DataFrame(
-    sample_name = c("sample1", "sample2"),
-    sample_group = c("A", "B")
-  )
-  MsExperiment::sampleData(ms_exp) <- sd
+  # Load example data to create XcmsExperiment with actual files
+  cdf_files <- dir(system.file("cdf", package = "faahKO"),
+                   recursive = TRUE, full.names = TRUE)
+  cdf_files <- cdf_files[1:2]
 
-  # Convert to XcmsExperiment
-  xdata <- as(ms_exp, "XcmsExperiment")
+  # Create XcmsExperiment from files
+  xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
+  MsExperiment::sampleData(xdata)$sample_name <- c("sample1", "sample2")
+  MsExperiment::sampleData(xdata)$sample_group <- c("KO", "WT")
 
   # Get sample data
   result <- .get_sample_data(xdata)
@@ -40,6 +38,8 @@ test_that(".get_sample_data works with XcmsExperiment", {
   expect_equal(nrow(result), 2)
   expect_true("sample_name" %in% colnames(result))
   expect_true("sample_group" %in% colnames(result))
+  expect_true("fromFile" %in% colnames(result))
+  expect_true("spectraOrigin_base" %in% colnames(result))
 })
 
 test_that(".get_sample_data works with XCMSnExp", {
@@ -73,6 +73,6 @@ test_that(".get_sample_data works with XCMSnExp", {
 test_that(".get_sample_data rejects invalid objects", {
   expect_error(
     .get_sample_data("not an XCMS object"),
-    "Object must be XcmsExperiment or XCMSnExp"
+    "'object' must be an 'XCMSnExp' or 'XcmsExperiment' object"
   )
 })
