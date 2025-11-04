@@ -2,7 +2,6 @@ url: https://stanstrup.github.io/xcmsVis
 template:
   bootstrap: 5
   bootswatch: flatly
-  assets: pkgdown
 
 navbar:
   structure:
