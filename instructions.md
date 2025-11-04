@@ -2,6 +2,9 @@
 
 **See `CLAUDE.md` for development workflow, conventions, and resources.**
 
+Completed:
+- Fixed test to use actual files instead of empty XcmsExperiment object
+- Refactored utils.R to use .validate_xcms_object() consistently
 
-1) in some tests e.g. ".get_sample_data works with XcmsExperiment" you have an object without any files. That won't work. reod that.
-2) in utils.R instead of separate check for "Object must be XcmsExperiment or XCMSnExp" you can use .validate_xcms_object and put it as the first check in the function.
+Remaining issues:
+- sample_index column errors in XCMSnExp tests (user will handle)
