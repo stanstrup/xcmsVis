@@ -40,7 +40,6 @@ All functions work with both `XcmsExperiment` (XCMS v4+) and `XCMSnExp` (XCMS v3
 
 ```{r libraries}
 library(xcms)
-library(xcmsVis)
 library(ggplot2)
 library(plotly)
 library(faahKO)
