@@ -11,8 +11,11 @@ utils::globalVariables(c(
   "sample_name",
   "text",
   "retentionTime",
+  "retentionTime_adjusted",
   "dataOrigin",
-  "spectraOrigin_base"
+  "spectraOrigin_base",
+  "fileIdx",
+  "n"
 ))
 
 #' Get sample data from XCMS object

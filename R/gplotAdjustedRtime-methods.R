@@ -14,7 +14,7 @@
 #' @importFrom xcms hasAdjustedRtime processHistory processParam
 #' @importFrom tibble tibble as_tibble rownames_to_column
 #' @importFrom tidyr pivot_longer unnest unite
-#' @importFrom dplyr %>% mutate filter select right_join left_join inner_join group_by group_nest rename pull all_of join_by
+#' @importFrom dplyr %>% mutate filter select right_join left_join inner_join group_by group_nest rename pull all_of join_by bind_cols
 #' @importFrom purrr map map_lgl pluck map2 imap_dfr
 #' @importFrom ggplot2 ggplot aes geom_line geom_point theme_bw
 .gplotAdjustedRtime_impl <- function(object,
@@ -122,7 +122,7 @@
     aes(
       x = adjusted,
       y = adjusted - raw,
-      group = fromFile,
+      group = spectraOrigin_base,
       color = {{ color_by }},
       text = text
     )

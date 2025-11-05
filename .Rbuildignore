@@ -19,3 +19,4 @@
 ^pkgdown$
 ^\.github$
 ^vignettes/\.quarto$
+^LICENSE\.md$
