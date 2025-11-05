@@ -97,7 +97,7 @@ The `gplotChromPeaks()` function creates a scatter plot showing detected peaks a
 #| fig-width: 5
 #| fig-alt: "XCMS plotChromPeaks showing detected peaks as rectangles in RT vs m/z space for the first sample. Each rectangle represents a chromatographic peak with its boundaries defined by retention time (x-axis) and m/z range (y-axis)."
 # Base R graphics version
-plotChromPeaks(xdata, file = 1)
+plotChromPeaks(xdata, file = 1, xlim = c(3500,3800), , ylim = c(240,260))
 ```
 
 </div>
@@ -110,7 +110,7 @@ plotChromPeaks(xdata, file = 1)
 #| fig-width: 5
 #| fig-alt: "ggplot2 version showing detected peaks as semi-transparent rectangles in RT vs m/z space. Modern styling with customizable aesthetics for publication-ready figures."
 # ggplot2 version
-p1 <- gplotChromPeaks(xdata, file = 1)
+p1 <- gplotChromPeaks(xdata, file = 1, xlim = c(3500,3800), , ylim = c(240,260))
 print(p1)
 ```
 
@@ -138,13 +138,13 @@ p1 +
 ```{r zoom_chrompeaks}
 #| fig-height: 5
 #| fig-width: 7
-#| fig-alt: "Zoomed view of chromatographic peaks in the m/z range 200-600 and retention time 2500-3500s. Detailed view allows inspection of peak distributions in specific regions of interest."
+#| fig-alt: "Zoomed view of chromatographic peaks in the m/z range 240-260 and retention time 3500-3800s. Detailed view allows inspection of peak distributions in specific regions of interest."
 # Focus on a specific RT and m/z region
 p2 <- gplotChromPeaks(
   xdata,
   file = 1,
-  xlim = c(2500, 3500),
-  ylim = c(200, 600),
+  xlim = c(3500,3800), 
+  ylim = c(240,260),
   border = "darkblue",
   fill = "lightblue"
 )
@@ -232,6 +232,49 @@ p_log <- gplotChromPeakImage(xdata, log_transform = TRUE) +
   labs(title = "Log2 Scale")
 
 p_linear + p_log
+```
+
+## Custom Color Scales
+
+By default, `gplotChromPeakImage()` uses the viridis color scale, which is perceptually uniform and colorblind-friendly. You can customize the color palette to suit your needs:
+
+```{r custom_colors}
+#| fig-height: 4
+#| fig-width: 10
+#| fig-alt: "Comparison of different viridis color palettes (magma, plasma, inferno) for peak density heatmaps. Each palette provides different color schemes while maintaining perceptual uniformity."
+# Different viridis palettes
+p_magma <- gplotChromPeakImage(xdata, binSize = 30) +
+  scale_fill_viridis_c(option = "magma", name = "count") +
+  labs(title = "Magma palette")
+
+p_plasma <- gplotChromPeakImage(xdata, binSize = 30) +
+  scale_fill_viridis_c(option = "plasma", name = "count") +
+  labs(title = "Plasma palette")
+
+p_inferno <- gplotChromPeakImage(xdata, binSize = 30) +
+  scale_fill_viridis_c(option = "inferno", name = "count") +
+  labs(title = "Inferno palette")
+
+p_magma / p_plasma / p_inferno
+```
+
+You can also use other ggplot2 color scales:
+
+```{r other_colors}
+#| fig-height: 4
+#| fig-width: 10
+#| fig-alt: "Alternative color scales for peak density heatmaps showing gradient (blue to red) and distiller (RdYlBu) palettes as alternatives to viridis."
+# Custom gradient
+p_gradient <- gplotChromPeakImage(xdata, binSize = 30) +
+  scale_fill_gradient(low = "white", high = "darkblue", name = "count") +
+  labs(title = "Custom gradient")
+
+# Color Brewer palette
+p_brewer <- gplotChromPeakImage(xdata, binSize = 30) +
+  scale_fill_distiller(palette = "RdYlBu", name = "count") +
+  labs(title = "RdYlBu palette")
+
+p_gradient + p_brewer
 ```
 
 ## Interactive Version
