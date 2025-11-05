@@ -20,6 +20,8 @@ navbar:
       menu:
       - text: gplotAdjustedRtime - Retention Time Adjustment
         href: articles/gplotAdjustedRtime.html
+      - text: Peak Visualization Functions
+        href: articles/peak-visualization.html
     news:
       text: Changelog
       href: news/index.html

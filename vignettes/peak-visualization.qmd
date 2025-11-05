@@ -1,0 +1,429 @@
+---
+title: "Visualizing Chromatographic Peaks"
+author: "xcmsVis Package"
+date: today
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: false
+    theme: cosmo
+vignette: >
+  %\VignetteIndexEntry{Visualizing Chromatographic Peaks}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup}
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 6,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# Introduction
+
+This vignette demonstrates three ggplot2-based functions for visualizing chromatographic peaks in LC-MS metabolomics data:
+
+- **`gplotChromPeaks()`**: Visualize detected peaks as rectangles in RT vs m/z space
+- **`gplotChromPeakImage()`**: Heatmap showing peak density across samples and retention time
+- **`ghighlightChromPeaks()`**: Add peak annotations to existing chromatogram plots
+
+All functions work with both `XcmsExperiment` (XCMS v4+) and `XCMSnExp` (XCMS v3) objects.
+
+# Setup
+
+```{r libraries}
+library(xcms)
+library(xcmsVis)
+library(ggplot2)
+library(plotly)
+library(faahKO)
+library(MsExperiment)
+library(BiocParallel)
+```
+
+# Data Preparation
+
+We'll use the faahKO package example data:
+
+```{r load_data}
+# Get example CDF files
+cdf_files <- dir(system.file("cdf", package = "faahKO"),
+                  recursive = TRUE, full.names = TRUE)[1:3]
+
+# Load data as XcmsExperiment
+xdata <- readMsExperiment(
+  spectraFiles = cdf_files,
+  BPPARAM = SerialParam()
+)
+
+# Add sample metadata
+sampleData(xdata)$sample_name <- basename(cdf_files)
+sampleData(xdata)$sample_group <- c("KO", "KO", "WT")
+```
+
+## Peak Detection
+
+```{r peak_detection}
+# Detect peaks using CentWave algorithm
+cwp <- CentWaveParam(
+  peakwidth = c(20, 80),
+  ppm = 25
+)
+xdata <- findChromPeaks(xdata, param = cwp, BPPARAM = SerialParam())
+
+# Check number of peaks detected
+cat("Total peaks detected:", nrow(chromPeaks(xdata)), "\n")
+```
+
+# gplotChromPeaks: Peak Distribution Visualization
+
+The `gplotChromPeaks()` function creates a scatter plot showing detected peaks as rectangles in retention time vs m/z space.
+
+## Basic Usage
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS Version
+
+```{r original_chrompeaks}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "XCMS plotChromPeaks showing detected peaks as rectangles in RT vs m/z space for the first sample. Each rectangle represents a chromatographic peak with its boundaries defined by retention time (x-axis) and m/z range (y-axis)."
+# Base R graphics version
+plotChromPeaks(xdata, file = 1)
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 Version
+
+```{r ggplot_chrompeaks}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "ggplot2 version showing detected peaks as semi-transparent rectangles in RT vs m/z space. Modern styling with customizable aesthetics for publication-ready figures."
+# ggplot2 version
+p1 <- gplotChromPeaks(xdata, file = 1)
+print(p1)
+```
+
+</div>
+</div>
+
+## Customizing the Plot
+
+```{r custom_chrompeaks}
+#| fig-height: 5
+#| fig-width: 7
+#| fig-alt: "Customized chromatographic peaks plot with blue borders and light blue fill, minimal theme. Title reads 'Detected Peaks - Sample 1' with clear axis labels for retention time and m/z."
+# Customize colors and styling
+p1 +
+  labs(
+    title = "Detected Peaks - Sample 1",
+    x = "Retention Time (s)",
+    y = "m/z"
+  ) +
+  theme_minimal()
+```
+
+## Focusing on a Region
+
+```{r zoom_chrompeaks}
+#| fig-height: 5
+#| fig-width: 7
+#| fig-alt: "Zoomed view of chromatographic peaks in the m/z range 200-600 and retention time 2500-3500s. Detailed view allows inspection of peak distributions in specific regions of interest."
+# Focus on a specific RT and m/z region
+p2 <- gplotChromPeaks(
+  xdata,
+  file = 1,
+  xlim = c(2500, 3500),
+  ylim = c(200, 600),
+  border = "darkblue",
+  fill = "lightblue"
+)
+print(p2)
+```
+
+## Comparing Multiple Samples
+
+```{r compare_samples}
+#| fig-height: 4
+#| fig-width: 10
+#| fig-alt: "Side-by-side comparison of peak distributions across three samples (two KO and one WT). Each panel shows peaks as rectangles in RT vs m/z space, enabling visual comparison of peak detection consistency."
+# Compare peak distributions across samples
+library(patchwork)
+p_s1 <- gplotChromPeaks(xdata, file = 1) + labs(title = "Sample 1 (KO)")
+p_s2 <- gplotChromPeaks(xdata, file = 2) + labs(title = "Sample 2 (KO)")
+p_s3 <- gplotChromPeaks(xdata, file = 3) + labs(title = "Sample 3 (WT)")
+
+p_s1 + p_s2 + p_s3
+```
+
+# gplotChromPeakImage: Peak Density Heatmap
+
+The `gplotChromPeakImage()` function creates a heatmap showing the number of detected peaks per sample across retention time bins.
+
+## Basic Usage
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS Version
+
+```{r original_peakimage}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "XCMS plotChromPeakImage showing peak density heatmap with retention time on x-axis and samples on y-axis. Color intensity represents the number of peaks detected in each time bin for each sample."
+# Base R graphics version
+plotChromPeakImage(xdata, binSize = 30)
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 Version
+
+```{r ggplot_peakimage}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "Modern ggplot2 heatmap of peak density using viridis color scale. Retention time bins on x-axis, samples on y-axis, with color intensity indicating peak counts per bin."
+# ggplot2 version
+p3 <- gplotChromPeakImage(xdata, binSize = 30)
+print(p3)
+```
+
+</div>
+</div>
+
+## With Different Bin Sizes
+
+```{r different_bins}
+#| fig-height: 4
+#| fig-width: 10
+#| fig-alt: "Comparison of peak density heatmaps using different bin sizes (15s, 30s, 60s). Smaller bins show finer detail while larger bins provide smoother overview of peak distribution patterns."
+# Compare different bin sizes
+p_b15 <- gplotChromPeakImage(xdata, binSize = 15) +
+  labs(title = "Bin Size: 15s")
+p_b30 <- gplotChromPeakImage(xdata, binSize = 30) +
+  labs(title = "Bin Size: 30s")
+p_b60 <- gplotChromPeakImage(xdata, binSize = 60) +
+  labs(title = "Bin Size: 60s")
+
+p_b15 + p_b30 + p_b60
+```
+
+## Log-Transformed View
+
+```{r log_transform}
+#| fig-height: 4
+#| fig-width: 10
+#| fig-alt: "Comparison of linear and log2-transformed peak density heatmaps. Log transformation reveals patterns in low-intensity regions that may be obscured in the linear scale."
+# Compare linear vs log scale
+p_linear <- gplotChromPeakImage(xdata, log_transform = FALSE) +
+  labs(title = "Linear Scale")
+p_log <- gplotChromPeakImage(xdata, log_transform = TRUE) +
+  labs(title = "Log2 Scale")
+
+p_linear + p_log
+```
+
+## Interactive Version
+
+```{r interactive_peakimage}
+#| fig-alt: "Interactive plotly version of peak density heatmap. Hovering over cells reveals exact peak counts, retention time, and sample information."
+# Make it interactive
+ggplotly(p3)
+```
+
+# ghighlightChromPeaks: Annotating Chromatograms
+
+The `ghighlightChromPeaks()` function adds peak annotations to existing chromatogram plots. It returns ggplot2 layers that can be added to chromatogram visualizations.
+
+## Basic Usage
+
+First, let's extract a chromatogram for a specific m/z range:
+
+```{r extract_chrom}
+# Extract chromatogram for m/z 200-210
+mz_range <- c(200, 210)
+rt_range <- c(2500, 3500)
+
+# Get chromatogram data
+chr <- chromatogram(xdata, mz = mz_range, rt = rt_range)
+
+# Convert to data frame for plotting
+chr_data <- data.frame(
+  rt = rtime(chr[1, 1]),
+  intensity = intensity(chr[1, 1])
+)
+```
+
+Now let's create the base chromatogram plot and add peak annotations:
+
+```{r highlight_rect}
+#| fig-height: 5
+#| fig-width: 8
+#| fig-alt: "Chromatogram with detected peaks highlighted as semi-transparent rectangles. Base chromatogram shows intensity vs retention time, with rectangles marking peak boundaries from rtmin to rtmax at the peak's maximum intensity."
+# Base chromatogram plot
+p_chrom <- ggplot(chr_data, aes(x = rt, y = intensity)) +
+  geom_line() +
+  theme_bw() +
+  labs(
+    title = "Chromatogram with Highlighted Peaks (Rectangle)",
+    x = "Retention Time (s)",
+    y = "Intensity"
+  )
+
+# Add peak highlights as rectangles
+peak_layers <- ghighlightChromPeaks(
+  xdata,
+  chrom_data = chr_data,
+  rt = rt_range,
+  mz = mz_range,
+  type = "rect",
+  border = "red",
+  fill = alpha("red", 0.2)
+)
+
+# Combine base plot with peak annotations
+p_chrom + peak_layers
+```
+
+## Different Visualization Types
+
+```{r highlight_types}
+#| fig-height: 10
+#| fig-width: 8
+#| fig-alt: "Three-panel comparison showing different peak annotation styles: rectangles spanning peak width, points at peak apex, and polygons following peak shape. Each method highlights the same detected peaks in different ways."
+# Type: Point (marks peak apex)
+p_point <- ggplot(chr_data, aes(x = rt, y = intensity)) +
+  geom_line() +
+  theme_bw() +
+  labs(title = "Peak Annotations: Points", x = "RT (s)", y = "Intensity")
+
+peak_points <- ghighlightChromPeaks(
+  xdata,
+  chrom_data = chr_data,
+  rt = rt_range,
+  mz = mz_range,
+  type = "point",
+  border = "red"
+)
+
+# Type: Polygon (follows peak shape)
+p_poly <- ggplot(chr_data, aes(x = rt, y = intensity)) +
+  geom_line() +
+  theme_bw() +
+  labs(title = "Peak Annotations: Polygons", x = "RT (s)", y = "Intensity")
+
+peak_polygons <- ghighlightChromPeaks(
+  xdata,
+  chrom_data = chr_data,
+  rt = rt_range,
+  mz = mz_range,
+  type = "polygon",
+  border = "blue",
+  fill = alpha("blue", 0.3)
+)
+
+# Display all three types
+(p_chrom + peak_layers) /
+(p_point + peak_points) /
+(p_poly + peak_polygons)
+```
+
+## Peak Selection Criteria
+
+```{r peak_selection}
+#| fig-height: 8
+#| fig-width: 8
+#| fig-alt: "Comparison of three peak selection methods: 'any' (partially overlapping), 'within' (fully contained), and 'apex_within' (apex in range). Each shows different subsets of peaks based on selection criteria."
+# whichPeaks: "any" - peaks that overlap the range
+p_any <- ggplot(chr_data, aes(x = rt, y = intensity)) +
+  geom_line() +
+  theme_bw() +
+  labs(title = "whichPeaks = 'any'", x = "RT (s)", y = "Intensity")
+
+peaks_any <- ghighlightChromPeaks(
+  xdata, chr_data, rt = rt_range, mz = mz_range,
+  whichPeaks = "any", border = "red", fill = alpha("red", 0.2)
+)
+
+# whichPeaks: "within" - peaks fully within the range
+p_within <- ggplot(chr_data, aes(x = rt, y = intensity)) +
+  geom_line() +
+  theme_bw() +
+  labs(title = "whichPeaks = 'within'", x = "RT (s)", y = "Intensity")
+
+peaks_within <- ghighlightChromPeaks(
+  xdata, chr_data, rt = rt_range, mz = mz_range,
+  whichPeaks = "within", border = "blue", fill = alpha("blue", 0.2)
+)
+
+# whichPeaks: "apex_within" - peaks with apex in range
+p_apex <- ggplot(chr_data, aes(x = rt, y = intensity)) +
+  geom_line() +
+  theme_bw() +
+  labs(title = "whichPeaks = 'apex_within'", x = "RT (s)", y = "Intensity")
+
+peaks_apex <- ghighlightChromPeaks(
+  xdata, chr_data, rt = rt_range, mz = mz_range,
+  whichPeaks = "apex_within", border = "green", fill = alpha("green", 0.2)
+)
+
+# Display comparison
+(p_any + peaks_any) / (p_within + peaks_within) / (p_apex + peaks_apex)
+```
+
+# Combining Multiple Visualizations
+
+You can combine these functions to create comprehensive peak detection summaries:
+
+```{r combined_view}
+#| fig-height: 8
+#| fig-width: 10
+#| fig-alt: "Comprehensive peak detection summary combining peak distribution scatter plot and density heatmap. Top panel shows individual peaks in RT vs m/z space, bottom panel shows peak density across samples over time."
+# Peak distribution for one sample
+p_dist <- gplotChromPeaks(xdata, file = 1) +
+  labs(title = "Peak Distribution - Sample 1")
+
+# Peak density across all samples
+p_density <- gplotChromPeakImage(xdata, binSize = 30) +
+  labs(title = "Peak Density Across Samples")
+
+# Combine
+p_dist / p_density
+```
+
+# Advantages of xcmsVis Functions
+
+**Compared to XCMS base graphics:**
+
+- Modern ggplot2 aesthetics
+- Easy customization using standard ggplot2 syntax
+- Interactive plotting via plotly
+- Consistent with other ggplot2-based visualizations
+- Publication-ready output
+- Composable layers (especially `ghighlightChromPeaks`)
+
+# Session Information
+
+```{r session_info}
+sessionInfo()
+```
+
+# References
+
+- XCMS GitHub Repository: https://github.com/sneumann/xcms
+- Original Feature Request: https://github.com/sneumann/xcms/issues/551
+- faahKO package: Bioconductor example dataset
+- ggplot2 Documentation: https://ggplot2.tidyverse.org/
+- plotly for R: https://plotly.com/r/
