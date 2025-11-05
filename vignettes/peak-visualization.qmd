@@ -316,11 +316,15 @@ chr_data <- data.frame(
 ```{r original_highlight}
 #| fig-height: 5
 #| fig-width: 5
-#| fig-alt: "XCMS highlightChromPeaks showing base R plot of chromatogram with detected peaks highlighted as points at peak apex positions. Traditional graphics style with simple point markers."
+#| fig-alt: "XCMS highlightChromPeaks showing base R plot of chromatogram with detected peaks highlighted as points at peak apex positions. Traditional graphics style with simple point markers. Only XCMSnExp is supported."
 # Base R graphics version
 plot(chr[1, 1], main = "XCMS highlightChromPeaks")
-highlightChromPeaks(xdata, rt = rt_range, mz = mz_range,
-                    type = "point", col = "red")
+highlightChromPeaks(as(xdata, "XCMSnExp"), 
+                    rt = rt_range, 
+                    mz = mz_range,
+                    type = "point", 
+                    col = "red"
+                    )
 ```
 
 </div>
