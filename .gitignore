@@ -8,3 +8,5 @@ inst/doc
 node_modules/
 package-lock.json
 .claude/
+..Rcheck
+xcmsVis.BiocCheck

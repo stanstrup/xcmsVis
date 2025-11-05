@@ -2,15 +2,11 @@
 
 **See `CLAUDE.md` for development workflow, conventions, and resources.**
 
-fix the following check warnings:
+Read the XCMS source code and try to implement ggplot2 versions of the following plots:
+* plotChromPeaks ✅ COMPLETED
+* plotChromPeakImage ✅ COMPLETED
+* highlightChromPeaks ✅ COMPLETED
 
-─  checking R code for possible problems ... [46s] NOTE (45.7s)
-   .get_spectra_data: no visible global function definition for 'n'
-   .get_spectra_data: no visible binding for global variable
-     'retentionTime_adjusted'
-   Undefined global functions or variables:
-     n retentionTime_adjusted
-     
-N  checking top-level files ...
-   Non-standard file/directory found at top level:
-     'LICENSE.md'
+Included should be tests and a vignette (I think these 3 can live together).
+* Tests ✅ COMPLETED (31 tests, all passing)
+* Vignette - IN PROGRESS

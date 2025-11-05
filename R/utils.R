@@ -15,7 +15,24 @@ utils::globalVariables(c(
   "dataOrigin",
   "spectraOrigin_base",
   "fileIdx",
-  "n"
+  "n",
+  "rtmin",
+  "rtmax",
+  "mzmin",
+  "mzmax",
+  "rt",
+  "sample",
+  "rt_bin",
+  "count",
+  "rt_center",
+  "sample_name",
+  "intensity",
+  "xmin",
+  "xmax",
+  "ymin",
+  "ymax",
+  "x",
+  "y"
 ))
 
 #' Get sample data from XCMS object
@@ -83,7 +100,7 @@ utils::globalVariables(c(
   } else if (is(object, "XCMSnExp") | is(object, "OnDiskMSnExp")) {
     # Get sample data for joining
     sample_data <- .get_sample_data(object) %>%
-                    mutate(fileIdx = 1:n())
+                    mutate(fileIdx = 1:dplyr::n())
 
     out <- fData(object)
 

@@ -42,15 +42,17 @@ devtools::check()
 
 ### Testing
 ```r
-# Run all tests
+# Run all tests (can be slow)
 devtools::test()
+
+# Run a specific test file (PREFERRED - faster for development)
+testthat::test_file("tests/testthat/test-filename.R")
 
 # Run tests with coverage
 covr::package_coverage()
-
-# Run a specific test file
-testthat::test_file("tests/testthat/test-filename.R")
 ```
+
+**IMPORTANT**: When working on specific functions, ALWAYS use `testthat::test_file()` to run only the relevant test file. Running all tests with `devtools::test()` takes much longer than necessary.
 
 ### Development Workflow
 ```r

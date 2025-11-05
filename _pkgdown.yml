@@ -36,3 +36,6 @@ reference:
     desc: ggplot2 versions of XCMS plotting functions
     contents:
       - gplotAdjustedRtime
+      - gplotChromPeaks
+      - gplotChromPeakImage
+      - ghighlightChromPeaks
