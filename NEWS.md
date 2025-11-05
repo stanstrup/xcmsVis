@@ -1,3 +1,19 @@
+## Changes in v0.99.4
+
+
+### Bug Fixes
+
+* highlightChromPeaks only works for XCMSnExp ([ebb1851](https://github.com/stanstrup/xcmsVis/commit/ebb18511129985b3a67a8a836a8ea10e1631af94))
+* refactor gplot and ghighlightChromPeaks per code review ([14fb0de](https://github.com/stanstrup/xcmsVis/commit/14fb0de2a87424ef2dfe1c5348118127a84a47ca))
+* remove library(xcmsVis) from vignettes for R CMD check ([0d1aad6](https://github.com/stanstrup/xcmsVis/commit/0d1aad611063e4a334bc1b3a9827afa1b26b3746))
+* restore library(xcmsVis) in vignette ([070bae0](https://github.com/stanstrup/xcmsVis/commit/070bae0b02650123007d903e5eee082944953e44))
+* reverse viridis scale in gplotChromPeakImage to match XCMS ([049d978](https://github.com/stanstrup/xcmsVis/commit/049d978bfaa868a78b52d01d80e94fe7e4af2668))
+
+
+### Features
+
+* add gplot() method for XChromatogram objects ([9dbbc33](https://github.com/stanstrup/xcmsVis/commit/9dbbc336da2e76416fe2819f91a05170366b3cf0))
+
 ## Changes in v0.99.3
 
 
