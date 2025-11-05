@@ -94,8 +94,7 @@ pdp <- PeakDensityParam(
   minFraction = 0.4,
   bw = 30
 )
-# Use SerialParam for faster processing with small datasets
-xdata_grouped <- groupChromPeaks(xdata_peaks, param = pdp, BPPARAM = SerialParam())
+xdata_grouped <- groupChromPeaks(xdata_peaks, param = pdp)
 ```
 
 # Basic Usage
@@ -223,7 +222,7 @@ pdp_filtered <- PeakDensityParam(
   minFraction = 0.4,
   bw = 30
 )
-xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp_filtered, BPPARAM = SerialParam())
+xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp_filtered)
 
 # Align filtered data
 pgp_filter <- PeakGroupsParam(minFraction = 0.4)

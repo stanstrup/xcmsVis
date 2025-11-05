@@ -105,10 +105,12 @@ The project follows standard R package conventions:
 ```r
 library(BiocParallel)
 
-# Always include BPPARAM = SerialParam() for:
+# Always include BPPARAM = SerialParam() for functions that support it:
 xdata <- readMsExperiment(spectraFiles = files, BPPARAM = SerialParam())
 xdata <- findChromPeaks(xdata, param = cwp, BPPARAM = SerialParam())
-xdata <- groupChromPeaks(xdata, param = pdp, BPPARAM = SerialParam())
+
+# Note: groupChromPeaks does NOT have BPPARAM parameter
+xdata <- groupChromPeaks(xdata, param = pdp)
 ```
 
 **Why SerialParam?**
@@ -121,6 +123,12 @@ xdata <- groupChromPeaks(xdata, param = pdp, BPPARAM = SerialParam())
 - All test files (`tests/testthat/`)
 - All vignettes and examples
 - Any code with small sample sizes (< 20 samples typically)
+
+**Which functions support BPPARAM:**
+- ✅ `readMsExperiment()` - supports BPPARAM
+- ✅ `findChromPeaks()` - supports BPPARAM
+- ❌ `groupChromPeaks()` - does NOT support BPPARAM
+- ❌ `adjustRtime()` - does NOT support BPPARAM
 
 **Note**: Users can still use parallel processing in production by omitting BPPARAM or setting their own parallel backend.
 
