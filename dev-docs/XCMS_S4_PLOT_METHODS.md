@@ -420,10 +420,11 @@ function (x, index = 1L, colPoints = "#00000060",
 ## Implementation Priority for xcmsVis
 
 ### High Priority ⭐⭐⭐
-1. **plot,XChromatogram,ANY** - Most versatile; single chromatogram display
-   - Create: `gplot.XChromatogram()` or `gplotChromatogram()`
+1. ✅ **plot,XChromatogram,ANY** - **DONE** (`gplot()`)
+   - Implemented as `gplot()` method for XChromatogram
    - ggplot2 equivalent with plotly support
-   - Multiple `peakType` options
+   - Multiple `peakType` options: polygon, point, rectangle, none
+   - Default: polygon (matches original XCMS)
 
 2. **plot,XChromatograms,ANY** - Multi-panel chromatogram grid
    - Create: `gplot.XChromatograms()` or `gplotChromatograms()`

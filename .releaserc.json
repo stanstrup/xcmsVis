@@ -22,7 +22,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "./prepare-news.sh ${nextRelease.version}"
+        "prepareCmd": "./.github/prepare-news.sh ${nextRelease.version}"
       }
     ],
     [
