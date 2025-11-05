@@ -21,19 +21,17 @@
 * add comprehensive testing and documentation for gplotAdjustedRtime ([552315e](https://github.com/stanstrup/xcmsVis/commit/552315ea8a83a0ab75e0a00c44ec09b2414e5395))
 * add helper function to get spectra data from both object types ([47038d7](https://github.com/stanstrup/xcmsVis/commit/47038d7ded63a1fb661028456cce79c7746557e0))
 
-## Changes in v1.0.0
-
+## Changes in v0.2.0
 
 ### Bug Fixes
 
 * correct GitHub Actions workflow and vignette workflow ([6dd52fd](https://github.com/stanstrup/xcmsVis/commit/6dd52fd2db53b6188958caa3e12cb3f4b18f7625))
 
-
 ### Features
 
 * add semantic versioning and improve package infrastructure ([86a0704](https://github.com/stanstrup/xcmsVis/commit/86a0704ec2618a84806e8ed8e8c94e223ee100a7))
 
-## Changes in v0.2.0
+## Changes in v0.1.0
 
 ### Features
 
@@ -48,7 +46,7 @@
 * Fix vignette to use real data instead of eval=FALSE examples
 * Update sample metadata extraction to handle both object types correctly
 
-## Changes in v0.1.0
+## Changes in v0.0.1
 
 ### Features
 
