@@ -236,7 +236,7 @@ p_linear + p_log
 
 ## Custom Color Scales
 
-By default, `gplotChromPeakImage()` uses the viridis color scale, which is perceptually uniform and colorblind-friendly. You can customize the color palette to suit your needs:
+By default, `gplotChromPeakImage()` uses the viridis color scale (reversed so higher values are darker, matching the original XCMS behavior). Viridis is perceptually uniform and colorblind-friendly. You can customize the color palette to suit your needs:
 
 ```{r custom_colors}
 #| fig-height: 4
@@ -244,15 +244,15 @@ By default, `gplotChromPeakImage()` uses the viridis color scale, which is perce
 #| fig-alt: "Comparison of different viridis color palettes (magma, plasma, inferno) for peak density heatmaps. Each palette provides different color schemes while maintaining perceptual uniformity."
 # Different viridis palettes
 p_magma <- gplotChromPeakImage(xdata, binSize = 30) +
-  scale_fill_viridis_c(option = "magma", name = "count") +
+  scale_fill_viridis_c(option = "magma", direction = -1, name = "count") +
   labs(title = "Magma palette")
 
 p_plasma <- gplotChromPeakImage(xdata, binSize = 30) +
-  scale_fill_viridis_c(option = "plasma", name = "count") +
+  scale_fill_viridis_c(option = "plasma", direction = -1, name = "count") +
   labs(title = "Plasma palette")
 
 p_inferno <- gplotChromPeakImage(xdata, binSize = 30) +
-  scale_fill_viridis_c(option = "inferno", name = "count") +
+  scale_fill_viridis_c(option = "inferno", direction = -1, name = "count") +
   labs(title = "Inferno palette")
 
 p_magma / p_plasma / p_inferno

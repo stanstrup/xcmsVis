@@ -96,7 +96,10 @@ NULL
     # Create the plot
     p <- ggplot(counts_df, aes(x = rt_center, y = sample_name, fill = count)) +
         geom_tile() +
-        scale_fill_viridis_c(name = if (log_transform) "log2(count)" else "count") +
+        scale_fill_viridis_c(
+            name = if (log_transform) "log2(count)" else "count",
+            direction = -1  # Reverse scale: higher values = darker (match original XCMS)
+        ) +
         scale_y_discrete(limits = rev(file_names)) +  # Reverse to match original
         theme_bw() +
         labs(
