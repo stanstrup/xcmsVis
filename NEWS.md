@@ -1,3 +1,10 @@
+## Changes in v1.1.2
+
+
+### Features
+
+* add gplotChromPeaks, gplotChromPeakImage, and ghighlightChromPeaks ([0893bfa](https://github.com/stanstrup/xcmsVis/commit/0893bfa073b1f26edb7f7114e3478604f3d8e6a7))
+
 ## Changes in v1.1.1
 
 
