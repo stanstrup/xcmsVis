@@ -17,15 +17,15 @@ Functions that work with modern XCMS objects (XCMSnExp, XcmsExperiment).
 
 | Function | What it Plots | Input Object(s) | Status | Priority for Replication |
 |----------|---------------|-----------------|--------|-------------------------|
-| `plotAdjustedRtime` | RT adjustment results: difference between adjusted and raw RT vs RT | XCMSnExp, XcmsExperiment | ✅ Active | ⭐⭐⭐ **DONE** |
-| `plotChromPeaks` | Detected chromatographic peaks as rectangles in RT-m/z space | XCMSnExp, XcmsExperiment | ✅ Active | ⭐⭐⭐ High |
-| `plotChromPeakImage` | Heatmap/image of peak density across samples and retention time | XCMSnExp, XcmsExperiment | ✅ Active | ⭐⭐ Medium |
+| `plotAdjustedRtime` | RT adjustment results: difference between adjusted and raw RT vs RT | XCMSnExp, XcmsExperiment | ✅ Active | ⭐⭐⭐ **DONE** (`gplotAdjustedRtime`) |
+| `plotChromPeaks` | Detected chromatographic peaks as rectangles in RT-m/z space | XCMSnExp, XcmsExperiment | ✅ Active | ⭐⭐⭐ **DONE** (`gplotChromPeaks`) |
+| `plotChromPeakImage` | Heatmap/image of peak density across samples and retention time | XCMSnExp, XcmsExperiment | ✅ Active | ⭐⭐ **DONE** (`gplotChromPeakImage`) |
 | `plotChromPeakDensity` | Peak density along RT with feature grouping visualization | XCMSnExp (with PeakDensityParam) | ✅ Active | ⭐⭐ Medium |
 | `plotFeatureGroups` | Feature groups in m/z-RT space with connecting lines | XCMSnExp, XcmsExperiment (with feature groups) | ✅ Active | ⭐⭐ Medium |
-| `highlightChromPeaks` | Adds peak annotations to existing chromatogram plots | XCMSnExp | ✅ Active | ⭐ Low (utility) |
+| `highlightChromPeaks` | Adds peak annotations to existing chromatogram plots | XCMSnExp | ✅ Active | ⭐ **DONE** (`ghighlightChromPeaks`) |
 | `plotPrecursorIons` | MS/MS precursor ions in RT-m/z space | MsExperiment (LC-MS/MS) | ✅ Active | ⭐ Low (MS/MS only) |
 | `plotChromatogramsOverlay` | Multiple chromatograms overlaid in one plot | MChromatograms, XChromatograms | ✅ Active | ⭐⭐ Medium |
-| `plot` (S4 method) | Standard plot interface for spectra/XIC with peaks | XCMSnExp, XChromatogram(s) | ✅ Active | ⭐⭐⭐ High |
+| `plot` (S4 method) | Standard plot interface for spectra/XIC with peaks | XCMSnExp, XChromatogram(s) | ✅ Active | ⭐⭐⭐ **DONE** (`gplot`) |
 
 ---
 
@@ -82,7 +82,7 @@ Functions designed for older XCMS objects. Many have modern equivalents.
 
 ---
 
-#### plotChromPeaks
+#### plotChromPeaks ✅ IMPLEMENTED
 **Purpose**: Visualize all detected chromatographic peaks
 **Input**: XCMSnExp, XcmsExperiment
 **Output**: Scatter plot with peaks as rectangles in RT-m/z space
@@ -96,9 +96,11 @@ Functions designed for older XCMS objects. Many have modern equivalents.
 - Identify m/z regions with many peaks
 - Check for systematic issues
 
+**Implementation status**: ✅ Available as `gplotChromPeaks()` in xcmsVis
+
 ---
 
-#### plotChromPeakImage
+#### plotChromPeakImage ✅ IMPLEMENTED
 **Purpose**: Heatmap showing peak density across samples
 **Input**: XCMSnExp, XcmsExperiment
 **Output**: Image/heatmap with samples (rows) vs RT bins (columns)
@@ -111,6 +113,8 @@ Functions designed for older XCMS objects. Many have modern equivalents.
 - Quality control across sample batches
 - Identify systematic missing peaks
 - Detect RT drift before alignment
+
+**Implementation status**: ✅ Available as `gplotChromPeakImage()` in xcmsVis
 
 ---
 
@@ -215,18 +219,18 @@ Functions designed for older XCMS objects. Many have modern equivalents.
 ## Prioritization for xcmsVis Implementation
 
 ### Priority 1: High Value ⭐⭐⭐
-1. ✅ `plotAdjustedRtime` - DONE
-2. `plotChromPeaks` - Core functionality, high usage
-3. `plot` (S4 methods) - Standard interface
+1. ✅ `plotAdjustedRtime` - **DONE** (`gplotAdjustedRtime`)
+2. ✅ `plotChromPeaks` - **DONE** (`gplotChromPeaks`)
+3. ✅ `plot` (S4 methods) - **DONE** (`gplot`)
 
 ### Priority 2: Medium Value ⭐⭐
-4. `plotChromPeakImage` - Useful QC
+4. ✅ `plotChromPeakImage` - **DONE** (`gplotChromPeakImage`)
 5. `plotChromPeakDensity` - Parameter optimization
 6. `plotFeatureGroups` - Feature annotation QC
 7. `plotChromatogramsOverlay` - Common use case
 
 ### Priority 3: Lower Priority ⭐
-8. `highlightChromPeaks` - Utility function
+8. ✅ `highlightChromPeaks` - **DONE** (`ghighlightChromPeaks`)
 9. `plotPrecursorIons` - MS/MS specific
 10. Legacy functions - Lower priority as they're being phased out
 

@@ -18,11 +18,11 @@ Implement ggplot2 versions of additional XCMS plotting functions:
 
 ### Priority 2: Peak Visualization
 
-- **`gplotChromPeaks()`** - Chromatographic peak visualization
+- ✅ **`gplotChromPeaks()`** - Chromatographic peak visualization (COMPLETED)
   - Display detected peaks as rectangles in m/z-RT space
   - Show peak width in both dimensions
 
-- **`gplotChromPeakImage()`** - Peak intensity heatmap
+- ✅ **`gplotChromPeakImage()`** - Peak intensity heatmap (COMPLETED)
   - Color intensity plot of peak counts across RT
   - Support binning and log transformation
 
@@ -32,10 +32,11 @@ Implement ggplot2 versions of additional XCMS plotting functions:
 
 ### Priority 3: Chromatograms
 
+- ✅ **`gplot()`** - Plot XChromatogram objects with detected peaks (COMPLETED)
+- ✅ **`ghighlightChromPeaks()`** - Add peak annotations to chromatograms (COMPLETED)
 - **`gplotEIC()`** - Extracted ion chromatograms
 - **`gplotTIC()`** - Total ion chromatogram
 - **`gplotBPC()`** - Base peak chromatogram
-- **`gplotChrom()`** - General chromatogram plotting
 - **`gplotChromatogramsOverlay()`** - Compare multiple chromatograms
 
 ### Priority 4: Additional Visualizations
