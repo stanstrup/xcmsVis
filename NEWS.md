@@ -1,3 +1,10 @@
+## Changes in v1.1.3
+
+
+### Bug Fixes
+
+* constrain version to 0.99.x for Bioconductor development ([5de5bfd](https://github.com/stanstrup/xcmsVis/commit/5de5bfd0250e6f7ae59a1c4c363865f39db0b99c))
+
 ## Changes in v1.1.2
 
 
