@@ -66,17 +66,37 @@ The grey circles represent individual peaks that were used for alignment,
 and the grey dashed lines connect peaks from the same feature across samples.
 }
 \examples{
-\dontrun{
+\donttest{
 library(xcmsVis)
 library(xcms)
+library(faahKO)
+library(MsExperiment)
+library(BiocParallel)
 
-# After performing XCMS workflow with retention time correction
+# Load example data
+cdf_files <- dir(system.file("cdf", package = "faahKO"),
+                 recursive = TRUE, full.names = TRUE)[1:3]
+
+# Create XcmsExperiment and perform basic workflow
+xdata <- readMsExperiment(spectraFiles = cdf_files, BPPARAM = SerialParam())
+MsExperiment::sampleData(xdata)$sample_group <- c("KO", "KO", "WT")
+
+# Peak detection
+cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)
+xdata <- findChromPeaks(xdata, param = cwp, BPPARAM = SerialParam())
+
+# Peak grouping
+pdp <- PeakDensityParam(sampleGroups = c("KO", "KO", "WT"),
+                        minFraction = 0.4, bw = 30)
+xdata <- groupChromPeaks(xdata, param = pdp)
+
+# Retention time adjustment
+pgp <- PeakGroupsParam(minFraction = 0.4)
+xdata <- adjustRtime(xdata, param = pgp)
+
+# Create plot
 p <- gplotAdjustedRtime(xdata, color_by = sample_group)
 print(p)
-
-# Make interactive
-library(plotly)
-ggplotly(p, tooltip = "text")
 }
 
 }
