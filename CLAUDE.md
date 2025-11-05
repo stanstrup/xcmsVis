@@ -98,6 +98,32 @@ The project follows standard R package conventions:
 - Use `testthat::test_file()` to run individual test files
 - Ensure all major code paths are covered
 
+## Bioconductor Parallel Processing
+
+**IMPORTANT**: Always use `SerialParam()` for example code and tests:
+
+```r
+library(BiocParallel)
+
+# Always include BPPARAM = SerialParam() for:
+xdata <- readMsExperiment(spectraFiles = files, BPPARAM = SerialParam())
+xdata <- findChromPeaks(xdata, param = cwp, BPPARAM = SerialParam())
+xdata <- groupChromPeaks(xdata, param = pdp, BPPARAM = SerialParam())
+```
+
+**Why SerialParam?**
+- **Faster for small datasets**: Avoids parallel processing overhead
+- **Eliminates warnings**: Prevents "'package:stats' may not be available" warnings
+- **Cleaner output**: No parallel-related messages
+- **Better for reproducibility**: Consistent behavior across systems
+
+**When to use SerialParam:**
+- All test files (`tests/testthat/`)
+- All vignettes and examples
+- Any code with small sample sizes (< 20 samples typically)
+
+**Note**: Users can still use parallel processing in production by omitting BPPARAM or setting their own parallel backend.
+
 ## Adding New Functions
 
 When implementing new XCMS plotting functions:
