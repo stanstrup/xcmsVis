@@ -10,3 +10,5 @@ package-lock.json
 .claude/
 ..Rcheck
 xcmsVis.BiocCheck
+vignettes/*_files/
+vignettes/*.html
