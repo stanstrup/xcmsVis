@@ -1,19 +1,21 @@
-## Changes in v1.1.2
+## Changes in v0.99.2
 
 
 ### Features
 
 * add gplotChromPeaks, gplotChromPeakImage, and ghighlightChromPeaks ([0893bfa](https://github.com/stanstrup/xcmsVis/commit/0893bfa073b1f26edb7f7114e3478604f3d8e6a7))
-
-## Changes in v1.1.1
+* add SystemRequirements for Quarto vignettes ([498afc6](https://github.com/stanstrup/xcmsVis/commit/498afc6704c0170096651405fe0be09ca0ce3ee3))
+* add comprehensive vignette for peak visualization functions
 
 
 ### Bug Fixes
 
+* constrain version to 0.99.x for Bioconductor development
 * 1) convert from MsExperiment to XcmsExperiment to skip the peak picking ([707aadb](https://github.com/stanstrup/xcmsVis/commit/707aadb2b16d70c2e069997e9f4432919be88199))
 * account for OnDiskMSnExp and get filenames if not in pData. ([b1af112](https://github.com/stanstrup/xcmsVis/commit/b1af11225513a780bf09cac9fcfa72d6f6f87299))
 * add BiocParallel to Suggests and fix fileNames import ([69fb33e](https://github.com/stanstrup/xcmsVis/commit/69fb33e6c828329101eb5085d4f66cfac6048913))
 * add missing dplyr::n import to utils.R ([dd8b918](https://github.com/stanstrup/xcmsVis/commit/dd8b9185762a2e3e48575bf637f8bd44db0d1a5b))
+* add Quarto setup to GitHub Actions workflows
 * address BiocCheck requirements ([b1c4d5f](https://github.com/stanstrup/xcmsVis/commit/b1c4d5fef22ed0f8d4e93bcc9065d395837c62d0))
 * coerce instead of new peakpicking ([159c06a](https://github.com/stanstrup/xcmsVis/commit/159c06a9f25603e00943db8f4b5793afce1a4071))
 * consistency of objects ([5e52665](https://github.com/stanstrup/xcmsVis/commit/5e5266556dd2e595bd5526089089e3f24607d0c4))
@@ -25,11 +27,6 @@
 * remove unused methods from Imports ([358535b](https://github.com/stanstrup/xcmsVis/commit/358535bc4663e846b1269f78daf9f5334c54014c))
 * resolve R CMD check warnings ([d892e19](https://github.com/stanstrup/xcmsVis/commit/d892e19dd13d14d9ad1e08b57a3c4f5ada25a101))
 * use SerialParam in tests to avoid parallel processing warnings ([abbfb4f](https://github.com/stanstrup/xcmsVis/commit/abbfb4f58dd1151dad2e41921d40c5664e7d9a4c))
-
-
-### Features
-
-* add SystemRequirements for Quarto vignettes ([498afc6](https://github.com/stanstrup/xcmsVis/commit/498afc6704c0170096651405fe0be09ca0ce3ee3))
 
 
 ### Performance Improvements
