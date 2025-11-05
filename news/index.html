@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,6 +20,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Vignettes</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes"><li><a class="dropdown-item" href="../articles/gplotAdjustedRtime.html">gplotAdjustedRtime - Retention Time Adjustment</a></li>
+    <li><a class="dropdown-item" href="../articles/peak-visualization.html">Peak Visualization Functions</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/stanstrup/xcmsVis" aria-label="GitHub repository"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -35,6 +36,36 @@
       <small>Source: <a href="https://github.com/stanstrup/xcmsVis/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1.1" id="changes-in-v111">Changes in v1.1.1<a class="anchor" aria-label="anchor" href="#changes-in-v111"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-1-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-1-1"></a></h3>
+<ul><li><ol style="list-style-type: decimal"><li>convert from MsExperiment to XcmsExperiment to skip the peak picking (<a href="https://github.com/stanstrup/xcmsVis/commit/707aadb2b16d70c2e069997e9f4432919be88199" class="external-link">707aadb</a>)</li>
+</ol></li>
+<li>account for OnDiskMSnExp and get filenames if not in pData. (<a href="https://github.com/stanstrup/xcmsVis/commit/b1af11225513a780bf09cac9fcfa72d6f6f87299" class="external-link">b1af112</a>)</li>
+<li>add BiocParallel to Suggests and fix fileNames import (<a href="https://github.com/stanstrup/xcmsVis/commit/69fb33e6c828329101eb5085d4f66cfac6048913" class="external-link">69fb33e</a>)</li>
+<li>add missing dplyr::n import to utils.R (<a href="https://github.com/stanstrup/xcmsVis/commit/dd8b9185762a2e3e48575bf637f8bd44db0d1a5b" class="external-link">dd8b918</a>)</li>
+<li>address BiocCheck requirements (<a href="https://github.com/stanstrup/xcmsVis/commit/b1c4d5fef22ed0f8d4e93bcc9065d395837c62d0" class="external-link">b1c4d5f</a>)</li>
+<li>coerce instead of new peakpicking (<a href="https://github.com/stanstrup/xcmsVis/commit/159c06a9f25603e00943db8f4b5793afce1a4071" class="external-link">159c06a</a>)</li>
+<li>consistency of objects (<a href="https://github.com/stanstrup/xcmsVis/commit/5e5266556dd2e595bd5526089089e3f24607d0c4" class="external-link">5e52665</a>)</li>
+<li>correct version ordering in NEWS.md (<a href="https://github.com/stanstrup/xcmsVis/commit/026dbcfe338f7752cf588ce856b969f16aa95502" class="external-link">026dbcf</a>)</li>
+<li>corrected tests. (<a href="https://github.com/stanstrup/xcmsVis/commit/3b61b79361a7ada898e6f8832a39be9c51297702" class="external-link">3b61b79</a>)</li>
+<li>properly import is() from methods package (<a href="https://github.com/stanstrup/xcmsVis/commit/4086c92e4c877c82113a61b0ce17b774b1f895d3" class="external-link">4086c92</a>)</li>
+<li>remove BPPARAM from groupChromPeaks calls (<a href="https://github.com/stanstrup/xcmsVis/commit/26eec03cdeab6d6eac078819de9dc37fd4ed26ac" class="external-link">26eec03</a>)</li>
+<li>remove links from NEWS.md headings for pkgdown compatibility (<a href="https://github.com/stanstrup/xcmsVis/commit/8262eec7cd6e35cdd0b3196c7ec7fbce291b2178" class="external-link">8262eec</a>)</li>
+<li>remove unused methods from Imports (<a href="https://github.com/stanstrup/xcmsVis/commit/358535bc4663e846b1269f78daf9f5334c54014c" class="external-link">358535b</a>)</li>
+<li>resolve R CMD check warnings (<a href="https://github.com/stanstrup/xcmsVis/commit/d892e19dd13d14d9ad1e08b57a3c4f5ada25a101" class="external-link">d892e19</a>)</li>
+<li>use SerialParam in tests to avoid parallel processing warnings (<a href="https://github.com/stanstrup/xcmsVis/commit/abbfb4f58dd1151dad2e41921d40c5664e7d9a4c" class="external-link">abbfb4f</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="features-1-1-1">Features<a class="anchor" aria-label="anchor" href="#features-1-1-1"></a></h3>
+<ul><li>add SystemRequirements for Quarto vignettes (<a href="https://github.com/stanstrup/xcmsVis/commit/498afc6704c0170096651405fe0be09ca0ce3ee3" class="external-link">498afc6</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="performance-improvements-1-1-1">Performance Improvements<a class="anchor" aria-label="anchor" href="#performance-improvements-1-1-1"></a></h3>
+<ul><li>use SerialParam in vignette for faster processing (<a href="https://github.com/stanstrup/xcmsVis/commit/382f301d2925e0da8d9392dfee4c9350c152974b" class="external-link">382f301</a>)</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.99.0" id="changes-in-v0990">Changes in v0.99.0<a class="anchor" aria-label="anchor" href="#changes-in-v0990"></a></h2>
 <div class="section level3">

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,6 +20,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Vignettes</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes"><li><a class="dropdown-item" href="articles/gplotAdjustedRtime.html">gplotAdjustedRtime - Retention Time Adjustment</a></li>
+    <li><a class="dropdown-item" href="articles/peak-visualization.html">Peak Visualization Functions</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/stanstrup/xcmsVis" aria-label="GitHub repository"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -38,9 +39,8 @@
 <div id="current-tasks" class="section level1">
 
 <p><strong>See <code>CLAUDE.md</code> for development workflow, conventions, and resources.</strong></p>
-<p>fix the following check warnings:</p>
-<p>─ checking R code for possible problems … [46s] NOTE (45.7s) .get_spectra_data: no visible global function definition for ‘n’ .get_spectra_data: no visible binding for global variable ‘retentionTime_adjusted’ Undefined global functions or variables: n retentionTime_adjusted</p>
-<p>N checking top-level files … Non-standard file/directory found at top level: ‘LICENSE.md’</p>
+<p>Read the XCMS source code and try to implement ggplot2 versions of the following plots: * plotChromPeaks ✅ COMPLETED * plotChromPeakImage ✅ COMPLETED * highlightChromPeaks ✅ COMPLETED</p>
+<p>Included should be tests and a vignette (I think these 3 can live together). * Tests ✅ COMPLETED (31 tests, all passing) * Vignette - IN PROGRESS</p>
 </div>
 
   </main></div>
