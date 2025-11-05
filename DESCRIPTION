@@ -42,6 +42,7 @@ Suggests:
     BiocParallel,
     faahKO
 VignetteBuilder: quarto
+SystemRequirements: quarto
 biocViews: Metabolomics, MassSpectrometry, Visualization
 Collate: 
     'utils.R'

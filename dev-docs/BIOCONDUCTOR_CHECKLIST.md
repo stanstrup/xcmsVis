@@ -4,16 +4,16 @@
 
 ### Required Changes Before Submission
 
-#### 1. Version Number ❌
-- **Current**: `1.1.0`
+#### 1. Version Number ✅
+- **Current**: `0.99.0`
 - **Required**: `0.99.0` (or `0.99.x` for new submissions)
-- **Action**: Change Version in DESCRIPTION to `0.99.0`
+- **Status**: ✅ Changed
 
-#### 2. Vignette Builder ⚠️
-- **Current**: `quarto`
-- **Recommended**: `knitr` (standard for Bioconductor)
-- **Action**: Consider converting Quarto vignettes to R Markdown, or verify Quarto vignettes are acceptable
-- **Note**: Bioconductor traditionally uses `knitr` with R Markdown (.Rmd). Quarto (.qmd) support may be limited
+#### 2. Quarto SystemRequirements ✅
+- **Current**: `VignetteBuilder: quarto`
+- **Required**: `SystemRequirements: quarto` in DESCRIPTION
+- **Status**: ✅ Added
+- **Note**: Quarto vignettes are officially supported by Bioconductor (see [docs](https://contributions.bioconductor.org/docs.html))
 
 #### 3. R CMD check Status ⚠️
 - **Action**: Must pass `R CMD check` with no ERRORS, no WARNINGS
