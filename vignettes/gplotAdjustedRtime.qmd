@@ -39,6 +39,7 @@ library(ggplot2)
 library(plotly)
 library(faahKO)
 library(MsExperiment)
+library(BiocParallel)
 ```
 
 # Data Preparation
@@ -54,7 +55,11 @@ cdf_files <- dir(system.file("cdf", package = "faahKO"),
 cdf_files <- cdf_files[c(1:3, 7:9)]
 
 # Load data as XcmsExperiment
-xdata_raw <- readMsExperiment(spectraFiles = cdf_files)
+# Use SerialParam for faster processing with small datasets
+xdata_raw <- readMsExperiment(
+  spectraFiles = cdf_files,
+  BPPARAM = SerialParam()
+)
 
 # Add sample metadata
 sample_group <- rep(c("KO", "WT"), each = 3)
@@ -78,7 +83,8 @@ cwp <- CentWaveParam(
   peakwidth = c(20, 80),
   ppm = 25
 )
-xdata_peaks <- findChromPeaks(xdata_raw, param = cwp)
+# Use SerialParam for faster processing with small datasets
+xdata_peaks <- findChromPeaks(xdata_raw, param = cwp, BPPARAM = SerialParam())
 
 # Initial correspondence (peak grouping) - done once for all examples
 sample_data <- xcmsVis:::.get_sample_data(xdata_peaks)
@@ -88,7 +94,8 @@ pdp <- PeakDensityParam(
   minFraction = 0.4,
   bw = 30
 )
-xdata_grouped <- groupChromPeaks(xdata_peaks, param = pdp)
+# Use SerialParam for faster processing with small datasets
+xdata_grouped <- groupChromPeaks(xdata_peaks, param = pdp, BPPARAM = SerialParam())
 ```
 
 # Basic Usage
@@ -216,7 +223,7 @@ pdp_filtered <- PeakDensityParam(
   minFraction = 0.4,
   bw = 30
 )
-xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp_filtered)
+xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp_filtered, BPPARAM = SerialParam())
 
 # Align filtered data
 pgp_filter <- PeakGroupsParam(minFraction = 0.4)
