@@ -1,5 +1,12 @@
 # xcmsVis
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/stanstrup/xcmsVis/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stanstrup/xcmsVis/actions/workflows/R-CMD-check.yaml)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+<!-- badges: end -->
+
 Modern, interactive visualizations for XCMS metabolomics data using ggplot2.
 
 ## Overview
@@ -24,13 +31,16 @@ This package complements the [XCMS package](https://github.com/sneumann/xcms) by
 
 ### Current Functions
 
-- `gplotAdjustedRtime()` - ggplot2 version of XCMS's `plotAdjustedRtime()`
+- `gplotAdjustedRtime()` - ggplot2 version of `plotAdjustedRtime()`
+- `gplotChromPeaks()` - ggplot2 version of `plotChromPeaks()`
+- `gplotChromPeakImage()` - ggplot2 version of `plotChromPeakImage()`
+- `gplot()` - ggplot2 version of `plot()` for XChromatogram objects
+- `ghighlightChromPeaks()` - ggplot2 version of `highlightChromPeaks()`
 
 ### Planned Functions
 
 Future releases will include ggplot2 versions of:
 - `plotQC()`
-- `plotChromPeaks()`
 - `plotChromPeakDensity()`
 - And more!
 
