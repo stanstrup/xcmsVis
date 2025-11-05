@@ -23,12 +23,21 @@ if (requireNamespace("xcms", quietly = TRUE) &&
   )
 
   # Create XcmsExperiment object
-  xdata_exp <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
+  # Use SerialParam to avoid parallel processing warnings in tests
+  xdata_exp <- MsExperiment::readMsExperiment(
+    spectraFiles = cdf_files,
+    BPPARAM = BiocParallel::SerialParam()
+  )
   MsExperiment::sampleData(xdata_exp)$sample_name <- pd$sample_name
   MsExperiment::sampleData(xdata_exp)$sample_group <- pd$sample_group
 
   # Perform peak detection on XcmsExperiment
-  xdata_exp <- xcms::findChromPeaks(xdata_exp, param = cwp)
+  # Use SerialParam to avoid parallel processing warnings in tests
+  xdata_exp <- xcms::findChromPeaks(
+    xdata_exp,
+    param = cwp,
+    BPPARAM = BiocParallel::SerialParam()
+  )
 
 
   # Perform peak detection on XCMSnExp
