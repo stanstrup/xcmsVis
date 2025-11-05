@@ -10,13 +10,11 @@
 #' @return ggplot object
 #' @keywords internal
 #' @noRd
-#' @importFrom methods is
-#' @importFrom stats setNames na.omit
-#' @importFrom xcms rtime hasAdjustedRtime fromFile processHistory processParam
-#' @importFrom MsExperiment sampleData
+#' @importFrom stats na.omit
+#' @importFrom xcms hasAdjustedRtime processHistory processParam
 #' @importFrom tibble tibble as_tibble rownames_to_column
-#' @importFrom tidyr separate pivot_wider pivot_longer unnest unite
-#' @importFrom dplyr %>% mutate filter select bind_rows bind_cols right_join left_join group_by group_nest rename pull all_of join_by
+#' @importFrom tidyr pivot_longer unnest unite
+#' @importFrom dplyr %>% mutate filter select right_join left_join inner_join group_by group_nest rename pull all_of join_by
 #' @importFrom purrr map map_lgl pluck map2 imap_dfr
 #' @importFrom ggplot2 ggplot aes geom_line geom_point theme_bw
 .gplotAdjustedRtime_impl <- function(object,
@@ -38,12 +36,12 @@
   rts <- .get_spectra_data(object) %>%
     left_join(sample_data, by = c(dataOrigin = "spectraOrigin")) %>%
     as_tibble() %>%
-    select(fromFile, raw = rtime, adjusted = rtime_adjusted)
+    select(spectraOrigin_base, raw = rtime, adjusted = rtime_adjusted)
 
   # Add sample metadata
   rts <- sample_data %>%
     as_tibble() %>%
-    right_join(rts, by = "fromFile", multiple = "all")
+    right_join(rts, by = "spectraOrigin_base", multiple = "all")
 
 
   # Get the peak groups matrix and prepare for plotting
@@ -66,28 +64,22 @@
     xcms:::peakGroupsMatrix() %>%
     as.data.frame()
 
-   new_names <-
-   tibble(spectraOrigin_base = colnames(pkGroup)) %>%
-    left_join(sample_data, by = join_by(spectraOrigin_base)) %>%
-     pull(fromFile)
-
   pkGroup <- pkGroup %>%
-    select(which(!is.na(new_names))) %>%  # if you filter after RT adjustment you no longer have the metadata.
-    setNames(., na.omit(new_names)) %>%
     rownames_to_column("feature") %>%
     as_tibble() %>%
-    pivot_longer(-feature, names_to = "fromFile", values_to = "rtime") %>%
-    mutate(fromFile = as.integer(fromFile)) %>%
-    group_by(fromFile) %>%
+    pivot_longer(-feature, names_to = "spectraOrigin_base", values_to = "rtime") %>%
+    group_by(spectraOrigin_base) %>%
     group_nest(.key = "feature")
+
+
 
   # Calculate adjusted retention times for peak groups
   good_peaks <- rts %>%
-    select(fromFile, raw, adjusted) %>%
-    filter(fromFile %in% pkGroup$fromFile) %>%
-    group_by(fromFile) %>%
+    select(spectraOrigin_base, raw, adjusted) %>%
+    filter(spectraOrigin_base %in% pkGroup$spectraOrigin_base   ) %>%
+    group_by(spectraOrigin_base) %>%
     group_nest(.key = "correction") %>%
-    right_join(pkGroup, by = "fromFile") %>%
+    inner_join(pkGroup, by = "spectraOrigin_base") %>%
     mutate(
       feature_correct = map2(
         feature,
@@ -120,6 +112,9 @@
     imap_dfr(~ paste(.y, .x, sep = ": ")) %>%
     unite(text, sep = "<br>") %>%
     bind_cols(rts, .)
+
+
+
 
   # Create the plot
   p <- ggplot(

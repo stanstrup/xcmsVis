@@ -24,20 +24,17 @@ utils::globalVariables(c(
 #' @keywords internal
 #' @importFrom MsExperiment sampleData
 #' @importFrom Biobase pData
-#' @importFrom dplyr rename
 .get_sample_data <- function(object) {
   .validate_xcms_object(object)
 
   if (is(object, "XcmsExperiment")) {
     out <- object %>%
       sampleData %>%
-      as.data.frame %>%
-      rename(fromFile = sample_index)
+      as.data.frame
 
   } else if (is(object, "XCMSnExp")) {
 
-    out <- pData(object) %>%
-            rename(fromFile = sample_index)
+    out <- pData(object)
 
   }
 
@@ -60,7 +57,6 @@ utils::globalVariables(c(
 #' @importFrom Spectra spectraData
 #' @importFrom xcms rtime
 #' @importFrom MSnbase fData
-#' @importFrom tibble rownames_to_column
 #' @importFrom dplyr mutate rename left_join
 .get_spectra_data <- function(object) {
   .validate_xcms_object(object)
@@ -73,7 +69,8 @@ utils::globalVariables(c(
 
   } else if (is(object, "XCMSnExp")) {
     # Get sample data for joining
-    sample_data <- pData(object)[,c("sample_index", "spectraOrigin")]
+    sample_data <- .get_sample_data(object) %>%
+                    mutate(fileIdx = 1:n())
 
     out <- fData(object)
 
@@ -83,11 +80,8 @@ utils::globalVariables(c(
           }
 
      out <- out %>%
-            rownames_to_column("fromFile") %>%
-            mutate(fromFile = as.integer(gsub("^F(.*?)\\.S.*", "\\1", fromFile))) %>%
-            left_join(sample_data, by = c(fromFile = "sample_index")) %>%
-            rename(rtime = retentionTime, rtime_adjusted = retentionTime_adjusted, dataOrigin = "spectraOrigin") %>%
-            select(-fromFile)
+            left_join(sample_data, by = "fileIdx") %>%
+            rename(rtime = retentionTime, rtime_adjusted = retentionTime_adjusted, dataOrigin = "spectraOrigin")
   }
 
   return(out)
