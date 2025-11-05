@@ -34,6 +34,7 @@ This vignette demonstrates the `gplotAdjustedRtime()` function, which provides a
 
 ```{r libraries}
 library(xcms)
+library(xcmsVis)
 library(ggplot2)
 library(plotly)
 library(faahKO)

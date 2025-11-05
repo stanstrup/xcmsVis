@@ -45,6 +45,7 @@ library(plotly)
 library(faahKO)
 library(MsExperiment)
 library(BiocParallel)
+library(xcmsVis)
 ```
 
 # Data Preparation
