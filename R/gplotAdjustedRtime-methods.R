@@ -17,6 +17,7 @@
 #' @importFrom dplyr %>% mutate filter select right_join left_join inner_join group_by group_nest rename pull all_of join_by bind_cols
 #' @importFrom purrr map map_lgl pluck map2 imap_dfr
 #' @importFrom ggplot2 ggplot aes geom_line geom_point theme_bw
+#' @importFrom methods is
 .gplotAdjustedRtime_impl <- function(object,
                                       color_by,
                                       include_columns = NULL,
@@ -34,14 +35,9 @@
 
   # Get spectra data - helper handles both object types
   rts <- .get_spectra_data(object) %>%
-    left_join(sample_data, by = c(dataOrigin = "spectraOrigin")) %>%
+    left_join(sample_data, by = "spectraOrigin_base") %>%
     as_tibble() %>%
-    select(spectraOrigin_base, raw = rtime, adjusted = rtime_adjusted)
-
-  # Add sample metadata
-  rts <- sample_data %>%
-    as_tibble() %>%
-    right_join(rts, by = "spectraOrigin_base", multiple = "all")
+    select(colnames(sample_data), spectraOrigin_base, raw = rtime, adjusted = rtime_adjusted)
 
 
   # Get the peak groups matrix and prepare for plotting

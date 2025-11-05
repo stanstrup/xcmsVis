@@ -30,6 +30,7 @@ Imports:
     tidyr,
     dplyr,
     purrr,
+    methods,
     Biobase
 Suggests:
     plotly,

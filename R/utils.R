@@ -28,6 +28,7 @@ utils::globalVariables(c(
 #' @importFrom MsExperiment sampleData
 #' @importFrom Biobase pData
 #' @importFrom MSnbase fileNames
+#' @importFrom methods is
 
 .get_sample_data <- function(object) {
   .validate_xcms_object(object)
@@ -66,7 +67,8 @@ utils::globalVariables(c(
 #' @importFrom Spectra spectraData
 #' @importFrom xcms rtime
 #' @importFrom MSnbase fData
-#' @importFrom dplyr mutate rename left_join n
+#' @importFrom dplyr mutate rename left_join n select
+#' @importFrom methods is
 .get_spectra_data <- function(object) {
   .validate_xcms_object(object)
 
@@ -74,7 +76,9 @@ utils::globalVariables(c(
     out <- object %>%
             spectra() %>%
             spectraData() %>%
-            as.data.frame()
+            as.data.frame() %>%
+            mutate(spectraOrigin_base = basename(dataOrigin)) %>%
+            select(dataOrigin, spectraOrigin_base, rtime, rtime_adjusted)
 
   } else if (is(object, "XCMSnExp") | is(object, "OnDiskMSnExp")) {
     # Get sample data for joining
@@ -86,11 +90,13 @@ utils::globalVariables(c(
           if(!("retentionTime_adjusted" %in% names(object))){ # not sure why it is there sometimes and sometimes not
            out <- out %>%
                     mutate(retentionTime_adjusted = rtime(object, adjusted = TRUE))
+
           }
 
      out <- out %>%
             left_join(sample_data, by = "fileIdx") %>%
-            rename(rtime = retentionTime, rtime_adjusted = retentionTime_adjusted, dataOrigin = "spectraOrigin")
+            rename(rtime = retentionTime, rtime_adjusted = retentionTime_adjusted, dataOrigin = "spectraOrigin") %>%
+            select(dataOrigin, spectraOrigin_base, rtime, rtime_adjusted)
   }
 
   return(out)
@@ -101,6 +107,7 @@ utils::globalVariables(c(
 #' @param object Object to validate
 #' @return TRUE if valid, stops with error otherwise
 #' @keywords internal
+#' @importFrom methods is
 .validate_xcms_object <- function(object) {
   if (!is(object, "XCMSnExp") && !is(object, "XcmsExperiment") && !is(object, "OnDiskMSnExp")) {
     stop("'object' must be an 'XCMSnExp', 'OnDiskMSnExp' or 'XcmsExperiment' object.",
