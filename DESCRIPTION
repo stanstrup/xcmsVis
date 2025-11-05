@@ -49,6 +49,7 @@ Collate:
     'utils.R'
     'AllGenerics.R'
     'ghighlightChromPeaks-methods.R'
+    'gplot-methods.R'
     'gplotAdjustedRtime-methods.R'
     'gplotChromPeakImage-methods.R'
     'gplotChromPeaks-methods.R'

@@ -264,3 +264,57 @@ setGeneric("ghighlightChromPeaks", function(object,
                                             whichPeaks = c("any", "within", "apex_within"),
                                             msLevel = 1L)
   standardGeneric("ghighlightChromPeaks"))
+
+#' ggplot2 Version of plot for XChromatogram
+#'
+#' @description
+#' Creates a ggplot2 version of a chromatogram with detected peaks marked.
+#' This is equivalent to the base R `plot()` method for XChromatogram objects.
+#'
+#' @param x An `XChromatogram` or `MChromatograms` object.
+#' @param col Color for the chromatogram line (default: "black").
+#' @param lty Line type for chromatogram (default: 1).
+#' @param type Plot type (default: "l" for line).
+#' @param xlab X-axis label (default: "retention time").
+#' @param ylab Y-axis label (default: "intensity").
+#' @param main Plot title (default: NULL).
+#' @param peakType Type of peak annotation: "point", "polygon", "rectangle", or "none"
+#'   (default: "point").
+#' @param peakCol Color for peak markers (default: "#00000060").
+#' @param peakBg Background color for peak markers (default: "#00000020").
+#' @param peakPch Point character for peak markers when peakType = "point" (default: 1).
+#' @param ... Additional arguments (for compatibility with plot).
+#'
+#' @return A ggplot object.
+#'
+#' @details
+#' This function creates a complete chromatogram plot with detected peaks
+#' automatically marked, similar to the base R `plot()` method for
+#' XChromatogram objects. If the chromatogram contains detected peaks,
+#' they will be shown according to the `peakType` parameter.
+#'
+#' @examples
+#' \donttest{
+#' library(xcmsVis)
+#' library(xcms)
+#' library(faahKO)
+#' library(ggplot2)
+#'
+#' # Load and process example data
+#' cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
+#' xdata <- readMsExperiment(spectraFiles = cdf_files)
+#' xdata <- findChromPeaks(xdata, param = CentWaveParam())
+#'
+#' # Extract chromatogram
+#' chr <- chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
+#'
+#' # Plot with ggplot2
+#' gplot(chr[1, 1])
+#' }
+#'
+#' @seealso
+#' \code{\link[xcms]{plot,XChromatogram-method}} for the original XCMS implementation
+#'
+#' @export
+setGeneric("gplot", function(x, ...)
+  standardGeneric("gplot"))

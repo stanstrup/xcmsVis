@@ -285,11 +285,14 @@ p_gradient + p_brewer
 ggplotly(p3)
 ```
 
-# ghighlightChromPeaks: Annotating Chromatograms
+# Chromatogram Plotting: gplot() and ghighlightChromPeaks()
 
-The `ghighlightChromPeaks()` function adds peak annotations to existing chromatogram plots. It returns ggplot2 layers that can be added to chromatogram visualizations.
+xcmsVis provides two approaches for plotting chromatograms:
 
-## Basic Usage
+1. **`gplot(XChromatogram)`** - Complete chromatogram plot with detected peaks automatically marked (equivalent to `plot()`)
+2. **`ghighlightChromPeaks()`** - Composable layers for adding peak annotations to existing plots
+
+## gplot(): Automatic Chromatogram Plotting
 
 First, let's extract a chromatogram for a specific m/z range:
 
@@ -316,15 +319,9 @@ chr_data <- data.frame(
 ```{r original_highlight}
 #| fig-height: 5
 #| fig-width: 5
-#| fig-alt: "XCMS highlightChromPeaks showing base R plot of chromatogram with detected peaks highlighted as points at peak apex positions. Traditional graphics style with simple point markers. Only XCMSnExp is supported."
-# Base R graphics version
-plot(chr[1, 1], main = "XCMS highlightChromPeaks")
-highlightChromPeaks(as(xdata, "XCMSnExp"), 
-                    rt = rt_range, 
-                    mz = mz_range,
-                    type = "point", 
-                    col = "red"
-                    )
+#| fig-alt: "XCMS plot showing base R chromatogram with detected peaks automatically marked as points. Traditional graphics style."
+# Base R graphics version - plot() automatically shows peaks
+plot(chr[1, 1], main = "XCMS plot(XChromatogram)")
 ```
 
 </div>
@@ -332,31 +329,21 @@ highlightChromPeaks(as(xdata, "XCMSnExp"),
 
 ### xcmsVis ggplot2 Version
 
-```{r ggplot_highlight}
+```{r ggplot_chromatogram}
 #| fig-height: 5
 #| fig-width: 5
-#| fig-alt: "ggplot2 version showing chromatogram with peak annotations as composable layers. Modern styling with customizable colors and transparent fills for better visualization."
-# ggplot2 version - returns layers that can be added to existing plots
-p_chrom <- ggplot(chr_data, aes(x = rt, y = intensity)) +
-  geom_line() +
-  theme_bw() +
-  labs(title = "xcmsVis ghighlightChromPeaks",
-       x = "Retention Time (s)", y = "Intensity")
-
-peak_layers <- ghighlightChromPeaks(
-  xdata, chr_data, rt = rt_range, mz = mz_range,
-  type = "point", border = "red"
-)
-
-p_chrom + peak_layers
+#| fig-alt: "ggplot2 version of chromatogram plot with detected peaks automatically marked. Modern styling with customizable appearance."
+# ggplot2 version - gplot() automatically shows peaks
+gplot(chr[1, 1]) +
+  labs(title = "xcmsVis gplot(XChromatogram)")
 ```
 
 </div>
 </div>
 
-## Composable Layers
+## ghighlightChromPeaks(): Composable Layers
 
-The key difference is that `ghighlightChromPeaks()` returns ggplot2 layers that can be added to any chromatogram plot:
+For more control, `ghighlightChromPeaks()` returns ggplot2 layers that can be added to any chromatogram plot:
 
 ```{r highlight_rect}
 #| fig-height: 5
