@@ -66,7 +66,7 @@ utils::globalVariables(c(
 #' @importFrom Spectra spectraData
 #' @importFrom xcms rtime
 #' @importFrom MSnbase fData
-#' @importFrom dplyr mutate rename left_join
+#' @importFrom dplyr mutate rename left_join n
 .get_spectra_data <- function(object) {
   .validate_xcms_object(object)
 
