@@ -37,21 +37,22 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.1.2" id="changes-in-v112">Changes in v1.1.2<a class="anchor" aria-label="anchor" href="#changes-in-v112"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.99.2" id="changes-in-v0992">Changes in v0.99.2<a class="anchor" aria-label="anchor" href="#changes-in-v0992"></a></h2>
 <div class="section level3">
-<h3 id="features-1-1-2">Features<a class="anchor" aria-label="anchor" href="#features-1-1-2"></a></h3>
+<h3 id="features-0-99-2">Features<a class="anchor" aria-label="anchor" href="#features-0-99-2"></a></h3>
 <ul><li>add gplotChromPeaks, gplotChromPeakImage, and ghighlightChromPeaks (<a href="https://github.com/stanstrup/xcmsVis/commit/0893bfa073b1f26edb7f7114e3478604f3d8e6a7" class="external-link">0893bfa</a>)</li>
+<li>add SystemRequirements for Quarto vignettes (<a href="https://github.com/stanstrup/xcmsVis/commit/498afc6704c0170096651405fe0be09ca0ce3ee3" class="external-link">498afc6</a>)</li>
+<li>add comprehensive vignette for peak visualization functions</li>
 </ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.1.1" id="changes-in-v111">Changes in v1.1.1<a class="anchor" aria-label="anchor" href="#changes-in-v111"></a></h2>
 <div class="section level3">
-<h3 id="bug-fixes-1-1-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-1-1"></a></h3>
-<ul><li><ol style="list-style-type: decimal"><li>convert from MsExperiment to XcmsExperiment to skip the peak picking (<a href="https://github.com/stanstrup/xcmsVis/commit/707aadb2b16d70c2e069997e9f4432919be88199" class="external-link">707aadb</a>)</li>
+<h3 id="bug-fixes-0-99-2">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-99-2"></a></h3>
+<ul><li>constrain version to 0.99.x for Bioconductor development</li>
+<li><ol style="list-style-type: decimal"><li>convert from MsExperiment to XcmsExperiment to skip the peak picking (<a href="https://github.com/stanstrup/xcmsVis/commit/707aadb2b16d70c2e069997e9f4432919be88199" class="external-link">707aadb</a>)</li>
 </ol></li>
 <li>account for OnDiskMSnExp and get filenames if not in pData. (<a href="https://github.com/stanstrup/xcmsVis/commit/b1af11225513a780bf09cac9fcfa72d6f6f87299" class="external-link">b1af112</a>)</li>
 <li>add BiocParallel to Suggests and fix fileNames import (<a href="https://github.com/stanstrup/xcmsVis/commit/69fb33e6c828329101eb5085d4f66cfac6048913" class="external-link">69fb33e</a>)</li>
 <li>add missing dplyr::n import to utils.R (<a href="https://github.com/stanstrup/xcmsVis/commit/dd8b9185762a2e3e48575bf637f8bd44db0d1a5b" class="external-link">dd8b918</a>)</li>
+<li>add Quarto setup to GitHub Actions workflows</li>
 <li>address BiocCheck requirements (<a href="https://github.com/stanstrup/xcmsVis/commit/b1c4d5fef22ed0f8d4e93bcc9065d395837c62d0" class="external-link">b1c4d5f</a>)</li>
 <li>coerce instead of new peakpicking (<a href="https://github.com/stanstrup/xcmsVis/commit/159c06a9f25603e00943db8f4b5793afce1a4071" class="external-link">159c06a</a>)</li>
 <li>consistency of objects (<a href="https://github.com/stanstrup/xcmsVis/commit/5e5266556dd2e595bd5526089089e3f24607d0c4" class="external-link">5e52665</a>)</li>
@@ -65,11 +66,7 @@
 <li>use SerialParam in tests to avoid parallel processing warnings (<a href="https://github.com/stanstrup/xcmsVis/commit/abbfb4f58dd1151dad2e41921d40c5664e7d9a4c" class="external-link">abbfb4f</a>)</li>
 </ul></div>
 <div class="section level3">
-<h3 id="features-1-1-1">Features<a class="anchor" aria-label="anchor" href="#features-1-1-1"></a></h3>
-<ul><li>add SystemRequirements for Quarto vignettes (<a href="https://github.com/stanstrup/xcmsVis/commit/498afc6704c0170096651405fe0be09ca0ce3ee3" class="external-link">498afc6</a>)</li>
-</ul></div>
-<div class="section level3">
-<h3 id="performance-improvements-1-1-1">Performance Improvements<a class="anchor" aria-label="anchor" href="#performance-improvements-1-1-1"></a></h3>
+<h3 id="performance-improvements-0-99-2">Performance Improvements<a class="anchor" aria-label="anchor" href="#performance-improvements-0-99-2"></a></h3>
 <ul><li>use SerialParam in vignette for faster processing (<a href="https://github.com/stanstrup/xcmsVis/commit/382f301d2925e0da8d9392dfee4c9350c152974b" class="external-link">382f301</a>)</li>
 </ul></div>
 </div>
