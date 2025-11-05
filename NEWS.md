@@ -1,3 +1,11 @@
+## Changes in v0.99.3
+
+
+### Bug Fixes
+
+* constrain version to 0.99.x for Bioconductor development ([5de5bfd](https://github.com/stanstrup/xcmsVis/commit/5de5bfd0250e6f7ae59a1c4c363865f39db0b99c))
+* correct NEWS.md to use 0.99.x versioning ([f0978fd](https://github.com/stanstrup/xcmsVis/commit/f0978fde94476bb49ce52e1942c8185da222b30a))
+
 ## Changes in v0.99.2
 
 
