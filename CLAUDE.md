@@ -133,6 +133,59 @@ When implementing new XCMS plotting functions:
 - Add examples (even if marked `\dontrun`)
 - When tasks are completed, move them to `completed_tasks.md`
 
+## S4 Method Implementation Pattern
+
+**IMPORTANT**: When implementing functions that support both XCMSnExp and XcmsExperiment:
+
+### DO: Use Shared Implementation Pattern
+
+```r
+# Internal implementation function (single source of truth)
+.gplot_function_impl <- function(object, ...) {
+  .validate_xcms_object(object)
+
+  # Use helper functions that handle both object types
+  sample_data <- .get_sample_data(object)
+  spectra_data <- .get_spectra_data(object)
+
+  # All plotting logic here
+  # ...
+}
+
+# Thin S4 method wrappers (just dispatch)
+setMethod("gplot_function", "XCMSnExp",
+          function(object, ...) {
+            .gplot_function_impl(object, ...)
+          })
+
+setMethod("gplot_function", "XcmsExperiment",
+          function(object, ...) {
+            .gplot_function_impl(object, ...)
+          })
+```
+
+### DON'T: Duplicate Code in Methods
+
+❌ **BAD** - Duplicating identical code in both methods:
+```r
+setMethod("gplot_function", "XCMSnExp", function(...) {
+  # 100+ lines of code
+})
+
+setMethod("gplot_function", "XcmsExperiment", function(...) {
+  # Same 100+ lines of code (maintenance nightmare!)
+})
+```
+
+### Helper Functions
+
+Use these internal helpers that already handle object type differences:
+- `.validate_xcms_object(object)` - Validates object type
+- `.get_sample_data(object)` - Extracts sample metadata
+- `.get_spectra_data(object)` - Extracts spectra/feature data
+
+These helpers use S4 dispatch internally, so your implementation function doesn't need to know about object types.
+
 ## Git Workflow
 
 - Default branch: `main`
