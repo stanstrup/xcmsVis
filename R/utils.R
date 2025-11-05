@@ -35,14 +35,18 @@ utils::globalVariables(c(
       sampleData %>%
       as.data.frame
 
-  } else if (is(object, "XCMSnExp")) {
+  } else if (is(object, "XCMSnExp") | is(object, "OnDiskMSnExp")) {
 
     out <- pData(object)
 
   }
 
+  if(is.null(out$spectraOrigin) && !(length(fileNames(object))>0) ) stop("No files defined in object!", call. = FALSE)
 
-  if(is.null(out$spectraOrigin)) stop("No files defined in object!", call. = FALSE)
+
+  if(is.null(out$spectraOrigin)) out$spectraOrigin <- fileNames(object)
+
+
 
    out$spectraOrigin_base <- basename(out$spectraOrigin)
 
@@ -70,7 +74,7 @@ utils::globalVariables(c(
             spectraData() %>%
             as.data.frame()
 
-  } else if (is(object, "XCMSnExp")) {
+  } else if (is(object, "XCMSnExp") | is(object, "OnDiskMSnExp")) {
     # Get sample data for joining
     sample_data <- .get_sample_data(object) %>%
                     mutate(fileIdx = 1:n())
@@ -96,8 +100,8 @@ utils::globalVariables(c(
 #' @return TRUE if valid, stops with error otherwise
 #' @keywords internal
 .validate_xcms_object <- function(object) {
-  if (!is(object, "XCMSnExp") && !is(object, "XcmsExperiment")) {
-    stop("'object' must be an 'XCMSnExp' or 'XcmsExperiment' object.",
+  if (!is(object, "XCMSnExp") && !is(object, "XcmsExperiment") && !is(object, "OnDiskMSnExp")) {
+    stop("'object' must be an 'XCMSnExp', 'OnDiskMSnExp' or 'XcmsExperiment' object.",
          call. = FALSE)
   }
   invisible(TRUE)
