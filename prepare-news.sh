@@ -13,7 +13,9 @@ fi
 echo "Preparing NEWS.md and DESCRIPTION for version $NEXT_VERSION..."
 
 # Format NEWS.md for R/pkgdown
+sed -i 's/^# \[\([0-9]\+\.[0-9]\+\.[0-9]\+\)\].*/## Changes in v\1/' NEWS.md
 sed -i 's/^## \[\([0-9]\+\.[0-9]\+\.[0-9]\+\)\].*/## Changes in v\1/' NEWS.md
+sed -i 's/^# \([0-9]\+\.[0-9]\+\.[0-9]\+\).*/## Changes in v\1/' NEWS.md
 sed -i 's/^## \([0-9]\+\.[0-9]\+\.[0-9]\+\).*/## Changes in v\1/' NEWS.md
 sed -i '/^# xcmsVis/d' NEWS.md
 sed -i 's/(\([0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}\))$/ (\1)/' NEWS.md

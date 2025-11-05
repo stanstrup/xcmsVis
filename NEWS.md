@@ -1,4 +1,4 @@
-# [1.1.0](https://github.com/stanstrup/xcmsVis/compare/v1.0.0...v1.1.0)  (2025-11-04)
+## Changes in v1.1.0
 
 
 ### Bug Fixes
@@ -21,7 +21,7 @@
 * add comprehensive testing and documentation for gplotAdjustedRtime ([552315e](https://github.com/stanstrup/xcmsVis/commit/552315ea8a83a0ab75e0a00c44ec09b2414e5395))
 * add helper function to get spectra data from both object types ([47038d7](https://github.com/stanstrup/xcmsVis/commit/47038d7ded63a1fb661028456cce79c7746557e0))
 
-# 1.0.0   (2025-11-01)
+## Changes in v1.0.0
 
 
 ### Bug Fixes
