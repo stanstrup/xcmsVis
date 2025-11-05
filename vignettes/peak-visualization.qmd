@@ -109,7 +109,7 @@ plotChromPeaks(xdata, file = 1, xlim = c(3500,3800), , ylim = c(240,260))
 ```{r ggplot_chrompeaks}
 #| fig-height: 5
 #| fig-width: 5
-#| fig-alt: "ggplot2 version showing detected peaks as semi-transparent rectangles in RT vs m/z space. Modern styling with customizable aesthetics for publication-ready figures."
+#| fig-alt: "ggplot2 version showing detected peaks as semi-transparent rectangles in RT vs m/z space."
 # ggplot2 version
 p1 <- gplotChromPeaks(xdata, file = 1, xlim = c(3500,3800), , ylim = c(240,260))
 print(p1)
@@ -194,7 +194,7 @@ plotChromPeakImage(xdata, binSize = 30)
 ```{r ggplot_peakimage}
 #| fig-height: 4
 #| fig-width: 5
-#| fig-alt: "Modern ggplot2 heatmap of peak density using viridis color scale. Retention time bins on x-axis, samples on y-axis, with color intensity indicating peak counts per bin."
+#| fig-alt: "ggplot2 heatmap of peak density using viridis color scale. Retention time bins on x-axis, samples on y-axis, with color intensity indicating peak counts per bin."
 # ggplot2 version
 p3 <- gplotChromPeakImage(xdata, binSize = 30)
 print(p3)
@@ -304,12 +304,6 @@ rt_range <- c(2500, 3500)
 
 # Get chromatogram data
 chr <- chromatogram(xdata, mz = mz_range, rt = rt_range)
-
-# Convert to data frame for plotting
-chr_data <- data.frame(
-  rt = rtime(chr[1, 1]),
-  intensity = intensity(chr[1, 1])
-)
 ```
 
 <div class="row">
@@ -333,7 +327,7 @@ plot(chr[1, 1], main = "XCMS plot(XChromatogram)")
 ```{r ggplot_chromatogram}
 #| fig-height: 5
 #| fig-width: 5
-#| fig-alt: "ggplot2 version of chromatogram plot with detected peaks automatically marked. Modern styling with customizable appearance."
+#| fig-alt: "ggplot2 version of chromatogram plot with detected peaks automatically marked."
 # ggplot2 version - gplot() automatically shows peaks
 gplot(chr[1, 1]) +
   labs(title = "xcmsVis gplot(XChromatogram)")
@@ -346,14 +340,32 @@ gplot(chr[1, 1]) +
 
 For more control, `ghighlightChromPeaks()` returns ggplot2 layers that can be added to any chromatogram plot:
 
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS Version
+
+```{r original_highlightChromPeaks}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "XCMS chromatogram plot with peaks highlighted using the original highlightChromPeaks function. Shows peaks marked on the chromatogram."
+# Base R graphics version - plot then add highlights
+plot(chr[1, 1], main = "XCMS highlightChromPeaks")
+highlightChromPeaks(as(xdata, "XCMSnExp"), rt = rt_range, mz = mz_range,
+                   border = "red", col = adjustcolor("red", alpha.f = 0.2))
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 Version
+
 ```{r highlight_rect}
 #| fig-height: 5
-#| fig-width: 8
+#| fig-width: 5
 #| fig-alt: "Chromatogram with detected peaks highlighted as semi-transparent rectangles. Base chromatogram shows intensity vs retention time, with rectangles marking peak boundaries from rtmin to rtmax at the peak's maximum intensity."
-# Base chromatogram plot
-p_chrom <- ggplot(chr_data, aes(x = rt, y = intensity)) +
-  geom_line() +
-  theme_bw() +
+# Start with gplot() which creates the chromatogram
+p_chrom <- gplot(chr[1, 1], peakType = "none") +
   labs(
     title = "Chromatogram with Highlighted Peaks (Rectangle)",
     x = "Retention Time (s)",
@@ -362,10 +374,7 @@ p_chrom <- ggplot(chr_data, aes(x = rt, y = intensity)) +
 
 # Add peak highlights as rectangles
 peak_layers <- ghighlightChromPeaks(
-  xdata,
-  chrom_data = chr_data,
-  rt = rt_range,
-  mz = mz_range,
+  chr[1, 1],
   type = "rect",
   border = "red",
   fill = alpha("red", 0.2)
@@ -375,6 +384,9 @@ peak_layers <- ghighlightChromPeaks(
 p_chrom + peak_layers
 ```
 
+</div>
+</div>
+
 ## Different Visualization Types
 
 ```{r highlight_types}
@@ -382,31 +394,21 @@ p_chrom + peak_layers
 #| fig-width: 8
 #| fig-alt: "Three-panel comparison showing different peak annotation styles: rectangles spanning peak width, points at peak apex, and polygons following peak shape. Each method highlights the same detected peaks in different ways."
 # Type: Point (marks peak apex)
-p_point <- ggplot(chr_data, aes(x = rt, y = intensity)) +
-  geom_line() +
-  theme_bw() +
+p_point <- gplot(chr[1, 1], peakType = "none") +
   labs(title = "Peak Annotations: Points", x = "RT (s)", y = "Intensity")
 
 peak_points <- ghighlightChromPeaks(
-  xdata,
-  chrom_data = chr_data,
-  rt = rt_range,
-  mz = mz_range,
+  chr[1, 1],
   type = "point",
   border = "red"
 )
 
 # Type: Polygon (follows peak shape)
-p_poly <- ggplot(chr_data, aes(x = rt, y = intensity)) +
-  geom_line() +
-  theme_bw() +
+p_poly <- gplot(chr[1, 1], peakType = "none") +
   labs(title = "Peak Annotations: Polygons", x = "RT (s)", y = "Intensity")
 
 peak_polygons <- ghighlightChromPeaks(
-  xdata,
-  chrom_data = chr_data,
-  rt = rt_range,
-  mz = mz_range,
+  chr[1, 1],
   type = "polygon",
   border = "blue",
   fill = alpha("blue", 0.3)
@@ -425,35 +427,29 @@ peak_polygons <- ghighlightChromPeaks(
 #| fig-width: 8
 #| fig-alt: "Comparison of three peak selection methods: 'any' (partially overlapping), 'within' (fully contained), and 'apex_within' (apex in range). Each shows different subsets of peaks based on selection criteria."
 # whichPeaks: "any" - peaks that overlap the range
-p_any <- ggplot(chr_data, aes(x = rt, y = intensity)) +
-  geom_line() +
-  theme_bw() +
+p_any <- gplot(chr[1, 1], peakType = "none") +
   labs(title = "whichPeaks = 'any'", x = "RT (s)", y = "Intensity")
 
 peaks_any <- ghighlightChromPeaks(
-  xdata, chr_data, rt = rt_range, mz = mz_range,
+  chr[1, 1], rt = rt_range, mz = mz_range,
   whichPeaks = "any", border = "red", fill = alpha("red", 0.2)
 )
 
 # whichPeaks: "within" - peaks fully within the range
-p_within <- ggplot(chr_data, aes(x = rt, y = intensity)) +
-  geom_line() +
-  theme_bw() +
+p_within <- gplot(chr[1, 1], peakType = "none") +
   labs(title = "whichPeaks = 'within'", x = "RT (s)", y = "Intensity")
 
 peaks_within <- ghighlightChromPeaks(
-  xdata, chr_data, rt = rt_range, mz = mz_range,
+  chr[1, 1], rt = rt_range, mz = mz_range,
   whichPeaks = "within", border = "blue", fill = alpha("blue", 0.2)
 )
 
 # whichPeaks: "apex_within" - peaks with apex in range
-p_apex <- ggplot(chr_data, aes(x = rt, y = intensity)) +
-  geom_line() +
-  theme_bw() +
+p_apex <- gplot(chr[1, 1], peakType = "none") +
   labs(title = "whichPeaks = 'apex_within'", x = "RT (s)", y = "Intensity")
 
 peaks_apex <- ghighlightChromPeaks(
-  xdata, chr_data, rt = rt_range, mz = mz_range,
+  chr[1, 1], rt = rt_range, mz = mz_range,
   whichPeaks = "apex_within", border = "green", fill = alpha("green", 0.2)
 )
 
@@ -480,17 +476,6 @@ p_density <- gplotChromPeakImage(xdata, binSize = 30) +
 # Combine
 p_dist / p_density
 ```
-
-# Advantages of xcmsVis Functions
-
-**Compared to XCMS base graphics:**
-
-- Modern ggplot2 aesthetics
-- Easy customization using standard ggplot2 syntax
-- Interactive plotting via plotly
-- Consistent with other ggplot2-based visualizations
-- Publication-ready output
-- Composable layers (especially `ghighlightChromPeaks`)
 
 # Session Information
 

@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette demonstrates the `gplotAdjustedRtime()` function, which provides a modern ggplot2-based visualization of retention time correction in LC-MS metabolomics data. The function is designed to work with both `XcmsExperiment` (XCMS v4+) and `XCMSnExp` (XCMS v3) objects.
+This vignette demonstrates the `gplotAdjustedRtime()` function, which provides a ggplot2-based visualization of retention time correction in LC-MS metabolomics data. The function is designed to work with both `XcmsExperiment` (XCMS v4+) and `XCMSnExp` (XCMS v3) objects.
 
 # Setup
 
@@ -154,7 +154,7 @@ plotAdjustedRtime(
 ```{r ggplot_version}
 #| fig-height: 4
 #| fig-width: 5
-#| fig-alt: "Modern ggplot2 version of retention time adjustment plot showing RT deviation vs adjusted retention time. Six colored lines distinguish KO and WT sample groups, with grey circles marking alignment peaks and dashed grey lines connecting corresponding features."
+#| fig-alt: "ggplot2 version of retention time adjustment plot showing RT deviation vs adjusted retention time. Six colored lines distinguish KO and WT sample groups, with grey circles marking alignment peaks and dashed grey lines connecting corresponding features."
 # ggplot2 version
 p <- gplotAdjustedRtime(xdata, color_by = sample_group)
 print(p)
@@ -362,17 +362,6 @@ print(p_no_subset)
 
 </div>
 </div>
-
-# Advantages of gplotAdjustedRtime
-
-**Compared to XCMS's `plotAdjustedRtime()`:**
-
-- Modern ggplot2 aesthetics
-- Easy customization using standard ggplot2 syntax
-- Interactive plotting via plotly
-- Automatic legend generation
-- Consistent with other ggplot2-based visualizations
-- Publication-ready output
 
 # Session Information
 

@@ -3,23 +3,20 @@ NULL
 
 # Shared implementation function for ghighlightChromPeaks
 #'
-#' @importFrom xcms chromPeaks hasChromPeaks
-#' @importFrom ggplot2 geom_rect geom_point annotate
+#' @importFrom xcms chromPeaks hasChromPeaks rtime intensity
+#' @importFrom ggplot2 geom_rect geom_point geom_polygon aes
 #' @importFrom tibble tibble
 #' @importFrom methods is
 #' @keywords internal
 .ghighlightChromPeaks_impl <- function(object,
-                                       chrom_data,
                                        rt,
                                        mz,
                                        peakIds = character(),
                                        border = "#00000040",
                                        fill = NA,
                                        type = c("rect", "point", "polygon"),
-                                       whichPeaks = c("any", "within", "apex_within"),
-                                       msLevel = 1L) {
+                                       whichPeaks = c("any", "within", "apex_within")) {
 
-    .validate_xcms_object(object)
     type <- match.arg(type)
     whichPeaks <- match.arg(whichPeaks)
 
@@ -29,25 +26,48 @@ NULL
              "Run findChromPeaks() first.", call. = FALSE)
     }
 
-    # Handle peakIds vs rt/mz
+    # Get all peaks from the chromatogram
+    pks <- chromPeaks(object)
+
+    # Return empty list if no peaks
+    if (nrow(pks) == 0) {
+        return(list())
+    }
+
+    # Handle peakIds or filtering
     if (length(peakIds) > 0) {
         # Use specific peak IDs
-        all_peaks <- chromPeaks(object, msLevel = msLevel)
-        if (!all(peakIds %in% rownames(all_peaks))) {
+        if (!all(peakIds %in% rownames(pks))) {
             stop("'peakIds' do not match rownames of 'chromPeaks(object)'",
                  call. = FALSE)
         }
-        pks <- all_peaks[peakIds, , drop = FALSE]
-    } else {
-        # Use rt and mz ranges
-        if (missing(rt)) rt <- c(-Inf, Inf)
-        if (missing(mz)) mz <- c(-Inf, Inf)
+        pks <- pks[peakIds, , drop = FALSE]
+    } else if (!missing(rt) || !missing(mz)) {
+        # Filter peaks by rt and/or mz
+        if (!missing(rt)) {
+            if (whichPeaks == "within") {
+                keep <- pks[, "rtmin"] >= rt[1] & pks[, "rtmax"] <= rt[2]
+            } else if (whichPeaks == "apex_within") {
+                keep <- pks[, "rt"] >= rt[1] & pks[, "rt"] <= rt[2]
+            } else {  # "any"
+                keep <- pks[, "rtmax"] >= rt[1] & pks[, "rtmin"] <= rt[2]
+            }
+            pks <- pks[keep, , drop = FALSE]
+        }
 
-        pks <- chromPeaks(object, rt = rt, mz = mz, ppm = 0,
-                         type = whichPeaks, msLevel = msLevel)
+        if (!missing(mz) && nrow(pks) > 0) {
+            if (whichPeaks == "within") {
+                keep <- pks[, "mzmin"] >= mz[1] & pks[, "mzmax"] <= mz[2]
+            } else if (whichPeaks == "apex_within") {
+                keep <- pks[, "mz"] >= mz[1] & pks[, "mz"] <= mz[2]
+            } else {  # "any"
+                keep <- pks[, "mzmax"] >= mz[1] & pks[, "mzmin"] <= mz[2]
+            }
+            pks <- pks[keep, , drop = FALSE]
+        }
     }
 
-    # Return empty list if no peaks
+    # Return empty list if no peaks after filtering
     if (nrow(pks) == 0) {
         return(list())
     }
@@ -87,45 +107,39 @@ NULL
         )
 
     } else if (type == "polygon") {
-        # For polygon, we need the actual chromatogram data
-        # This is more complex and requires matching peaks to chrom_data
-        if (missing(chrom_data) || is.null(chrom_data)) {
-            warning("Polygon type requires 'chrom_data' to be provided. ",
-                   "Falling back to 'rect' type.")
-            return(.ghighlightChromPeaks_impl(object, chrom_data, rt, mz,
-                                             peakIds, border, fill, "rect",
-                                             whichPeaks, msLevel))
-        }
+        # For polygon, extract chromatogram data from the object
+        chrom_rt <- rtime(object)
+        chrom_int <- intensity(object)
+        chrom_df <- data.frame(rt = chrom_rt, intensity = chrom_int)
 
         # For each peak, extract the chromatogram region and create polygon
-        # This is simplified - a full implementation would need to filter
-        # chrom_data by rt range for each peak
         for (i in seq_len(nrow(pks))) {
             peak_rt_range <- c(pks[i, "rtmin"], pks[i, "rtmax"])
 
             # Filter chromatogram data to peak region
-            peak_chrom <- chrom_data[
-                chrom_data$rt >= peak_rt_range[1] &
-                chrom_data$rt <= peak_rt_range[2], ]
+            idx <- which(chrom_df$rt >= peak_rt_range[1] &
+                        chrom_df$rt <= peak_rt_range[2])
 
-            if (nrow(peak_chrom) > 0) {
-                # Create polygon coordinates (close the shape)
-                poly_df <- tibble(
-                    x = c(peak_chrom$rt, rev(peak_chrom$rt)[1],
-                         peak_chrom$rt[1]),
-                    y = c(peak_chrom$intensity, 0, 0)
+            if (length(idx) > 0) {
+                peak_chrom <- chrom_df[idx, ]
+
+                # Create polygon coordinates (close the shape at baseline)
+                poly_df <- rbind(
+                    data.frame(rt = peak_rt_range[1], intensity = 0),
+                    peak_chrom,
+                    data.frame(rt = peak_rt_range[2], intensity = 0)
                 )
 
                 # Remove NA values
-                poly_df <- poly_df[!is.na(poly_df$y), ]
+                poly_df <- poly_df[!is.na(poly_df$intensity), ]
 
                 if (nrow(poly_df) > 0) {
-                    layers[[length(layers) + 1]] <- annotate(
-                        "polygon",
-                        x = poly_df$x,
-                        y = poly_df$y,
+                    layers[[length(layers) + 1]] <- geom_polygon(
+                        data = poly_df,
+                        aes(x = rt, y = intensity),
                         color = border,
-                        fill = fill
+                        fill = fill,
+                        inherit.aes = FALSE
                     )
                 }
             }
@@ -137,24 +151,11 @@ NULL
 
 #' @rdname ghighlightChromPeaks
 #' @export
-setMethod("ghighlightChromPeaks", "XCMSnExp",
-          function(object, chrom_data, rt, mz, peakIds = character(),
+setMethod("ghighlightChromPeaks", "XChromatogram",
+          function(object, rt, mz, peakIds = character(),
                    border = "#00000040", fill = NA,
                    type = c("rect", "point", "polygon"),
-                   whichPeaks = c("any", "within", "apex_within"),
-                   msLevel = 1L) {
-              .ghighlightChromPeaks_impl(object, chrom_data, rt, mz, peakIds,
-                                        border, fill, type, whichPeaks, msLevel)
-          })
-
-#' @rdname ghighlightChromPeaks
-#' @export
-setMethod("ghighlightChromPeaks", "XcmsExperiment",
-          function(object, chrom_data, rt, mz, peakIds = character(),
-                   border = "#00000040", fill = NA,
-                   type = c("rect", "point", "polygon"),
-                   whichPeaks = c("any", "within", "apex_within"),
-                   msLevel = 1L) {
-              .ghighlightChromPeaks_impl(object, chrom_data, rt, mz, peakIds,
-                                        border, fill, type, whichPeaks, msLevel)
+                   whichPeaks = c("any", "within", "apex_within")) {
+              .ghighlightChromPeaks_impl(object, rt, mz, peakIds,
+                                        border, fill, type, whichPeaks)
           })

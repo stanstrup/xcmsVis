@@ -211,15 +211,13 @@ setGeneric("gplotChromPeakImage", function(object,
 #'
 #' @description
 #' Adds chromatographic peak annotations to existing chromatogram plots.
-#' This is a ggplot2 implementation that works with chromatogram data,
+#' This is a ggplot2 implementation that works with XChromatogram objects,
 #' highlighting detected peaks with rectangles, points, or polygons.
 #'
-#' @param object An `XCMSnExp` or `XcmsExperiment` object with detected peaks.
-#' @param chrom_data Data frame containing chromatogram data with columns
-#'   `rt` and `intensity`, typically from extracting a chromatogram.
+#' @param object An `XChromatogram` object with detected peaks.
 #' @param rt Numeric vector of length 2 specifying retention time range for
-#'   peak extraction.
-#' @param mz Numeric vector of length 2 specifying m/z range for peak extraction.
+#'   peak extraction (optional).
+#' @param mz Numeric vector of length 2 specifying m/z range for peak extraction (optional).
 #' @param peakIds Character vector of peak identifiers (rownames from chromPeaks)
 #'   to highlight. If provided, `rt` and `mz` are ignored.
 #' @param border Color for peak borders (default: semi-transparent grey).
@@ -228,7 +226,6 @@ setGeneric("gplotChromPeakImage", function(object,
 #'   "point" (apex point), or "polygon" (peak shape). Default: "rect".
 #' @param whichPeaks Character specifying peak selection: "any" (any overlap),
 #'   "within" (fully contained), or "apex_within" (apex in range). Default: "any".
-#' @param msLevel Integer specifying MS level (default: 1).
 #'
 #' @return A list of ggplot2 layer objects that can be added to an existing
 #'   ggplot chromatogram.
@@ -245,8 +242,11 @@ setGeneric("gplotChromPeakImage", function(object,
 #' library(faahKO)
 #' library(ggplot2)
 #'
-#' # This function is typically used by adding its output to a chromatogram plot
-#' # See vignette for complete examples
+#' # Extract chromatogram
+#' chr <- chromatogram(xdata, mz = c(200, 210))
+#'
+#' # Plot and highlight peaks
+#' gplot(chr[1, 1]) + ghighlightChromPeaks(chr[1, 1])
 #' }
 #'
 #' @seealso
@@ -254,15 +254,13 @@ setGeneric("gplotChromPeakImage", function(object,
 #'
 #' @export
 setGeneric("ghighlightChromPeaks", function(object,
-                                            chrom_data,
                                             rt,
                                             mz,
                                             peakIds = character(),
                                             border = "#00000040",
                                             fill = NA,
                                             type = c("rect", "point", "polygon"),
-                                            whichPeaks = c("any", "within", "apex_within"),
-                                            msLevel = 1L)
+                                            whichPeaks = c("any", "within", "apex_within"))
   standardGeneric("ghighlightChromPeaks"))
 
 #' ggplot2 Version of plot for XChromatogram
@@ -278,8 +276,8 @@ setGeneric("ghighlightChromPeaks", function(object,
 #' @param xlab X-axis label (default: "retention time").
 #' @param ylab Y-axis label (default: "intensity").
 #' @param main Plot title (default: NULL).
-#' @param peakType Type of peak annotation: "point", "polygon", "rectangle", or "none"
-#'   (default: "point").
+#' @param peakType Type of peak annotation: "polygon", "point", "rectangle", or "none"
+#'   (default: "polygon").
 #' @param peakCol Color for peak markers (default: "#00000060").
 #' @param peakBg Background color for peak markers (default: "#00000020").
 #' @param peakPch Point character for peak markers when peakType = "point" (default: 1).

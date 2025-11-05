@@ -2,59 +2,38 @@
 % Please edit documentation in R/AllGenerics.R, R/ghighlightChromPeaks-methods.R
 \name{ghighlightChromPeaks}
 \alias{ghighlightChromPeaks}
-\alias{ghighlightChromPeaks,XCMSnExp-method}
-\alias{ghighlightChromPeaks,XcmsExperiment-method}
+\alias{ghighlightChromPeaks,XChromatogram-method}
 \title{ggplot2 Version of highlightChromPeaks}
 \usage{
 ghighlightChromPeaks(
   object,
-  chrom_data,
   rt,
   mz,
   peakIds = character(),
   border = "#00000040",
   fill = NA,
   type = c("rect", "point", "polygon"),
-  whichPeaks = c("any", "within", "apex_within"),
-  msLevel = 1L
+  whichPeaks = c("any", "within", "apex_within")
 )
 
-\S4method{ghighlightChromPeaks}{XCMSnExp}(
+\S4method{ghighlightChromPeaks}{XChromatogram}(
   object,
-  chrom_data,
   rt,
   mz,
   peakIds = character(),
   border = "#00000040",
   fill = NA,
   type = c("rect", "point", "polygon"),
-  whichPeaks = c("any", "within", "apex_within"),
-  msLevel = 1L
-)
-
-\S4method{ghighlightChromPeaks}{XcmsExperiment}(
-  object,
-  chrom_data,
-  rt,
-  mz,
-  peakIds = character(),
-  border = "#00000040",
-  fill = NA,
-  type = c("rect", "point", "polygon"),
-  whichPeaks = c("any", "within", "apex_within"),
-  msLevel = 1L
+  whichPeaks = c("any", "within", "apex_within")
 )
 }
 \arguments{
-\item{object}{An \code{XCMSnExp} or \code{XcmsExperiment} object with detected peaks.}
-
-\item{chrom_data}{Data frame containing chromatogram data with columns
-\code{rt} and \code{intensity}, typically from extracting a chromatogram.}
+\item{object}{An \code{XChromatogram} object with detected peaks.}
 
 \item{rt}{Numeric vector of length 2 specifying retention time range for
-peak extraction.}
+peak extraction (optional).}
 
-\item{mz}{Numeric vector of length 2 specifying m/z range for peak extraction.}
+\item{mz}{Numeric vector of length 2 specifying m/z range for peak extraction (optional).}
 
 \item{peakIds}{Character vector of peak identifiers (rownames from chromPeaks)
 to highlight. If provided, \code{rt} and \code{mz} are ignored.}
@@ -68,8 +47,6 @@ to highlight. If provided, \code{rt} and \code{mz} are ignored.}
 
 \item{whichPeaks}{Character specifying peak selection: "any" (any overlap),
 "within" (fully contained), or "apex_within" (apex in range). Default: "any".}
-
-\item{msLevel}{Integer specifying MS level (default: 1).}
 }
 \value{
 A list of ggplot2 layer objects that can be added to an existing
@@ -77,7 +54,7 @@ ggplot chromatogram.
 }
 \description{
 Adds chromatographic peak annotations to existing chromatogram plots.
-This is a ggplot2 implementation that works with chromatogram data,
+This is a ggplot2 implementation that works with XChromatogram objects,
 highlighting detected peaks with rectangles, points, or polygons.
 }
 \details{
@@ -92,8 +69,11 @@ library(xcms)
 library(faahKO)
 library(ggplot2)
 
-# This function is typically used by adding its output to a chromatogram plot
-# See vignette for complete examples
+# Extract chromatogram
+chr <- chromatogram(xdata, mz = c(200, 210))
+
+# Plot and highlight peaks
+gplot(chr[1, 1]) + ghighlightChromPeaks(chr[1, 1])
 }
 
 }

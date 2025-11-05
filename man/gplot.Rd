@@ -15,7 +15,7 @@ gplot(x, ...)
   xlab = "retention time",
   ylab = "intensity",
   main = NULL,
-  peakType = c("point", "polygon", "rectangle", "none"),
+  peakType = c("polygon", "point", "rectangle", "none"),
   peakCol = "#00000060",
   peakBg = "#00000020",
   peakPch = 1,
@@ -39,8 +39,8 @@ gplot(x, ...)
 
 \item{main}{Plot title (default: NULL).}
 
-\item{peakType}{Type of peak annotation: "point", "polygon", "rectangle", or "none"
-(default: "point").}
+\item{peakType}{Type of peak annotation: "polygon", "point", "rectangle", or "none"
+(default: "polygon").}
 
 \item{peakCol}{Color for peak markers (default: "#00000060").}
 
