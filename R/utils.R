@@ -27,6 +27,8 @@ utils::globalVariables(c(
 #' @keywords internal
 #' @importFrom MsExperiment sampleData
 #' @importFrom Biobase pData
+#' @importFrom MSnbase fileNames
+
 .get_sample_data <- function(object) {
   .validate_xcms_object(object)
 
@@ -41,10 +43,10 @@ utils::globalVariables(c(
 
   }
 
-  if(is.null(out$spectraOrigin) && !(length(fileNames(object))>0) ) stop("No files defined in object!", call. = FALSE)
+  if(is.null(out$spectraOrigin) && !(length(MSnbase::fileNames(object))>0) ) stop("No files defined in object!", call. = FALSE)
 
 
-  if(is.null(out$spectraOrigin)) out$spectraOrigin <- fileNames(object)
+  if(is.null(out$spectraOrigin)) out$spectraOrigin <- MSnbase::fileNames(object)
 
 
 

@@ -39,6 +39,7 @@ Suggests:
     rmarkdown,
     quarto,
     BiocStyle,
+    BiocParallel,
     faahKO
 VignetteBuilder: quarto
 biocViews: Metabolomics, MassSpectrometry, Visualization
