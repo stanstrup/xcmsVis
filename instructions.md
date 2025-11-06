@@ -2,5 +2,5 @@
 
 **See `CLAUDE.md` for development workflow, conventions, and resources.**
 
-Move on to the remaining functions. Follow the same recipe. If you need to also get plots from Msnbase to make ggplot2 implementations work then do so. Use the dev-docs as your roadmap and keep them updated. Skip functions that are only for legacy objects. Make a list of vignettes and functions for me to check afterwards. make sure to make tests. as usual try to handle both `XcmsExperiment` and `XCMSnExp`.
 
+you can implement plotChromPeakDensity for XChromatograms. For many you say something like "Works with MChromatograms/XChromatograms objects, not XCMSnExp/XcmsExperiment". But those are still XCMS functions that we want ggplot2 equivalents for.
