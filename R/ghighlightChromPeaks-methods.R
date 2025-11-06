@@ -107,72 +107,66 @@ NULL
         )
 
     } else if (type == "polygon") {
-        # For polygon, we need to extract chromatogram data for each peak
-        # Get sample information for each peak
-        if ("sample" %in% colnames(pks)) {
-            sample_col <- "sample"
-        } else {
-            # For XCMSnExp, the column might be named differently
-            sample_col <- NULL
-            for (col in c("sample", "fileIdx")) {
-                if (col %in% colnames(pks)) {
-                    sample_col <- col
-                    break
+        # For polygon, replicate the exact behavior of xcms::highlightChromPeaks
+        # Extract chromatograms for the entire mz range (not per-peak mz)
+        if (nrow(pks) > 0) {
+            # Get sample column name
+            if ("sample" %in% colnames(pks)) {
+                sample_col <- "sample"
+            } else {
+                sample_col <- NULL
+                for (col in c("sample", "fileIdx")) {
+                    if (col %in% colnames(pks)) {
+                        sample_col <- col
+                        break
+                    }
+                }
+                if (is.null(sample_col)) {
+                    stop("Cannot determine sample column in chromPeaks matrix",
+                         call. = FALSE)
                 }
             }
-            if (is.null(sample_col)) {
-                stop("Cannot determine sample column in chromPeaks matrix",
-                     call. = FALSE)
-            }
-        }
 
-        # For each peak, extract its chromatogram and create polygon
-        for (i in seq_len(nrow(pks))) {
-            peak_sample <- pks[i, sample_col]
-            peak_mz_range <- c(pks[i, "mzmin"], pks[i, "mzmax"])
-            peak_rt_range <- c(pks[i, "rtmin"], pks[i, "rtmax"])
+            # Extract chromatograms for the entire mz range across all samples
+            # This matches: chrs <- chromatogram(x, rt = range(pks[, c("rtmin", "rtmax")]), mz = mz)
+            rt_range <- range(pks[, c("rtmin", "rtmax")])
+            chrs <- chromatogram(object, rt = rt_range, mz = mz)
 
-            # Extract chromatogram for this peak's sample and m/z range
-            # Expand RT range slightly to ensure we get the full peak shape
-            rt_expand <- diff(peak_rt_range) * 0.1
-            chr_rt_range <- c(peak_rt_range[1] - rt_expand,
-                             peak_rt_range[2] + rt_expand)
+            # Order peaks by maxo (descending) to draw largest peaks first
+            pks <- pks[order(pks[, "maxo"], decreasing = TRUE), , drop = FALSE]
 
-            # Extract chromatogram
-            chr <- tryCatch({
-                chromatogram(object,
-                           mz = peak_mz_range,
-                           rt = chr_rt_range)[1, peak_sample]
-            }, error = function(e) {
-                NULL
-            })
+            # For each peak, filter the chromatogram and create polygon
+            for (j in seq_len(nrow(pks))) {
+                i <- pks[j, sample_col]
+                peak_rt_range <- c(pks[j, "rtmin"], pks[j, "rtmax"])
 
-            if (!is.null(chr) && length(rtime(chr)) > 0) {
-                # Get chromatogram data
-                chrom_rt <- rtime(chr)
-                chrom_int <- intensity(chr)
+                # Get the chromatogram for this sample
+                chr <- chrs[1, i]
+
+                # Filter chromatogram to peak RT range
+                chr_rt <- rtime(chr)
+                chr_int <- intensity(chr)
 
                 # Filter to peak region
-                idx <- which(chrom_rt >= peak_rt_range[1] &
-                           chrom_rt <= peak_rt_range[2])
+                idx <- which(chr_rt >= peak_rt_range[1] & chr_rt <= peak_rt_range[2])
 
                 if (length(idx) > 0) {
-                    peak_chrom <- data.frame(
-                        rt = chrom_rt[idx],
-                        intensity = chrom_int[idx]
-                    )
+                    xs <- chr_rt[idx]
+                    ys <- chr_int[idx]
 
-                    # Create polygon coordinates (close the shape at baseline)
-                    poly_df <- rbind(
-                        data.frame(rt = peak_rt_range[1], intensity = 0),
-                        peak_chrom,
-                        data.frame(rt = peak_rt_range[2], intensity = 0)
-                    )
+                    # Close the polygon: add endpoints at baseline
+                    xs <- c(xs, xs[length(xs)], xs[1])
+                    ys <- c(ys, 0, 0)
 
                     # Remove NA values
-                    poly_df <- poly_df[!is.na(poly_df$intensity), ]
+                    nona <- !is.na(ys)
 
-                    if (nrow(poly_df) > 0) {
+                    if (sum(nona) > 0) {
+                        poly_df <- data.frame(
+                            rt = xs[nona],
+                            intensity = ys[nona]
+                        )
+
                         layers[[length(layers) + 1]] <- geom_polygon(
                             data = poly_df,
                             aes(x = rt, y = intensity),
