@@ -1,3 +1,10 @@
+## Changes in v0.99.11
+
+
+### Bug Fixes
+
+* use JamesIves/github-pages-deploy-action instead ([65dc2bd](https://github.com/stanstrup/xcmsVis/commit/65dc2bd17812a6c5e8a237e35d65831e6bdfd9bd))
+
 ## Changes in v0.99.10
 
 
