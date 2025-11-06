@@ -2,7 +2,8 @@
 % Please edit documentation in R/AllGenerics.R, R/ghighlightChromPeaks-methods.R
 \name{ghighlightChromPeaks}
 \alias{ghighlightChromPeaks}
-\alias{ghighlightChromPeaks,XChromatogram-method}
+\alias{ghighlightChromPeaks,XCMSnExp-method}
+\alias{ghighlightChromPeaks,XcmsExperiment-method}
 \title{ggplot2 Version of highlightChromPeaks}
 \usage{
 ghighlightChromPeaks(
@@ -16,7 +17,18 @@ ghighlightChromPeaks(
   whichPeaks = c("any", "within", "apex_within")
 )
 
-\S4method{ghighlightChromPeaks}{XChromatogram}(
+\S4method{ghighlightChromPeaks}{XCMSnExp}(
+  object,
+  rt,
+  mz,
+  peakIds = character(),
+  border = "#00000040",
+  fill = NA,
+  type = c("rect", "point", "polygon"),
+  whichPeaks = c("any", "within", "apex_within")
+)
+
+\S4method{ghighlightChromPeaks}{XcmsExperiment}(
   object,
   rt,
   mz,
@@ -28,7 +40,7 @@ ghighlightChromPeaks(
 )
 }
 \arguments{
-\item{object}{An \code{XChromatogram} object with detected peaks.}
+\item{object}{An \code{XCMSnExp} or \code{XcmsExperiment} object with detected peaks.}
 
 \item{rt}{Numeric vector of length 2 specifying retention time range for
 peak extraction (optional).}
@@ -54,13 +66,19 @@ ggplot chromatogram.
 }
 \description{
 Adds chromatographic peak annotations to existing chromatogram plots.
-This is a ggplot2 implementation that works with XChromatogram objects,
+This is a ggplot2 implementation that works with XCMSnExp or XcmsExperiment objects,
 highlighting detected peaks with rectangles, points, or polygons.
 }
 \details{
 This function returns ggplot2 layers (geoms) that can be added to an
 existing chromatogram plot using the \code{+} operator. Unlike the base R
 version which modifies an existing plot, this returns composable layers.
+
+Like the original \code{highlightChromPeaks}, this function takes the full
+XCMSnExp/XcmsExperiment object and searches ALL peaks across all samples,
+then filters by rt/mz. This means it can highlight peaks from multiple
+samples. To highlight only peaks from a specific sample, filter the object
+first using \code{filterFile()}.
 }
 \examples{
 \donttest{
@@ -74,11 +92,17 @@ cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
 xdata <- xcms::readMsExperiment(spectraFiles = cdf_files)
 xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam())
 
-# Extract chromatogram
+# Extract chromatogram for plotting
 chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
 
-# Plot and highlight peaks
-gplot(chr[1, 1]) + ghighlightChromPeaks(chr[1, 1], rt = c(2500, 3500), mz = c(200, 210))
+# Highlight peaks from the full dataset (all samples in xdata)
+gplot(chr[1, 1], peakType = "none") +
+  ghighlightChromPeaks(xdata, rt = c(2500, 3500), mz = c(200, 210))
+
+# Or filter to single sample first for cleaner visualization
+xdata_filtered <- xcms::filterFile(xdata, 1)
+gplot(chr[1, 1], peakType = "none") +
+  ghighlightChromPeaks(xdata_filtered, rt = c(2500, 3500), mz = c(200, 210))
 }
 
 }

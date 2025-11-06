@@ -211,10 +211,10 @@ setGeneric("gplotChromPeakImage", function(object,
 #'
 #' @description
 #' Adds chromatographic peak annotations to existing chromatogram plots.
-#' This is a ggplot2 implementation that works with XChromatogram objects,
+#' This is a ggplot2 implementation that works with XCMSnExp or XcmsExperiment objects,
 #' highlighting detected peaks with rectangles, points, or polygons.
 #'
-#' @param object An `XChromatogram` object with detected peaks.
+#' @param object An `XCMSnExp` or `XcmsExperiment` object with detected peaks.
 #' @param rt Numeric vector of length 2 specifying retention time range for
 #'   peak extraction (optional).
 #' @param mz Numeric vector of length 2 specifying m/z range for peak extraction (optional).
@@ -235,6 +235,12 @@ setGeneric("gplotChromPeakImage", function(object,
 #' existing chromatogram plot using the `+` operator. Unlike the base R
 #' version which modifies an existing plot, this returns composable layers.
 #'
+#' Like the original `highlightChromPeaks`, this function takes the full
+#' XCMSnExp/XcmsExperiment object and searches ALL peaks across all samples,
+#' then filters by rt/mz. This means it can highlight peaks from multiple
+#' samples. To highlight only peaks from a specific sample, filter the object
+#' first using `filterFile()`.
+#'
 #' @examples
 #' \donttest{
 #' library(xcmsVis)
@@ -247,11 +253,17 @@ setGeneric("gplotChromPeakImage", function(object,
 #' xdata <- xcms::readMsExperiment(spectraFiles = cdf_files)
 #' xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam())
 #'
-#' # Extract chromatogram
+#' # Extract chromatogram for plotting
 #' chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
 #'
-#' # Plot and highlight peaks
-#' gplot(chr[1, 1]) + ghighlightChromPeaks(chr[1, 1], rt = c(2500, 3500), mz = c(200, 210))
+#' # Highlight peaks from the full dataset (all samples in xdata)
+#' gplot(chr[1, 1], peakType = "none") +
+#'   ghighlightChromPeaks(xdata, rt = c(2500, 3500), mz = c(200, 210))
+#'
+#' # Or filter to single sample first for cleaner visualization
+#' xdata_filtered <- xcms::filterFile(xdata, 1)
+#' gplot(chr[1, 1], peakType = "none") +
+#'   ghighlightChromPeaks(xdata_filtered, rt = c(2500, 3500), mz = c(200, 210))
 #' }
 #'
 #' @seealso
