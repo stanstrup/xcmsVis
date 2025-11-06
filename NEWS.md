@@ -1,3 +1,12 @@
+## Changes in v0.99.8
+
+
+### Bug Fixes
+
+* **doc:** also used filtering for original function ([a43eaa5](https://github.com/stanstrup/xcmsVis/commit/a43eaa54e5fe4dd42f31bd6753cb373e92c4bc77))
+* polygon type now matches original XCMS behavior exactly ([418668e](https://github.com/stanstrup/xcmsVis/commit/418668e51f5f4b8e02bc20beac728d73e36c3fc7))
+* update tests to handle chromatograms without peaks correctly ([670a477](https://github.com/stanstrup/xcmsVis/commit/670a47727384520ccece591cc405f31b5790e5c1))
+
 ## Changes in v0.99.7
 
 
