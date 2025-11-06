@@ -18,6 +18,7 @@ vignettes/*_files/
 vignettes/*.html
 vignettes/_quarto.yaml
 vignettes/.quarto/
+vignettes/.gitignore
 vignettes/peak-visualization.rmarkdown
 
 # Node.js (for semantic-release)
