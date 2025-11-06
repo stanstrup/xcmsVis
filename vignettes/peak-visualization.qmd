@@ -511,7 +511,7 @@ The polygon visualization type follows the actual peak shape from the chromatogr
 #| fig-width: 5
 #| fig-alt: "Original XCMS polygon peak highlighting showing detected peaks as filled polygons following the chromatogram trace within peak boundaries."
 plot(chr[1, 1], main = "XCMS Polygon Highlighting")
-highlightChromPeaks(as(xdata, "XCMSnExp"),
+highlightChromPeaks(as(xdata_filtered, "XCMSnExp"),
                     rt = rt_range,
                     mz = mz_range,
                     type = "polygon",
