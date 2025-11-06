@@ -1,3 +1,10 @@
+## Changes in v0.99.10
+
+
+### Bug Fixes
+
+* add github-pages environment to pkgdown workflow ([f2c20ef](https://github.com/stanstrup/xcmsVis/commit/f2c20efc87ba58fe5f8e2c7bfd9b68ec9c80882a))
+
 ## Changes in v0.99.9
 
 
