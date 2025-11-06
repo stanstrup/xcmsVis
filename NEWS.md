@@ -1,3 +1,10 @@
+## Changes in v0.99.7
+
+
+### Bug Fixes
+
+* use GitHub Pages artifact deployment for pkgdown ([1ce3fc8](https://github.com/stanstrup/xcmsVis/commit/1ce3fc8c773495ee399ae3ad96215a43086d4606))
+
 ## Changes in v0.99.6
 
 
