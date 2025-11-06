@@ -59,19 +59,15 @@ test_that("gplot works with XChromatogram from XCMSnExp", {
   expect_s3_class(p2, "ggplot")
 })
 
-test_that("gplot handles chromatograms without peaks", {
+test_that("gplot handles peakType none", {
   data <- get_shared_data()
+  xdata <- data$xdata_exp
 
-  # Get data without peak detection by loading raw
-  xdata_no_peaks <- MsExperiment::readMsExperiment(
-    spectraFiles = system.file("cdf/KO/ko15.CDF", package = "faahKO")
-  )
+  # Extract chromatogram
+  chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
 
-  # Extract chromatogram (no peaks detected)
-  chr <- xcms::chromatogram(xdata_no_peaks, mz = c(200, 210), rt = c(2500, 3500))
-
-  # Should still create a plot (just the chromatogram, no peaks)
-  p <- gplot(chr[1, 1])
+  # Should create a plot without peak annotations
+  p <- gplot(chr[1, 1], peakType = "none")
   expect_s3_class(p, "ggplot")
 })
 

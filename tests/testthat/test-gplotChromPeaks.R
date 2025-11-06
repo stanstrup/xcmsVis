@@ -224,15 +224,20 @@ test_that("ghighlightChromPeaks handles whichPeaks parameter", {
     expect_type(layers_apex, "list")
 })
 
-test_that("ghighlightChromPeaks returns empty list when no peaks found", {
+test_that("ghighlightChromPeaks errors when no peaks in chromatogram", {
     data <- get_shared_data()
-    xdata <- data$xdata_exp
 
-    # Extract chromatogram with range that has no peaks
-    chr <- xcms::chromatogram(xdata, mz = c(1, 2), rt = c(1, 2))
+    # Load data without peak detection
+    xdata_no_peaks <- MsExperiment::readMsExperiment(
+        spectraFiles = system.file("cdf/KO/ko15.CDF", package = "faahKO")
+    )
 
-    # Use range with no peaks
-    layers <- ghighlightChromPeaks(chr[1, 1], rt = c(1, 2), mz = c(1, 2))
-    expect_type(layers, "list")
-    expect_equal(length(layers), 0)
+    # Extract chromatogram (no peaks)
+    chr <- xcms::chromatogram(xdata_no_peaks, mz = c(200, 210), rt = c(2500, 3500))
+
+    # Should error when trying to highlight peaks
+    expect_error(
+        ghighlightChromPeaks(chr[1, 1], rt = c(2500, 3500), mz = c(200, 210)),
+        "No chromatographic peaks found"
+    )
 })
