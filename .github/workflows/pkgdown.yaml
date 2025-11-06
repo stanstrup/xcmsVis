@@ -21,11 +21,6 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     permissions:
       contents: write
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -46,16 +41,9 @@ jobs:
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
 
-      - name: Create .nojekyll file
-        run: touch docs/.nojekyll
-
-      - name: Upload artifact
+      - name: Deploy to GitHub pages
         if: github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@v3
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          path: docs
-
-      - name: Deploy to GitHub Pages
-        if: github.event_name != 'pull_request'
-        uses: actions/deploy-pages@v4
-        id: deployment
+          folder: docs
+          clean: false
