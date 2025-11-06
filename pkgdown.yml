@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   gplotAdjustedRtime: gplotAdjustedRtime.html
   peak-visualization: peak-visualization.html
-last_built: 2025-11-06T16:42Z
+last_built: 2025-11-06T17:29Z
 urls:
   reference: https://stanstrup.github.io/xcmsVis/reference
   article: https://stanstrup.github.io/xcmsVis/articles
