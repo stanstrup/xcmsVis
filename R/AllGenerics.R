@@ -300,18 +300,18 @@ setGeneric("ghighlightChromPeaks", function(object,
 #'
 #' # Load and process example data
 #' cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
-#' xdata <- readMsExperiment(spectraFiles = cdf_files)
-#' xdata <- findChromPeaks(xdata, param = CentWaveParam())
+#' xdata <- xcms::readMsExperiment(spectraFiles = cdf_files)
+#' xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam())
 #'
 #' # Extract chromatogram
-#' chr <- chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
+#' chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
 #'
 #' # Plot with ggplot2
 #' gplot(chr[1, 1])
 #' }
 #'
 #' @seealso
-#' \code{\link[xcms]{plot,XChromatogram-method}} for the original XCMS implementation
+#' \code{\link[xcms:plot-XChromatogram]{xcms::plot()}} for the original XCMS implementation
 #'
 #' @export
 setGeneric("gplot", function(x, ...)

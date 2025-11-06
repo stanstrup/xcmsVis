@@ -32,7 +32,8 @@ utils::globalVariables(c(
   "ymin",
   "ymax",
   "x",
-  "y"
+  "y",
+  "maxo"
 ))
 
 #' Get sample data from XCMS object
