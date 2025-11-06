@@ -31,7 +31,7 @@ jobs:
         run: npm install
 
       - name: Make prepare-news.sh executable
-        run: chmod +x ./prepare-news.sh
+        run: chmod +x ./.github/prepare-news.sh
 
       - name: Release
         env:
