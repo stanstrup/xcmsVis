@@ -1,14 +1,28 @@
+# R session files
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
-docs/
 *.Rproj
+
+# Package build artifacts
 inst/doc
-node_modules/
-package-lock.json
-.claude/
 ..Rcheck
 xcmsVis.BiocCheck
+
+# Documentation
+docs/
+
+# Vignettes
 vignettes/*_files/
 vignettes/*.html
+vignettes/_quarto.yaml
+vignettes/.quarto/
+vignettes/peak-visualization.rmarkdown
+
+# Node.js (for semantic-release)
+node_modules/
+package-lock.json
+
+# Claude Code
+.claude/
