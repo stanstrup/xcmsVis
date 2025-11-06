@@ -1,17 +1,9 @@
 test_that("gplotChromPeakDensity works with XChromatograms", {
     library(xcms)
-    library(faahKO)
-    library(MsExperiment)
     library(ggplot2)
 
-    # Load data
-    cdf_files <- dir(system.file("cdf", package = "faahKO"),
-                     recursive = TRUE, full.names = TRUE)[1:3]
-    xdata <- readMsExperiment(spectraFiles = cdf_files)
-
-    # Peak detection
-    cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)
-    xdata <- findChromPeaks(xdata, param = cwp)
+    # Load pre-processed data (much faster than reading files)
+    xdata <- loadXcmsData("faahko_sub2")  # XcmsExperiment with peaks
 
     # Extract chromatogram for a specific m/z range
     chr <- chromatogram(xdata, mz = c(305.05, 305.15))
@@ -27,7 +19,6 @@ test_that("gplotChromPeakDensity works with XChromatograms", {
 
 test_that("gplotChromPeakDensity errors without peaks", {
     library(xcms)
-    library(MsExperiment)
 
     # Create empty XChromatograms without peaks
     chr <- XChromatograms(nrow = 1, ncol = 3)
@@ -42,17 +33,9 @@ test_that("gplotChromPeakDensity errors without peaks", {
 
 test_that("gplotChromPeakDensity errors with multiple rows", {
     library(xcms)
-    library(faahKO)
-    library(MsExperiment)
 
-    # Load data
-    cdf_files <- dir(system.file("cdf", package = "faahKO"),
-                     recursive = TRUE, full.names = TRUE)[1:3]
-    xdata <- readMsExperiment(spectraFiles = cdf_files)
-
-    # Peak detection
-    cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)
-    xdata <- findChromPeaks(xdata, param = cwp)
+    # Load pre-processed data
+    xdata <- loadXcmsData("faahko_sub2")
 
     # Extract chromatograms for MULTIPLE m/z ranges (multiple rows)
     chr <- chromatogram(xdata, mz = rbind(c(305.05, 305.15), c(344.0, 344.2)))
@@ -67,24 +50,16 @@ test_that("gplotChromPeakDensity errors with multiple rows", {
 
 test_that("gplotChromPeakDensity works with simulate = FALSE", {
     library(xcms)
-    library(faahKO)
-    library(MsExperiment)
 
-    # Load data
-    cdf_files <- dir(system.file("cdf", package = "faahKO"),
-                     recursive = TRUE, full.names = TRUE)[1:3]
-    xdata <- readMsExperiment(spectraFiles = cdf_files)
-
-    # Peak detection
-    cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)
-    xdata <- findChromPeaks(xdata, param = cwp)
+    # Load pre-processed data with full preprocessing
+    xdata <- loadXcmsData("xmse")  # Has peaks + alignment + correspondence
 
     # Extract chromatogram
     chr <- chromatogram(xdata, mz = c(305.05, 305.15))
 
-    # Perform correspondence (peak grouping)
-    prm <- PeakDensityParam(sampleGroups = rep(1, 3), bw = 30)
-    chr <- groupChromPeaks(chr, param = prm)
+    # Get param from process history
+    ph <- processHistory(xdata, type = "Peak grouping")
+    prm <- processParam(ph[[length(ph)]])
 
     # Plot with simulate = FALSE to show actual grouping
     p <- gplotChromPeakDensity(chr, param = prm, simulate = FALSE)
@@ -96,17 +71,9 @@ test_that("gplotChromPeakDensity works with simulate = FALSE", {
 
 test_that("gplotChromPeakDensity works with different peak types", {
     library(xcms)
-    library(faahKO)
-    library(MsExperiment)
 
-    # Load data
-    cdf_files <- dir(system.file("cdf", package = "faahKO"),
-                     recursive = TRUE, full.names = TRUE)[1:3]
-    xdata <- readMsExperiment(spectraFiles = cdf_files)
-
-    # Peak detection
-    cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)
-    xdata <- findChromPeaks(xdata, param = cwp)
+    # Load pre-processed data
+    xdata <- loadXcmsData("faahko_sub2")
 
     # Extract chromatogram
     chr <- chromatogram(xdata, mz = c(305.05, 305.15))
@@ -122,17 +89,9 @@ test_that("gplotChromPeakDensity works with different peak types", {
 
 test_that("gplotChromPeakDensity works with MChromatograms", {
     library(xcms)
-    library(faahKO)
-    library(MsExperiment)
 
-    # Load data
-    cdf_files <- dir(system.file("cdf", package = "faahKO"),
-                     recursive = TRUE, full.names = TRUE)[1:3]
-    xdata <- readMsExperiment(spectraFiles = cdf_files)
-
-    # Peak detection
-    cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)
-    xdata <- findChromPeaks(xdata, param = cwp)
+    # Load pre-processed data
+    xdata <- loadXcmsData("faahko_sub2")
 
     # Extract chromatogram (returns XChromatograms which inherits from MChromatograms)
     chr <- chromatogram(xdata, mz = c(305.05, 305.15))
@@ -147,24 +106,12 @@ test_that("gplotChromPeakDensity works with MChromatograms", {
 
 test_that("gplotChromPeakDensity extracting param from process history works", {
     library(xcms)
-    library(faahKO)
-    library(MsExperiment)
 
-    # Load data
-    cdf_files <- dir(system.file("cdf", package = "faahKO"),
-                     recursive = TRUE, full.names = TRUE)[1:3]
-    xdata <- readMsExperiment(spectraFiles = cdf_files)
-
-    # Peak detection
-    cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)
-    xdata <- findChromPeaks(xdata, param = cwp)
+    # Load data with correspondence already done
+    xdata <- loadXcmsData("xmse")
 
     # Extract chromatogram
     chr <- chromatogram(xdata, mz = c(305.05, 305.15))
-
-    # Perform correspondence with PeakDensityParam
-    prm <- PeakDensityParam(sampleGroups = rep(1, 3), bw = 30)
-    chr <- groupChromPeaks(chr, param = prm)
 
     # Plot without providing param - should extract from process history
     p <- gplotChromPeakDensity(chr)

@@ -38,7 +38,9 @@ Description: Provides modern, interactive visualizations for XCMS metabolomics d
     enabling interactive plots through plotly and consistent visualization styling.
     Designed as a parallel package to XCMS, maintaining compatibility with both
     XCMSnExp and XcmsExperiment objects and following XCMS conventions for methods
-    and object types.
+    and object types. This package reuses and adapts substantial code and algorithms
+    from the XCMS package, translating base R graphics implementations to ggplot2
+    while preserving the original visualization logic and functionality.
 License: MIT + file LICENSE
 URL: https://stanstrup.github.io/xcmsVis, https://github.com/stanstrup/xcmsVis
 BugReports: https://github.com/stanstrup/xcmsVis/issues

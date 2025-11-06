@@ -35,10 +35,14 @@ news:
 
 reference:
   - title: Visualization Functions
-    desc: ggplot2 versions of XCMS plotting functions
+    desc: >
+      ggplot2 versions of XCMS plotting functions. This package reuses and adapts
+      substantial code and algorithms from XCMS, translating base R graphics to
+      ggplot2 while preserving the original visualization logic.
     contents:
       - gplotAdjustedRtime
       - gplot
       - gplotChromPeaks
+      - gplotChromPeakDensity
       - gplotChromPeakImage
       - ghighlightChromPeaks
