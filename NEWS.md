@@ -1,3 +1,10 @@
+## Changes in v0.99.13
+
+
+### Bug Fixes
+
+* correct pkgdown deployment and documentation link ([a8f45ea](https://github.com/stanstrup/xcmsVis/commit/a8f45ea5ecc1d3c2ffa08fba3fa3fa9b13a459ab)), closes [#pages](https://github.com/stanstrup/xcmsVis/issues/pages)
+
 ## Changes in v0.99.12
 
 
