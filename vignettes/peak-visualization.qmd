@@ -379,10 +379,11 @@ p_chrom <- gplot(chr[1, 1], peakType = "none") +
   )
 
 # Add peak highlights as rectangles
-# Note: ghighlightChromPeaks works on the chromatogram object which already
-# contains only the peaks for this specific chromatogram (one file, one m/z range)
+# Note: Like the original highlightChromPeaks(), this function takes the full
+# XcmsExperiment object and searches ALL peaks across ALL samples that match
+# the rt/mz range. This means peaks from other samples may also appear!
 peak_layers <- ghighlightChromPeaks(
-                                    chr[1, 1],
+                                    xdata,
                                     rt = rt_range,
                                     mz = mz_range,
                                     type = "rect",
@@ -397,18 +398,81 @@ p_chrom + peak_layers
 </div>
 </div>
 
+## Understanding Peak Highlighting Behavior
+
+The `ghighlightChromPeaks()` function, like the original XCMS `highlightChromPeaks()`, takes the full `XcmsExperiment` or `XCMSnExp` object and searches **all peaks across all samples**. This can sometimes lead to unexpected behavior where peaks from multiple samples appear on a single chromatogram plot.
+
+### Why This Might Be Confusing
+
+When you extract a chromatogram for visualization with `chromatogram(xdata, mz = ...)`, you're typically looking at data from a specific sample. However, `ghighlightChromPeaks(xdata, ...)` will highlight **all peaks** from **all samples** in the dataset that match the specified rt/mz ranges - not just the peaks from the sample shown in the chromatogram.
+
+### Solution: Filter to a Single Sample
+
+For cleaner visualization that shows only peaks from the chromatogram's sample, filter the `XcmsExperiment` object first using `filterFile()`:
+
+```{r highlight_filtered}
+#| fig-height: 5
+#| fig-width: 7
+#| fig-alt: "Comparison showing chromatogram peak highlighting with and without sample filtering. Left panel shows all peaks from all samples, right panel shows only peaks from the specific sample."
+
+# Without filtering: shows peaks from ALL samples
+p_all <- gplot(chr[1, 1], peakType = "none") +
+  ghighlightChromPeaks(xdata,
+                       rt = rt_range,
+                       mz = mz_range,
+                       type = "rect",
+                       border = "red",
+                       fill = alpha("red", 0.2)) +
+  labs(title = "All Samples (may show extra peaks)",
+       x = "RT (s)", y = "Intensity")
+
+# With filtering: shows only peaks from sample 1
+xdata_filtered <- filterFile(xdata, 1)
+p_filtered <- gplot(chr[1, 1], peakType = "none") +
+  ghighlightChromPeaks(xdata_filtered,
+                       rt = rt_range,
+                       mz = mz_range,
+                       type = "rect",
+                       border = "blue",
+                       fill = alpha("blue", 0.2)) +
+  labs(title = "Single Sample (sample 1 only)",
+       x = "RT (s)", y = "Intensity")
+
+# Show side by side
+library(patchwork)
+p_all + p_filtered
+```
+
+The filtered approach ensures that only peaks detected in the specific sample are highlighted, which typically produces cleaner and more interpretable visualizations.
+
 ## Different Visualization Types
 
 ```{r highlight_types}
 #| fig-height: 10
 #| fig-width: 8
 #| fig-alt: "Three-panel comparison showing different peak annotation styles: rectangles spanning peak width, points at peak apex, and polygons following peak shape. Each method highlights the same detected peaks in different ways."
+# Use filtered data for cleaner visualization
+xdata_filtered <- filterFile(xdata, 1)
+
+# Type: Rectangle (default)
+p_rect <- gplot(chr[1, 1], peakType = "none") +
+  labs(title = "Peak Annotations: Rectangles", x = "RT (s)", y = "Intensity")
+peak_rects <- ghighlightChromPeaks(
+  xdata_filtered,
+  rt = rt_range,
+  mz = mz_range,
+  type = "rect",
+  border = "red",
+  fill = alpha("red", 0.2)
+)
+
 # Type: Point (marks peak apex)
 p_point <- gplot(chr[1, 1], peakType = "none") +
   labs(title = "Peak Annotations: Points", x = "RT (s)", y = "Intensity")
-
 peak_points <- ghighlightChromPeaks(
-  chr[1, 1],
+  xdata_filtered,
+  rt = rt_range,
+  mz = mz_range,
   type = "point",
   border = "red"
 )
@@ -417,18 +481,67 @@ peak_points <- ghighlightChromPeaks(
 p_poly <- gplot(chr[1, 1], peakType = "none") +
   labs(title = "Peak Annotations: Polygons", x = "RT (s)", y = "Intensity")
 
+
 peak_polygons <- ghighlightChromPeaks(
-  chr[1, 1],
+  xdata_filtered,
+  rt = rt_range,
+  mz = mz_range,
   type = "polygon",
   border = "blue",
   fill = alpha("blue", 0.3)
 )
 
 # Display all three types
-(p_chrom + peak_layers) /
+(p_rect + peak_rects) /
 (p_point + peak_points) /
 (p_poly + peak_polygons)
 ```
+
+### Comparing Polygon Type with Original XCMS
+
+The polygon visualization type follows the actual peak shape from the chromatogram data:
+
+<div class="row">
+<div class="col-md-6">
+
+#### Original XCMS
+
+```{r polygon_original}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "Original XCMS polygon peak highlighting showing detected peaks as filled polygons following the chromatogram trace within peak boundaries."
+plot(chr[1, 1], main = "XCMS Polygon Highlighting")
+highlightChromPeaks(as(xdata, "XCMSnExp"),
+                    rt = rt_range,
+                    mz = mz_range,
+                    type = "polygon",
+                    border = "blue",
+                    col = adjustcolor("blue", alpha.f = 0.3))
+```
+
+</div>
+<div class="col-md-6">
+
+#### xcmsVis ggplot2 Version
+
+```{r polygon_ggplot}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "ggplot2 version of polygon peak highlighting with same visual style as original, showing peaks as filled polygons."
+gplot(chr[1, 1], peakType = "none") +
+  ghighlightChromPeaks(xdata_filtered,
+                       rt = rt_range,
+                       mz = mz_range,
+                       type = "polygon",
+                       border = "blue",
+                       fill = alpha("blue", 0.3)) +
+  labs(title = "xcmsVis Polygon Highlighting",
+       x = "Retention Time (s)",
+       y = "Intensity")
+```
+
+</div>
+</div>
 
 ## Peak Selection Criteria
 
@@ -441,7 +554,7 @@ p_any <- gplot(chr[1, 1], peakType = "none") +
   labs(title = "whichPeaks = 'any'", x = "RT (s)", y = "Intensity")
 
 peaks_any <- ghighlightChromPeaks(
-  chr[1, 1], rt = rt_range, mz = mz_range,
+  xdata_filtered, rt = rt_range, mz = mz_range,
   whichPeaks = "any", border = "red", fill = alpha("red", 0.2)
 )
 
@@ -450,7 +563,7 @@ p_within <- gplot(chr[1, 1], peakType = "none") +
   labs(title = "whichPeaks = 'within'", x = "RT (s)", y = "Intensity")
 
 peaks_within <- ghighlightChromPeaks(
-  chr[1, 1], rt = rt_range, mz = mz_range,
+  xdata_filtered, rt = rt_range, mz = mz_range,
   whichPeaks = "within", border = "blue", fill = alpha("blue", 0.2)
 )
 
@@ -459,7 +572,7 @@ p_apex <- gplot(chr[1, 1], peakType = "none") +
   labs(title = "whichPeaks = 'apex_within'", x = "RT (s)", y = "Intensity")
 
 peaks_apex <- ghighlightChromPeaks(
-  chr[1, 1], rt = rt_range, mz = mz_range,
+  xdata_filtered, rt = rt_range, mz = mz_range,
   whichPeaks = "apex_within", border = "green", fill = alpha("green", 0.2)
 )
 
