@@ -350,9 +350,15 @@ For more control, `ghighlightChromPeaks()` returns ggplot2 layers that can be ad
 #| fig-width: 5
 #| fig-alt: "XCMS chromatogram plot with peaks highlighted using the original highlightChromPeaks function. Shows peaks marked on the chromatogram."
 # Base R graphics version - plot then add highlights
+# Note: Original highlightChromPeaks searches ALL peaks in xdata across all files
+# that match the rt/mz range, so it may show more peaks than just this one chromatogram
 plot(chr[1, 1], main = "XCMS highlightChromPeaks")
-highlightChromPeaks(as(xdata, "XCMSnExp"), rt = rt_range, mz = mz_range,
-                   border = "red", col = adjustcolor("red", alpha.f = 0.2))
+highlightChromPeaks(as(xdata, "XCMSnExp"),
+                    rt = rt_range,
+                    mz = mz_range,
+                    border = "red",
+                    col = adjustcolor("red", alpha.f = 0.2)
+                   )
 ```
 
 </div>
@@ -373,12 +379,16 @@ p_chrom <- gplot(chr[1, 1], peakType = "none") +
   )
 
 # Add peak highlights as rectangles
+# Note: ghighlightChromPeaks works on the chromatogram object which already
+# contains only the peaks for this specific chromatogram (one file, one m/z range)
 peak_layers <- ghighlightChromPeaks(
-  chr[1, 1],
-  type = "rect",
-  border = "red",
-  fill = alpha("red", 0.2)
-)
+                                    chr[1, 1],
+                                    rt = rt_range,
+                                    mz = mz_range,
+                                    type = "rect",
+                                    border = "red",
+                                    fill = alpha("red", 0.2)
+                                    )
 
 # Combine base plot with peak annotations
 p_chrom + peak_layers
