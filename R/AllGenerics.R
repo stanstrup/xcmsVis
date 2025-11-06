@@ -330,7 +330,7 @@ setGeneric("ghighlightChromPeaks", function(object,
 #' }
 #'
 #' @seealso
-#' \code{\link[xcms]{plot,XChromatogram,missing-method}} for the original XCMS implementation
+#' \code{\link[xcms]{plot,XChromatogram,ANY-method}} for the original XCMS implementation
 #'
 #' @export
 setGeneric("gplot", function(x, ...)

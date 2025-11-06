@@ -83,5 +83,5 @@ gplot(chr[1, 1])
 
 }
 \seealso{
-\code{\link[xcms]{plot,XChromatogram,missing-method}} for the original XCMS implementation
+\code{\link[xcms]{plot,XChromatogram,ANY-method}} for the original XCMS implementation
 }
