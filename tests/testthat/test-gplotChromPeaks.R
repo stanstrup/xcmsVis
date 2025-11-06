@@ -149,34 +149,28 @@ test_that("gplotChromPeakImage creates heatmap structure", {
 
 # ---- Tests for ghighlightChromPeaks ----
 
-test_that("ghighlightChromPeaks requires valid XChromatogram object", {
+test_that("ghighlightChromPeaks requires valid XCMS object", {
     expect_error(
-        ghighlightChromPeaks("not an XChromatogram", c(2500, 3500), c(200, 600)),
+        ghighlightChromPeaks("not an XCMS object", c(2500, 3500), c(200, 600)),
         "unable to find an inherited method"
     )
 })
 
-test_that("ghighlightChromPeaks works with XChromatogram from XcmsExperiment", {
+test_that("ghighlightChromPeaks works with XcmsExperiment", {
     data <- get_shared_data()
     xdata <- data$xdata_exp
 
-    # Extract chromatogram
-    chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
-
     # Test with rt and mz ranges
-    layers <- ghighlightChromPeaks(chr[1, 1], rt = c(2500, 3500), mz = c(200, 210))
+    layers <- ghighlightChromPeaks(xdata, rt = c(2500, 3500), mz = c(200, 210))
     expect_type(layers, "list")
 })
 
-test_that("ghighlightChromPeaks works with XChromatogram from XCMSnExp", {
+test_that("ghighlightChromPeaks works with XCMSnExp", {
     data <- get_shared_data()
     xdata <- data$xdata_snexp
 
-    # Extract chromatogram
-    chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
-
     # Test with rt and mz ranges
-    layers <- ghighlightChromPeaks(chr[1, 1], rt = c(2500, 3500), mz = c(200, 210))
+    layers <- ghighlightChromPeaks(xdata, rt = c(2500, 3500), mz = c(200, 210))
     expect_type(layers, "list")
 })
 
@@ -184,17 +178,14 @@ test_that("ghighlightChromPeaks handles different types", {
     data <- get_shared_data()
     xdata <- data$xdata_exp
 
-    # Extract chromatogram
-    chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
-
     # Test rect type
-    layers_rect <- ghighlightChromPeaks(chr[1, 1],
+    layers_rect <- ghighlightChromPeaks(xdata,
                                         rt = c(2500, 3500), mz = c(200, 210),
                                         type = "rect")
     expect_type(layers_rect, "list")
 
     # Test point type
-    layers_point <- ghighlightChromPeaks(chr[1, 1],
+    layers_point <- ghighlightChromPeaks(xdata,
                                          rt = c(2500, 3500), mz = c(200, 210),
                                          type = "point")
     expect_type(layers_point, "list")
@@ -204,40 +195,34 @@ test_that("ghighlightChromPeaks handles whichPeaks parameter", {
     data <- get_shared_data()
     xdata <- data$xdata_exp
 
-    # Extract chromatogram
-    chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
-
     # Test different whichPeaks options
-    layers_any <- ghighlightChromPeaks(chr[1, 1],
+    layers_any <- ghighlightChromPeaks(xdata,
                                        rt = c(2500, 3500), mz = c(200, 210),
                                        whichPeaks = "any")
     expect_type(layers_any, "list")
 
-    layers_within <- ghighlightChromPeaks(chr[1, 1],
+    layers_within <- ghighlightChromPeaks(xdata,
                                           rt = c(2500, 3500), mz = c(200, 210),
                                           whichPeaks = "within")
     expect_type(layers_within, "list")
 
-    layers_apex <- ghighlightChromPeaks(chr[1, 1],
+    layers_apex <- ghighlightChromPeaks(xdata,
                                         rt = c(2500, 3500), mz = c(200, 210),
                                         whichPeaks = "apex_within")
     expect_type(layers_apex, "list")
 })
 
-test_that("ghighlightChromPeaks errors when no peaks in chromatogram", {
+test_that("ghighlightChromPeaks errors when no peaks in object", {
     data <- get_shared_data()
 
-    # Load data without peak detection
-    xdata_no_peaks <- MsExperiment::readMsExperiment(
+    # Load data without peak detection and convert to XcmsExperiment
+    xdata_no_peaks <- as(MsExperiment::readMsExperiment(
         spectraFiles = system.file("cdf/KO/ko15.CDF", package = "faahKO")
-    )
-
-    # Extract chromatogram (no peaks)
-    chr <- xcms::chromatogram(xdata_no_peaks, mz = c(200, 210), rt = c(2500, 3500))
+    ), "XcmsExperiment")
 
     # Should error when trying to highlight peaks
     expect_error(
-        ghighlightChromPeaks(chr[1, 1], rt = c(2500, 3500), mz = c(200, 210)),
+        ghighlightChromPeaks(xdata_no_peaks, rt = c(2500, 3500), mz = c(200, 210)),
         "No chromatographic peaks found"
     )
 })
