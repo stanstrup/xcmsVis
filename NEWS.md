@@ -1,3 +1,10 @@
+## Changes in v0.99.6
+
+
+### Bug Fixes
+
+* add complete example for ghighlightChromPeaks ([0a27bf1](https://github.com/stanstrup/xcmsVis/commit/0a27bf1873fcf505f96f893fbf43da6ac30837fc))
+
 ## Changes in v0.99.5
 
 
