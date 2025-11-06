@@ -3,6 +3,8 @@
 \name{gplot}
 \alias{gplot}
 \alias{gplot,XChromatogram-method}
+\alias{gplot,XChromatograms-method}
+\alias{gplot,MChromatograms-method}
 \title{ggplot2 Version of plot for XChromatogram}
 \usage{
 gplot(x, ...)
@@ -10,6 +12,36 @@ gplot(x, ...)
 \S4method{gplot}{XChromatogram}(
   x,
   col = "black",
+  lty = 1,
+  type = "l",
+  xlab = "retention time",
+  ylab = "intensity",
+  main = NULL,
+  peakType = c("polygon", "point", "rectangle", "none"),
+  peakCol = "#00000060",
+  peakBg = "#00000020",
+  peakPch = 1,
+  ...
+)
+
+\S4method{gplot}{XChromatograms}(
+  x,
+  col = "#00000060",
+  lty = 1,
+  type = "l",
+  xlab = "retention time",
+  ylab = "intensity",
+  main = NULL,
+  peakType = c("polygon", "point", "rectangle", "none"),
+  peakCol = "#00000060",
+  peakBg = "#00000020",
+  peakPch = 1,
+  ...
+)
+
+\S4method{gplot}{MChromatograms}(
+  x,
+  col = "#00000060",
   lty = 1,
   type = "l",
   xlab = "retention time",

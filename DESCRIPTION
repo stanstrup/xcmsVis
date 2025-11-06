@@ -26,6 +26,7 @@ Imports:
     MSnbase,
     Spectra,
     ggplot2,
+    patchwork,
     tibble,
     tidyr,
     dplyr,
@@ -34,7 +35,6 @@ Imports:
     Biobase
 Suggests:
     plotly,
-    patchwork,
     testthat (>= 3.0.0),
     knitr,
     rmarkdown,
@@ -51,5 +51,6 @@ Collate:
     'ghighlightChromPeaks-methods.R'
     'gplot-methods.R'
     'gplotAdjustedRtime-methods.R'
+    'gplotChromPeakDensity-methods.R'
     'gplotChromPeakImage-methods.R'
     'gplotChromPeaks-methods.R'
