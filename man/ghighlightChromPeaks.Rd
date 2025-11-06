@@ -85,11 +85,12 @@ first using \code{filterFile()}.
 library(xcmsVis)
 library(xcms)
 library(faahKO)
+library(MsExperiment)
 library(ggplot2)
 
 # Load and process example data
 cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
-xdata <- xcms::readMsExperiment(spectraFiles = cdf_files)
+xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
 xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam())
 
 # Extract chromatogram for plotting

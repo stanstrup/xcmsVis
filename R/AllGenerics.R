@@ -246,11 +246,12 @@ setGeneric("gplotChromPeakImage", function(object,
 #' library(xcmsVis)
 #' library(xcms)
 #' library(faahKO)
+#' library(MsExperiment)
 #' library(ggplot2)
 #'
 #' # Load and process example data
 #' cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
-#' xdata <- xcms::readMsExperiment(spectraFiles = cdf_files)
+#' xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
 #' xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam())
 #'
 #' # Extract chromatogram for plotting
@@ -313,11 +314,12 @@ setGeneric("ghighlightChromPeaks", function(object,
 #' library(xcmsVis)
 #' library(xcms)
 #' library(faahKO)
+#' library(MsExperiment)
 #' library(ggplot2)
 #'
 #' # Load and process example data
 #' cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
-#' xdata <- xcms::readMsExperiment(spectraFiles = cdf_files)
+#' xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
 #' xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam())
 #'
 #' # Extract chromatogram
@@ -328,7 +330,7 @@ setGeneric("ghighlightChromPeaks", function(object,
 #' }
 #'
 #' @seealso
-#' \code{\link[xcms:plot-XChromatogram]{xcms::plot()}} for the original XCMS implementation
+#' \code{\link[xcms]{plot,XChromatogram,missing-method}} for the original XCMS implementation
 #'
 #' @export
 setGeneric("gplot", function(x, ...)
