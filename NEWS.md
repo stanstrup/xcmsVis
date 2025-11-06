@@ -1,3 +1,10 @@
+## Changes in v0.99.12
+
+
+### Bug Fixes
+
+* re-add .nojekyll file creation to prevent Jekyll processing ([05e9fc6](https://github.com/stanstrup/xcmsVis/commit/05e9fc62da6e9fc84d03bd836518f6b8f5322b1c))
+
 ## Changes in v0.99.11
 
 
