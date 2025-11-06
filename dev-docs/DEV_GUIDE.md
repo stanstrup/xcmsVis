@@ -29,10 +29,10 @@ Functions that work with modern XCMS objects (XCMSnExp, XcmsExperiment):
 | `plotChromPeakImage` | Peak density heatmap | XCMSnExp, XcmsExperiment | ✅ `gplotChromPeakImage` | R/gplotChromPeakImage-methods.R |
 | `plot` (S4) | Chromatogram with peaks | XChromatogram | ✅ `gplot` | R/gplot-methods.R |
 | `highlightChromPeaks` | Peak annotation layers | XCMSnExp | ✅ `ghighlightChromPeaks` | R/ghighlightChromPeaks-methods.R |
-| `plotChromPeakDensity` | Peak density for parameter tuning | XCMSnExp | ⚠️ Use discouraged on XCMSnExp | - |
-| `plotFeatureGroups` | Feature relationships | XCMSnExp, XcmsExperiment | ❌ Not implemented | - |
-| `plotChromatogramsOverlay` | Overlay multiple EICs | MChromatograms | ❌ Different object type | - |
-| `plotPrecursorIons` | MS/MS precursors | MsExperiment | ❌ MS/MS specific | - |
+| `plotChromPeakDensity` | Peak density for parameter tuning | XChromatograms, MChromatograms | 🔜 High priority | - |
+| `plotChromatogramsOverlay` | Overlay multiple EICs | XChromatograms, MChromatograms | 🔜 High priority | - |
+| `plotFeatureGroups` | Feature relationships | XCMSnExp, XcmsExperiment | 🔜 Medium priority | - |
+| `plotPrecursorIons` | MS/MS precursors | MsExperiment | ⚪ Low priority | - |
 
 ### Legacy Functions (Not Implemented)
 

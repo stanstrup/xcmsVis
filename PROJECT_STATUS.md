@@ -40,15 +40,25 @@
 
 ---
 
-## Not Implemented (with Reasons)
+## Not Yet Implemented (Candidates for Implementation)
 
-| XCMS Function | Reason | Priority | Notes |
-|---------------|--------|----------|-------|
-| `plotChromPeakDensity` | Use discouraged on XCMSnExp; modern workflow uses XChromatograms | Medium | XCMS now recommends extracting chromatograms first |
-| `plotFeatureGroups` | Feature annotation QC; requires feature grouping results | Medium | Worth implementing if users request |
-| `plotChromatogramsOverlay` | Works with MChromatograms/XChromatograms, not XCMSnExp/XcmsExperiment | Medium | Different object type |
-| `plotPrecursorIons` | MS/MS specific | Low | Specialized use case |
-| Legacy functions | Focus on modern XCMS objects | N/A | 15 functions for xcmsRaw/xcmsSet |
+### High Priority - Modern XCMS Objects
+
+| XCMS Function | Input Objects | Priority | Notes |
+|---------------|---------------|----------|-------|
+| `plotChromPeakDensity` | XChromatograms, MChromatograms | ⭐⭐⭐ High | Shows peak density for parameter optimization |
+| `plotChromatogramsOverlay` | XChromatograms, MChromatograms | ⭐⭐⭐ High | Overlay multiple EICs - very useful |
+| `plotFeatureGroups` | XCMSnExp, XcmsExperiment | ⭐⭐ Medium | Feature annotation QC |
+
+### Lower Priority
+
+| XCMS Function | Input Objects | Priority | Notes |
+|---------------|---------------|----------|-------|
+| `plotPrecursorIons` | MsExperiment | ⭐ Low | MS/MS specific, specialized use case |
+
+### Not Implementing - Legacy Objects
+
+15 functions for xcmsRaw/xcmsSet objects (plotQC, plotrt, plotTIC, plotRaw, plotEIC, plotChrom, plotScan, plotSpec, plotPeaks, plotSurf, image, levelplot, plot.xcmsEIC, plotTree, plotMsData) - focus is on modern XCMS workflow
 
 ---
 
@@ -156,14 +166,21 @@ See: `R/ghighlightChromPeaks-methods.R` lines 95-150
 
 ## Future Work
 
-### High Priority
+### High Priority - Core Visualization Functions
+
+| Task | Input Objects | Description | Effort |
+|------|---------------|-------------|--------|
+| `gplotChromPeakDensity` | XChromatograms, MChromatograms | Peak density visualization for parameter tuning | Medium |
+| `gplotChromatogramsOverlay` | XChromatograms, MChromatograms | Overlay multiple EICs in one plot | Medium |
+| `gplotFeatureGroups` | XCMSnExp, XcmsExperiment | Feature annotation QC and relationships | Medium |
+
+### High Priority - Package Quality
 
 | Task | Description | Effort |
 |------|-------------|--------|
-| `gplotFeatureGroups` | Feature annotation QC | Medium |
-| `gplotChromatogramsOverlay` | Overlay multiple EICs | Medium |
 | Visual regression tests | Using vdiffr package | Low |
 | Plotly integration guide | Optimize tooltips, interactivity | Low |
+| Performance profiling | Test with large datasets | Low |
 
 ### Medium Priority
 
