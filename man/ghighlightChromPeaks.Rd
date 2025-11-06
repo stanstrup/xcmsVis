@@ -69,11 +69,16 @@ library(xcms)
 library(faahKO)
 library(ggplot2)
 
+# Load and process example data
+cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
+xdata <- xcms::readMsExperiment(spectraFiles = cdf_files)
+xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam())
+
 # Extract chromatogram
-chr <- chromatogram(xdata, mz = c(200, 210))
+chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
 
 # Plot and highlight peaks
-gplot(chr[1, 1]) + ghighlightChromPeaks(chr[1, 1])
+gplot(chr[1, 1]) + ghighlightChromPeaks(chr[1, 1], rt = c(2500, 3500), mz = c(200, 210))
 }
 
 }
