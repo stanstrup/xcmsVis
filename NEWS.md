@@ -1,3 +1,11 @@
+## Changes in v0.99.9
+
+
+### Bug Fixes
+
+* configure BiocParallel for serial processing in tests ([e8b3979](https://github.com/stanstrup/xcmsVis/commit/e8b39796b2e25630385a4a515198620cc0c1c4c9))
+* correct example code and cross-references ([bd86c11](https://github.com/stanstrup/xcmsVis/commit/bd86c11cd676de7b020d8d6e24656182a2a6b013))
+
 ## Changes in v0.99.8
 
 
