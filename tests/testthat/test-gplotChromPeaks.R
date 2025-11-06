@@ -149,30 +149,34 @@ test_that("gplotChromPeakImage creates heatmap structure", {
 
 # ---- Tests for ghighlightChromPeaks ----
 
-test_that("ghighlightChromPeaks requires valid XCMS object", {
+test_that("ghighlightChromPeaks requires valid XChromatogram object", {
     expect_error(
-        ghighlightChromPeaks("not an XCMS object", NULL, c(2500, 3500), c(200, 600)),
+        ghighlightChromPeaks("not an XChromatogram", c(2500, 3500), c(200, 600)),
         "unable to find an inherited method"
     )
 })
 
-test_that("ghighlightChromPeaks works with XcmsExperiment", {
+test_that("ghighlightChromPeaks works with XChromatogram from XcmsExperiment", {
     data <- get_shared_data()
     xdata <- data$xdata_exp
 
+    # Extract chromatogram
+    chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
+
     # Test with rt and mz ranges
-    layers <- ghighlightChromPeaks(xdata, chrom_data = NULL,
-                                   rt = c(2500, 3500), mz = c(200, 600))
+    layers <- ghighlightChromPeaks(chr[1, 1], rt = c(2500, 3500), mz = c(200, 210))
     expect_type(layers, "list")
 })
 
-test_that("ghighlightChromPeaks works with XCMSnExp", {
+test_that("ghighlightChromPeaks works with XChromatogram from XCMSnExp", {
     data <- get_shared_data()
     xdata <- data$xdata_snexp
 
+    # Extract chromatogram
+    chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
+
     # Test with rt and mz ranges
-    layers <- ghighlightChromPeaks(xdata, chrom_data = NULL,
-                                   rt = c(2500, 3500), mz = c(200, 600))
+    layers <- ghighlightChromPeaks(chr[1, 1], rt = c(2500, 3500), mz = c(200, 210))
     expect_type(layers, "list")
 })
 
@@ -180,15 +184,18 @@ test_that("ghighlightChromPeaks handles different types", {
     data <- get_shared_data()
     xdata <- data$xdata_exp
 
+    # Extract chromatogram
+    chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
+
     # Test rect type
-    layers_rect <- ghighlightChromPeaks(xdata, chrom_data = NULL,
-                                        rt = c(2500, 3500), mz = c(200, 600),
+    layers_rect <- ghighlightChromPeaks(chr[1, 1],
+                                        rt = c(2500, 3500), mz = c(200, 210),
                                         type = "rect")
     expect_type(layers_rect, "list")
 
     # Test point type
-    layers_point <- ghighlightChromPeaks(xdata, chrom_data = NULL,
-                                         rt = c(2500, 3500), mz = c(200, 600),
+    layers_point <- ghighlightChromPeaks(chr[1, 1],
+                                         rt = c(2500, 3500), mz = c(200, 210),
                                          type = "point")
     expect_type(layers_point, "list")
 })
@@ -197,19 +204,22 @@ test_that("ghighlightChromPeaks handles whichPeaks parameter", {
     data <- get_shared_data()
     xdata <- data$xdata_exp
 
+    # Extract chromatogram
+    chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
+
     # Test different whichPeaks options
-    layers_any <- ghighlightChromPeaks(xdata, chrom_data = NULL,
-                                       rt = c(2500, 3500), mz = c(200, 600),
+    layers_any <- ghighlightChromPeaks(chr[1, 1],
+                                       rt = c(2500, 3500), mz = c(200, 210),
                                        whichPeaks = "any")
     expect_type(layers_any, "list")
 
-    layers_within <- ghighlightChromPeaks(xdata, chrom_data = NULL,
-                                          rt = c(2500, 3500), mz = c(200, 600),
+    layers_within <- ghighlightChromPeaks(chr[1, 1],
+                                          rt = c(2500, 3500), mz = c(200, 210),
                                           whichPeaks = "within")
     expect_type(layers_within, "list")
 
-    layers_apex <- ghighlightChromPeaks(xdata, chrom_data = NULL,
-                                        rt = c(2500, 3500), mz = c(200, 600),
+    layers_apex <- ghighlightChromPeaks(chr[1, 1],
+                                        rt = c(2500, 3500), mz = c(200, 210),
                                         whichPeaks = "apex_within")
     expect_type(layers_apex, "list")
 })
@@ -218,9 +228,11 @@ test_that("ghighlightChromPeaks returns empty list when no peaks found", {
     data <- get_shared_data()
     xdata <- data$xdata_exp
 
+    # Extract chromatogram with range that has no peaks
+    chr <- xcms::chromatogram(xdata, mz = c(1, 2), rt = c(1, 2))
+
     # Use range with no peaks
-    layers <- ghighlightChromPeaks(xdata, chrom_data = NULL,
-                                   rt = c(1, 2), mz = c(1, 2))
+    layers <- ghighlightChromPeaks(chr[1, 1], rt = c(1, 2), mz = c(1, 2))
     expect_type(layers, "list")
     expect_equal(length(layers), 0)
 })
