@@ -1,3 +1,12 @@
+## Changes in v0.99.5
+
+
+### Bug Fixes
+
+* ensure .nojekyll file is created for pkgdown site ([29eb82c](https://github.com/stanstrup/xcmsVis/commit/29eb82c76dfb8cc544b8640c131d7d24691f1570))
+* resolve R CMD check warnings in gplot ([86345f2](https://github.com/stanstrup/xcmsVis/commit/86345f241dde9140d17223af2f104785d05b6157))
+* update prepare-news.sh path in release workflow ([f04ed39](https://github.com/stanstrup/xcmsVis/commit/f04ed39588c2f4fcf3933d9504e24fc0934668de))
+
 ## Changes in v0.99.4
 
 
