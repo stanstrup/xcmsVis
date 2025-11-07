@@ -104,8 +104,8 @@ NULL
 
 #' Shared implementation function for gplotChromPeakDensity
 #'
-#' @importFrom ggplot2 ggplot aes geom_point geom_line geom_rect theme_bw labs
-#'   scale_y_continuous theme element_blank
+#' @importFrom ggplot2 ggplot aes geom_point geom_line geom_rect geom_vline
+#'   theme_bw labs scale_y_continuous theme element_blank
 #' @importFrom patchwork plot_layout wrap_plots
 #' @importFrom xcms chromPeaks hasChromPeaks hasFeatures featureDefinitions
 #'   processHistory rtime
