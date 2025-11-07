@@ -162,46 +162,66 @@ NULL
                     inherit.aes = FALSE
                 )
             } else if (peakType == "polygon") {
-                # For polygons, extract intensity values for each peak
+                # Collect all polygons with NA breaks (matches XCMS behavior)
+                xs_all <- numeric()
+                ys_all <- numeric()
+
                 for (i in seq_len(nrow(peaks_df))) {
                     pk <- peaks_df[i, ]
                     row_idx <- pk$row
                     chr <- object[row_idx, col_idx]
-                    chr_rt <- xcms::rtime(chr)
-                    chr_int <- xcms::intensity(chr)
+
+                    # Use filterRt to extract peak region (matches XCMS exactly)
+                    chr_filtered <- MSnbase::filterRt(chr, rt = c(pk$rtmin, pk$rtmax))
+                    xs <- xcms::rtime(chr_filtered)
+
+                    # Check if we have any points
+                    if (!length(xs)) next
+
+                    # Get intensities
+                    ints <- xcms::intensity(chr_filtered)
 
                     # Apply transform
-                    chr_int <- transform(chr_int)
+                    ints <- transform(ints)
+
+                    # Handle infinite values
+                    ints[is.infinite(ints)] <- 0
 
                     # Apply stacking
+                    baseline_y <- if (stacked > 0) (row_idx - 1) * stacked else 0
                     if (stacked > 0) {
-                        chr_int <- chr_int + (row_idx - 1) * stacked
+                        ints <- ints + baseline_y
                     }
 
-                    # Get points within peak bounds
-                    idx <- which(chr_rt >= pk$rtmin & chr_rt <= pk$rtmax)
-                    if (length(idx) > 0) {
-                        poly_df <- data.frame(
-                            rt = chr_rt[idx],
-                            intensity = chr_int[idx]
-                        )
-                        # Add baseline points to close polygon
-                        baseline_y <- if (stacked > 0) (row_idx - 1) * stacked else 0
-                        poly_df <- rbind(
-                            data.frame(rt = pk$rtmin, intensity = baseline_y),
-                            poly_df,
-                            data.frame(rt = pk$rtmax, intensity = baseline_y)
-                        )
-                        poly_df$panel_title <- main[col_idx]
+                    # Add baseline points at start and end
+                    xs <- c(xs[1], xs, xs[length(xs)])
+                    ys <- c(baseline_y, ints, baseline_y)
 
-                        p <- p + geom_polygon(
-                            data = poly_df,
-                            aes(x = rt, y = intensity),
-                            color = peakCol,
-                            fill = peakBg,
-                            inherit.aes = FALSE
-                        )
+                    # Filter out NA values (both xs and ys together)
+                    nona <- !is.na(ys)
+
+                    # Add NA break between peaks (not before first peak)
+                    if (length(xs_all) > 0) {
+                        xs_all <- c(xs_all, NA)
+                        ys_all <- c(ys_all, NA)
                     }
+
+                    xs_all <- c(xs_all, xs[nona])
+                    ys_all <- c(ys_all, ys[nona])
+                }
+
+                # Draw all polygons in one call with NA breaks
+                if (length(xs_all) > 0) {
+                    poly_df <- data.frame(rt = xs_all, intensity = ys_all)
+                    poly_df$panel_title <- main[col_idx]
+
+                    p <- p + geom_polygon(
+                        data = poly_df,
+                        aes(x = rt, y = intensity),
+                        color = peakCol,
+                        fill = peakBg,
+                        inherit.aes = FALSE
+                    )
                 }
             }
         }
