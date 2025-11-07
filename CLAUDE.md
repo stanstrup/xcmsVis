@@ -170,20 +170,49 @@ The XCMS codebase has been refined over many years and contains important edge c
    - Note how data transformations are performed
    - Look for helper functions that handle special cases
 
-2. **Mirror XCMS logic structure** in your ggplot2 implementation:
+2. **ALWAYS reuse XCMS internal functions when possible**:
+   - **DO**: Call XCMS internal functions directly using `xcms:::functionName()`
+   - **DO**: Reuse XCMS's data processing, mathematical, and algorithmic functions
+   - **DON'T**: Reimplement functions that already exist in XCMS
+   - **ONLY write your own functions** when the XCMS code cannot be separated from the base R plotting functionality we need to replace
+   - This ensures perfect compatibility and avoids subtle implementation bugs
+   - Examples of what to reuse:
+     - `xcms:::descendMin()` - density local minima finding
+     - Any mathematical or statistical functions
+     - Data transformation and filtering functions
+     - Peak grouping and detection algorithms
+   - Examples of what to reimplement:
+     - Base R plotting calls (`plot()`, `points()`, `rect()`) → replace with ggplot2
+     - Plot layout and styling → replace with ggplot2/patchwork
+     - Visual elements specific to base R graphics
+
+3. **Mirror XCMS logic structure** in your ggplot2 implementation:
    - Use similar variable names where possible
    - Follow the same sequence of operations
    - Preserve data filtering and validation logic
    - Keep the same coordinate transformations
 
-3. **Pay special attention to**:
+4. **Pay special attention to**:
    - NA value handling (filtering, propagation)
    - Data gaps and breaks in visualizations
    - Polygon/geometry rendering edge cases
    - Coordinate system transformations
    - Default parameter values
 
-4. **Example: Polygon rendering with NA breaks**
+5. **Example: Reusing XCMS internal functions**
+   ```r
+   # BAD - Reimplementing a function that exists in XCMS:
+   .descendMin <- function(y, istart = which.max(y)) {
+     # ... custom implementation that may have subtle bugs
+   }
+
+   # GOOD - Using XCMS's internal function directly:
+   feat_range <- xcms:::descendMin(dens_y_copy, max_y)
+
+   # This ensures perfect compatibility and avoids reimplementation bugs
+   ```
+
+6. **Example: Polygon rendering with NA breaks**
    ```r
    # XCMS approach (CORRECT):
    nona <- !is.na(ys)  # Filter NA values
@@ -197,9 +226,9 @@ The XCMS codebase has been refined over many years and contains important edge c
    # Don't simplify without understanding why XCMS does it this way!
    ```
 
-5. **When in doubt**:
+7. **When in doubt**:
    - Check the XCMS source code again
-   - Look for related helper functions in XCMS
+   - Look for XCMS internal functions you can reuse before writing your own
    - Test with edge cases (NA values, empty data, single points)
    - Compare output visually with original XCMS function
 
