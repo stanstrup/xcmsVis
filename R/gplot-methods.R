@@ -203,22 +203,21 @@ setMethod("gplot", "XChromatograms",
                                   pk <- peaks_df[i, ]
                                   sample_idx <- pk$column
                                   chr <- x[1, sample_idx]
-                                  chr_rt <- xcms::rtime(chr)
-                                  chr_int <- xcms::intensity(chr)
 
-                                  # Get points within peak bounds
-                                  idx <- which(chr_rt >= pk$rtmin & chr_rt <= pk$rtmax)
-                                  if (length(idx) == 0) next
+                                  # Use filterRt to extract peak region (matches XCMS exactly)
+                                  chr_filtered <- MSnbase::filterRt(chr, rt = c(pk$rtmin, pk$rtmax))
+                                  xs <- xcms::rtime(chr_filtered)
 
-                                  xs <- chr_rt[idx]
-                                  ys <- chr_int[idx]
+                                  # Check if we have any points
+                                  if (!length(xs)) next
 
-                                  # Replace infinite values with 0 (matches XCMS)
-                                  ys[is.infinite(ys)] <- 0
+                                  # Get intensities and handle infinite values
+                                  ints <- xcms::intensity(chr_filtered)
+                                  ints[is.infinite(ints)] <- 0
 
                                   # Add baseline points at start and end
                                   xs <- c(xs[1], xs, xs[length(xs)])
-                                  ys <- c(0, ys, 0)
+                                  ys <- c(0, ints, 0)
 
                                   # Filter out NA values (both xs and ys together)
                                   nona <- !is.na(ys)

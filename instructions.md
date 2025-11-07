@@ -2,5 +2,5 @@
 
 **See `CLAUDE.md` for development workflow, conventions, and resources.**
 
-* use loadXcmsData throughout tests, examples and vignettes to get XCMSnExp or XcmsExperiment instead of creating manually. Much faster. xdata and xmse objects already have alignment/correspondence data. faahko_sub and faahko_sub2 only have peaks picked.
-* since we are reusing so much code from XCMS you should add all contributors from XCMS to this package.
+* I want you to make a ggplot2 version of "plot" for XcmsExperiments and XCMSnExp. Study the original XCMS code.
+Example usage at https://jorainer.github.io/xcmsTutorials/articles/xcms-preprocessing.html in the sections: "Visualize the full MS data for a small m/z - rt area" and "Smooth and centroid the spectra data".
