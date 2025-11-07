@@ -198,6 +198,10 @@ The XCMS codebase has been refined over many years and contains important edge c
    - Polygon/geometry rendering edge cases
    - Coordinate system transformations
    - Default parameter values
+   - **Parameter meanings**: Always read the XCMS documentation carefully
+     - Example: `stacked` in `plotChromatogramsOverlay()` is a PROPORTION (0-1), not an absolute value
+     - With `stacked = 1`, y-axis is split 50/50 between stacking region and intensity region
+     - XCMS documentation is authoritative - don't guess parameter behavior
 
 5. **Example: Reusing XCMS internal functions**
    ```r

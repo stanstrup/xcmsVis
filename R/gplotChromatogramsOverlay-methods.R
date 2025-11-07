@@ -4,7 +4,7 @@ NULL
 #' Shared implementation function for gplotChromatogramsOverlay
 #'
 #' @importFrom ggplot2 ggplot aes geom_line geom_point geom_rect geom_polygon
-#'   theme_bw labs xlim ylim facet_wrap
+#'   theme_bw labs xlim ylim facet_wrap theme element_blank
 #' @importFrom xcms rtime intensity chromPeaks hasChromPeaks
 #' @importFrom tibble as_tibble
 #' @keywords internal
@@ -44,9 +44,34 @@ NULL
     else if (length(main) != ncols)
         stop("Length of 'main' must be 1 or equal to number of columns (samples)")
 
+    # Get m/z values for each row if stacking is enabled
+    # stacked parameter is a proportion: y-axis is split into stacking portion and intensity portion
+    # With stacked = 1, half the y-axis is for stacking (based on m/z), half for intensity
+    mz_vals <- numeric(nrows)
+    if (stacked > 0) {
+        for (row_idx in seq_len(nrows)) {
+            # Get m/z value from mz range of chromatogram (use mean of range)
+            chr_sample <- object[row_idx, 1]
+            mz_vals[row_idx] <- mean(chr_sample@mz, na.rm = TRUE)
+        }
+    }
+
+    # Calculate y-positions for stacking based on m/z values
+    # These y-positions represent where each EIC sits on the lower portion of y-axis
+    y_positions <- numeric(nrows)
+    if (stacked > 0 && length(mz_vals) > 0) {
+        mz_range <- range(mz_vals, na.rm = TRUE)
+        if (diff(mz_range) > 0) {
+            # Normalize m/z to 0-1 range, then scale by stacked proportion
+            y_positions <- (mz_vals - mz_range[1]) / diff(mz_range)
+        }
+    }
+
     # Collect data from all rows for each column
     # Each column gets its own plot with all rows overlaid
     all_data <- list()
+    max_intensity_overall <- 0
+
     for (col_idx in seq_len(ncols)) {
         chrom_list <- list()
         for (row_idx in seq_len(nrows)) {
@@ -57,18 +82,15 @@ NULL
             # Apply transform
             int <- transform(int)
 
-            # Apply stacking based on row index (EIC) if stacked > 0
-            if (stacked > 0) {
-                # Calculate stacking position based on m/z if available
-                # For now, use row index for consistent behavior
-                int <- int + (row_idx - 1) * stacked
-            }
+            # Track max intensity before stacking transformation
+            max_intensity_overall <- max(max_intensity_overall, max(int, na.rm = TRUE))
 
             chrom_list[[row_idx]] <- data.frame(
                 rt = rt,
-                intensity = int,
+                intensity_orig = int,  # Keep original for scaling
                 row = row_idx,
-                col = col_idx
+                col = col_idx,
+                y_position = y_positions[row_idx]  # Base position for this EIC
             )
         }
         all_data[[col_idx]] <- do.call(rbind, chrom_list)
@@ -78,6 +100,18 @@ NULL
     # Combine all data
     combined_df <- do.call(rbind, all_data)
 
+    # Apply stacking transformation if needed
+    # Y-axis structure: [0, stacked] = stacking region, [stacked, stacked+1] = intensity region
+    # The ratio is: stacking_region : intensity_region = stacked : 1
+    if (stacked > 0) {
+        # Scale intensities to fit in the intensity portion (upper part of y-axis)
+        # intensity_portion starts at stacked and goes to stacked + 1
+        combined_df$intensity <- combined_df$y_position * stacked +
+            (combined_df$intensity_orig / max_intensity_overall)
+    } else {
+        combined_df$intensity <- combined_df$intensity_orig
+    }
+
     # Calculate xlim and ylim if not provided
     if (length(xlim) == 0) {
         xlim_use <- range(combined_df$rt, na.rm = TRUE)
@@ -86,8 +120,13 @@ NULL
     }
 
     if (length(ylim) == 0) {
-        # Always start from 0 to match XCMS behavior
-        ylim_use <- c(0, max(combined_df$intensity, na.rm = TRUE))
+        if (stacked > 0) {
+            # Y-axis goes from 0 to stacked + 1 (stacking region + intensity region)
+            ylim_use <- c(0, stacked + 1)
+        } else {
+            # Always start from 0 to match XCMS behavior
+            ylim_use <- c(0, max(combined_df$intensity, na.rm = TRUE))
+        }
     } else {
         ylim_use <- ylim
     }
@@ -97,9 +136,20 @@ NULL
     p <- ggplot(combined_df, aes(x = rt, y = intensity, group = row)) +
         geom_line(color = col) +
         theme_bw() +
-        labs(x = xlab, y = ylab) +
+        labs(x = xlab) +
         xlim(xlim_use[1], xlim_use[2]) +
         ylim(ylim_use[1], ylim_use[2])
+
+    # Add y-axis label only if not stacking
+    if (stacked == 0) {
+        p <- p + labs(y = ylab)
+    } else {
+        # Remove y-axis and label when stacking is enabled
+        p <- p +
+            theme(axis.text.y = element_blank(),
+                  axis.ticks.y = element_blank(),
+                  axis.title.y = element_blank())
+    }
 
     # Add faceting if multiple columns (samples)
     if (ncols > 1) {
@@ -133,11 +183,18 @@ NULL
                 next
 
             # Apply transform to peak intensities
-            peaks_df$maxo <- transform(peaks_df$maxo)
+            peaks_df$maxo_orig <- transform(peaks_df$maxo)
 
-            # Apply stacking
+            # Apply stacking transformation to peaks (same as chromatograms)
             if (stacked > 0) {
-                peaks_df$maxo <- peaks_df$maxo + (peaks_df$row - 1) * stacked
+                # Get y_position for each peak's row
+                for (i in seq_len(nrow(peaks_df))) {
+                    row_idx <- peaks_df$row[i]
+                    peaks_df$maxo[i] <- y_positions[row_idx] * stacked +
+                        (peaks_df$maxo_orig[i] / max_intensity_overall)
+                }
+            } else {
+                peaks_df$maxo <- peaks_df$maxo_orig
             }
 
             if (peakType == "point") {
@@ -149,10 +206,14 @@ NULL
                     inherit.aes = FALSE
                 )
             } else if (peakType == "rectangle") {
-                peaks_df$ymin <- if (stacked > 0) {
-                    (peaks_df$row - 1) * stacked
+                # Calculate baseline for rectangles
+                if (stacked > 0) {
+                    for (i in seq_len(nrow(peaks_df))) {
+                        row_idx <- peaks_df$row[i]
+                        peaks_df$ymin[i] <- y_positions[row_idx] * stacked
+                    }
                 } else {
-                    0
+                    peaks_df$ymin <- 0
                 }
                 p <- p + geom_rect(
                     data = peaks_df,
@@ -187,10 +248,12 @@ NULL
                     # Handle infinite values
                     ints[is.infinite(ints)] <- 0
 
-                    # Apply stacking
-                    baseline_y <- if (stacked > 0) (row_idx - 1) * stacked else 0
+                    # Apply stacking transformation (same as chromatograms)
                     if (stacked > 0) {
-                        ints <- ints + baseline_y
+                        baseline_y <- y_positions[row_idx] * stacked
+                        ints <- baseline_y + (ints / max_intensity_overall)
+                    } else {
+                        baseline_y <- 0
                     }
 
                     # Add baseline points at start and end

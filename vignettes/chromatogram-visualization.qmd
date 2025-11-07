@@ -357,7 +357,7 @@ For better visual separation, chromatograms can be vertically offset:
 #| fig-width: 5
 #| fig-alt: "XCMS stacked overlay with chromatograms vertically offset by a fixed amount."
 # Base R version
-plotChromatogramsOverlay(chr_multi, stacked = 1e6, main = "Sample 1")
+plotChromatogramsOverlay(chr_multi, stacked = 0.1, main = "Sample 1")
 ```
 
 </div>
@@ -370,7 +370,7 @@ plotChromatogramsOverlay(chr_multi, stacked = 1e6, main = "Sample 1")
 #| fig-width: 5
 #| fig-alt: "ggplot2 stacked overlay preventing overlapping traces and making it easier to follow individual EICs."
 # ggplot2 version
-gplotChromatogramsOverlay(chr_multi, stacked = 1e6, main = "Sample 1")
+gplotChromatogramsOverlay(chr_multi, stacked = 0.1, main = "Sample 1")
 ```
 
 </div>
