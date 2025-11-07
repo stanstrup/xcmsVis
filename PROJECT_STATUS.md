@@ -18,10 +18,10 @@ functions with support for both legacy (`XCMSnExp`) and modern
 
 | Metric                    | Status                          |
 |---------------------------|---------------------------------|
-| **Functions Implemented** | 5 / 9 priority functions        |
+| **Functions Implemented** | 7 / 9 priority functions        |
 | **Object Support**        | XCMSnExp ✅ / XcmsExperiment ✅ |
 | **Vignettes**             | 2 comprehensive guides          |
-| **Test Coverage**         | 3 test files, all passing       |
+| **Test Coverage**         | 5 test files, all passing       |
 | **R CMD check**           | ✅ 0 errors, 0 warnings         |
 | **GitHub Actions**        | ✅ All workflows passing        |
 
@@ -34,7 +34,9 @@ functions with support for both legacy (`XCMSnExp`) and modern
 | `gplotAdjustedRtime` | `plotAdjustedRtime` | RT alignment visualization | XCMSnExp, XcmsExperiment | R/gplotAdjustedRtime-methods.R |
 | `gplotChromPeaks` | `plotChromPeaks` | Peak detection in RT-m/z space | XCMSnExp, XcmsExperiment | R/gplotChromPeaks-methods.R |
 | `gplotChromPeakImage` | `plotChromPeakImage` | Peak density heatmap | XCMSnExp, XcmsExperiment | R/gplotChromPeakImage-methods.R |
-| `gplot` | `plot` (S4) | Chromatogram with peaks | XChromatogram | R/gplot-methods.R |
+| `gplotChromPeakDensity` | `plotChromPeakDensity` | Peak density for parameter tuning | XChromatograms, MChromatograms | R/gplotChromPeakDensity-methods.R |
+| `gplotChromatogramsOverlay` | `plotChromatogramsOverlay` | Overlay multiple EICs | XChromatograms, MChromatograms | R/gplotChromatogramsOverlay-methods.R |
+| `gplot` | `plot` (S4) | Chromatogram with peaks | XChromatogram, XChromatograms, MChromatograms | R/gplot-methods.R |
 | `ghighlightChromPeaks` | `highlightChromPeaks` | Peak annotation layers | XCMSnExp, XcmsExperiment | R/ghighlightChromPeaks-methods.R |
 
 ------------------------------------------------------------------------
@@ -52,11 +54,11 @@ functions with support for both legacy (`XCMSnExp`) and modern
 
 ### High Priority - Modern XCMS Objects
 
-| XCMS Function | Input Objects | Priority | Notes |
+| XCMS Function | Input Objects | Priority | Status |
 |---------------------|---------------------|----------------|----------------|
-| `plotChromPeakDensity` | XChromatograms, MChromatograms | ⭐⭐⭐ High | Shows peak density for parameter optimization |
-| `plotChromatogramsOverlay` | XChromatograms, MChromatograms | ⭐⭐⭐ High | Overlay multiple EICs - very useful |
-| `plotFeatureGroups` | XCMSnExp, XcmsExperiment | ⭐⭐ Medium | Feature annotation QC |
+| ~~`plotChromPeakDensity`~~ | XChromatograms, MChromatograms | ⭐⭐⭐ High | ✅ Implemented |
+| ~~`plotChromatogramsOverlay`~~ | XChromatograms, MChromatograms | ⭐⭐⭐ High | ✅ Implemented |
+| `plotFeatureGroups` | XCMSnExp, XcmsExperiment | ⭐⭐ Medium | Pending |
 
 ### Lower Priority
 
