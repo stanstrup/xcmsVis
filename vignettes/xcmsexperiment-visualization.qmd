@@ -424,19 +424,30 @@ p_main | p_stats
 
 ## Custom ggplot2 Modifications
 
-Add additional ggplot2 layers or modify themes:
+Add additional ggplot2 layers or modify themes. Use the `&` operator to apply themes to all panels in the patchwork object:
 
 ```{r custom_ggplot}
 #| fig-height: 6
 #| fig-width: 8
 #| fig-alt: "gplot output with custom theme modifications and additional annotations."
-gplot(mse[1]) +
-  theme_minimal() +
+gplot(mse[1]) &
+  theme_minimal() &
   theme(
     legend.position = "bottom",
     plot.title = element_text(face = "bold", size = 14)
   )
 ```
+
+::: {.callout-note}
+## Patchwork Operators
+
+Since `gplot()` returns a patchwork object (two panels combined), use:
+
+- `&` operator to apply themes/scales to **all panels**
+- `+` operator to add individual layers (but may cause issues with multi-panel plots)
+
+For single-panel plots, both work. For multi-panel patchwork objects, `&` is safer.
+:::
 
 # Use Cases
 
