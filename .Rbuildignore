@@ -21,3 +21,4 @@
 ^vignettes/\.quarto$
 ^LICENSE\.md$
 ^xcmsVis.BiocCheck$
+PROJECT_STATUS.md

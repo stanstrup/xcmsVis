@@ -83,3 +83,4 @@ Collate:
     'gplotChromPeakDensity-methods.R'
     'gplotChromPeakImage-methods.R'
     'gplotChromPeaks-methods.R'
+    'gplotChromatogramsOverlay-methods.R'

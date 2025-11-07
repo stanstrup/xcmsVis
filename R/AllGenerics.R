@@ -430,3 +430,100 @@ setGeneric("gplotChromPeakDensity", function(object,
                                               simulate = TRUE,
                                               ...)
   standardGeneric("gplotChromPeakDensity"))
+
+#' ggplot2 Version of plotChromatogramsOverlay
+#'
+#' @description
+#' Creates overlay plots of multiple chromatograms, with one plot per row in
+#' the `XChromatograms` or `MChromatograms` object. Each plot overlays all samples (columns)
+#' for that m/z slice (row). This is a ggplot2 implementation of XCMS's
+#' `plotChromatogramsOverlay()` function, enabling modern visualization and
+#' interactive plotting capabilities.
+#'
+#' @param object An `XChromatograms` or `MChromatograms` object.
+#' @param col Color for the chromatogram lines (default: "#00000060").
+#' @param type Plot type (default: "l" for line).
+#' @param main Plot title or vector of titles (one per row). Default: NULL.
+#' @param xlab X-axis label (default: "retention time").
+#' @param ylab Y-axis label (default: "intensity").
+#' @param xlim Numeric vector of length 2 specifying retention time range.
+#'   Default: numeric() (auto-calculate).
+#' @param ylim Numeric vector of length 2 specifying intensity range.
+#'   Default: numeric() (auto-calculate).
+#' @param peakType Type of peak annotation: "polygon", "point", "rectangle", or "none"
+#'   (default: "polygon").
+#' @param peakBg Background color for peak markers (default: NULL, uses peakCol with transparency).
+#' @param peakCol Color for peak markers (default: NULL, uses col).
+#' @param peakPch Point character for peak markers when peakType = "point" (default: 1).
+#' @param stacked Numeric value for stacking offset. If > 0, chromatograms will be
+#'   offset vertically by this amount for visual separation (default: 0).
+#' @param transform Function to transform intensity values (default: identity).
+#'   Useful for log-transformations or other intensity scaling.
+#' @param ... Additional arguments (for compatibility).
+#'
+#' @return If the object has one row: a single ggplot object.
+#'   If the object has multiple rows: a patchwork object combining multiple ggplot objects.
+#'
+#' @details
+#' This function creates overlay plots where all samples (columns) in a given
+#' m/z slice (row) are overlaid in a single plot. If the object contains multiple
+#' rows, each row gets its own panel stacked vertically using patchwork.
+#'
+#' The function differs from `gplot` for XChromatograms in that:
+#' \itemize{
+#'   \item It explicitly handles multiple rows (whereas gplot warns and uses only the first)
+#'   \item It supports `stacked` parameter for vertical offset
+#'   \item It supports `transform` parameter for intensity transformations
+#' }
+#'
+#' @examples
+#' \donttest{
+#' library(xcmsVis)
+#' library(xcms)
+#' library(faahKO)
+#' library(MsExperiment)
+#' library(BiocParallel)
+#'
+#' # Load example data
+#' cdf_files <- dir(system.file("cdf", package = "faahKO"),
+#'                  recursive = TRUE, full.names = TRUE)[1:3]
+#'
+#' # Create XcmsExperiment and perform peak detection
+#' xdata <- readMsExperiment(spectraFiles = cdf_files, BPPARAM = SerialParam())
+#' cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)
+#' xdata <- findChromPeaks(xdata, param = cwp, BPPARAM = SerialParam())
+#'
+#' # Extract chromatograms for multiple m/z ranges
+#' chr <- chromatogram(xdata, mz = rbind(c(305.05, 305.15), c(344.0, 344.2)))
+#'
+#' # Create overlay plot for all rows
+#' gplotChromatogramsOverlay(chr)
+#'
+#' # With stacked offset for visual separation
+#' gplotChromatogramsOverlay(chr, stacked = 1e6)
+#'
+#' # With log transformation
+#' gplotChromatogramsOverlay(chr, transform = log1p)
+#' }
+#'
+#' @seealso
+#' \code{\link[xcms]{plotChromatogramsOverlay}} for the original XCMS implementation
+#' \code{\link{gplot}} for single-row overlay plots
+#'
+#' @export
+setGeneric("gplotChromatogramsOverlay", function(object,
+                                                  col = "#00000060",
+                                                  type = "l",
+                                                  main = NULL,
+                                                  xlab = "retention time",
+                                                  ylab = "intensity",
+                                                  xlim = numeric(),
+                                                  ylim = numeric(),
+                                                  peakType = c("polygon", "point", "rectangle", "none"),
+                                                  peakBg = NULL,
+                                                  peakCol = NULL,
+                                                  peakPch = 1,
+                                                  stacked = 0,
+                                                  transform = identity,
+                                                  ...)
+  standardGeneric("gplotChromatogramsOverlay"))
