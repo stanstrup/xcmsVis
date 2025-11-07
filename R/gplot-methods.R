@@ -213,11 +213,14 @@ setMethod("gplot", "XChromatograms",
                                   xs <- chr_rt[idx]
                                   ys <- chr_int[idx]
 
+                                  # Replace infinite values with 0 (matches XCMS)
+                                  ys[is.infinite(ys)] <- 0
+
                                   # Add baseline points at start and end
                                   xs <- c(xs[1], xs, xs[length(xs)])
                                   ys <- c(0, ys, 0)
 
-                                  # Filter out NA values
+                                  # Filter out NA values (both xs and ys together)
                                   nona <- !is.na(ys)
 
                                   # Add NA break between peaks (not before first peak)
