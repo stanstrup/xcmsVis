@@ -69,28 +69,51 @@ NULL
                     inherit.aes = FALSE
                 )
             } else if (peakType == "polygon") {
-                # Add polygons following peak shape
-                # For each peak, extract points within rt range
+                # Collect all polygons with NA breaks (matches XCMS behavior)
+                xs_all <- numeric()
+                ys_all <- numeric()
+
                 for (i in seq_len(nrow(peaks_df))) {
                     pk <- peaks_df[i, ]
-                    # Get chromatogram points within peak bounds
-                    idx <- which(chrom_df$rt >= pk$rtmin & chrom_df$rt <= pk$rtmax)
-                    if (length(idx) > 0) {
-                        poly_df <- chrom_df[idx, ]
-                        # Add baseline points to close polygon
-                        poly_df <- rbind(
-                            data.frame(rt = pk$rtmin, intensity = 0),
-                            poly_df,
-                            data.frame(rt = pk$rtmax, intensity = 0)
-                        )
-                        p <- p + geom_polygon(
-                            data = poly_df,
-                            aes(x = rt, y = intensity),
-                            color = peakCol,
-                            fill = peakBg,
-                            inherit.aes = FALSE
-                        )
+
+                    # Use filterRt to extract peak region (matches XCMS exactly)
+                    chr_filtered <- MSnbase::filterRt(x, rt = c(pk$rtmin, pk$rtmax))
+                    xs <- xcms::rtime(chr_filtered)
+
+                    # Check if we have any points
+                    if (!length(xs)) next
+
+                    # Get intensities and handle infinite values
+                    ints <- xcms::intensity(chr_filtered)
+                    ints[is.infinite(ints)] <- 0
+
+                    # Add baseline points at start and end
+                    xs <- c(xs[1], xs, xs[length(xs)])
+                    ys <- c(0, ints, 0)
+
+                    # Filter out NA values (both xs and ys together)
+                    nona <- !is.na(ys)
+
+                    # Add NA break between peaks (not before first peak)
+                    if (length(xs_all) > 0) {
+                        xs_all <- c(xs_all, NA)
+                        ys_all <- c(ys_all, NA)
                     }
+
+                    xs_all <- c(xs_all, xs[nona])
+                    ys_all <- c(ys_all, ys[nona])
+                }
+
+                # Draw all polygons in one call with NA breaks
+                if (length(xs_all) > 0) {
+                    poly_df <- data.frame(rt = xs_all, intensity = ys_all)
+                    p <- p + geom_polygon(
+                        data = poly_df,
+                        aes(x = rt, y = intensity),
+                        color = peakCol,
+                        fill = peakBg,
+                        inherit.aes = FALSE
+                    )
                 }
             }
         }
