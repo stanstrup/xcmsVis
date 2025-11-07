@@ -1,0 +1,537 @@
+---
+title: "Visualizing XcmsExperiment MS Data"
+author: "xcmsVis Package"
+date: today
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: false
+    theme: cosmo
+vignette: >
+  %\VignetteIndexEntry{Visualizing XcmsExperiment MS Data}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup}
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 10,
+  fig.height = 8,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# Introduction
+
+This vignette demonstrates the `gplot()` function for visualizing XcmsExperiment and XCMSnExp objects. The `gplot()` method creates a two-panel visualization showing:
+
+- **Upper panel**: Base Peak Intensity (BPI) chromatogram vs retention time
+- **Lower panel**: m/z vs retention time scatter plot
+
+Both panels use intensity-based coloring to highlight signal strength, and detected peaks are automatically overlaid as rectangles.
+
+This is a ggplot2 reimplementation of XCMS's `plot()` method for MsExperiment objects, enabling modern visualization capabilities including:
+
+- Interactive plots with plotly
+- Customizable color schemes
+- Easy composition with patchwork
+- Publication-quality graphics
+
+# Setup
+
+```{r libraries}
+library(xcms)
+library(xcmsVis)
+library(ggplot2)
+library(plotly)
+library(patchwork)
+```
+
+# Data Preparation
+
+We'll use pre-processed test data from XCMS for demonstration:
+
+```{r load_data}
+# Load pre-processed data with detected peaks
+xdata <- loadXcmsData("faahko_sub2")
+
+# Check data
+cat("Samples:", length(xdata), "\n")
+cat("Total peaks detected:", nrow(chromPeaks(xdata)), "\n")
+```
+
+For visualization purposes, we'll filter to a specific retention time and m/z region:
+
+```{r filter_data}
+# Filter to focused region
+mse <- filterRt(xdata, rt = c(2500, 3500))
+mse <- filterMzRange(mse, mz = c(200, 220))
+
+cat("Filtered data:\n")
+cat("  RT range:", paste(range(rtime(spectra(mse[1]))), collapse = " - "), "\n")
+cat("  Number of spectra in sample 1:", length(spectra(mse[1])), "\n")
+```
+
+# Basic Usage
+
+## Single Sample Visualization
+
+The most basic usage is to plot a single sample:
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS Version
+
+```{r original_plot_single}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "XCMS base R plot showing two panels: upper panel displays BPI chromatogram, lower panel shows m/z vs retention time scatter plot with intensity colors."
+# Base R graphics version
+plot(mse[1])
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 Version
+
+```{r xcmsvis_plot_single}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "ggplot2 version of the same two-panel plot with cleaner aesthetics, shared legend, and modern styling."
+# ggplot2 version
+gplot(mse[1])
+```
+
+</div>
+</div>
+
+## Understanding the Two Panels
+
+The visualization consists of two complementary views:
+
+### Upper Panel: BPI Chromatogram
+
+The **Base Peak Intensity (BPI)** shows the maximum intensity at each retention time across all m/z values in the filtered range. This gives an overview of when signals are present in the chromatogram.
+
+- Each point represents one retention time
+- Y-axis shows the maximum intensity observed at that time
+- Color indicates intensity magnitude
+- Useful for identifying retention time regions with strong signals
+
+### Lower Panel: m/z vs RT Scatter
+
+The **m/z vs retention time scatter** shows the complete mass spectral data:
+
+- X-axis: retention time
+- Y-axis: m/z values
+- Each point represents one data point from the raw spectra
+- Color indicates intensity of that specific m/z at that retention time
+- Shows the full two-dimensional structure of the LC-MS data
+
+### Peak Overlays
+
+If chromatographic peaks have been detected (via `findChromPeaks()`), they are automatically overlaid as rectangles showing:
+
+- Peak retention time boundaries (left/right edges)
+- Peak m/z boundaries (top/bottom edges)
+- Semi-transparent red color by default
+
+# Multiple Samples
+
+When visualizing multiple samples, `gplot()` creates a vertically stacked layout:
+
+```{r multiple_samples}
+#| fig-height: 12
+#| fig-width: 8
+#| fig-alt: "Three sets of two-panel plots stacked vertically, one for each sample, showing BPI and m/z scatter plots."
+# Plot all three samples
+gplot(mse)
+```
+
+Each sample gets its own two-panel visualization, making it easy to compare across samples.
+
+# Customization
+
+## Custom Colors
+
+You can customize the line colors and peak colors:
+
+```{r custom_colors}
+#| fig-height: 6
+#| fig-width: 8
+#| fig-alt: "Two-panel plot with blue point borders and red peak rectangles, demonstrating color customization."
+gplot(mse[1],
+      col = "blue",           # Point border color
+      peakCol = "red")        # Peak rectangle color
+```
+
+## Custom Color Ramps
+
+The intensity coloring uses a color ramp function. You can use any R color ramp:
+
+```{r color_ramps}
+#| fig-height: 12
+#| fig-width: 10
+#| fig-alt: "Three side-by-side plots showing different color ramps: topo.colors (default), heat.colors, and viridis."
+# Default: topo.colors
+p1 <- gplot(mse[1]) +
+  ggtitle("topo.colors (default)")
+
+# Heat colors
+p2 <- gplot(mse[1], colramp = heat.colors) +
+  ggtitle("heat.colors")
+
+# Viridis
+library(viridisLite)
+p3 <- gplot(mse[1], colramp = viridis) +
+  ggtitle("viridis")
+
+(p1 | p2 | p3)
+```
+
+## Custom Titles
+
+Provide custom titles for each sample:
+
+```{r custom_titles}
+#| fig-height: 12
+#| fig-width: 8
+#| fig-alt: "Three stacked two-panel plots with custom sample names as titles."
+# Custom sample names
+gplot(mse, main = c("Knockout 1", "Knockout 2", "Wild Type"))
+```
+
+## Point Styles
+
+Customize the point shape using standard R `pch` values:
+
+```{r point_styles}
+#| fig-height: 6
+#| fig-width: 10
+#| fig-alt: "Two plots side by side showing different point shapes: filled circles (pch=21) and filled squares (pch=22)."
+p1 <- gplot(mse[1], pch = 21) + ggtitle("Filled circles (pch = 21)")
+p2 <- gplot(mse[1], pch = 22) + ggtitle("Filled squares (pch = 22)")
+
+p1 | p2
+```
+
+# Interactive Visualization
+
+Convert to interactive plotly for data exploration:
+
+```{r interactive}
+#| fig-height: 8
+#| fig-width: 10
+#| fig-alt: "Interactive plotly version with hover tooltips, zoom, and pan capabilities for detailed data exploration."
+# Create static ggplot
+p <- gplot(mse[1])
+
+# Convert to interactive plotly
+ggplotly(p)
+```
+
+The interactive version allows you to:
+
+- **Hover** over points to see exact values
+- **Zoom** into regions of interest
+- **Pan** to explore different areas
+- **Toggle** legend items to focus on specific features
+
+# Comparison with Original XCMS
+
+## Side-by-Side Comparison
+
+<div class="row">
+<div class="col-md-6">
+
+### XCMS plot()
+
+```{r xcms_comparison}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "Original XCMS base R plot for comparison."
+plot(mse[1])
+```
+
+**Characteristics:**
+- Base R graphics
+- Fixed styling
+- Static output
+- Direct to graphics device
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis gplot()
+
+```{r xcmsvis_comparison}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "xcmsVis ggplot2 version for comparison."
+gplot(mse[1])
+```
+
+**Characteristics:**
+- ggplot2 graphics
+- Fully customizable
+- Supports interactivity
+- Returns ggplot object
+
+</div>
+</div>
+
+## Key Differences
+
+| Feature | XCMS `plot()` | xcmsVis `gplot()` |
+|---------|---------------|-------------------|
+| Graphics system | Base R | ggplot2 |
+| Customization | Limited | Extensive via ggplot2 |
+| Interactivity | None | Via plotly |
+| Composition | Difficult | Easy with patchwork |
+| Return value | NULL (side effect) | ggplot object |
+| Theme support | No | Yes |
+| Export quality | Good | Publication-ready |
+
+# Advanced Workflows
+
+## Comparing Different MS Levels
+
+```{r ms_levels}
+#| eval: false
+# MS1 data (default)
+p_ms1 <- gplot(mse[1], msLevel = 1L) + ggtitle("MS1")
+
+# MS2 data (if available)
+p_ms2 <- gplot(mse[1], msLevel = 2L) + ggtitle("MS2")
+
+p_ms1 / p_ms2
+```
+
+## Focused Region Analysis
+
+Combine filtering with visualization for detailed inspection:
+
+```{r focused_region}
+#| fig-height: 6
+#| fig-width: 8
+#| fig-alt: "Highly zoomed plot showing a very narrow retention time window for detailed peak analysis."
+# Focus on narrow RT window
+mse_focused <- filterRt(xdata, rt = c(2700, 2750))
+mse_focused <- filterMzRange(mse_focused, mz = c(205, 210))
+
+gplot(mse_focused[1]) +
+  ggtitle("Focused: RT 2700-2750, m/z 205-210")
+```
+
+## Comparing Samples
+
+Create a comprehensive comparison across all samples:
+
+```{r sample_comparison}
+#| fig-height: 14
+#| fig-width: 12
+#| fig-alt: "Multi-panel figure comparing all three samples with consistent scales and styling."
+# Filter to consistent region
+mse_compare <- filterRt(xdata, rt = c(2600, 2800))
+mse_compare <- filterMzRange(mse_compare, mz = c(207, 211))
+
+# Plot all samples with custom titles
+gplot(mse_compare,
+      main = c("Sample A (KO)", "Sample B (KO)", "Sample C (WT)"),
+      peakCol = "#ff000080")
+```
+
+# Integration with Other Packages
+
+## Combining with patchwork
+
+Since `gplot()` returns a patchwork object, you can easily combine with other ggplots:
+
+```{r patchwork_integration}
+#| fig-height: 8
+#| fig-width: 12
+#| fig-alt: "Combined figure showing gplot output alongside a custom ggplot of peak statistics."
+# Create main plot
+p_main <- gplot(mse[1])
+
+# Create supplementary plot (e.g., peak statistics)
+peaks <- as.data.frame(chromPeaks(mse[1]))
+p_stats <- ggplot(peaks, aes(x = rt, y = maxo)) +
+  geom_point(color = "steelblue", size = 3) +
+  labs(title = "Peak Intensities", x = "Retention Time", y = "Max Intensity") +
+  theme_bw()
+
+# Combine using patchwork
+p_main | p_stats
+```
+
+## Custom ggplot2 Modifications
+
+Add additional ggplot2 layers or modify themes:
+
+```{r custom_ggplot}
+#| fig-height: 6
+#| fig-width: 8
+#| fig-alt: "gplot output with custom theme modifications and additional annotations."
+gplot(mse[1]) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(face = "bold", size = 14)
+  )
+```
+
+# Use Cases
+
+## Quality Control
+
+Visualize raw MS data to check for:
+
+- Signal intensity across retention time
+- Presence of expected m/z ranges
+- Peak detection quality
+- Sample-to-sample consistency
+
+```{r qc_example}
+#| fig-height: 12
+#| fig-width: 10
+#| fig-alt: "QC visualization showing all three samples for comparison of data quality."
+# QC check: visualize all samples in a batch
+gplot(mse, main = paste("QC:", c("Sample 1", "Sample 2", "Sample 3")))
+```
+
+## Method Development
+
+During method development, use `gplot()` to:
+
+- Evaluate extraction efficiency across m/z ranges
+- Optimize retention time windows
+- Assess peak shapes and detection
+
+## Publication Figures
+
+Create publication-ready figures with custom styling:
+
+```{r publication_example}
+#| fig-height: 6
+#| fig-width: 8
+#| fig-alt: "Publication-quality figure with clean aesthetics and appropriate sizing."
+gplot(mse[1],
+      main = "LC-MS Analysis: Sample KO15",
+      col = "black",
+      peakCol = "#d62728",
+      colramp = viridis) +
+  theme_bw() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    text = element_text(size = 12),
+    legend.position = "right"
+  )
+```
+
+# Comparison with chromatogram() Plots
+
+It's important to understand the difference between `gplot()` for XcmsExperiment and `gplot()` for XChromatograms:
+
+<div class="row">
+<div class="col-md-6">
+
+### gplot(XcmsExperiment)
+
+Shows **raw MS data** (all m/z vs RT):
+
+```{r gplot_experiment}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "Two-panel plot showing full MS data: BPI and m/z scatter."
+# Full MS data visualization
+gplot(mse[1])
+```
+
+**Use when:**
+- Exploring raw MS data
+- Quality control of acquisitions
+- Understanding full spectral information
+
+</div>
+<div class="col-md-6">
+
+### gplot(XChromatogram)
+
+Shows **extracted ion chromatogram (EIC)**:
+
+```{r gplot_chromatogram}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "Single chromatogram showing intensity vs retention time for a specific m/z range."
+# Extracted ion chromatogram
+chr <- chromatogram(xdata, mz = c(207, 208), rt = c(2600, 2800))
+gplot(chr[1, 1])
+```
+
+**Use when:**
+- Focusing on specific m/z
+- Peak integration
+- Comparing specific compounds
+
+</div>
+</div>
+
+# Performance Considerations
+
+For large datasets, consider:
+
+1. **Filter first**: Use `filterRt()` and `filterMzRange()` to reduce data size
+2. **Subset samples**: Plot one sample at a time for interactive work
+3. **Static plots**: Use static ggplot2 for final figures (faster than plotly)
+
+```{r performance_tips}
+#| eval: false
+# Good: Filter to focused region
+mse_small <- filterRt(large_data, rt = c(100, 200))
+mse_small <- filterMzRange(mse_small, mz = c(200, 300))
+gplot(mse_small[1])
+
+# Avoid: Plotting huge unfiltered datasets
+# gplot(large_data)  # May be slow
+```
+
+# Summary
+
+The `gplot()` function for XcmsExperiment provides:
+
+- **Two-panel visualization**: BPI chromatogram + m/z scatter
+- **Automatic peak overlay**: Shows detected peaks as rectangles
+- **Intensity coloring**: Highlights signal strength across the data
+- **Full customization**: Colors, themes, point styles
+- **Interactivity**: Easy conversion to plotly
+- **Composition**: Integrates with patchwork and ggplot2 ecosystem
+
+## Key Functions
+
+| Function | Purpose | Input |
+|----------|---------|-------|
+| `gplot(XcmsExperiment)` | Visualize full MS data | XcmsExperiment object |
+| `gplot(XChromatogram)` | Visualize EIC | XChromatogram object |
+| `gplotChromPeaks()` | Show peaks in RT/m/z space | XcmsExperiment object |
+| `gplotChromPeakDensity()` | Optimize correspondence | XChromatograms object |
+
+## When to Use Each
+
+- **`gplot(XcmsExperiment)`**: Explore raw MS acquisitions, QC, method development
+- **`gplot(XChromatogram)`**: Analyze specific compounds, peak integration
+- **`gplotChromPeaks()`**: Overview all detected peaks, retention time distribution
+- **`gplotChromPeakDensity()`**: Optimize peak grouping parameters
+
+# Session Info
+
+```{r session_info}
+sessionInfo()
+```

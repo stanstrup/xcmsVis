@@ -61,7 +61,8 @@ Imports:
     dplyr,
     purrr,
     methods,
-    Biobase
+    Biobase,
+    grDevices
 Suggests:
     plotly,
     testthat (>= 3.0.0),
@@ -78,6 +79,7 @@ Collate:
     'utils.R'
     'AllGenerics.R'
     'ghighlightChromPeaks-methods.R'
+    'gplot-XcmsExperiment-methods.R'
     'gplot-methods.R'
     'gplotAdjustedRtime-methods.R'
     'gplotChromPeakDensity-methods.R'
