@@ -141,7 +141,7 @@ When implementing new XCMS plotting functions:
 1. Identify XCMS plotting function to implement
 2. Locate source code in XCMS GitHub: https://github.com/sneumann/xcms
 3. Study the function's purpose, parameters, and output
-4. Implement ggplot2 version in `R/gplot*.R`
+4. **Implement ggplot2 version in `R/gplot*.R` - FOLLOW XCMS CODE AS CLOSELY AS POSSIBLE**
 5. Add roxygen2 documentation
 6. Update NAMESPACE if needed
 7. Add tests in `tests/testthat/test-*.R` (REQUIRED - test both object types)
@@ -149,6 +149,67 @@ When implementing new XCMS plotting functions:
 9. Update NEWS.md
 10. Run `devtools::check()`
 11. Move task from instructions.md to `completed_tasks.md` when done
+
+## CRITICAL: Faithful Implementation of XCMS Functions
+
+**IMPORTANT**: When implementing ggplot2 versions of XCMS functions, follow the original XCMS implementation as closely as possible to avoid subtle bugs and behavioral differences.
+
+### Why This Matters
+
+The XCMS codebase has been refined over many years and contains important edge case handling that may not be obvious:
+- Proper handling of NA values in chromatographic data
+- Correct polygon rendering with data gaps
+- Edge cases in peak detection and visualization
+- Proper coordinate transformations
+
+### Implementation Guidelines
+
+1. **Study the XCMS source code thoroughly** before implementing:
+   - Read the entire function, not just the main logic
+   - Identify all edge case handling
+   - Note how data transformations are performed
+   - Look for helper functions that handle special cases
+
+2. **Mirror XCMS logic structure** in your ggplot2 implementation:
+   - Use similar variable names where possible
+   - Follow the same sequence of operations
+   - Preserve data filtering and validation logic
+   - Keep the same coordinate transformations
+
+3. **Pay special attention to**:
+   - NA value handling (filtering, propagation)
+   - Data gaps and breaks in visualizations
+   - Polygon/geometry rendering edge cases
+   - Coordinate system transformations
+   - Default parameter values
+
+4. **Example: Polygon rendering with NA breaks**
+   ```r
+   # XCMS approach (CORRECT):
+   nona <- !is.na(ys)  # Filter NA values
+   if (length(xs_all)) {
+       xs_all <- c(xs_all, NA)  # Insert NA to break polygon
+       ys_all <- c(ys_all, NA)
+   }
+   xs_all <- c(xs_all, xs[nona])
+   ys_all <- c(ys_all, ys[nona])
+
+   # Don't simplify without understanding why XCMS does it this way!
+   ```
+
+5. **When in doubt**:
+   - Check the XCMS source code again
+   - Look for related helper functions in XCMS
+   - Test with edge cases (NA values, empty data, single points)
+   - Compare output visually with original XCMS function
+
+### Testing Requirements
+
+- Test with data that has NA values
+- Test with data that has gaps
+- Test with single-point chromatograms
+- Test with empty/zero-length data
+- Compare visual output with XCMS when possible
 
 ## Key Resources
 
