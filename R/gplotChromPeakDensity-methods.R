@@ -197,8 +197,39 @@ NULL
         y = dens$y
     )
 
-    # Start building lower plot
-    p_lower <- ggplot() +
+    # Prepare feature rectangles data (if applicable) - must be added FIRST as bottom layer
+    features <- NULL
+    if (simulate) {
+        # Simulate feature grouping
+        features <- .simulate_feature_groups(pks, dens$x, dens$y, param)
+    } else if (!is.null(fts) && nrow(fts) > 0) {
+        features <- as.data.frame(fts)
+    }
+
+    # Start building lower plot - rectangles MUST be first layer (drawn behind points/lines)
+    p_lower <- ggplot()
+
+    # Add feature rectangles as FIRST layer (background)
+    if (!is.null(features) && nrow(features) > 0) {
+        p_lower <- p_lower +
+            geom_rect(data = features,
+                      aes(xmin = rtmin, xmax = rtmax,
+                          ymin = yl[1], ymax = yl[2]),
+                      fill = "#00000020", color = "#00000040",
+                      inherit.aes = FALSE)
+        # Add median lines for actual correspondence results
+        if (!simulate && !is.null(fts)) {
+            p_lower <- p_lower +
+                geom_vline(data = features, aes(xintercept = rtmed),
+                           color = "#00000040", linetype = 2)
+        }
+    } else if (!simulate) {
+        warning("No feature definitions present. Either use 'groupChromPeaks' ",
+                "first or set 'simulate = TRUE'")
+    }
+
+    # Add points and density line ON TOP of rectangles
+    p_lower <- p_lower +
         geom_point(data = peaks_df, aes(x = rt, y = y),
                    color = peakCol, fill = peakBg, shape = peakPch) +
         geom_line(data = dens_df, aes(x = x, y = y)) +
@@ -209,36 +240,6 @@ NULL
         labs(x = xlab, y = "sample") +
         theme_bw() +
         xlim(xl)
-
-    # Add feature rectangles
-    if (simulate) {
-        # Simulate feature grouping
-        features <- .simulate_feature_groups(pks, dens$x, dens$y, param)
-        if (nrow(features) > 0) {
-            p_lower <- p_lower +
-                geom_rect(data = features,
-                          aes(xmin = rtmin, xmax = rtmax,
-                              ymin = yl[1], ymax = yl[2]),
-                          fill = "#00000020", color = "#00000040",
-                          inherit.aes = FALSE)
-        }
-    } else {
-        # Use existing feature definitions
-        if (!is.null(fts) && nrow(fts) > 0) {
-            fts_df <- as.data.frame(fts)
-            p_lower <- p_lower +
-                geom_rect(data = fts_df,
-                          aes(xmin = rtmin, xmax = rtmax,
-                              ymin = yl[1], ymax = yl[2]),
-                          fill = "#00000020", color = "#00000040",
-                          inherit.aes = FALSE) +
-                geom_vline(data = fts_df, aes(xintercept = rtmed),
-                           color = "#00000040", linetype = 2)
-        } else {
-            warning("No feature definitions present. Either use 'groupChromPeaks' ",
-                    "first or set 'simulate = TRUE'")
-        }
-    }
 
     # Combine panels using patchwork
     p_combined <- p_upper / p_lower +
