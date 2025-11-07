@@ -105,7 +105,7 @@ NULL
 #' Shared implementation function for gplotChromPeakDensity
 #'
 #' @importFrom ggplot2 ggplot aes geom_point geom_line geom_rect geom_vline
-#'   theme_bw labs scale_y_continuous theme element_blank
+#'   geom_segment theme_bw labs scale_y_continuous theme element_blank
 #' @importFrom patchwork plot_layout wrap_plots
 #' @importFrom xcms chromPeaks hasChromPeaks hasFeatures featureDefinitions
 #'   processHistory rtime
@@ -228,9 +228,13 @@ NULL
                 "first or set 'simulate = TRUE'")
     }
 
-    # Add points and density line ON TOP of rectangles
+    # Add vertical segments from y=0 to sample position, then points, then density line
     p_lower <- p_lower +
+        geom_segment(data = peaks_df, aes(x = rt, xend = rt, y = 0, yend = y),
+                     color = peakCol) +
         geom_point(data = peaks_df, aes(x = rt, y = y),
+                   color = peakCol, fill = peakBg, shape = peakPch) +
+        geom_point(data = peaks_df, aes(x = rt, y = 0),
                    color = peakCol, fill = peakBg, shape = peakPch) +
         geom_line(data = dens_df, aes(x = x, y = y)) +
         scale_y_continuous(

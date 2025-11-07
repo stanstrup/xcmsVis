@@ -86,7 +86,8 @@ NULL
     }
 
     if (length(ylim) == 0) {
-        ylim_use <- range(combined_df$intensity, na.rm = TRUE)
+        # Always start from 0 to match XCMS behavior
+        ylim_use <- c(0, max(combined_df$intensity, na.rm = TRUE))
     } else {
         ylim_use <- ylim
     }
