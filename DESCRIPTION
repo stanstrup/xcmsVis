@@ -71,7 +71,8 @@ Suggests:
     quarto,
     BiocStyle,
     BiocParallel,
-    faahKO
+    faahKO,
+    viridisLite
 VignetteBuilder: quarto
 SystemRequirements: quarto
 biocViews: Metabolomics, MassSpectrometry, Visualization

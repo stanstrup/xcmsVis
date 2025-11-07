@@ -179,22 +179,72 @@ The intensity coloring uses a color ramp function. You can use any R color ramp:
 ```{r color_ramps}
 #| fig-height: 12
 #| fig-width: 10
-#| fig-alt: "Three side-by-side plots showing different color ramps: topo.colors (default), heat.colors, and viridis."
+#| fig-alt: "Three side-by-side plots showing different color ramps: topo.colors (default), viridis, and magma."
 # Default: topo.colors
 p1 <- gplot(mse[1]) +
   ggtitle("topo.colors (default)")
 
-# Heat colors
-p2 <- gplot(mse[1], colramp = heat.colors) +
-  ggtitle("heat.colors")
-
-# Viridis
+# Viridis (reversed for low=dark, high=bright)
 library(viridisLite)
-p3 <- gplot(mse[1], colramp = viridis) +
-  ggtitle("viridis")
+viridis_rev <- function(n) rev(viridis(n))
+p2 <- gplot(mse[1], colramp = viridis_rev) +
+  ggtitle("viridis (reversed)")
+
+# Magma (reversed)
+magma_rev <- function(n) rev(magma(n))
+p3 <- gplot(mse[1], colramp = magma_rev) +
+  ggtitle("magma (reversed)")
 
 (p1 | p2 | p3)
 ```
+
+::: {.callout-tip}
+## Color Scale Direction
+
+For MS data, it's conventional to have **low intensity = dark** and **high intensity = bright**.
+The viridis scales are reversed (`rev(viridis(n))`) to follow this convention, where:
+
+- Dark purple/black = low intensity (noise, baseline)
+- Bright yellow = high intensity (strong signals)
+
+This makes it easier to identify strong signals at a glance.
+:::
+
+### More Viridis Palettes
+
+The viridisLite package provides several perceptually-uniform color scales:
+
+```{r viridis_palettes}
+#| fig-height: 6
+#| fig-width: 12
+#| fig-alt: "Four plots showing different viridis palette options: viridis, magma, plasma, and inferno."
+library(viridisLite)
+
+# Create reversed versions for MS convention
+viridis_rev <- function(n) rev(viridis(n))
+magma_rev <- function(n) rev(magma(n))
+plasma_rev <- function(n) rev(plasma(n))
+inferno_rev <- function(n) rev(inferno(n))
+
+p1 <- gplot(mse[1], colramp = viridis_rev) + ggtitle("Viridis")
+p2 <- gplot(mse[1], colramp = magma_rev) + ggtitle("Magma")
+p3 <- gplot(mse[1], colramp = plasma_rev) + ggtitle("Plasma")
+p4 <- gplot(mse[1], colramp = inferno_rev) + ggtitle("Inferno")
+
+(p1 | p2) / (p3 | p4)
+```
+
+**Choosing a palette:**
+
+- **Viridis**: Good general-purpose, colorblind-friendly
+- **Magma**: High contrast, good for presentations
+- **Plasma**: Vibrant, good for highlighting features
+- **Inferno**: Warm colors, good for print
+
+All viridis palettes are:
+- Perceptually uniform (equal steps appear equal)
+- Colorblind-friendly
+- Print-friendly (grayscale conversion works well)
 
 ## Custom Titles
 
@@ -423,11 +473,14 @@ Create publication-ready figures with custom styling:
 #| fig-height: 6
 #| fig-width: 8
 #| fig-alt: "Publication-quality figure with clean aesthetics and appropriate sizing."
+# Use reversed viridis for conventional MS coloring
+viridis_rev <- function(n) rev(viridis(n))
+
 gplot(mse[1],
       main = "LC-MS Analysis: Sample KO15",
       col = "black",
       peakCol = "#d62728",
-      colramp = viridis) +
+      colramp = viridis_rev) +
   theme_bw() +
   theme(
     plot.title = element_text(hjust = 0.5, face = "bold"),
