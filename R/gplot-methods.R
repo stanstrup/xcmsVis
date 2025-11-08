@@ -8,6 +8,7 @@ NULL
 #' @param peakCol Color for polygon border
 #' @param peakBg Color for polygon fill
 #' @keywords internal
+#' @noRd
 .add_polygon_peaks <- function(chr_obj, peaks_df, peakCol, peakBg) {
     # Collect all polygons with NA breaks (matches XCMS behavior)
     xs_all <- numeric()
@@ -59,6 +60,7 @@ NULL
 #' @importFrom tibble as_tibble
 #' @importFrom methods is
 #' @keywords internal
+#' @noRd
 .gplot_impl <- function(x,
                         col = "black",
                         lty = 1,
