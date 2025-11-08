@@ -189,7 +189,8 @@ gplotFeatureGroups(xdata,
 Convert to interactive plotly plot for exploration:
 
 ```{r interactive}
-#| eval: false
+#| fig-height: 6
+#| fig-width: 10
 library(plotly)
 
 p <- gplotFeatureGroups(xdata)
@@ -226,16 +227,36 @@ gplotFeatureGroups(xdata_cor) +
 
 # Comparison with Original XCMS
 
-The xcmsVis implementation produces equivalent visualizations to the original XCMS function but returns a ggplot object for further customization:
+The xcmsVis implementation produces equivalent visualizations to the original XCMS function but returns a ggplot object for further customization.
 
-```{r comparison}
-#| eval: false
+<div class="row">
+<div class="col-md-6">
+
+## Original XCMS Version
+
+```{r original_comparison}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "XCMS plotFeatureGroups showing features connected by lines within groups across retention time and m/z dimensions using base R graphics."
 # XCMS original (base R graphics)
 plotFeatureGroups(xdata)
+```
 
+</div>
+<div class="col-md-6">
+
+## xcmsVis ggplot2 Version
+
+```{r xcmsvis_comparison}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "ggplot2 version of plotFeatureGroups showing the same feature groups with clean styling and consistent API."
 # xcmsVis version (ggplot2)
 gplotFeatureGroups(xdata)
 ```
+
+</div>
+</div>
 
 Key advantages of the ggplot2 version:
 
