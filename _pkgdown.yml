@@ -44,6 +44,7 @@ reference:
     contents:
       - gplotAdjustedRtime
       - gplot
+      - gplot-XcmsExperiment
       - gplotChromPeaks
       - gplotChromPeakDensity
       - gplotChromPeakImage
