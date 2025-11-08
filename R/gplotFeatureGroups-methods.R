@@ -53,9 +53,12 @@ NULL
 
     # Create coordinate vectors with NA separators between groups
     # This is the key technique from XCMS to break line connections between groups
+    # For ggplot2, we also need to track which group each point belongs to
     xy <- tibble(
         x = unlist(lapply(rts, function(z) c(z, NA)), use.names = FALSE),
-        y = unlist(lapply(mzs, function(z) c(z, NA)), use.names = FALSE)
+        y = unlist(lapply(mzs, function(z) c(z, NA)), use.names = FALSE),
+        # Add group ID - each feature group gets a unique ID, including the NA separator
+        group = rep(seq_along(rts), times = sapply(rts, function(z) length(z) + 1))
     )
 
     # Calculate axis limits if not provided
@@ -70,7 +73,8 @@ NULL
     # type = "o" means overplotted points and lines
     # type = "l" means lines only
     # type = "p" means points only
-    p <- ggplot(xy, aes(x = x, y = y))
+    # The 'group' aesthetic ensures lines only connect features within the same group
+    p <- ggplot(xy, aes(x = x, y = y, group = group))
 
     if (type %in% c("o", "l")) {
         p <- p + geom_line(color = col, na.rm = FALSE, ...)
