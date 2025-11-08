@@ -201,7 +201,7 @@ library(plotly)
 
 # Use subset for better interactivity
 p <- gplotFeatureGroups(xdata, featureGroups = fg_subset)
-ggplotly(p, tooltip = "text")
+ggplotly(p)
 ```
 
 # Understanding Feature Groups
