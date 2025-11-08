@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.14</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,6 +21,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Vignettes</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes"><li><a class="dropdown-item" href="articles/gplotAdjustedRtime.html">gplotAdjustedRtime - Retention Time Adjustment</a></li>
     <li><a class="dropdown-item" href="articles/peak-visualization.html">Peak Visualization Functions</a></li>
+    <li><a class="dropdown-item" href="articles/chromatogram-visualization.html">Chromatogram and Peak Density Visualization</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/stanstrup/xcmsVis" aria-label="GitHub repository"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -157,8 +158,7 @@
 <li>Locate source code in XCMS GitHub: <a href="https://github.com/sneumann/xcms" class="external-link uri">https://github.com/sneumann/xcms</a>
 </li>
 <li>Study the function’s purpose, parameters, and output</li>
-<li>Implement ggplot2 version in <code>R/gplot*.R</code>
-</li>
+<li><strong>Implement ggplot2 version in <code>R/gplot*.R</code> - FOLLOW XCMS CODE AS CLOSELY AS POSSIBLE</strong></li>
 <li>Add roxygen2 documentation</li>
 <li>Update NAMESPACE if needed</li>
 <li>Add tests in <code>tests/testthat/test-*.R</code> (REQUIRED - test both object types)</li>
@@ -168,6 +168,112 @@
 </li>
 <li>Move task from instructions.md to <code>completed_tasks.md</code> when done</li>
 </ol></div>
+<div class="section level2">
+<h2 id="critical-faithful-implementation-of-xcms-functions">CRITICAL: Faithful Implementation of XCMS Functions<a class="anchor" aria-label="anchor" href="#critical-faithful-implementation-of-xcms-functions"></a></h2>
+<p><strong>IMPORTANT</strong>: When implementing ggplot2 versions of XCMS functions, follow the original XCMS implementation as closely as possible to avoid subtle bugs and behavioral differences.</p>
+<div class="section level3">
+<h3 id="why-this-matters">Why This Matters<a class="anchor" aria-label="anchor" href="#why-this-matters"></a></h3>
+<p>The XCMS codebase has been refined over many years and contains important edge case handling that may not be obvious: - Proper handling of NA values in chromatographic data - Correct polygon rendering with data gaps - Edge cases in peak detection and visualization - Proper coordinate transformations</p>
+</div>
+<div class="section level3">
+<h3 id="implementation-guidelines">Implementation Guidelines<a class="anchor" aria-label="anchor" href="#implementation-guidelines"></a></h3>
+<ol style="list-style-type: decimal"><li>
+<p><strong>Study the XCMS source code thoroughly</strong> before implementing:</p>
+<ul><li>Read the entire function, not just the main logic</li>
+<li>Identify all edge case handling</li>
+<li>Note how data transformations are performed</li>
+<li>Look for helper functions that handle special cases</li>
+</ul></li>
+<li>
+<p><strong>ALWAYS reuse XCMS internal functions when possible</strong>:</p>
+<ul><li>
+<strong>DO</strong>: Call XCMS internal functions directly using <code>xcms:::functionName()</code>
+</li>
+<li>
+<strong>DO</strong>: Reuse XCMS’s data processing, mathematical, and algorithmic functions</li>
+<li>
+<strong>DON’T</strong>: Reimplement functions that already exist in XCMS</li>
+<li>
+<strong>ONLY write your own functions</strong> when the XCMS code cannot be separated from the base R plotting functionality we need to replace</li>
+<li>This ensures perfect compatibility and avoids subtle implementation bugs</li>
+<li>Examples of what to reuse:
+<ul><li>
+<code>xcms:::descendMin()</code> - density local minima finding</li>
+<li>Any mathematical or statistical functions</li>
+<li>Data transformation and filtering functions</li>
+<li>Peak grouping and detection algorithms</li>
+</ul></li>
+<li>Examples of what to reimplement:
+<ul><li>Base R plotting calls (<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>, <code><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points()</a></code>, <code><a href="https://rdrr.io/r/graphics/rect.html" class="external-link">rect()</a></code>) → replace with ggplot2</li>
+<li>Plot layout and styling → replace with ggplot2/patchwork</li>
+<li>Visual elements specific to base R graphics</li>
+</ul></li>
+</ul></li>
+<li>
+<p><strong>Mirror XCMS logic structure</strong> in your ggplot2 implementation:</p>
+<ul><li>Use similar variable names where possible</li>
+<li>Follow the same sequence of operations</li>
+<li>Preserve data filtering and validation logic</li>
+<li>Keep the same coordinate transformations</li>
+</ul></li>
+<li>
+<p><strong>Pay special attention to</strong>:</p>
+<ul><li>NA value handling (filtering, propagation)</li>
+<li>Data gaps and breaks in visualizations</li>
+<li>Polygon/geometry rendering edge cases</li>
+<li>Coordinate system transformations</li>
+<li>Default parameter values</li>
+<li>
+<strong>Parameter meanings</strong>: Always read the XCMS documentation carefully
+<ul><li>Example: <code>stacked</code> in <code>plotChromatogramsOverlay()</code> is a PROPORTION (0-1), not an absolute value</li>
+<li>With <code>stacked = 1</code>, y-axis is split 50/50 between stacking region and intensity region</li>
+<li>XCMS documentation is authoritative - don’t guess parameter behavior</li>
+</ul></li>
+</ul></li>
+<li>
+<p><strong>Example: Reusing XCMS internal functions</strong></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># BAD - Reimplementing a function that exists in XCMS:</span></span>
+<span><span class="va">.descendMin</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">y</span>, <span class="va">istart</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># ... custom implementation that may have subtle bugs</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># GOOD - Using XCMS's internal function directly:</span></span>
+<span><span class="va">feat_range</span> <span class="op">&lt;-</span> <span class="fu">xcms</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/xcms/man/descendZero.html" class="external-link">descendMin</a></span><span class="op">(</span><span class="va">dens_y_copy</span>, <span class="va">max_y</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># This ensures perfect compatibility and avoids reimplementation bugs</span></span></code></pre></div>
+</li>
+<li>
+<p><strong>Example: Polygon rendering with NA breaks</strong></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># XCMS approach (CORRECT):</span></span>
+<span><span class="va">nona</span> <span class="op">&lt;-</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ys</span><span class="op">)</span>  <span class="co"># Filter NA values</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">xs_all</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">xs_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">xs_all</span>, <span class="cn">NA</span><span class="op">)</span>  <span class="co"># Insert NA to break polygon</span></span>
+<span>    <span class="va">ys_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ys_all</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">xs_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">xs_all</span>, <span class="va">xs</span><span class="op">[</span><span class="va">nona</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">ys_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ys_all</span>, <span class="va">ys</span><span class="op">[</span><span class="va">nona</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Don't simplify without understanding why XCMS does it this way!</span></span></code></pre></div>
+</li>
+<li>
+<p><strong>When in doubt</strong>:</p>
+<ul><li>Check the XCMS source code again</li>
+<li>Look for XCMS internal functions you can reuse before writing your own</li>
+<li>Test with edge cases (NA values, empty data, single points)</li>
+<li>Compare output visually with original XCMS function</li>
+</ul></li>
+</ol></div>
+<div class="section level3">
+<h3 id="testing-requirements-1">Testing Requirements<a class="anchor" aria-label="anchor" href="#testing-requirements-1"></a></h3>
+<ul><li>Test with data that has NA values</li>
+<li>Test with data that has gaps</li>
+<li>Test with single-point chromatograms</li>
+<li>Test with empty/zero-length data</li>
+<li>Compare visual output with XCMS when possible</li>
+</ul></div>
+</div>
 <div class="section level2">
 <h2 id="key-resources">Key Resources<a class="anchor" aria-label="anchor" href="#key-resources"></a></h2>
 <ul><li>
@@ -204,7 +310,7 @@
 <p><strong>IMPORTANT</strong>: When implementing functions that support both XCMSnExp and XcmsExperiment:</p>
 <div class="section level3">
 <h3 id="do-use-shared-implementation-pattern">DO: Use Shared Implementation Pattern<a class="anchor" aria-label="anchor" href="#do-use-shared-implementation-pattern"></a></h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Internal implementation function (single source of truth)</span></span>
 <span><span class="va">.gplot_function_impl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="reference/dot-validate_xcms_object.html">.validate_xcms_object</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
@@ -231,7 +337,7 @@
 <div class="section level3">
 <h3 id="dont-duplicate-code-in-methods">DON’T: Duplicate Code in Methods<a class="anchor" aria-label="anchor" href="#dont-duplicate-code-in-methods"></a></h3>
 <p>❌ <strong>BAD</strong> - Duplicating identical code in both methods:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/methods/setMethod.html" class="external-link">setMethod</a></span><span class="op">(</span><span class="st">"gplot_function"</span>, <span class="st">"XCMSnExp"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># 100+ lines of code</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
@@ -285,21 +391,21 @@
 </div>
 <div class="section level3">
 <h3 id="id_1-regenerate-documentation">1. Regenerate Documentation<a class="anchor" aria-label="anchor" href="#id_1-regenerate-documentation"></a></h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Update NAMESPACE and .Rd files from roxygen2 comments</span></span>
 <span><span class="fu">roxygen2</span><span class="fu">::</span><span class="fu">roxygenize</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>This ensures all function documentation and imports are up to date.</p>
 </div>
 <div class="section level3">
 <h3 id="id_2-r-cmd-check">2. R CMD Check<a class="anchor" aria-label="anchor" href="#id_2-r-cmd-check"></a></h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Check package for errors, warnings, and notes</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Fix all errors and warnings before committing. Address notes if relevant.</p>
 </div>
 <div class="section level3">
 <h3 id="id_3-build-pkgdown-site">3. Build pkgdown Site<a class="anchor" aria-label="anchor" href="#id_3-build-pkgdown-site"></a></h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load all package code</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">load_all</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -310,7 +416,7 @@
 </div>
 <div class="section level3">
 <h3 id="id_4-reinstall-package">4. Reinstall Package<a class="anchor" aria-label="anchor" href="#id_4-reinstall-package"></a></h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Reinstall the package to ensure all changes are properly loaded</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>This ensures the package is fully functional after your changes.</p>
@@ -318,12 +424,12 @@
 <div class="section level3">
 <h3 id="id_5-commit-changes">5. Commit Changes<a class="anchor" aria-label="anchor" href="#id_5-commit-changes"></a></h3>
 <p>After all checks pass, commit your changes using semantic-release format: - Use conventional commit messages (feat:, fix:, docs:, etc.) - Always include co-authorship footer when using Claude Code - Example:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">git</span> add <span class="at">-A</span></span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"feat: add new visualization function</span></span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="st">🤖 Generated with [Claude Code](https://claude.com/claude-code)</span></span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="st">Co-Authored-By: Claude &lt;noreply@anthropic.com&gt;"</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">git</span> add <span class="at">-A</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"feat: add new visualization function</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="st">🤖 Generated with [Claude Code](https://claude.com/claude-code)</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="st">Co-Authored-By: Claude &lt;noreply@anthropic.com&gt;"</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -346,7 +452,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

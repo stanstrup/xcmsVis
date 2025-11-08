@@ -9,7 +9,7 @@ This is equivalent to the base R plot() method for XChromatogram objects."></hea
 
     <a class="navbar-brand me-2" href="../index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.14</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,6 +23,7 @@ This is equivalent to the base R plot() method for XChromatogram objects."></hea
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Vignettes</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes"><li><a class="dropdown-item" href="../articles/gplotAdjustedRtime.html">gplotAdjustedRtime - Retention Time Adjustment</a></li>
     <li><a class="dropdown-item" href="../articles/peak-visualization.html">Peak Visualization Functions</a></li>
+    <li><a class="dropdown-item" href="../articles/chromatogram-visualization.html">Chromatogram and Peak Density Visualization</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/stanstrup/xcmsVis" aria-label="GitHub repository"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -52,6 +53,38 @@ This is equivalent to the base R <code><a href="https://rdrr.io/r/graphics/plot.
 <span><span class="fu">gplot</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  col <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>  lty <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"l"</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">"retention time"</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">"intensity"</span>,</span>
+<span>  main <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  peakType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"polygon"</span>, <span class="st">"point"</span>, <span class="st">"rectangle"</span>, <span class="st">"none"</span><span class="op">)</span>,</span>
+<span>  peakCol <span class="op">=</span> <span class="st">"#00000060"</span>,</span>
+<span>  peakBg <span class="op">=</span> <span class="st">"#00000020"</span>,</span>
+<span>  peakPch <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'XChromatograms'</span></span>
+<span><span class="fu">gplot</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">"#00000060"</span>,</span>
+<span>  lty <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"l"</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">"retention time"</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">"intensity"</span>,</span>
+<span>  main <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  peakType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"polygon"</span>, <span class="st">"point"</span>, <span class="st">"rectangle"</span>, <span class="st">"none"</span><span class="op">)</span>,</span>
+<span>  peakCol <span class="op">=</span> <span class="st">"#00000060"</span>,</span>
+<span>  peakBg <span class="op">=</span> <span class="st">"#00000020"</span>,</span>
+<span>  peakPch <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'MChromatograms'</span></span>
+<span><span class="fu">gplot</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">"#00000060"</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"l"</span>,</span>
 <span>  xlab <span class="op">=</span> <span class="st">"retention time"</span>,</span>
@@ -169,7 +202,7 @@ they will be shown according to the <code>peakType</code> parameter.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

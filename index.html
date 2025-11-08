@@ -12,8 +12,8 @@
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
 <meta property="og:title" content="Modern Visualization for XCMS Data">
-<meta name="description" content="Provides modern, interactive visualizations for XCMS metabolomics data using ggplot2. This package implements ggplot2 versions of XCMS plotting functions, enabling interactive plots through plotly and consistent visualization styling. Designed as a parallel package to XCMS, maintaining compatibility with both XCMSnExp and XcmsExperiment objects and following XCMS conventions for methods and object types.">
-<meta property="og:description" content="Provides modern, interactive visualizations for XCMS metabolomics data using ggplot2. This package implements ggplot2 versions of XCMS plotting functions, enabling interactive plots through plotly and consistent visualization styling. Designed as a parallel package to XCMS, maintaining compatibility with both XCMSnExp and XcmsExperiment objects and following XCMS conventions for methods and object types.">
+<meta name="description" content="Provides modern, interactive visualizations for XCMS metabolomics data using ggplot2. This package implements ggplot2 versions of XCMS plotting functions, enabling interactive plots through plotly and consistent visualization styling. Designed as a parallel package to XCMS, maintaining compatibility with both XCMSnExp and XcmsExperiment objects and following XCMS conventions for methods and object types. This package reuses and adapts substantial code and algorithms from the XCMS package, translating base R graphics implementations to ggplot2 while preserving the original visualization logic and functionality.">
+<meta property="og:description" content="Provides modern, interactive visualizations for XCMS metabolomics data using ggplot2. This package implements ggplot2 versions of XCMS plotting functions, enabling interactive plots through plotly and consistent visualization styling. Designed as a parallel package to XCMS, maintaining compatibility with both XCMSnExp and XcmsExperiment objects and following XCMS conventions for methods and object types. This package reuses and adapts substantial code and algorithms from the XCMS package, translating base R graphics implementations to ggplot2 while preserving the original visualization logic and functionality.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.14</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,6 +39,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes">
 <li><a class="dropdown-item" href="articles/gplotAdjustedRtime.html">gplotAdjustedRtime - Retention Time Adjustment</a></li>
     <li><a class="dropdown-item" href="articles/peak-visualization.html">Peak Visualization Functions</a></li>
+    <li><a class="dropdown-item" href="articles/chromatogram-visualization.html">Chromatogram and Peak Density Visualization</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -106,7 +107,7 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sneumann/xcms" class="external-link">xcms</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Works with XcmsExperiment (XCMS v4+)</span></span>
-<span><span class="va">xdata</span> <span class="op">&lt;-</span> <span class="fu">readMsExperiment</span><span class="op">(</span>files <span class="op">=</span> <span class="va">mzml_files</span><span class="op">)</span></span>
+<span><span class="va">xdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/readMsExperiment.html" class="external-link">readMsExperiment</a></span><span class="op">(</span>files <span class="op">=</span> <span class="va">mzml_files</span><span class="op">)</span></span>
 <span><span class="co"># ... perform peak detection, alignment, etc.</span></span>
 <span></span>
 <span><span class="co"># Create retention time adjustment plot</span></span>
@@ -181,7 +182,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

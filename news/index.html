@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.14</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,6 +21,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Vignettes</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes"><li><a class="dropdown-item" href="../articles/gplotAdjustedRtime.html">gplotAdjustedRtime - Retention Time Adjustment</a></li>
     <li><a class="dropdown-item" href="../articles/peak-visualization.html">Peak Visualization Functions</a></li>
+    <li><a class="dropdown-item" href="../articles/chromatogram-visualization.html">Chromatogram and Peak Density Visualization</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/stanstrup/xcmsVis" aria-label="GitHub repository"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -36,6 +37,48 @@
       <small>Source: <a href="https://github.com/stanstrup/xcmsVis/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.99.14" id="changes-in-v09914">Changes in v0.99.14<a class="anchor" aria-label="anchor" href="#changes-in-v09914"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-99-14">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-99-14"></a></h3>
+<ul><li>add missing geom_vline import to gplotChromPeakDensity (<a href="https://github.com/stanstrup/xcmsVis/commit/405865a56d505f3583e140dadd23ea6ab2f48966" class="external-link">405865a</a>)</li>
+<li>apply filterRt polygon fix to XChromatogram method (<a href="https://github.com/stanstrup/xcmsVis/commit/92c19ac1b31669652459743f252c4751c00a02b8" class="external-link">92c19ac</a>)</li>
+<li>completely rewrite gplotChromatogramsOverlay to match XCMS behavior (<a href="https://github.com/stanstrup/xcmsVis/commit/2faec0a7173d097bac3b6286bee5b9ea26ce1a7a" class="external-link">2faec0a</a>)</li>
+<li>correct layer ordering in gplotChromPeakDensity lower panel (<a href="https://github.com/stanstrup/xcmsVis/commit/bec5673fb03f46b303e0e99830440c6d360c6f79" class="external-link">bec5673</a>)</li>
+<li>correct rectangle positioning in gplotChromPeakDensity (<a href="https://github.com/stanstrup/xcmsVis/commit/7479e45ea8e1f491b192d7578c221e73bf6d4d5a" class="external-link">7479e45</a>)</li>
+<li>correct stacking behavior in gplotChromatogramsOverlay (<a href="https://github.com/stanstrup/xcmsVis/commit/9194f7968d32490ce0423d60c42d604b3f90579b" class="external-link">9194f79</a>)</li>
+<li>
+<strong>doc:</strong> formatting that makes rstudio live view happy (<a href="https://github.com/stanstrup/xcmsVis/commit/a83ef91b1abeb60befa9850974f2efde47470e09" class="external-link">a83ef91</a>)</li>
+<li>handle infinite values in gplot polygon rendering (<a href="https://github.com/stanstrup/xcmsVis/commit/c8da796dcb229372bbc5e01797693845b4c74da4" class="external-link">c8da796</a>)</li>
+<li>use Bootstrap grid instead of CSS flexbox for pkgdown compatibility (<a href="https://github.com/stanstrup/xcmsVis/commit/f79605d041c97c556426f64919d2bd98f918bcc2" class="external-link">f79605d</a>)</li>
+<li>use filterRt() for polygon rendering to match XCMS exactly (<a href="https://github.com/stanstrup/xcmsVis/commit/1a5cb2ab9f54a49c2f59dbb3bce540ad54d5063f" class="external-link">1a5cb2a</a>)</li>
+<li>use patchwork &amp; operator in vignette custom_ggplot example (<a href="https://github.com/stanstrup/xcmsVis/commit/dce3edc4be9ef82ec7b4f6833af54a6f813f9444" class="external-link">dce3edc</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="features-0-99-14">Features<a class="anchor" aria-label="anchor" href="#features-0-99-14"></a></h3>
+<ul><li>add gplot() method for XcmsExperiment and XCMSnExp (<a href="https://github.com/stanstrup/xcmsVis/commit/8fd87fbf5e2083b63352cd7ba80f119875629103" class="external-link">8fd87fb</a>)</li>
+<li>add side-by-side comparison for correspondence results (<a href="https://github.com/stanstrup/xcmsVis/commit/b0113ad8ed7a9feee2ef81568a32ccdc6bdf561b" class="external-link">b0113ad</a>)</li>
+<li>implement gplotChromatogramsOverlay for XChromatograms/MChromatograms (<a href="https://github.com/stanstrup/xcmsVis/commit/acfe633b604504cab5986a4bbe7e57a718f82af5" class="external-link">acfe633</a>)</li>
+<li>implement gplotChromPeakDensity for XChromatograms/MChromatograms (<a href="https://github.com/stanstrup/xcmsVis/commit/beff00d0957815f462fe476d38350202b010427c" class="external-link">beff00d</a>), closes <a href="https://github.com/hi/issues/priority" class="external-link">hi#priority</a>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-0-99-14">BREAKING CHANGES<a class="anchor" aria-label="anchor" href="#breaking-changes-0-99-14"></a></h3>
+<ul><li>gplotChromatogramsOverlay now correctly overlays multiple EICs (rows) from the same sample (column), not multiple samples across the same EIC. This matches the original XCMS behavior.</li>
+</ul><p>Changes: - Now loops through columns (samples) instead of rows (EICs) - Overlays multiple rows (different EICs) in a single plot per sample - Uses facet_wrap for multiple samples instead of patchwork - Main titles now correspond to samples (columns) not EICs (rows) - Updated all tests to reflect correct XCMS behavior</p>
+<p>The key difference from XCMS plot(): - plot() overlays same EIC across different samples - plotChromatogramsOverlay() overlays different EICs within same sample</p>
+<p>🤖 Generated with <a href="https://claude.com/claude-code" class="external-link">Claude Code</a></p>
+<p>Co-Authored-By: Claude <a href="mailto:noreply@anthropic.com" class="email">noreply@anthropic.com</a></p>
+</div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.99.13" id="changes-in-v09913">Changes in v0.99.13<a class="anchor" aria-label="anchor" href="#changes-in-v09913"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-99-13">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-99-13"></a></h3>
+<ul><li>correct pkgdown deployment and documentation link (<a href="https://github.com/stanstrup/xcmsVis/commit/a8f45ea5ecc1d3c2ffa08fba3fa3fa9b13a459ab" class="external-link">a8f45ea</a>), closes <a href="https://github.com/stanstrup/xcmsVis/issues/pages" class="external-link">#pages</a>
+</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.99.12" id="changes-in-v09912">Changes in v0.99.12<a class="anchor" aria-label="anchor" href="#changes-in-v09912"></a></h2>
 <div class="section level3">
@@ -226,7 +269,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

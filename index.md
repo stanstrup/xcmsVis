@@ -1,0 +1,88 @@
+# xcmsVis
+
+Modern, interactive visualizations for XCMS metabolomics data using
+ggplot2.
+
+## Overview
+
+`xcmsVis` provides ggplot2 implementations of XCMS plotting functions,
+enabling:
+
+- Modern, publication-ready visualizations
+- Interactive plots through plotly integration
+- Consistent styling across all plots
+- Full compatibility with both XCMSnExp and XcmsExperiment objects
+
+This package complements the [XCMS
+package](https://github.com/sneumann/xcms) by reimplementing its base
+graphics plots using ggplot2.
+
+## Installation
+
+``` r
+# Install from GitHub (development version)
+# devtools::install_github("yourusername/xcmsVis")
+```
+
+## Features
+
+### Current Functions
+
+- [`gplotAdjustedRtime()`](https://stanstrup.github.io/xcmsVis/reference/gplotAdjustedRtime.md) -
+  ggplot2 version of XCMS’s
+  [`plotAdjustedRtime()`](https://rdrr.io/pkg/xcms/man/plotAdjustedRtime.html)
+  - Works with both XCMSnExp and XcmsExperiment objects
+  - Interactive tooltips for plotly
+  - Modern ggplot2 aesthetics
+
+### Planned Functions
+
+Future releases will include ggplot2 versions of: -
+[`plotQC()`](https://rdrr.io/pkg/xcms/man/plotQC.html) - Quality control
+diagnostics -
+[`plotChromPeaks()`](https://rdrr.io/pkg/xcms/man/plotChromPeaks.html) -
+Chromatographic peak visualization -
+[`plotChromPeakImage()`](https://rdrr.io/pkg/xcms/man/plotChromPeaks.html) -
+Peak intensity heatmap -
+[`plotChromPeakDensity()`](https://rdrr.io/pkg/xcms/man/plotChromPeakDensity.html) -
+Peak density visualization -
+[`plotEIC()`](https://rdrr.io/pkg/xcms/man/plotEIC-methods.html) -
+Extracted ion chromatograms - And more!
+
+## Usage
+
+``` r
+library(xcmsVis)
+library(xcms)
+
+# Works with XcmsExperiment (XCMS v4+)
+xdata <- readMsExperiment(files = mzml_files)
+# ... perform peak detection, alignment, etc.
+
+# Create retention time adjustment plot
+p <- gplotAdjustedRtime(xdata, color_by = sample_group)
+print(p)
+
+# Make it interactive
+library(plotly)
+ggplotly(p, tooltip = "text")
+
+# Also works with XCMSnExp (XCMS v3)
+xdata_v3 <- readMSData(files = mzml_files, mode = "onDisk")
+# ... perform XCMS workflow
+p <- gplotAdjustedRtime(xdata_v3, color_by = sample_group)
+```
+
+## Motivation
+
+This package addresses the need discussed in [XCMS issue
+\#551](https://github.com/sneumann/xcms/issues/551) for ggplot2-based
+visualizations that can be easily made interactive using plotly.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+MIT License - see LICENSE file for details

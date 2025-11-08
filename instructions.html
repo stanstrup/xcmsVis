@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.14</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,6 +21,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Vignettes</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes"><li><a class="dropdown-item" href="articles/gplotAdjustedRtime.html">gplotAdjustedRtime - Retention Time Adjustment</a></li>
     <li><a class="dropdown-item" href="articles/peak-visualization.html">Peak Visualization Functions</a></li>
+    <li><a class="dropdown-item" href="articles/chromatogram-visualization.html">Chromatogram and Peak Density Visualization</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/stanstrup/xcmsVis" aria-label="GitHub repository"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -39,7 +40,29 @@
 <div id="current-tasks" class="section level1">
 
 <p><strong>See <code>CLAUDE.md</code> for development workflow, conventions, and resources.</strong></p>
-<p>Move on to the remaining functions. Follow the same recipe. If you need to also get plots from Msnbase to make ggplot2 implementations work then do so. Use the dev-docs as your roadmap and keep them updated. Skip functions that are only for legacy objects. Make a list of vignettes and functions for me to check afterwards. make sure to make tests. as usual try to handle both <code>XcmsExperiment</code> and <code>XCMSnExp</code>.</p>
+<div class="section level2">
+<h2 id="completed-tasks">Completed Tasks<a class="anchor" aria-label="anchor" href="#completed-tasks"></a></h2>
+<ol style="list-style-type: decimal"><li><p>✅ <strong>Upper plot margin removal</strong> - Added <code>theme(axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank())</code> to upper panel in gplot-XcmsExperiment-methods.R:214-216</p></li>
+<li><p>✅ <strong>Removed patchwork_integration block</strong> - Removed broken demonstration that tried to access non-existent chromPeaks from xcmsexperiment-visualization.qmd</p></li>
+<li><p>✅ <strong>Fixed ms_levels block</strong> - Replaced non-functional example with MTBLS8735 data that has MS2 in xcmsexperiment-visualization.qmd</p></li>
+<li>
+<p>✅ <strong>Reorganized all vignettes</strong> - Moved all XCMS comparisons to “Supplementary: Comparison with Original XCMS” section at the end of:</p>
+<ul><li>gplotAdjustedRtime.qmd</li>
+<li>peak-visualization.qmd</li>
+<li>chromatogram-visualization.qmd</li>
+<li>xcmsexperiment-visualization.qmd</li>
+</ul></li>
+<li>
+<p>✅ <strong>Code cleanup</strong> - Removed unnecessary <code>::</code> notation from all R files:</p>
+<ul><li>R/gplot-XcmsExperiment-methods.R</li>
+<li>R/gplotChromPeaks-methods.R</li>
+<li>R/gplotChromPeakImage-methods.R</li>
+<li>R/utils.R</li>
+</ul></li>
+</ol><p>All tests passing: 130 tests, 0 failures</p>
+<p>N checking top-level files Non-standard files/directories found at top level: ‘Rplots.pdf’ ‘tmp’</p>
+<p>.create_sample_plot: no visible binding for global variable ‘i’ .gplotChromPeakDensity_impl: no visible binding for global variable ‘rtmed’ Undefined global functions or variables: i rtmed</p>
+</div>
 </div>
 
   </main></div>
@@ -50,7 +73,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
