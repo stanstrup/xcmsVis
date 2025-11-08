@@ -88,24 +88,6 @@ The `gplotChromPeaks()` function creates a scatter plot showing detected peaks a
 
 ## Basic Usage
 
-<div class="row">
-<div class="col-md-6">
-
-### Original XCMS Version
-
-```{r original_chrompeaks}
-#| fig-height: 5
-#| fig-width: 5
-#| fig-alt: "XCMS plotChromPeaks showing detected peaks as rectangles in RT vs m/z space for the first sample. Each rectangle represents a chromatographic peak with its boundaries defined by retention time (x-axis) and m/z range (y-axis)."
-# Base R graphics version
-plotChromPeaks(xdata, file = 1, xlim = c(3500,3800), , ylim = c(240,260))
-```
-
-</div>
-<div class="col-md-6">
-
-### xcmsVis ggplot2 Version
-
 ```{r ggplot_chrompeaks}
 #| fig-height: 5
 #| fig-width: 5
@@ -114,9 +96,6 @@ plotChromPeaks(xdata, file = 1, xlim = c(3500,3800), , ylim = c(240,260))
 p1 <- gplotChromPeaks(xdata, file = 1, xlim = c(3500,3800), , ylim = c(240,260))
 print(p1)
 ```
-
-</div>
-</div>
 
 ## Customizing the Plot
 
@@ -173,24 +152,6 @@ The `gplotChromPeakImage()` function creates a heatmap showing the number of det
 
 ## Basic Usage
 
-<div class="row">
-<div class="col-md-6">
-
-### Original XCMS Version
-
-```{r original_peakimage}
-#| fig-height: 4
-#| fig-width: 5
-#| fig-alt: "XCMS plotChromPeakImage showing peak density heatmap with retention time on x-axis and samples on y-axis. Color intensity represents the number of peaks detected in each time bin for each sample."
-# Base R graphics version
-plotChromPeakImage(xdata, binSize = 30)
-```
-
-</div>
-<div class="col-md-6">
-
-### xcmsVis ggplot2 Version
-
 ```{r ggplot_peakimage}
 #| fig-height: 4
 #| fig-width: 5
@@ -199,9 +160,6 @@ plotChromPeakImage(xdata, binSize = 30)
 p3 <- gplotChromPeakImage(xdata, binSize = 30)
 print(p3)
 ```
-
-</div>
-</div>
 
 ## With Different Bin Sizes
 
@@ -306,24 +264,6 @@ rt_range <- c(2500, 3500)
 chr <- chromatogram(xdata, mz = mz_range, rt = rt_range)
 ```
 
-<div class="row">
-<div class="col-md-6">
-
-### Original XCMS Version
-
-```{r original_highlight}
-#| fig-height: 5
-#| fig-width: 5
-#| fig-alt: "XCMS plot showing base R chromatogram with detected peaks automatically marked as points. Traditional graphics style."
-# Base R graphics version - plot() automatically shows peaks
-plot(chr[1, 1], main = "XCMS plot(XChromatogram)")
-```
-
-</div>
-<div class="col-md-6">
-
-### xcmsVis ggplot2 Version
-
 ```{r ggplot_chromatogram}
 #| fig-height: 5
 #| fig-width: 5
@@ -333,38 +273,9 @@ gplot(chr[1, 1]) +
   labs(title = "xcmsVis gplot(XChromatogram)")
 ```
 
-</div>
-</div>
-
 ## ghighlightChromPeaks(): Composable Layers
 
 For more control, `ghighlightChromPeaks()` returns ggplot2 layers that can be added to any chromatogram plot:
-
-<div class="row">
-<div class="col-md-6">
-
-### Original XCMS Version
-
-```{r original_highlightChromPeaks}
-#| fig-height: 5
-#| fig-width: 5
-#| fig-alt: "XCMS chromatogram plot with peaks highlighted using the original highlightChromPeaks function. Shows peaks marked on the chromatogram."
-# Base R graphics version - plot then add highlights
-# Note: Original highlightChromPeaks searches ALL peaks in xdata across all files
-# that match the rt/mz range, so it may show more peaks than just this one chromatogram
-plot(chr[1, 1], main = "XCMS highlightChromPeaks")
-highlightChromPeaks(as(xdata, "XCMSnExp"),
-                    rt = rt_range,
-                    mz = mz_range,
-                    border = "red",
-                    col = adjustcolor("red", alpha.f = 0.2)
-                   )
-```
-
-</div>
-<div class="col-md-6">
-
-### xcmsVis ggplot2 Version
 
 ```{r highlight_rect}
 #| fig-height: 5
@@ -394,9 +305,6 @@ peak_layers <- ghighlightChromPeaks(
 # Combine base plot with peak annotations
 p_chrom + peak_layers
 ```
-
-</div>
-</div>
 
 ## Understanding Peak Highlighting Behavior
 
@@ -497,32 +405,9 @@ peak_polygons <- ghighlightChromPeaks(
 (p_poly + peak_polygons)
 ```
 
-### Comparing Polygon Type with Original XCMS
+### Polygon Peak Highlighting
 
 The polygon visualization type follows the actual peak shape from the chromatogram data:
-
-<div class="row">
-<div class="col-md-6">
-
-#### Original XCMS
-
-```{r polygon_original}
-#| fig-height: 5
-#| fig-width: 5
-#| fig-alt: "Original XCMS polygon peak highlighting showing detected peaks as filled polygons following the chromatogram trace within peak boundaries."
-plot(chr[1, 1], main = "XCMS Polygon Highlighting")
-highlightChromPeaks(as(xdata_filtered, "XCMSnExp"),
-                    rt = rt_range,
-                    mz = mz_range,
-                    type = "polygon",
-                    border = "blue",
-                    col = adjustcolor("blue", alpha.f = 0.3))
-```
-
-</div>
-<div class="col-md-6">
-
-#### xcmsVis ggplot2 Version
 
 ```{r polygon_ggplot}
 #| fig-height: 5
@@ -539,9 +424,6 @@ gplot(chr[1, 1], peakType = "none") +
        x = "Retention Time (s)",
        y = "Intensity")
 ```
-
-</div>
-</div>
 
 ## Peak Selection Criteria
 
@@ -605,6 +487,207 @@ p_dist / p_density
 ```{r session_info}
 sessionInfo()
 ```
+
+# Supplementary: Comparison with Original XCMS
+
+This supplementary section provides side-by-side comparisons between the original XCMS plotting functions and the new xcmsVis ggplot2-based implementations. These comparisons are useful for developers and users migrating from the original XCMS plotting functions.
+
+## gplotChromPeaks: Peak Distribution Visualization
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS Version
+
+```{r original_chrompeaks}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "XCMS plotChromPeaks showing detected peaks as rectangles in RT vs m/z space for the first sample. Each rectangle represents a chromatographic peak with its boundaries defined by retention time (x-axis) and m/z range (y-axis)."
+# Base R graphics version
+plotChromPeaks(xdata, file = 1, xlim = c(3500,3800), , ylim = c(240,260))
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 Version
+
+```{r ggplot_chrompeaks_supp}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "ggplot2 version showing detected peaks as semi-transparent rectangles in RT vs m/z space."
+# ggplot2 version
+p1 <- gplotChromPeaks(xdata, file = 1, xlim = c(3500,3800), , ylim = c(240,260))
+print(p1)
+```
+
+</div>
+</div>
+
+## gplotChromPeakImage: Peak Density Heatmap
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS Version
+
+```{r original_peakimage}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "XCMS plotChromPeakImage showing peak density heatmap with retention time on x-axis and samples on y-axis. Color intensity represents the number of peaks detected in each time bin for each sample."
+# Base R graphics version
+plotChromPeakImage(xdata, binSize = 30)
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 Version
+
+```{r ggplot_peakimage_supp}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "ggplot2 heatmap of peak density using viridis color scale. Retention time bins on x-axis, samples on y-axis, with color intensity indicating peak counts per bin."
+# ggplot2 version
+p3 <- gplotChromPeakImage(xdata, binSize = 30)
+print(p3)
+```
+
+</div>
+</div>
+
+## gplot(XChromatogram): Automatic Chromatogram Plotting
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS Version
+
+```{r original_highlight}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "XCMS plot showing base R chromatogram with detected peaks automatically marked as points. Traditional graphics style."
+# Base R graphics version - plot() automatically shows peaks
+plot(chr[1, 1], main = "XCMS plot(XChromatogram)")
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 Version
+
+```{r ggplot_chromatogram_supp}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "ggplot2 version of chromatogram plot with detected peaks automatically marked."
+# ggplot2 version - gplot() automatically shows peaks
+gplot(chr[1, 1]) +
+  labs(title = "xcmsVis gplot(XChromatogram)")
+```
+
+</div>
+</div>
+
+## ghighlightChromPeaks(): Composable Layers
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS Version
+
+```{r original_highlightChromPeaks}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "XCMS chromatogram plot with peaks highlighted using the original highlightChromPeaks function. Shows peaks marked on the chromatogram."
+# Base R graphics version - plot then add highlights
+# Note: Original highlightChromPeaks searches ALL peaks in xdata across all files
+# that match the rt/mz range, so it may show more peaks than just this one chromatogram
+plot(chr[1, 1], main = "XCMS highlightChromPeaks")
+highlightChromPeaks(as(xdata, "XCMSnExp"),
+                    rt = rt_range,
+                    mz = mz_range,
+                    border = "red",
+                    col = adjustcolor("red", alpha.f = 0.2)
+                   )
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 Version
+
+```{r highlight_rect_supp}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "Chromatogram with detected peaks highlighted as semi-transparent rectangles. Base chromatogram shows intensity vs retention time, with rectangles marking peak boundaries from rtmin to rtmax at the peak's maximum intensity."
+# Start with gplot() which creates the chromatogram
+p_chrom <- gplot(chr[1, 1], peakType = "none") +
+  labs(
+    title = "Chromatogram with Highlighted Peaks (Rectangle)",
+    x = "Retention Time (s)",
+    y = "Intensity"
+  )
+
+# Add peak highlights as rectangles
+peak_layers <- ghighlightChromPeaks(
+                                    xdata,
+                                    rt = rt_range,
+                                    mz = mz_range,
+                                    type = "rect",
+                                    border = "red",
+                                    fill = alpha("red", 0.2)
+                                    )
+
+# Combine base plot with peak annotations
+p_chrom + peak_layers
+```
+
+</div>
+</div>
+
+## Polygon Peak Highlighting Comparison
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS
+
+```{r polygon_original}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "Original XCMS polygon peak highlighting showing detected peaks as filled polygons following the chromatogram trace within peak boundaries."
+plot(chr[1, 1], main = "XCMS Polygon Highlighting")
+highlightChromPeaks(as(xdata_filtered, "XCMSnExp"),
+                    rt = rt_range,
+                    mz = mz_range,
+                    type = "polygon",
+                    border = "blue",
+                    col = adjustcolor("blue", alpha.f = 0.3))
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 Version
+
+```{r polygon_ggplot_supp}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "ggplot2 version of polygon peak highlighting with same visual style as original, showing peaks as filled polygons."
+gplot(chr[1, 1], peakType = "none") +
+  ghighlightChromPeaks(xdata_filtered,
+                       rt = rt_range,
+                       mz = mz_range,
+                       type = "polygon",
+                       border = "blue",
+                       fill = alpha("blue", 0.3)) +
+  labs(title = "xcmsVis Polygon Highlighting",
+       x = "Retention Time (s)",
+       y = "Intensity")
+```
+
+</div>
+</div>
 
 # References
 

@@ -65,37 +65,16 @@ The `gplot()` function creates chromatogram plots with detected peaks automatica
 
 ## Basic Usage
 
-<div class="row">
-<div class="col-md-6">
-
-### Original XCMS Version
-
-```{r original_gplot}
-#| fig-height: 4
-#| fig-width: 5
-#| fig-alt: "XCMS plot showing a single chromatogram with detected peaks marked as polygons. The x-axis shows retention time and y-axis shows intensity."
-# Extract chromatogram for one sample
-chr <- chromatogram(xdata, mz = c(305.05, 305.15))
-
-# Base R graphics version
-plot(chr[1, 1])
-```
-
-</div>
-<div class="col-md-6">
-
-### xcmsVis ggplot2 Version
-
 ```{r xcmsvis_gplot}
 #| fig-height: 4
 #| fig-width: 5
 #| fig-alt: "ggplot2 version of the same chromatogram showing retention time vs intensity with peaks marked as shaded polygons. The plot uses a clean theme with proper axis labels."
+# Extract chromatogram for one sample
+chr <- chromatogram(xdata, mz = c(305.05, 305.15))
+
 # ggplot2 version
 gplot(chr[1, 1])
 ```
-
-</div>
-</div>
 
 ## Multiple Peak Types
 
@@ -126,35 +105,14 @@ The `gplotChromPeakDensity()` function helps optimize peak density correspondenc
 
 ## Basic Usage
 
-<div class="row">
-<div class="col-md-6">
-
-### Original XCMS Version
-
-```{r original_peakdensity}
-#| fig-height: 6
-#| fig-width: 5
-#| fig-alt: "XCMS plotChromPeakDensity showing a two-panel figure. Upper panel displays overlaid chromatograms from multiple samples. Lower panel shows peak positions as points with a density curve overlay and grey rectangles indicating how peaks would be grouped into features."
-# Base R graphics version
-prm <- PeakDensityParam(sampleGroups = rep(1, 3), bw = 30)
-plotChromPeakDensity(chr, param = prm)
-```
-
-</div>
-<div class="col-md-6">
-
-### xcmsVis ggplot2 Version
-
 ```{r xcmsvis_peakdensity}
 #| fig-height: 6
 #| fig-width: 5
 #| fig-alt: "ggplot2 version of peak density plot with the same two-panel layout. Uses patchwork for clean panel stacking and ggplot2 aesthetics for better readability."
 # ggplot2 version
+prm <- PeakDensityParam(sampleGroups = rep(1, 3), bw = 30)
 gplotChromPeakDensity(chr, param = prm)
 ```
-
-</div>
-</div>
 
 ## Optimizing Bandwidth Parameter
 
@@ -182,15 +140,10 @@ p1 | p2 | p3
 
 After running correspondence analysis, you can visualize the actual feature grouping by setting `simulate = FALSE`:
 
-<div class="row">
-<div class="col-md-6">
-
-### Original XCMS Version
-
-```{r actual_correspondence_original}
+```{r actual_correspondence_ggplot2}
 #| fig-height: 6
 #| fig-width: 5
-#| fig-alt: "XCMS plotChromPeakDensity showing actual feature grouping after correspondence analysis. Vertical dashed lines indicate the median retention time for each feature."
+#| fig-alt: "ggplot2 version of peak density plot showing actual feature grouping after correspondence analysis."
 # Perform correspondence
 xdata_grouped <- groupChromPeaks(xdata, param = PeakDensityParam(
   sampleGroups = rep(1, 3),
@@ -201,26 +154,10 @@ xdata_grouped <- groupChromPeaks(xdata, param = PeakDensityParam(
 # Extract chromatogram again (now with correspondence info)
 chr_grouped <- chromatogram(xdata_grouped, mz = c(305.05, 305.15))
 
-# Plot with XCMS original
-plotChromPeakDensity(chr_grouped, simulate = FALSE)
-```
-
-</div>
-<div class="col-md-6">
-
-### ggplot2 Version
-
-```{r actual_correspondence_ggplot2}
-#| fig-height: 6
-#| fig-width: 5
-#| fig-alt: "ggplot2 version of peak density plot showing actual feature grouping after correspondence analysis."
 # Plot with ggplot2 version
 gplotChromPeakDensity(chr_grouped, simulate = FALSE) +
   ggtitle("Actual Correspondence Results")
 ```
-
-</div>
-</div>
 
 ::: {.callout-note}
 ## Feature Annotations
@@ -243,81 +180,38 @@ The `gplotChromatogramsOverlay()` function overlays **different EICs (rows)** fr
 
 ## Single Sample: Multiple EICs Overlaid
 
-<div class="row">
-<div class="col-md-6">
-
-### Original XCMS Version
-
-```{r original_overlay_single}
+```{r xcmsvis_overlay_single}
 #| fig-height: 5
 #| fig-width: 5
-#| fig-alt: "XCMS plotChromatogramsOverlay showing two different EICs (m/z 305 and m/z 344) overlaid in a single plot from one sample."
+#| fig-alt: "ggplot2 version showing the same two EICs overlaid with cleaner aesthetics and proper legend handling."
 # Extract multiple EICs from ONE sample
 chr_multi <- chromatogram(xdata[1,], mz = rbind(
   c(305.05, 305.15),
   c(344.0, 344.2)
 ))
 
-# Base R graphics version
-plotChromatogramsOverlay(chr_multi, main = "Sample 1")
-```
-
-</div>
-<div class="col-md-6">
-
-### xcmsVis ggplot2 Version
-
-```{r xcmsvis_overlay_single}
-#| fig-height: 5
-#| fig-width: 5
-#| fig-alt: "ggplot2 version showing the same two EICs overlaid with cleaner aesthetics and proper legend handling."
 # ggplot2 version
 gplotChromatogramsOverlay(chr_multi, main = "Sample 1")
 ```
-
-</div>
-</div>
 
 ## Multiple Samples: Faceted Layout
 
 When you have multiple samples, `gplotChromatogramsOverlay()` creates a faceted plot with one panel per sample:
 
-<div class="row">
-<div class="col-md-6">
-
-### Original XCMS Version
-
-```{r original_overlay_multi}
+```{r xcmsvis_overlay_multi}
 #| fig-height: 7
 #| fig-width: 5
-#| fig-alt: "XCMS plotChromatogramsOverlay with three vertically stacked panels, one for each sample. Each panel shows two EICs overlaid."
+#| fig-alt: "ggplot2 version using facet_wrap to create three panels, one per sample, with overlaid EICs in each."
 # Extract multiple EICs from ALL samples
 chr_all <- chromatogram(xdata, mz = rbind(
   c(305.05, 305.15),
   c(344.0, 344.2)
 ))
 
-# Base R graphics version - creates multi-panel plot
-plotChromatogramsOverlay(chr_all,
-                         main = c("Sample 1", "Sample 2", "Sample 3"))
-```
-
-</div>
-<div class="col-md-6">
-
-### xcmsVis ggplot2 Version
-
-```{r xcmsvis_overlay_multi}
-#| fig-height: 7
-#| fig-width: 5
-#| fig-alt: "ggplot2 version using facet_wrap to create three panels, one per sample, with overlaid EICs in each."
 # ggplot2 version - uses faceting
 gplotChromatogramsOverlay(chr_all,
                           main = c("Sample 1", "Sample 2", "Sample 3"))
 ```
-
-</div>
-</div>
 
 ## Contrast: gplot() vs gplotChromatogramsOverlay()
 
@@ -347,24 +241,6 @@ p_left | p_right
 
 For better visual separation, chromatograms can be vertically offset:
 
-<div class="row">
-<div class="col-md-6">
-
-### Original XCMS Version
-
-```{r original_stacked}
-#| fig-height: 5
-#| fig-width: 5
-#| fig-alt: "XCMS stacked overlay with chromatograms vertically offset by a fixed amount."
-# Base R version
-plotChromatogramsOverlay(chr_multi, stacked = 0.1, main = "Sample 1")
-```
-
-</div>
-<div class="col-md-6">
-
-### xcmsVis ggplot2 Version
-
 ```{r xcmsvis_stacked}
 #| fig-height: 5
 #| fig-width: 5
@@ -372,9 +248,6 @@ plotChromatogramsOverlay(chr_multi, stacked = 0.1, main = "Sample 1")
 # ggplot2 version
 gplotChromatogramsOverlay(chr_multi, stacked = 0.1, main = "Sample 1")
 ```
-
-</div>
-</div>
 
 ## Intensity Transformation
 
@@ -479,6 +352,203 @@ These functions are particularly useful for:
 3. **Sample comparison**: `gplot()` shows retention time shifts and intensity variations between samples
 4. **Presentation**: All functions produce publication-quality figures
 5. **Exploration**: Interactive plotly conversion enables detailed data inspection
+
+# Supplementary: Comparison with Original XCMS
+
+This supplementary section provides side-by-side comparisons between the original XCMS plotting functions and the new xcmsVis ggplot2-based implementations. These comparisons are useful for developers and users migrating from the original XCMS plotting functions.
+
+## gplot: Individual Chromatogram Visualization
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS Version
+
+```{r original_gplot}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "XCMS plot showing a single chromatogram with detected peaks marked as polygons. The x-axis shows retention time and y-axis shows intensity."
+# Extract chromatogram for one sample
+chr <- chromatogram(xdata, mz = c(305.05, 305.15))
+
+# Base R graphics version
+plot(chr[1, 1])
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 Version
+
+```{r xcmsvis_gplot_supp}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "ggplot2 version of the same chromatogram showing retention time vs intensity with peaks marked as shaded polygons. The plot uses a clean theme with proper axis labels."
+# ggplot2 version
+gplot(chr[1, 1])
+```
+
+</div>
+</div>
+
+## gplotChromPeakDensity: Peak Density Visualization
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS Version
+
+```{r original_peakdensity}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "XCMS plotChromPeakDensity showing a two-panel figure. Upper panel displays overlaid chromatograms from multiple samples. Lower panel shows peak positions as points with a density curve overlay and grey rectangles indicating how peaks would be grouped into features."
+# Base R graphics version
+prm <- PeakDensityParam(sampleGroups = rep(1, 3), bw = 30)
+plotChromPeakDensity(chr, param = prm)
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 Version
+
+```{r xcmsvis_peakdensity_supp}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "ggplot2 version of peak density plot with the same two-panel layout. Uses patchwork for clean panel stacking and ggplot2 aesthetics for better readability."
+# ggplot2 version
+gplotChromPeakDensity(chr, param = prm)
+```
+
+</div>
+</div>
+
+## Actual Correspondence Results
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS Version
+
+```{r actual_correspondence_original}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "XCMS plotChromPeakDensity showing actual feature grouping after correspondence analysis. Vertical dashed lines indicate the median retention time for each feature."
+# Plot with XCMS original
+plotChromPeakDensity(chr_grouped, simulate = FALSE)
+```
+
+</div>
+<div class="col-md-6">
+
+### ggplot2 Version
+
+```{r actual_correspondence_ggplot2_supp}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "ggplot2 version of peak density plot showing actual feature grouping after correspondence analysis."
+# Plot with ggplot2 version
+gplotChromPeakDensity(chr_grouped, simulate = FALSE) +
+  ggtitle("Actual Correspondence Results")
+```
+
+</div>
+</div>
+
+## gplotChromatogramsOverlay: Single Sample
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS Version
+
+```{r original_overlay_single}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "XCMS plotChromatogramsOverlay showing two different EICs (m/z 305 and m/z 344) overlaid in a single plot from one sample."
+# Base R graphics version
+plotChromatogramsOverlay(chr_multi, main = "Sample 1")
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 Version
+
+```{r xcmsvis_overlay_single_supp}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "ggplot2 version showing the same two EICs overlaid with cleaner aesthetics and proper legend handling."
+# ggplot2 version
+gplotChromatogramsOverlay(chr_multi, main = "Sample 1")
+```
+
+</div>
+</div>
+
+## gplotChromatogramsOverlay: Multiple Samples
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS Version
+
+```{r original_overlay_multi}
+#| fig-height: 7
+#| fig-width: 5
+#| fig-alt: "XCMS plotChromatogramsOverlay with three vertically stacked panels, one for each sample. Each panel shows two EICs overlaid."
+# Base R graphics version - creates multi-panel plot
+plotChromatogramsOverlay(chr_all,
+                         main = c("Sample 1", "Sample 2", "Sample 3"))
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 Version
+
+```{r xcmsvis_overlay_multi_supp}
+#| fig-height: 7
+#| fig-width: 5
+#| fig-alt: "ggplot2 version using facet_wrap to create three panels, one per sample, with overlaid EICs in each."
+# ggplot2 version - uses faceting
+gplotChromatogramsOverlay(chr_all,
+                          main = c("Sample 1", "Sample 2", "Sample 3"))
+```
+
+</div>
+</div>
+
+## Stacked Visualization
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS Version
+
+```{r original_stacked}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "XCMS stacked overlay with chromatograms vertically offset by a fixed amount."
+# Base R version
+plotChromatogramsOverlay(chr_multi, stacked = 0.1, main = "Sample 1")
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 Version
+
+```{r xcmsvis_stacked_supp}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "ggplot2 stacked overlay preventing overlapping traces and making it easier to follow individual EICs."
+# ggplot2 version
+gplotChromatogramsOverlay(chr_multi, stacked = 0.1, main = "Sample 1")
+```
+
+</div>
+</div>
 
 # Session Info
 

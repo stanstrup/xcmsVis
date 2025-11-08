@@ -127,30 +127,6 @@ xdata <- adjustRtime(xdata, param = pgp)
 
 ## Creating the Plot
 
-<div class="row">
-<div class="col-md-6">
-
-### Original XCMS Version
-
-```{r original_plot}
-#| fig-height: 4
-#| fig-width: 5
-#| fig-alt: "Retention time adjustment plot from XCMS showing RT deviation vs adjusted retention time. Six colored lines represent individual samples (3 KO and 3 WT), with grey circles indicating alignment peaks and dashed grey lines connecting corresponding features across samples."
-# Base R graphics version
-sample_data <- xcmsVis:::.get_sample_data(xdata)
-
-plotAdjustedRtime(
-  xdata,
-  col = as.factor(sample_data$sample_group),
-  peakGroupsCol = "grey"
-)
-```
-
-</div>
-<div class="col-md-6">
-
-### xcmsVis ggplot2 Version
-
 ```{r ggplot_version}
 #| fig-height: 4
 #| fig-width: 5
@@ -159,9 +135,6 @@ plotAdjustedRtime(
 p <- gplotAdjustedRtime(xdata, color_by = sample_group)
 print(p)
 ```
-
-</div>
-</div>
 
 The plot shows:
 
@@ -229,6 +202,112 @@ pgp_filter <- PeakGroupsParam(minFraction = 0.4)
 xdata_filtered <- adjustRtime(xdata_filtered, param = pgp_filter)
 ```
 
+```{r ggplot_filtered}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "ggplot2 retention time adjustment plot for filtered dataset. Four lines display RT corrections for samples 2-5, color-coded by KO/WT group, with grey alignment peaks and feature connections."
+p_filtered <- gplotAdjustedRtime(xdata_filtered, color_by = sample_group)
+print(p_filtered)
+```
+
+## With subset Parameter in PeakGroupsParam
+
+You can use only specific samples for alignment calculation while keeping all samples in the dataset:
+
+```{r with_subset}
+# Work with a fresh copy of grouped data
+xdata_subset <- xdata_grouped
+
+# Use subset parameter to align using only specific samples
+pgp_subset <- PeakGroupsParam(
+  minFraction = 0.4,
+  smooth = "loess",
+  span = 0.2,
+  family = "gaussian",
+  subset = c(1, 2, 3, 5)  # Exclude sample 4 from alignment calculation
+)
+xdata_subset <- adjustRtime(xdata_subset, param = pgp_subset)
+```
+
+```{r ggplot_subset}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "ggplot2 retention time adjustment plot with subset alignment. Six colored lines represent all samples (KO and WT groups), but RT correction was calculated using only a subset (samples 1, 2, 3, 5). Grey points show alignment peaks used."
+p_subset <- gplotAdjustedRtime(xdata_subset, color_by = sample_group)
+print(p_subset)
+```
+
+## Without subset Parameter (All Samples)
+
+For comparison, here's alignment using all samples:
+
+```{r without_subset}
+# Work with a fresh copy of grouped data
+xdata_no_subset <- xdata_grouped
+
+# Align without subset parameter (use all samples)
+pgp_no_subset <- PeakGroupsParam(minFraction = 0.4)
+xdata_no_subset <- adjustRtime(xdata_no_subset, param = pgp_no_subset)
+```
+
+```{r ggplot_no_subset}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "ggplot2 retention time adjustment plot with all samples used for alignment. Six lines color-coded by sample group (KO and WT) display RT corrections, with grey alignment peaks and feature connections showing comprehensive alignment across all samples."
+p_no_subset <- gplotAdjustedRtime(xdata_no_subset, color_by = sample_group)
+print(p_no_subset)
+```
+
+# Session Information
+
+```{r session_info}
+sessionInfo()
+```
+
+# Supplementary: Comparison with Original XCMS
+
+This supplementary section provides side-by-side comparisons between the original XCMS `plotAdjustedRtime()` function and the new xcmsVis `gplotAdjustedRtime()` implementation. These comparisons are useful for developers and users migrating from the original XCMS plotting functions.
+
+## Basic Retention Time Adjustment Plot
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS Version
+
+```{r original_plot}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "Retention time adjustment plot from XCMS showing RT deviation vs adjusted retention time. Six colored lines represent individual samples (3 KO and 3 WT), with grey circles indicating alignment peaks and dashed grey lines connecting corresponding features across samples."
+# Base R graphics version
+sample_data <- xcmsVis:::.get_sample_data(xdata)
+
+plotAdjustedRtime(
+  xdata,
+  col = as.factor(sample_data$sample_group),
+  peakGroupsCol = "grey"
+)
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 Version
+
+```{r ggplot_version_supp}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "ggplot2 version of retention time adjustment plot showing RT deviation vs adjusted retention time. Six colored lines distinguish KO and WT sample groups, with grey circles marking alignment peaks and dashed grey lines connecting corresponding features."
+# ggplot2 version
+p <- gplotAdjustedRtime(xdata, color_by = sample_group)
+print(p)
+```
+
+</div>
+</div>
+
+## With filterFile()
+
 <div class="row">
 <div class="col-md-6">
 
@@ -252,7 +331,7 @@ plotAdjustedRtime(
 
 ### xcmsVis Version
 
-```{r ggplot_filtered}
+```{r ggplot_filtered_supp}
 #| fig-height: 4
 #| fig-width: 5
 #| fig-alt: "ggplot2 retention time adjustment plot for filtered dataset. Four lines display RT corrections for samples 2-5, color-coded by KO/WT group, with grey alignment peaks and feature connections."
@@ -263,24 +342,7 @@ print(p_filtered)
 </div>
 </div>
 
-## With subset Parameter in PeakGroupsParam
-
-You can use only specific samples for alignment calculation while keeping all samples in the dataset:
-
-```{r with_subset}
-# Work with a fresh copy of grouped data
-xdata_subset <- xdata_grouped
-
-# Use subset parameter to align using only specific samples
-pgp_subset <- PeakGroupsParam(
-  minFraction = 0.4,
-  smooth = "loess",
-  span = 0.2,
-  family = "gaussian",
-  subset = c(1, 2, 3, 5)  # Exclude sample 4 from alignment calculation
-)
-xdata_subset <- adjustRtime(xdata_subset, param = pgp_subset)
-```
+## With subset Parameter
 
 <div class="row">
 <div class="col-md-6">
@@ -305,7 +367,7 @@ plotAdjustedRtime(
 
 ### xcmsVis Version
 
-```{r ggplot_subset}
+```{r ggplot_subset_supp}
 #| fig-height: 4
 #| fig-width: 5
 #| fig-alt: "ggplot2 retention time adjustment plot with subset alignment. Six colored lines represent all samples (KO and WT groups), but RT correction was calculated using only a subset (samples 1, 2, 3, 5). Grey points show alignment peaks used."
@@ -317,17 +379,6 @@ print(p_subset)
 </div>
 
 ## Without subset Parameter (All Samples)
-
-For comparison, here's alignment using all samples:
-
-```{r without_subset}
-# Work with a fresh copy of grouped data
-xdata_no_subset <- xdata_grouped
-
-# Align without subset parameter (use all samples)
-pgp_no_subset <- PeakGroupsParam(minFraction = 0.4)
-xdata_no_subset <- adjustRtime(xdata_no_subset, param = pgp_no_subset)
-```
 
 <div class="row">
 <div class="col-md-6">
@@ -352,7 +403,7 @@ plotAdjustedRtime(
 
 ### xcmsVis Version
 
-```{r ggplot_no_subset}
+```{r ggplot_no_subset_supp}
 #| fig-height: 4
 #| fig-width: 5
 #| fig-alt: "ggplot2 retention time adjustment plot with all samples used for alignment. Six lines color-coded by sample group (KO and WT) display RT corrections, with grey alignment peaks and feature connections showing comprehensive alignment across all samples."
@@ -362,12 +413,6 @@ print(p_no_subset)
 
 </div>
 </div>
-
-# Session Information
-
-```{r session_info}
-sessionInfo()
-```
 
 # References
 
