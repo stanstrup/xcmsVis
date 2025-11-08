@@ -574,6 +574,7 @@ setGeneric("gplotChromatogramsOverlay", function(object,
 #' library(faahKO)
 #' library(MsExperiment)
 #' library(BiocParallel)
+#' library(MsFeatures)
 #'
 #' # Load example data
 #' cdf_files <- dir(system.file("cdf", package = "faahKO"),
@@ -584,6 +585,9 @@ setGeneric("gplotChromatogramsOverlay", function(object,
 #' xdata <- findChromPeaks(xdata, param = CentWaveParam(), BPPARAM = SerialParam())
 #' xdata <- groupChromPeaks(xdata, param = PeakDensityParam(
 #'   sampleGroups = rep(1, 3), minFraction = 0.5))
+#'
+#' # Disable parallel processing to avoid warnings
+#' register(SerialParam())
 #' xdata <- adjustRtime(xdata, param = ObiwarpParam())
 #' xdata <- groupChromPeaks(xdata, param = PeakDensityParam(
 #'   sampleGroups = rep(1, 3), minFraction = 0.5))
@@ -599,8 +603,8 @@ setGeneric("gplotChromatogramsOverlay", function(object,
 #' }
 #'
 #' @seealso
-#' \code{\link[xcms]{plotFeatureGroups}} for the original XCMS implementation
-#' \code{\link[xcms]{groupFeatures}} for creating feature groups
+#' \code{\link[xcms:plotFeatureGroups]{xcms::plotFeatureGroups()}} for the original XCMS implementation.
+#' See \code{MsFeatures::groupFeatures()} for creating feature groups.
 #'
 #' @export
 setGeneric("gplotFeatureGroups", function(x,

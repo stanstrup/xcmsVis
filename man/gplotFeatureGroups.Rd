@@ -104,6 +104,7 @@ library(xcms)
 library(faahKO)
 library(MsExperiment)
 library(BiocParallel)
+library(MsFeatures)
 
 # Load example data
 cdf_files <- dir(system.file("cdf", package = "faahKO"),
@@ -114,6 +115,9 @@ xdata <- readMsExperiment(spectraFiles = cdf_files, BPPARAM = SerialParam())
 xdata <- findChromPeaks(xdata, param = CentWaveParam(), BPPARAM = SerialParam())
 xdata <- groupChromPeaks(xdata, param = PeakDensityParam(
   sampleGroups = rep(1, 3), minFraction = 0.5))
+
+# Disable parallel processing to avoid warnings
+register(SerialParam())
 xdata <- adjustRtime(xdata, param = ObiwarpParam())
 xdata <- groupChromPeaks(xdata, param = PeakDensityParam(
   sampleGroups = rep(1, 3), minFraction = 0.5))
@@ -130,6 +134,6 @@ gplotFeatureGroups(xdata, featureGroups = c("FG.001", "FG.002"))
 
 }
 \seealso{
-\code{\link[xcms]{plotFeatureGroups}} for the original XCMS implementation
-\code{\link[xcms]{groupFeatures}} for creating feature groups
+\code{\link[xcms:plotFeatureGroups]{xcms::plotFeatureGroups()}} for the original XCMS implementation.
+See \code{MsFeatures::groupFeatures()} for creating feature groups.
 }
