@@ -74,7 +74,7 @@ NULL
         # Add feature group name for text aesthetic (group aesthetic doesn't show in plotly)
         feature_group = rep(fg_names, times = sapply(rts, function(z) length(z) + 1)),
         # Create text aesthetic for plotly - shows Feature Group in tooltip by default
-        text = feature_group
+        text = paste0("Feature Group: ", feature_group)
     )
 
     # Calculate axis limits if not provided
