@@ -1,3 +1,18 @@
+## Changes in v0.99.15
+
+
+### Bug Fixes
+
+* properly separate line connections between feature groups ([876b706](https://github.com/stanstrup/xcmsVis/commit/876b7064130c32b1337b20ed132733665d9453dc))
+* resolve gplotFeatureGroups example errors and warnings ([dbf8106](https://github.com/stanstrup/xcmsVis/commit/dbf8106327e51fc17963ea846abd471bb73c7191))
+* sort features by m/z and limit vignette comparison plots ([7105e7f](https://github.com/stanstrup/xcmsVis/commit/7105e7f1daad02542839ff81462fc3f4998e5242))
+* use geom_path instead of geom_line to preserve m/z ordering ([f2d8f23](https://github.com/stanstrup/xcmsVis/commit/f2d8f2311279e8c919180fdfc0dc52a2faeaf62d))
+
+
+### Features
+
+* Implement gplotFeatureGroups for feature group visualization ([75f7a9e](https://github.com/stanstrup/xcmsVis/commit/75f7a9e59fc4ebbbe9937d5be00ac1749373be75))
+
 ## Changes in v0.99.14
 
 
