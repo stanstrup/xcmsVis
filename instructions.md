@@ -23,3 +23,19 @@
    - R/utils.R
 
 All tests passing: 130 tests, 0 failures
+
+
+
+
+N  checking top-level files
+   Non-standard files/directories found at top level:
+     'Rplots.pdf' 'tmp'
+     
+     
+   .create_sample_plot: no visible binding for global variable 'i'
+   .gplotChromPeakDensity_impl: no visible binding for global variable
+     'rtmed'
+   Undefined global functions or variables:
+     i rtmed
+     
+     
