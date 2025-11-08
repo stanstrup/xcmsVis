@@ -118,10 +118,8 @@ cat("Feature groups:", head(all_groups, 10), "\n")
 #> Feature groups: FG.0001 FG.0002 FG.0003 FG.0004 FG.0005 FG.0006 FG.0007 FG.0008 FG.0009 FG.0010
 
 # Plot first 5 groups
-if (length(all_groups) >= 5) {
   gplotFeatureGroups(xdata, featureGroups = all_groups[1:5]) +
     ggtitle("First 5 Feature Groups")
-}
 ```
 
 ![](feature-groups-visualization_files/figure-html/specific_groups-1.png)
@@ -131,7 +129,11 @@ if (length(all_groups) >= 5) {
 ### Custom Styling
 
 ``` r
+# Get first 5 feature groups for clearer visualization
+all_groups <- unique(featureGroups(xdata))
+
 gplotFeatureGroups(xdata,
+                   featureGroups = all_groups[1:5],
                    col = "#E31A1C",  # Red color
                    pch = 16,          # Solid circles
                    xlab = "Retention Time (sec)",
@@ -148,16 +150,19 @@ The `type` parameter controls whether to show lines, points, or both:
 ``` r
 library(patchwork)
 
+# Use subset of feature groups for clearer visualization
+fg_subset <- all_groups[1:5]
+
 # Plot with lines and points (default)
-p1 <- gplotFeatureGroups(xdata, type = "o") +
+p1 <- gplotFeatureGroups(xdata, featureGroups = fg_subset, type = "o") +
   ggtitle('type = "o" (overplot - lines + points)')
 
 # Plot with lines only
-p2 <- gplotFeatureGroups(xdata, type = "l") +
+p2 <- gplotFeatureGroups(xdata, featureGroups = fg_subset, type = "l") +
   ggtitle('type = "l" (lines only)')
 
 # Plot with points only
-p3 <- gplotFeatureGroups(xdata, type = "p", pch = 16) +
+p3 <- gplotFeatureGroups(xdata, featureGroups = fg_subset, type = "p", pch = 16) +
   ggtitle('type = "p" (points only)')
 
 # Combine plots
@@ -171,11 +176,12 @@ p1 / p2 / p3
 Use `xlim` and `ylim` to focus on specific retention time or m/z ranges:
 
 ``` r
-# Focus on features between 3000-3500 seconds RT
+# Focus on features between 3200-3300 seconds RT and specific feature groups
 gplotFeatureGroups(xdata,
-                   xlim = c(3000, 3500),
+                   featureGroups = fg_subset,
+                   xlim = c(3200, 3300),
                    ylim = c(200, 600)) +
-  ggtitle("Features in RT 3000-3500 sec, m/z 200-600")
+  ggtitle("Features in RT 3200-3300 sec, m/z 200-600")
 ```
 
 ![](feature-groups-visualization_files/figure-html/zoom-1.png)
@@ -187,7 +193,8 @@ Convert to interactive plotly plot for exploration:
 ``` r
 library(plotly)
 
-p <- gplotFeatureGroups(xdata)
+# Use subset for better interactivity
+p <- gplotFeatureGroups(xdata, featureGroups = fg_subset)
 ggplotly(p)
 ```
 
@@ -205,7 +212,9 @@ cat("SimilarRtimeParam (diffRt=10):",
     length(unique(featureGroups(xdata_rt))), "groups\n")
 #> SimilarRtimeParam (diffRt=10): 609 groups
 
-gplotFeatureGroups(xdata_rt) +
+# Show first 5 groups
+fg_rt <- unique(featureGroups(xdata_rt))
+gplotFeatureGroups(xdata_rt, featureGroups = fg_rt[1:5]) +
   ggtitle("Feature Groups: Similar Retention Time (diffRt = 10 sec)")
 ```
 
@@ -220,17 +229,15 @@ cat("AbundanceSimilarityParam (threshold=0.7):",
     length(unique(featureGroups(xdata_cor))), "groups\n")
 #> AbundanceSimilarityParam (threshold=0.7): 1834 groups
 
-gplotFeatureGroups(xdata_cor) +
+# Show first 5 groups
+fg_cor <- unique(featureGroups(xdata_cor))
+gplotFeatureGroups(xdata_cor, featureGroups = fg_cor[1:5]) +
   ggtitle("Feature Groups: Abundance Correlation (threshold = 0.7)")
 ```
 
 ![](feature-groups-visualization_files/figure-html/correlation-1.png)
 
 ## Comparison with Original XCMS
-
-The xcmsVis implementation produces equivalent visualizations to the
-original XCMS function but returns a ggplot object for further
-customization.
 
 ### Original XCMS Version
 
@@ -253,35 +260,6 @@ gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002", "FG.0003", "FG
 ![ggplot2 version of plotFeatureGroups showing the same feature groups
 with clean styling and consistent
 API.](feature-groups-visualization_files/figure-html/xcmsvis_comparison-1.png)
-
-Key advantages of the ggplot2 version:
-
-- **Customization**: Full ggplot2 theming and styling
-- **Composition**: Easy to combine with other plots using patchwork
-- **Interactivity**: Direct conversion to plotly
-- **Consistency**: Same API as other xcmsVis functions
-
-## Advanced Example: Highlighting Specific Groups
-
-``` r
-# Get feature groups with more than 2 features
-fg <- featureGroups(xdata)
-fg_table <- table(fg)
-large_groups <- names(fg_table[fg_table > 2])
-
-if (length(large_groups) > 0) {
-  cat("Feature groups with >2 features:", length(large_groups), "\n")
-
-  # Plot only these groups
-  gplotFeatureGroups(xdata, featureGroups = large_groups) +
-    ggtitle(paste("Feature Groups with >2 Features (n =", length(large_groups), ")")) +
-    theme_minimal() +
-    theme(legend.position = "bottom")
-}
-#> Feature groups with >2 features: 405
-```
-
-![](feature-groups-visualization_files/figure-html/advanced-1.png)
 
 ## Session Info
 
@@ -310,7 +288,7 @@ sessionInfo()
 #> other attached packages:
 #> [1] plotly_4.11.0       patchwork_1.3.2     ggplot2_4.0.0      
 #> [4] MsFeatures_1.18.0   MsExperiment_1.12.0 ProtGenerics_1.42.0
-#> [7] xcmsVis_0.99.14     xcms_4.8.0          BiocParallel_1.44.0
+#> [7] xcmsVis_0.99.15     xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] DBI_1.2.3                   rlang_1.1.6                
