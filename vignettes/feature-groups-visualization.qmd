@@ -1,0 +1,272 @@
+---
+title: "Visualizing Feature Groups"
+author: "xcmsVis Package"
+date: today
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: false
+    theme: cosmo
+vignette: >
+  %\VignetteIndexEntry{Visualizing Feature Groups}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup}
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 10,
+  fig.height = 6,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# Introduction
+
+This vignette demonstrates the `gplotFeatureGroups()` function for visualizing relationships between features in LC-MS data. After feature detection and correspondence, `groupFeatures()` identifies features that likely represent the same compound (e.g., isotopes, adducts, fragments). The `gplotFeatureGroups()` function visualizes these relationships by plotting features connected by lines within each group across retention time and m/z dimensions.
+
+This is a ggplot2 reimplementation of XCMS's `plotFeatureGroups()` function, enabling:
+
+- Interactive plots with plotly
+- Customizable styling
+- Publication-quality graphics
+- Consistent API with other xcmsVis functions
+
+# Setup
+
+```{r libraries}
+library(xcms)
+library(xcmsVis)
+library(MsExperiment)
+library(MsFeatures)
+library(ggplot2)
+library(BiocParallel)
+
+# Configure for serial processing
+register(SerialParam())
+```
+
+# Load and Process Data
+
+Feature grouping requires a complete XCMS workflow: peak detection, correspondence, retention time alignment, re-correspondence, and then feature grouping.
+
+```{r load_data}
+# Load example data
+cdf_files <- dir(system.file("cdf", package = "faahKO"),
+                 recursive = TRUE, full.names = TRUE)[1:3]
+
+# Create XcmsExperiment
+xdata <- readMsExperiment(spectraFiles = cdf_files)
+
+# Add sample metadata
+sampleData(xdata)$sample_name <- basename(cdf_files)
+sampleData(xdata)$sample_group <- c("KO", "KO", "WT")
+
+cat("Loaded", length(fileNames(xdata)), "files\n")
+```
+
+# Complete XCMS Workflow
+
+```{r workflow}
+# 1. Peak detection
+cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25, noise = 1000)
+xdata <- findChromPeaks(xdata, param = cwp)
+cat("Detected", nrow(chromPeaks(xdata)), "peaks\n")
+
+# 2. Peak grouping (correspondence)
+pdp <- PeakDensityParam(sampleGroups = sampleData(xdata)$sample_group,
+                        minFraction = 0.5, bw = 30)
+xdata <- groupChromPeaks(xdata, param = pdp)
+cat("Grouped into", nrow(featureDefinitions(xdata)), "features\n")
+
+# 3. Retention time alignment
+xdata <- adjustRtime(xdata, param = ObiwarpParam())
+
+# 4. Re-group after alignment
+xdata <- groupChromPeaks(xdata, param = pdp)
+cat("After alignment:", nrow(featureDefinitions(xdata)), "features\n")
+
+# 5. Group features (identify related features)
+xdata <- groupFeatures(xdata, param = SimilarRtimeParam(diffRt = 20))
+cat("Identified", length(unique(featureGroups(xdata))), "feature groups\n")
+```
+
+# Basic Feature Group Visualization
+
+The default plot shows all feature groups, with features connected by lines within each group:
+
+```{r basic_plot}
+#| fig-height: 6
+#| fig-width: 10
+gplotFeatureGroups(xdata)
+```
+
+## Interpretation
+
+- **Points**: Individual features (at their median RT and m/z across samples)
+- **Lines**: Connect features within the same group
+- **Groups**: Represent features likely from the same compound (isotopes, adducts, etc.)
+
+# Filtering to Specific Feature Groups
+
+You can visualize specific feature groups of interest:
+
+```{r specific_groups}
+#| fig-height: 6
+#| fig-width: 10
+# Get all feature group IDs
+all_groups <- unique(featureGroups(xdata))
+cat("Feature groups:", head(all_groups, 10), "\n")
+
+# Plot first 5 groups
+if (length(all_groups) >= 5) {
+  gplotFeatureGroups(xdata, featureGroups = all_groups[1:5]) +
+    ggtitle("First 5 Feature Groups")
+}
+```
+
+# Customization
+
+## Custom Styling
+
+```{r custom_style}
+#| fig-height: 6
+#| fig-width: 10
+gplotFeatureGroups(xdata,
+                   col = "#E31A1C",  # Red color
+                   pch = 16,          # Solid circles
+                   xlab = "Retention Time (sec)",
+                   ylab = "Mass-to-Charge Ratio (m/z)",
+                   main = "Custom Styled Feature Groups")
+```
+
+## Different Plot Types
+
+The `type` parameter controls whether to show lines, points, or both:
+
+```{r plot_types}
+#| fig-height: 12
+#| fig-width: 10
+library(patchwork)
+
+# Plot with lines and points (default)
+p1 <- gplotFeatureGroups(xdata, type = "o") +
+  ggtitle('type = "o" (overplot - lines + points)')
+
+# Plot with lines only
+p2 <- gplotFeatureGroups(xdata, type = "l") +
+  ggtitle('type = "l" (lines only)')
+
+# Plot with points only
+p3 <- gplotFeatureGroups(xdata, type = "p", pch = 16) +
+  ggtitle('type = "p" (points only)')
+
+# Combine plots
+p1 / p2 / p3
+```
+
+## Zooming to Specific Regions
+
+Use `xlim` and `ylim` to focus on specific retention time or m/z ranges:
+
+```{r zoom}
+#| fig-height: 6
+#| fig-width: 10
+# Focus on features between 3000-3500 seconds RT
+gplotFeatureGroups(xdata,
+                   xlim = c(3000, 3500),
+                   ylim = c(200, 600)) +
+  ggtitle("Features in RT 3000-3500 sec, m/z 200-600")
+```
+
+# Interactive Visualization
+
+Convert to interactive plotly plot for exploration:
+
+```{r interactive}
+#| eval: false
+library(plotly)
+
+p <- gplotFeatureGroups(xdata)
+ggplotly(p)
+```
+
+# Understanding Feature Groups
+
+Feature groups represent features that are likely derived from the same compound. Common grouping parameters:
+
+## Similar Retention Time
+
+```{r similar_rt}
+# Group features with similar retention times (likely isotopes/adducts)
+xdata_rt <- groupFeatures(xdata, param = SimilarRtimeParam(diffRt = 10))
+cat("SimilarRtimeParam (diffRt=10):",
+    length(unique(featureGroups(xdata_rt))), "groups\n")
+
+gplotFeatureGroups(xdata_rt) +
+  ggtitle("Feature Groups: Similar Retention Time (diffRt = 10 sec)")
+```
+
+## Abundance Correlation
+
+```{r correlation}
+# Group features with correlated abundances across samples
+xdata_cor <- groupFeatures(xdata, param = AbundanceSimilarityParam(threshold = 0.7))
+cat("AbundanceSimilarityParam (threshold=0.7):",
+    length(unique(featureGroups(xdata_cor))), "groups\n")
+
+gplotFeatureGroups(xdata_cor) +
+  ggtitle("Feature Groups: Abundance Correlation (threshold = 0.7)")
+```
+
+# Comparison with Original XCMS
+
+The xcmsVis implementation produces equivalent visualizations to the original XCMS function but returns a ggplot object for further customization:
+
+```{r comparison}
+#| eval: false
+# XCMS original (base R graphics)
+plotFeatureGroups(xdata)
+
+# xcmsVis version (ggplot2)
+gplotFeatureGroups(xdata)
+```
+
+Key advantages of the ggplot2 version:
+
+- **Customization**: Full ggplot2 theming and styling
+- **Composition**: Easy to combine with other plots using patchwork
+- **Interactivity**: Direct conversion to plotly
+- **Consistency**: Same API as other xcmsVis functions
+
+# Advanced Example: Highlighting Specific Groups
+
+```{r advanced}
+#| fig-height: 8
+#| fig-width: 10
+# Get feature groups with more than 2 features
+fg <- featureGroups(xdata)
+fg_table <- table(fg)
+large_groups <- names(fg_table[fg_table > 2])
+
+if (length(large_groups) > 0) {
+  cat("Feature groups with >2 features:", length(large_groups), "\n")
+
+  # Plot only these groups
+  gplotFeatureGroups(xdata, featureGroups = large_groups) +
+    ggtitle(paste("Feature Groups with >2 Features (n =", length(large_groups), ")")) +
+    theme_minimal() +
+    theme(legend.position = "bottom")
+}
+```
+
+# Session Info
+
+```{r session_info}
+sessionInfo()
+```

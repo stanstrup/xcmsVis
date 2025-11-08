@@ -20,7 +20,7 @@ functions with support for both legacy (`XCMSnExp`) and modern
 |---------------------------|---------------------------------|
 | **Functions Implemented** | 9 / 9 priority functions        |
 | **Object Support**        | XCMSnExp ✅ / XcmsExperiment ✅ |
-| **Vignettes**             | 4 comprehensive guides          |
+| **Vignettes**             | 5 comprehensive guides          |
 | **Test Coverage**         | 9 test files, 153 tests passing |
 | **R CMD check**           | ✅ 0 errors, 0 warnings         |
 | **GitHub Actions**        | ✅ All workflows passing        |
@@ -51,6 +51,7 @@ functions with support for both legacy (`XCMSnExp`) and modern
 | `vignettes/peak-visualization.qmd` | Peak Detection and Chromatogram Visualization | Peak detection, density heatmaps, chromatograms, peak annotations, filtering |
 | `vignettes/chromatogram-visualization.qmd` | Chromatogram and Peak Density Visualization | Chromatogram plotting, peak density, overlay plots, parameter tuning |
 | `vignettes/xcmsexperiment-visualization.qmd` | XcmsExperiment Visualization | BPI and MS map visualization, multi-level MS data, interactive plots |
+| `vignettes/feature-groups-visualization.qmd` | Feature Groups Visualization | Feature grouping, related features, isotopes/adducts, customization, interactive plots |
 
 ------------------------------------------------------------------------
 
@@ -100,7 +101,7 @@ xcmsVis/
 │   ├── setup-biocparallel.R              # Test infrastructure
 │   └── test-*.R                          # 9 test files
 │
-├── vignettes/                             # 4 vignettes
+├── vignettes/                             # 5 vignettes
 ├── dev-docs/
 │   ├── XCMS_REFERENCE.md                 # Consolidated XCMS reference
 │   ├── S4_GUIDE.md                       # Consolidated S4 guide
@@ -342,7 +343,7 @@ setGeneric("functionName", ...)
 5.  ✅ **Clean package structure** following R best practices
 6.  ✅ **GitHub Actions** CI/CD pipeline
 7.  ✅ **NSE support** for user-friendly API
-8.  ✅ **Four comprehensive vignettes** covering all major use cases
+8.  ✅ **Five comprehensive vignettes** covering all major use cases
 9.  ✅ **XcmsExperiment BPI/MS map visualization** with patchwork integration
 10. ✅ **Chromatogram overlay** and peak density visualization
 11. ✅ **Feature group visualization** with connected features across RT-m/z space

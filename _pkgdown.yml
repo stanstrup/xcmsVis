@@ -24,6 +24,8 @@ navbar:
         href: articles/peak-visualization.html
       - text: Chromatogram and Peak Density Visualization
         href: articles/chromatogram-visualization.html
+      - text: Feature Groups Visualization
+        href: articles/feature-groups-visualization.html
     news:
       text: Changelog
       href: news/index.html
