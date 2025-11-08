@@ -47,9 +47,18 @@ NULL
     # Get feature definitions for the selected groups
     fdef <- featureDefinitions(x)[featureGroups(x) %in% fts, ]
 
-    # Split rtmed and mzmed by feature group
+    # Split rtmed and mzmed by feature group, then sort by m/z within each group
+    # This ensures lines go consistently from top to bottom (or bottom to top)
     rts <- split(fdef$rtmed, fts)
     mzs <- split(fdef$mzmed, fts)
+
+    # Sort each group by m/z (descending, so lines go top to bottom)
+    sorted_data <- lapply(seq_along(rts), function(i) {
+        order_idx <- order(mzs[[i]], decreasing = TRUE)
+        list(rt = rts[[i]][order_idx], mz = mzs[[i]][order_idx])
+    })
+    rts <- lapply(sorted_data, function(x) x$rt)
+    mzs <- lapply(sorted_data, function(x) x$mz)
 
     # Create coordinate vectors with NA separators between groups
     # This is the key technique from XCMS to break line connections between groups
