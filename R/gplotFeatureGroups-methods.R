@@ -53,9 +53,11 @@ NULL
     mzs <- split(fdef$mzmed, fts)
 
     # Sort each group by m/z (descending, so lines go top to bottom)
+    # Also track the feature group names for tooltips
+    fg_names <- names(rts)
     sorted_data <- lapply(seq_along(rts), function(i) {
         order_idx <- order(mzs[[i]], decreasing = TRUE)
-        list(rt = rts[[i]][order_idx], mz = mzs[[i]][order_idx])
+        list(rt = rts[[i]][order_idx], mz = mzs[[i]][order_idx], fg = fg_names[i])
     })
     rts <- lapply(sorted_data, function(x) x$rt)
     mzs <- lapply(sorted_data, function(x) x$mz)
@@ -63,11 +65,19 @@ NULL
     # Create coordinate vectors with NA separators between groups
     # This is the key technique from XCMS to break line connections between groups
     # For ggplot2, we also need to track which group each point belongs to
+    # Also create tooltip text for plotly interactivity
     xy <- tibble(
         x = unlist(lapply(rts, function(z) c(z, NA)), use.names = FALSE),
         y = unlist(lapply(mzs, function(z) c(z, NA)), use.names = FALSE),
         # Add group ID - each feature group gets a unique ID, including the NA separator
-        group = rep(seq_along(rts), times = sapply(rts, function(z) length(z) + 1))
+        group = rep(seq_along(rts), times = sapply(rts, function(z) length(z) + 1)),
+        # Add feature group names for each point (NA for separator points)
+        feature_group = rep(fg_names, times = sapply(rts, function(z) length(z) + 1)),
+        # Create tooltip text for plotly
+        text = ifelse(is.na(x) | is.na(y), NA_character_,
+                     paste0("Feature Group: ", feature_group,
+                           "\nRetention Time: ", round(x, 2),
+                           "\nm/z: ", round(y, 4)))
     )
 
     # Calculate axis limits if not provided
@@ -83,9 +93,10 @@ NULL
     # type = "l" means lines only
     # type = "p" means points only
     # The 'group' aesthetic ensures lines only connect features within the same group
+    # The 'text' aesthetic provides informative tooltips for plotly conversion
     # NOTE: Use geom_path() instead of geom_line() because geom_line() sorts by x,
     # but we need to preserve the data order (sorted by m/z within groups)
-    p <- ggplot(xy, aes(x = x, y = y, group = group))
+    p <- ggplot(xy, aes(x = x, y = y, group = group, text = text))
 
     if (type %in% c("o", "l")) {
         p <- p + geom_path(color = col, na.rm = FALSE, ...)
