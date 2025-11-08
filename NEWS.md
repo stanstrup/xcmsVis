@@ -1,3 +1,16 @@
+## Changes in v0.99.16
+
+
+### Bug Fixes
+
+* add 'Feature Group:' label to tooltip text ([13e2f84](https://github.com/stanstrup/xcmsVis/commit/13e2f8481732cdd2803e90c364d65c788c2c1df2))
+* add text aesthetic to show Feature Group in plotly tooltips ([4b94020](https://github.com/stanstrup/xcmsVis/commit/4b94020baf9abc6dcac88ce46d7bae7d3d0c2d4b))
+
+
+### Features
+
+* improve tooltips and vignette clarity for feature groups ([bf6d4f8](https://github.com/stanstrup/xcmsVis/commit/bf6d4f852349781a2de62eb8178acb15ad6204ea))
+
 ## Changes in v0.99.15
 
 
