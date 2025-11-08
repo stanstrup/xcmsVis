@@ -72,7 +72,8 @@ Suggests:
     BiocStyle,
     BiocParallel,
     faahKO,
-    viridisLite
+    viridisLite,
+    MsFeatures
 VignetteBuilder: quarto
 SystemRequirements: quarto
 biocViews: Metabolomics, MassSpectrometry, Visualization
@@ -87,3 +88,4 @@ Collate:
     'gplotChromPeakImage-methods.R'
     'gplotChromPeaks-methods.R'
     'gplotChromatogramsOverlay-methods.R'
+    'gplotFeatureGroups-methods.R'

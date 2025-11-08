@@ -49,4 +49,5 @@ reference:
       - gplotChromPeakDensity
       - gplotChromPeakImage
       - gplotChromatogramsOverlay
+      - gplotFeatureGroups
       - ghighlightChromPeaks

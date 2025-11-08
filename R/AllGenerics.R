@@ -527,3 +527,91 @@ setGeneric("gplotChromatogramsOverlay", function(object,
                                                   transform = identity,
                                                   ...)
   standardGeneric("gplotChromatogramsOverlay"))
+
+#' ggplot2 Version of plotFeatureGroups
+#'
+#' @description
+#' Visualizes feature groups by plotting features connected across retention time
+#' and m/z dimensions. This is a ggplot2 implementation of XCMS's `plotFeatureGroups()`
+#' function, enabling modern visualization and interactive plotting capabilities.
+#'
+#' @param x An `XCMSnExp` or `XcmsExperiment` object with feature grouping results.
+#' @param xlim Numeric vector of length 2 specifying retention time range.
+#'   Default: numeric() (auto-calculate from data).
+#' @param ylim Numeric vector of length 2 specifying m/z range.
+#'   Default: numeric() (auto-calculate from data).
+#' @param xlab X-axis label (default: "retention time").
+#' @param ylab Y-axis label (default: "m/z").
+#' @param pch Point character for feature markers (default: 4).
+#' @param col Color for feature points and connecting lines (default: "#00000060").
+#' @param type Plot type (default: "o" for overplotted points and lines).
+#' @param main Plot title (default: "Feature groups").
+#' @param featureGroups Character vector of feature group identifiers to plot.
+#'   If empty (default), all feature groups are plotted.
+#' @param ... Additional arguments passed to geom functions.
+#'
+#' @return A ggplot object showing features connected by lines within each
+#'   feature group across retention time and m/z dimensions.
+#'
+#' @details
+#' The function:
+#' \itemize{
+#'   \item Extracts feature definitions and their grouping information
+#'   \item Plots each feature as a point at (rtmed, mzmed)
+#'   \item Connects features within the same group with lines
+#'   \item Feature groups are created by `groupFeatures()` which identifies
+#'         features that likely represent the same compound (isotopes, adducts, etc.)
+#' }
+#'
+#' Feature groups must be present in the object before calling this function.
+#' Run `groupFeatures()` first to create feature groups based on retention time,
+#' m/z relationships, or other criteria.
+#'
+#' @examples
+#' \donttest{
+#' library(xcmsVis)
+#' library(xcms)
+#' library(faahKO)
+#' library(MsExperiment)
+#' library(BiocParallel)
+#'
+#' # Load example data
+#' cdf_files <- dir(system.file("cdf", package = "faahKO"),
+#'                  recursive = TRUE, full.names = TRUE)[1:3]
+#'
+#' # Create XcmsExperiment and perform complete workflow
+#' xdata <- readMsExperiment(spectraFiles = cdf_files, BPPARAM = SerialParam())
+#' xdata <- findChromPeaks(xdata, param = CentWaveParam(), BPPARAM = SerialParam())
+#' xdata <- groupChromPeaks(xdata, param = PeakDensityParam(
+#'   sampleGroups = rep(1, 3), minFraction = 0.5))
+#' xdata <- adjustRtime(xdata, param = ObiwarpParam())
+#' xdata <- groupChromPeaks(xdata, param = PeakDensityParam(
+#'   sampleGroups = rep(1, 3), minFraction = 0.5))
+#'
+#' # Group features (identify related features like isotopes/adducts)
+#' xdata <- groupFeatures(xdata, param = SimilarRtimeParam())
+#'
+#' # Visualize feature groups
+#' gplotFeatureGroups(xdata)
+#'
+#' # Visualize specific feature groups only
+#' gplotFeatureGroups(xdata, featureGroups = c("FG.001", "FG.002"))
+#' }
+#'
+#' @seealso
+#' \code{\link[xcms]{plotFeatureGroups}} for the original XCMS implementation
+#' \code{\link[xcms]{groupFeatures}} for creating feature groups
+#'
+#' @export
+setGeneric("gplotFeatureGroups", function(x,
+                                          xlim = numeric(),
+                                          ylim = numeric(),
+                                          xlab = "retention time",
+                                          ylab = "m/z",
+                                          pch = 4,
+                                          col = "#00000060",
+                                          type = "o",
+                                          main = "Feature groups",
+                                          featureGroups = character(),
+                                          ...)
+  standardGeneric("gplotFeatureGroups"))

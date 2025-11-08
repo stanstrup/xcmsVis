@@ -18,10 +18,10 @@ functions with support for both legacy (`XCMSnExp`) and modern
 
 | Metric                    | Status                          |
 |---------------------------|---------------------------------|
-| **Functions Implemented** | 8 / 9 priority functions        |
+| **Functions Implemented** | 9 / 9 priority functions        |
 | **Object Support**        | XCMSnExp ✅ / XcmsExperiment ✅ |
 | **Vignettes**             | 4 comprehensive guides          |
-| **Test Coverage**         | 8 test files, all passing       |
+| **Test Coverage**         | 9 test files, 153 tests passing |
 | **R CMD check**           | ✅ 0 errors, 0 warnings         |
 | **GitHub Actions**        | ✅ All workflows passing        |
 
@@ -38,6 +38,7 @@ functions with support for both legacy (`XCMSnExp`) and modern
 | `gplotChromatogramsOverlay` | `plotChromatogramsOverlay` | Overlay multiple EICs | XChromatograms, MChromatograms | R/gplotChromatogramsOverlay-methods.R |
 | `gplot` | `plot` (S4) | Chromatogram with peaks | XChromatogram, XChromatograms, MChromatograms | R/gplot-methods.R |
 | `gplot` (XcmsExperiment) | `plot` (S4) | BPI and MS map visualization | XcmsExperiment | R/gplot-XcmsExperiment-methods.R |
+| `gplotFeatureGroups` | `plotFeatureGroups` | Feature group visualization | XCMSnExp, XcmsExperiment | R/gplotFeatureGroups-methods.R |
 | `ghighlightChromPeaks` | `highlightChromPeaks` | Peak annotation layers | XCMSnExp, XcmsExperiment | R/ghighlightChromPeaks-methods.R |
 
 ------------------------------------------------------------------------
@@ -61,7 +62,7 @@ functions with support for both legacy (`XCMSnExp`) and modern
 |----|----|----|----|
 | ~~`plotChromPeakDensity`~~ | XChromatograms, MChromatograms | ⭐⭐⭐ High | ✅ Implemented |
 | ~~`plotChromatogramsOverlay`~~ | XChromatograms, MChromatograms | ⭐⭐⭐ High | ✅ Implemented |
-| `plotFeatureGroups` | XCMSnExp, XcmsExperiment | ⭐⭐ Medium | Pending |
+| ~~`plotFeatureGroups`~~ | XCMSnExp, XcmsExperiment | ⭐⭐ Medium | ✅ Implemented |
 
 ### Lower Priority
 
@@ -84,19 +85,20 @@ modern XCMS workflow
 xcmsVis/
 ├── R/
 │   ├── AllGenerics.R                      # All generic declarations
-│   ├── gplotAdjustedRtime-methods.R      # 8 method files
+│   ├── gplotAdjustedRtime-methods.R      # 9 method files
 │   ├── gplotChromPeaks-methods.R
 │   ├── gplotChromPeakImage-methods.R
 │   ├── gplotChromPeakDensity-methods.R
 │   ├── gplotChromatogramsOverlay-methods.R
+│   ├── gplotFeatureGroups-methods.R
 │   ├── gplot-methods.R
 │   ├── gplot-XcmsExperiment-methods.R
 │   └── ghighlightChromPeaks-methods.R
 │
-├── man/                                   # Auto-generated docs (8 files)
+├── man/                                   # Auto-generated docs (9 files)
 ├── tests/testthat/
 │   ├── setup-biocparallel.R              # Test infrastructure
-│   └── test-*.R                          # 8 test files
+│   └── test-*.R                          # 9 test files
 │
 ├── vignettes/                             # 4 vignettes
 ├── dev-docs/
@@ -333,16 +335,17 @@ setGeneric("functionName", ...)
 
 ## Key Achievements
 
-1.  ✅ **8 core functions** implemented with full dual-object support
+1.  ✅ **9 core functions** implemented with full dual-object support
 2.  ✅ **Exact XCMS replication** for all visualization behaviors
 3.  ✅ **Comprehensive documentation** with side-by-side comparisons
-4.  ✅ **Full test coverage** including edge cases (8 test files, all passing)
+4.  ✅ **Full test coverage** including edge cases (9 test files, 153 tests passing)
 5.  ✅ **Clean package structure** following R best practices
 6.  ✅ **GitHub Actions** CI/CD pipeline
 7.  ✅ **NSE support** for user-friendly API
 8.  ✅ **Four comprehensive vignettes** covering all major use cases
 9.  ✅ **XcmsExperiment BPI/MS map visualization** with patchwork integration
 10. ✅ **Chromatogram overlay** and peak density visualization
+11. ✅ **Feature group visualization** with connected features across RT-m/z space
 
 ------------------------------------------------------------------------
 

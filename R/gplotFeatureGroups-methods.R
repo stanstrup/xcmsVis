@@ -1,0 +1,112 @@
+#' @include AllGenerics.R
+NULL
+
+# Shared implementation function for gplotFeatureGroups
+#'
+#' @importFrom xcms featureGroups featureDefinitions
+#' @importFrom ggplot2 ggplot aes geom_point geom_line theme_bw labs coord_cartesian
+#' @importFrom tibble tibble
+#' @importFrom methods is
+#' @keywords internal
+.gplotFeatureGroups_impl <- function(x,
+                                     xlim = numeric(),
+                                     ylim = numeric(),
+                                     xlab = "retention time",
+                                     ylab = "m/z",
+                                     pch = 4,
+                                     col = "#00000060",
+                                     type = "o",
+                                     main = "Feature groups",
+                                     featureGroups = character(),
+                                     ...) {
+
+    # Validate input object
+    if (!(inherits(x, "XCMSnExp") | inherits(x, "XcmsExperiment"))) {
+        stop("'x' is supposed to be an xcms result object", call. = FALSE)
+    }
+
+    # Check for feature groups
+    fgs <- featureGroups(x)
+    if (!length(fgs)) {
+        stop("No feature groups present. Please run 'groupFeatures' first",
+             call. = FALSE)
+    }
+
+    # Convert to factor and filter to requested groups
+    fts <- factor(fgs)
+    if (!length(featureGroups)) {
+        featureGroups <- levels(fts)
+    }
+    fts <- fts[fts %in% featureGroups]
+    fts <- droplevels(fts)
+
+    if (!length(fts)) {
+        stop("None of the specified feature groups found", call. = FALSE)
+    }
+
+    # Get feature definitions for the selected groups
+    fdef <- featureDefinitions(x)[featureGroups(x) %in% fts, ]
+
+    # Split rtmed and mzmed by feature group
+    rts <- split(fdef$rtmed, fts)
+    mzs <- split(fdef$mzmed, fts)
+
+    # Create coordinate vectors with NA separators between groups
+    # This is the key technique from XCMS to break line connections between groups
+    xy <- tibble(
+        x = unlist(lapply(rts, function(z) c(z, NA)), use.names = FALSE),
+        y = unlist(lapply(mzs, function(z) c(z, NA)), use.names = FALSE)
+    )
+
+    # Calculate axis limits if not provided
+    if (length(xlim) != 2) {
+        xlim <- range(unlist(rts, use.names = FALSE))
+    }
+    if (length(ylim) != 2) {
+        ylim <- range(unlist(mzs, use.names = FALSE))
+    }
+
+    # Create the plot
+    # type = "o" means overplotted points and lines
+    # type = "l" means lines only
+    # type = "p" means points only
+    p <- ggplot(xy, aes(x = x, y = y))
+
+    if (type %in% c("o", "l")) {
+        p <- p + geom_line(color = col, na.rm = FALSE, ...)
+    }
+    if (type %in% c("o", "p")) {
+        p <- p + geom_point(color = col, shape = pch, na.rm = TRUE, ...)
+    }
+
+    p <- p +
+        theme_bw() +
+        labs(x = xlab, y = ylab, title = main) +
+        coord_cartesian(xlim = xlim, ylim = ylim)
+
+    return(p)
+}
+
+#' @rdname gplotFeatureGroups
+#' @export
+setMethod("gplotFeatureGroups", "XCMSnExp",
+          function(x, xlim = numeric(), ylim = numeric(),
+                   xlab = "retention time", ylab = "m/z",
+                   pch = 4, col = "#00000060", type = "o",
+                   main = "Feature groups", featureGroups = character(),
+                   ...) {
+              .gplotFeatureGroups_impl(x, xlim, ylim, xlab, ylab,
+                                      pch, col, type, main, featureGroups, ...)
+          })
+
+#' @rdname gplotFeatureGroups
+#' @export
+setMethod("gplotFeatureGroups", "XcmsExperiment",
+          function(x, xlim = numeric(), ylim = numeric(),
+                   xlab = "retention time", ylab = "m/z",
+                   pch = 4, col = "#00000060", type = "o",
+                   main = "Feature groups", featureGroups = character(),
+                   ...) {
+              .gplotFeatureGroups_impl(x, xlim, ylim, xlab, ylab,
+                                      pch, col, type, main, featureGroups, ...)
+          })
