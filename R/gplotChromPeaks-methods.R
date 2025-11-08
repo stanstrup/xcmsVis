@@ -59,7 +59,7 @@ NULL
         pks_df <- as_tibble(pks)
     } else {
         # Create empty data frame with required columns if no peaks
-        pks_df <- tibble::tibble(
+        pks_df <- tibble(
             rtmin = numeric(0),
             rtmax = numeric(0),
             mzmin = numeric(0),

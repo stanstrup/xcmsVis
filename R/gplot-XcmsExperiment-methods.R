@@ -62,7 +62,7 @@ NULL
 #' \code{\link[xcms]{plot,MsExperiment,missing-method}} for the original XCMS implementation
 #'
 #' @importFrom ggplot2 ggplot aes geom_point geom_rect scale_fill_gradientn
-#'   labs theme_bw theme element_blank coord_cartesian
+#'   labs theme_bw theme element_blank coord_cartesian margin
 #' @importFrom patchwork plot_layout wrap_plots
 #' @importFrom xcms hasAdjustedRtime applyAdjustedRtime chromPeaks hasChromPeaks
 #' @importFrom MSnbase spectra filterMsLevel rtime
@@ -158,7 +158,7 @@ setMethod("gplot", "XcmsExperiment",
               } else if (length(plot_list) == 1) {
                   return(plot_list[[1]])
               } else {
-                  return(patchwork::wrap_plots(plot_list, ncol = 1))
+                  return(wrap_plots(plot_list, ncol = 1))
               }
           })
 
@@ -188,8 +188,8 @@ setMethod("gplot", "XCMSnExp",
 
     # Calculate BPI (max intensity per RT)
     bpi_df <- df %>%
-        dplyr::group_by(rt) %>%
-        dplyr::summarize(intensity = max(i, na.rm = TRUE), .groups = "drop")
+        group_by(rt) %>%
+        summarize(intensity = max(i, na.rm = TRUE), .groups = "drop")
 
     # Get intensity range for color scale
     intensity_range <- range(df$i, na.rm = TRUE)
@@ -203,45 +203,48 @@ setMethod("gplot", "XCMSnExp",
     rt_range <- range(df$rt, na.rm = TRUE)
 
     # Upper panel: BPI chromatogram
-    p_upper <- ggplot2::ggplot(bpi_df, ggplot2::aes(x = rt, y = intensity)) +
-        ggplot2::geom_point(ggplot2::aes(fill = intensity),
-                           color = col, pch = pch, size = 2) +
-        ggplot2::scale_fill_gradientn(colors = colramp(256),
-                                     limits = intensity_range,
-                                     name = "Intensity") +
-        ggplot2::labs(y = "Intensity", x = "", title = main) +
-        ggplot2::theme_bw() +
-        ggplot2::theme(axis.text.x = ggplot2::element_blank(),
-                      axis.ticks.x = ggplot2::element_blank(),
-                      legend.position = "right") +
-        ggplot2::coord_cartesian(xlim = rt_range)
+    p_upper <- ggplot(bpi_df, aes(x = rt, y = intensity)) +
+        geom_point(aes(fill = intensity),
+                   color = col, pch = pch, size = 2) +
+        scale_fill_gradientn(colors = colramp(256),
+                            limits = intensity_range,
+                            name = "Intensity") +
+        labs(y = "Intensity", x = "", title = main) +
+        theme_bw() +
+        theme(axis.title.x = element_blank(),
+              axis.text.x = element_blank(),
+              axis.ticks.x = element_blank(),
+              legend.position = "right",
+              plot.margin = margin(5, 5, 0, 5)) +
+        coord_cartesian(xlim = rt_range)
 
     # Lower panel: m/z vs RT scatter
-    p_lower <- ggplot2::ggplot(df, ggplot2::aes(x = rt, y = mz)) +
-        ggplot2::geom_point(ggplot2::aes(fill = i),
-                           color = col, pch = pch, size = 2) +
-        ggplot2::scale_fill_gradientn(colors = colramp(256),
-                                     limits = intensity_range,
-                                     name = "Intensity") +
-        ggplot2::labs(x = xlab, y = "m/z") +
-        ggplot2::theme_bw() +
-        ggplot2::theme(legend.position = "right") +
-        ggplot2::coord_cartesian(xlim = rt_range)
+    p_lower <- ggplot(df, aes(x = rt, y = mz)) +
+        geom_point(aes(fill = i),
+                   color = col, pch = pch, size = 2) +
+        scale_fill_gradientn(colors = colramp(256),
+                            limits = intensity_range,
+                            name = "Intensity") +
+        labs(x = xlab, y = "m/z") +
+        theme_bw() +
+        theme(legend.position = "right",
+              plot.margin = margin(0, 5, 5, 5)) +
+        coord_cartesian(xlim = rt_range)
 
     # Add peak rectangles if present
     if (!is.null(pks) && nrow(pks) > 0) {
         peaks_df <- as.data.frame(pks)
         p_lower <- p_lower +
-            ggplot2::geom_rect(data = peaks_df,
-                              ggplot2::aes(xmin = rtmin, xmax = rtmax,
-                                          ymin = mzmin, ymax = mzmax),
-                              fill = NA, color = peakCol,
-                              inherit.aes = FALSE)
+            geom_rect(data = peaks_df,
+                     aes(xmin = rtmin, xmax = rtmax,
+                         ymin = mzmin, ymax = mzmax),
+                     fill = NA, color = peakCol,
+                     inherit.aes = FALSE)
     }
 
     # Combine using patchwork with shared legend
     p_combined <- p_upper / p_lower +
-        patchwork::plot_layout(heights = c(1, 1), guides = "collect")
+        plot_layout(heights = c(1, 1), guides = "collect")
 
     return(p_combined)
 }

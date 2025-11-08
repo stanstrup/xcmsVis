@@ -101,7 +101,7 @@ utils::globalVariables(c(
   } else if (is(object, "XCMSnExp") | is(object, "OnDiskMSnExp")) {
     # Get sample data for joining
     sample_data <- .get_sample_data(object) %>%
-                    mutate(fileIdx = 1:dplyr::n())
+                    mutate(fileIdx = 1:n())
 
     out <- fData(object)
 

@@ -54,7 +54,7 @@ NULL
             mutate(rt_bin = cut(rt, breaks = brks, include.lowest = TRUE,
                                labels = FALSE)) %>%
             group_by(sample, rt_bin) %>%
-            summarise(count = dplyr::n(), .groups = "drop")
+            summarise(count = n(), .groups = "drop")
 
         # Create complete grid of all samples and bins
         all_combinations <- expand_grid(
