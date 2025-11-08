@@ -71,8 +71,10 @@ NULL
         `m/z` = unlist(lapply(mzs, function(z) c(z, NA)), use.names = FALSE),
         # Add group ID - each feature group gets a unique ID, including the NA separator
         group = rep(seq_along(rts), times = sapply(rts, function(z) length(z) + 1)),
-        # Add feature group name - this will show nicely in plotly tooltips
-        `Feature Group` = rep(fg_names, times = sapply(rts, function(z) length(z) + 1))
+        # Add feature group name for text aesthetic (group aesthetic doesn't show in plotly)
+        feature_group = rep(fg_names, times = sapply(rts, function(z) length(z) + 1)),
+        # Create text aesthetic for plotly - shows Feature Group in tooltip by default
+        text = feature_group
     )
 
     # Calculate axis limits if not provided
@@ -88,10 +90,11 @@ NULL
     # type = "l" means lines only
     # type = "p" means points only
     # The 'group' aesthetic ensures lines only connect features within the same group
+    # The 'text' aesthetic shows Feature Group in plotly tooltips (group aesthetic doesn't show)
     # Using backticks for column names with spaces - these show up nicely in plotly tooltips
     # NOTE: Use geom_path() instead of geom_line() because geom_line() sorts by x,
     # but we need to preserve the data order (sorted by m/z within groups)
-    p <- ggplot(xy, aes(x = `Retention Time`, y = `m/z`, group = group))
+    p <- ggplot(xy, aes(x = `Retention Time`, y = `m/z`, group = group, text = text))
 
     if (type %in% c("o", "l")) {
         p <- p + geom_path(color = col, na.rm = FALSE, ...)
