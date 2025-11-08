@@ -4,7 +4,7 @@ NULL
 # Shared implementation function for gplotFeatureGroups
 #'
 #' @importFrom xcms featureGroups featureDefinitions
-#' @importFrom ggplot2 ggplot aes geom_point geom_line theme_bw labs coord_cartesian
+#' @importFrom ggplot2 ggplot aes geom_point geom_path theme_bw labs coord_cartesian
 #' @importFrom tibble tibble
 #' @importFrom methods is
 #' @keywords internal
@@ -83,10 +83,12 @@ NULL
     # type = "l" means lines only
     # type = "p" means points only
     # The 'group' aesthetic ensures lines only connect features within the same group
+    # NOTE: Use geom_path() instead of geom_line() because geom_line() sorts by x,
+    # but we need to preserve the data order (sorted by m/z within groups)
     p <- ggplot(xy, aes(x = x, y = y, group = group))
 
     if (type %in% c("o", "l")) {
-        p <- p + geom_line(color = col, na.rm = FALSE, ...)
+        p <- p + geom_path(color = col, na.rm = FALSE, ...)
     }
     if (type %in% c("o", "p")) {
         p <- p + geom_point(color = col, shape = pch, na.rm = TRUE, ...)
