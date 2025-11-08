@@ -1,3 +1,50 @@
+## Changes in v0.99.14
+
+
+### Bug Fixes
+
+* add missing geom_vline import to gplotChromPeakDensity ([405865a](https://github.com/stanstrup/xcmsVis/commit/405865a56d505f3583e140dadd23ea6ab2f48966))
+* apply filterRt polygon fix to XChromatogram method ([92c19ac](https://github.com/stanstrup/xcmsVis/commit/92c19ac1b31669652459743f252c4751c00a02b8))
+* completely rewrite gplotChromatogramsOverlay to match XCMS behavior ([2faec0a](https://github.com/stanstrup/xcmsVis/commit/2faec0a7173d097bac3b6286bee5b9ea26ce1a7a))
+* correct layer ordering in gplotChromPeakDensity lower panel ([bec5673](https://github.com/stanstrup/xcmsVis/commit/bec5673fb03f46b303e0e99830440c6d360c6f79))
+* correct rectangle positioning in gplotChromPeakDensity ([7479e45](https://github.com/stanstrup/xcmsVis/commit/7479e45ea8e1f491b192d7578c221e73bf6d4d5a))
+* correct stacking behavior in gplotChromatogramsOverlay ([9194f79](https://github.com/stanstrup/xcmsVis/commit/9194f7968d32490ce0423d60c42d604b3f90579b))
+* **doc:** formatting that makes rstudio live view happy ([a83ef91](https://github.com/stanstrup/xcmsVis/commit/a83ef91b1abeb60befa9850974f2efde47470e09))
+* handle infinite values in gplot polygon rendering ([c8da796](https://github.com/stanstrup/xcmsVis/commit/c8da796dcb229372bbc5e01797693845b4c74da4))
+* use Bootstrap grid instead of CSS flexbox for pkgdown compatibility ([f79605d](https://github.com/stanstrup/xcmsVis/commit/f79605d041c97c556426f64919d2bd98f918bcc2))
+* use filterRt() for polygon rendering to match XCMS exactly ([1a5cb2a](https://github.com/stanstrup/xcmsVis/commit/1a5cb2ab9f54a49c2f59dbb3bce540ad54d5063f))
+* use patchwork & operator in vignette custom_ggplot example ([dce3edc](https://github.com/stanstrup/xcmsVis/commit/dce3edc4be9ef82ec7b4f6833af54a6f813f9444))
+
+
+### Features
+
+* add gplot() method for XcmsExperiment and XCMSnExp ([8fd87fb](https://github.com/stanstrup/xcmsVis/commit/8fd87fbf5e2083b63352cd7ba80f119875629103))
+* add side-by-side comparison for correspondence results ([b0113ad](https://github.com/stanstrup/xcmsVis/commit/b0113ad8ed7a9feee2ef81568a32ccdc6bdf561b))
+* implement gplotChromatogramsOverlay for XChromatograms/MChromatograms ([acfe633](https://github.com/stanstrup/xcmsVis/commit/acfe633b604504cab5986a4bbe7e57a718f82af5))
+* implement gplotChromPeakDensity for XChromatograms/MChromatograms ([beff00d](https://github.com/stanstrup/xcmsVis/commit/beff00d0957815f462fe476d38350202b010427c)), closes [hi#priority](https://github.com/hi/issues/priority)
+
+
+### BREAKING CHANGES
+
+* gplotChromatogramsOverlay now correctly overlays
+multiple EICs (rows) from the same sample (column), not multiple
+samples across the same EIC. This matches the original XCMS behavior.
+
+Changes:
+- Now loops through columns (samples) instead of rows (EICs)
+- Overlays multiple rows (different EICs) in a single plot per sample
+- Uses facet_wrap for multiple samples instead of patchwork
+- Main titles now correspond to samples (columns) not EICs (rows)
+- Updated all tests to reflect correct XCMS behavior
+
+The key difference from XCMS plot():
+- plot() overlays same EIC across different samples
+- plotChromatogramsOverlay() overlays different EICs within same sample
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
 ## Changes in v0.99.13
 
 
