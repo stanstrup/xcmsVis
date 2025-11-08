@@ -3,10 +3,11 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   chromatogram-visualization: chromatogram-visualization.html
+  feature-groups-visualization: feature-groups-visualization.html
   gplotAdjustedRtime: gplotAdjustedRtime.html
   peak-visualization: peak-visualization.html
   xcmsexperiment-visualization: xcmsexperiment-visualization.html
-last_built: 2025-11-08T10:43Z
+last_built: 2025-11-08T21:51Z
 urls:
   reference: https://stanstrup.github.io/xcmsVis/reference
   article: https://stanstrup.github.io/xcmsVis/articles

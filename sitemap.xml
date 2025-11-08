@@ -5,6 +5,7 @@
 <url><loc>https://stanstrup.github.io/xcmsVis/LICENSE.html</loc></url>
 <url><loc>https://stanstrup.github.io/xcmsVis/PROJECT_STATUS.html</loc></url>
 <url><loc>https://stanstrup.github.io/xcmsVis/articles/chromatogram-visualization.html</loc></url>
+<url><loc>https://stanstrup.github.io/xcmsVis/articles/feature-groups-visualization.html</loc></url>
 <url><loc>https://stanstrup.github.io/xcmsVis/articles/gplotAdjustedRtime.html</loc></url>
 <url><loc>https://stanstrup.github.io/xcmsVis/articles/index.html</loc></url>
 <url><loc>https://stanstrup.github.io/xcmsVis/articles/peak-visualization.html</loc></url>
@@ -28,6 +29,7 @@
 <url><loc>https://stanstrup.github.io/xcmsVis/reference/gplotChromPeakImage.html</loc></url>
 <url><loc>https://stanstrup.github.io/xcmsVis/reference/gplotChromPeaks.html</loc></url>
 <url><loc>https://stanstrup.github.io/xcmsVis/reference/gplotChromatogramsOverlay.html</loc></url>
+<url><loc>https://stanstrup.github.io/xcmsVis/reference/gplotFeatureGroups.html</loc></url>
 <url><loc>https://stanstrup.github.io/xcmsVis/reference/index.html</loc></url>
 </urlset>
 

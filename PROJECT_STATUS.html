@@ -22,6 +22,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes"><li><a class="dropdown-item" href="articles/gplotAdjustedRtime.html">gplotAdjustedRtime - Retention Time Adjustment</a></li>
     <li><a class="dropdown-item" href="articles/peak-visualization.html">Peak Visualization Functions</a></li>
     <li><a class="dropdown-item" href="articles/chromatogram-visualization.html">Chromatogram and Peak Density Visualization</a></li>
+    <li><a class="dropdown-item" href="articles/feature-groups-visualization.html">Feature Groups Visualization</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/stanstrup/xcmsVis" aria-label="GitHub repository"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -39,20 +40,20 @@
 
 <div id="xcmsvis-project-status" class="section level1">
 
-<p><strong>Last Updated</strong>: 2025-11-06</p>
+<p><strong>Last Updated</strong>: 2025-11-08</p>
 <hr><div class="section level2">
 <h2 id="quick-summary">Quick Summary<a class="anchor" aria-label="anchor" href="#quick-summary"></a></h2>
 <p><strong>xcmsVis</strong> provides ggplot2-based implementations of XCMS plotting functions with support for both legacy (<code>XCMSnExp</code>) and modern (<code>XcmsExperiment</code>) objects.</p>
 <table class="table"><thead><tr class="header"><th>Metric</th>
 <th>Status</th>
 </tr></thead><tbody><tr class="odd"><td><strong>Functions Implemented</strong></td>
-<td>7 / 9 priority functions</td>
+<td>9 / 9 priority functions</td>
 </tr><tr class="even"><td><strong>Object Support</strong></td>
 <td>XCMSnExp ✅ / XcmsExperiment ✅</td>
 </tr><tr class="odd"><td><strong>Vignettes</strong></td>
-<td>2 comprehensive guides</td>
+<td>5 comprehensive guides</td>
 </tr><tr class="even"><td><strong>Test Coverage</strong></td>
-<td>5 test files, all passing</td>
+<td>9 test files, 153 tests passing</td>
 </tr><tr class="odd"><td><strong>R CMD check</strong></td>
 <td>✅ 0 errors, 0 warnings</td>
 </tr><tr class="even"><td><strong>GitHub Actions</strong></td>
@@ -60,7 +61,7 @@
 </tr></tbody></table><hr></div>
 <div class="section level2">
 <h2 id="implemented-functions">Implemented Functions<a class="anchor" aria-label="anchor" href="#implemented-functions"></a></h2>
-<table class="table"><colgroup><col width="18%"><col width="18%"><col width="18%"><col width="24%"><col width="18%"></colgroup><thead><tr class="header"><th>Function</th>
+<table class="table"><colgroup><col width="20%"><col width="20%"><col width="20%"><col width="20%"><col width="20%"></colgroup><thead><tr class="header"><th>Function</th>
 <th>XCMS Original</th>
 <th>Purpose</th>
 <th>Objects Supported</th>
@@ -96,6 +97,18 @@
 <td>Chromatogram with peaks</td>
 <td>XChromatogram, XChromatograms, MChromatograms</td>
 <td>R/gplot-methods.R</td>
+</tr><tr class="odd"><td>
+<code>gplot</code> (XcmsExperiment)</td>
+<td>
+<code>plot</code> (S4)</td>
+<td>BPI and MS map visualization</td>
+<td>XcmsExperiment</td>
+<td>R/gplot-XcmsExperiment-methods.R</td>
+</tr><tr class="even"><td><code>gplotFeatureGroups</code></td>
+<td><code>plotFeatureGroups</code></td>
+<td>Feature group visualization</td>
+<td>XCMSnExp, XcmsExperiment</td>
+<td>R/gplotFeatureGroups-methods.R</td>
 </tr><tr class="odd"><td><code>ghighlightChromPeaks</code></td>
 <td><code>highlightChromPeaks</code></td>
 <td>Peak annotation layers</td>
@@ -104,7 +117,7 @@
 </tr></tbody></table><hr></div>
 <div class="section level2">
 <h2 id="vignettes">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes"></a></h2>
-<table class="table"><colgroup><col width="23%"><col width="23%"><col width="52%"></colgroup><thead><tr class="header"><th>File</th>
+<table class="table"><colgroup><col width="33%"><col width="33%"><col width="33%"></colgroup><thead><tr class="header"><th>File</th>
 <th>Title</th>
 <th>Topics Covered</th>
 </tr></thead><tbody><tr class="odd"><td><code>vignettes/gplotAdjustedRtime.qmd</code></td>
@@ -113,12 +126,21 @@
 </tr><tr class="even"><td><code>vignettes/peak-visualization.qmd</code></td>
 <td>Peak Detection and Chromatogram Visualization</td>
 <td>Peak detection, density heatmaps, chromatograms, peak annotations, filtering</td>
+</tr><tr class="odd"><td><code>vignettes/chromatogram-visualization.qmd</code></td>
+<td>Chromatogram and Peak Density Visualization</td>
+<td>Chromatogram plotting, peak density, overlay plots, parameter tuning</td>
+</tr><tr class="even"><td><code>vignettes/xcmsexperiment-visualization.qmd</code></td>
+<td>XcmsExperiment Visualization</td>
+<td>BPI and MS map visualization, multi-level MS data, interactive plots</td>
+</tr><tr class="odd"><td><code>vignettes/feature-groups-visualization.qmd</code></td>
+<td>Feature Groups Visualization</td>
+<td>Feature grouping, related features, isotopes/adducts, customization, interactive plots</td>
 </tr></tbody></table><hr></div>
 <div class="section level2">
 <h2 id="not-yet-implemented-candidates-for-implementation">Not Yet Implemented (Candidates for Implementation)<a class="anchor" aria-label="anchor" href="#not-yet-implemented-candidates-for-implementation"></a></h2>
 <div class="section level3">
 <h3 id="high-priority---modern-xcms-objects">High Priority - Modern XCMS Objects<a class="anchor" aria-label="anchor" href="#high-priority---modern-xcms-objects"></a></h3>
-<table class="table"><colgroup><col width="28%"><col width="28%"><col width="21%"><col width="21%"></colgroup><thead><tr class="header"><th>XCMS Function</th>
+<table class="table"><colgroup><col width="25%"><col width="25%"><col width="25%"><col width="25%"></colgroup><thead><tr class="header"><th>XCMS Function</th>
 <th>Input Objects</th>
 <th>Priority</th>
 <th>Status</th>
@@ -130,14 +152,14 @@
 <td>XChromatograms, MChromatograms</td>
 <td>⭐⭐⭐ High</td>
 <td>✅ Implemented</td>
-</tr><tr class="odd"><td><code>plotFeatureGroups</code></td>
+</tr><tr class="odd"><td><del><code>plotFeatureGroups</code></del></td>
 <td>XCMSnExp, XcmsExperiment</td>
 <td>⭐⭐ Medium</td>
-<td>Pending</td>
+<td>✅ Implemented</td>
 </tr></tbody></table></div>
 <div class="section level3">
 <h3 id="lower-priority">Lower Priority<a class="anchor" aria-label="anchor" href="#lower-priority"></a></h3>
-<table class="table"><colgroup><col width="28%"><col width="28%"><col width="21%"><col width="21%"></colgroup><thead><tr class="header"><th>XCMS Function</th>
+<table class="table"><colgroup><col width="25%"><col width="25%"><col width="25%"><col width="25%"></colgroup><thead><tr class="header"><th>XCMS Function</th>
 <th>Input Objects</th>
 <th>Priority</th>
 <th>Notes</th>
@@ -156,18 +178,22 @@
 <pre><code>xcmsVis/
 ├── R/
 │   ├── AllGenerics.R                      # All generic declarations
-│   ├── gplotAdjustedRtime-methods.R      # 5 method files
+│   ├── gplotAdjustedRtime-methods.R      # 9 method files
 │   ├── gplotChromPeaks-methods.R
 │   ├── gplotChromPeakImage-methods.R
+│   ├── gplotChromPeakDensity-methods.R
+│   ├── gplotChromatogramsOverlay-methods.R
+│   ├── gplotFeatureGroups-methods.R
 │   ├── gplot-methods.R
+│   ├── gplot-XcmsExperiment-methods.R
 │   └── ghighlightChromPeaks-methods.R
 │
-├── man/                                   # Auto-generated docs (5 files)
+├── man/                                   # Auto-generated docs (9 files)
 ├── tests/testthat/
 │   ├── setup-biocparallel.R              # Test infrastructure
-│   └── test-*.R                          # 3 test files
+│   └── test-*.R                          # 9 test files
 │
-├── vignettes/                             # 2 vignettes
+├── vignettes/                             # 5 vignettes
 ├── dev-docs/
 │   ├── XCMS_REFERENCE.md                 # Consolidated XCMS reference
 │   ├── S4_GUIDE.md                       # Consolidated S4 guide
@@ -227,8 +253,11 @@
 <h2 id="known-implementation-details">Known Implementation Details<a class="anchor" aria-label="anchor" href="#known-implementation-details"></a></h2>
 <div class="section level3">
 <h3 id="id_1-multi-sample-peak-highlighting">1. Multi-Sample Peak Highlighting<a class="anchor" aria-label="anchor" href="#id_1-multi-sample-peak-highlighting"></a></h3>
-<p><code>ghighlightChromPeaks</code> follows XCMS convention: - Takes full XCMSnExp/XcmsExperiment object - Searches <strong>all</strong> peaks across all samples - Filters by rt/mz parameters</p>
-<p><strong>Recommended</strong>: Use <code>filterFile()</code> first for single-sample visualization.</p>
+<p><code>ghighlightChromPeaks</code> follows XCMS convention:</p>
+<ul><li>Takes full XCMSnExp/XcmsExperiment object</li>
+<li>Searches <strong>all</strong> peaks across all samples</li>
+<li>Filters by rt/mz parameters</li>
+</ul><p><strong>Recommended</strong>: Use <code>filterFile()</code> first for single-sample visualization.</p>
 </div>
 <div class="section level3">
 <h3 id="id_2-polygon-peak-visualization">2. Polygon Peak Visualization<a class="anchor" aria-label="anchor" href="#id_2-polygon-peak-visualization"></a></h3>
@@ -240,7 +269,7 @@
 <h2 id="future-work">Future Work<a class="anchor" aria-label="anchor" href="#future-work"></a></h2>
 <div class="section level3">
 <h3 id="high-priority---core-visualization-functions">High Priority - Core Visualization Functions<a class="anchor" aria-label="anchor" href="#high-priority---core-visualization-functions"></a></h3>
-<table class="table"><colgroup><col width="20%"><col width="31%"><col width="26%"><col width="20%"></colgroup><thead><tr class="header"><th>Task</th>
+<table class="table"><colgroup><col width="25%"><col width="25%"><col width="25%"><col width="25%"></colgroup><thead><tr class="header"><th>Task</th>
 <th>Input Objects</th>
 <th>Description</th>
 <th>Effort</th>
@@ -437,14 +466,17 @@ Co-Authored-By: Claude &lt;noreply@anthropic.com&gt;</code></pre>
 </div>
 <div class="section level2">
 <h2 id="key-achievements">Key Achievements<a class="anchor" aria-label="anchor" href="#key-achievements"></a></h2>
-<ol style="list-style-type: decimal"><li>✅ <strong>5 core functions</strong> implemented with full dual-object support</li>
+<ol style="list-style-type: decimal"><li>✅ <strong>9 core functions</strong> implemented with full dual-object support</li>
 <li>✅ <strong>Exact XCMS replication</strong> for all visualization behaviors</li>
 <li>✅ <strong>Comprehensive documentation</strong> with side-by-side comparisons</li>
-<li>✅ <strong>Full test coverage</strong> including edge cases</li>
+<li>✅ <strong>Full test coverage</strong> including edge cases (9 test files, 153 tests passing)</li>
 <li>✅ <strong>Clean package structure</strong> following R best practices</li>
 <li>✅ <strong>GitHub Actions</strong> CI/CD pipeline</li>
 <li>✅ <strong>NSE support</strong> for user-friendly API</li>
-<li>✅ <strong>Two comprehensive vignettes</strong> with examples</li>
+<li>✅ <strong>Five comprehensive vignettes</strong> covering all major use cases</li>
+<li>✅ <strong>XcmsExperiment BPI/MS map visualization</strong> with patchwork integration</li>
+<li>✅ <strong>Chromatogram overlay</strong> and peak density visualization</li>
+<li>✅ <strong>Feature group visualization</strong> with connected features across RT-m/z space</li>
 </ol><hr></div>
 <div class="section level2">
 <h2 id="usage-examples">Usage Examples<a class="anchor" aria-label="anchor" href="#usage-examples"></a></h2>
@@ -474,7 +506,10 @@ Co-Authored-By: Claude &lt;noreply@anthropic.com&gt;</code></pre>
 <span></span>
 <span><span class="co"># Chromatogram plotting</span></span>
 <span><span class="va">chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">chromatogram</a></span><span class="op">(</span><span class="va">xdata</span>, mz <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">210</span><span class="op">)</span>, rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2500</span>, <span class="fl">3500</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/gplot.html">gplot</a></span><span class="op">(</span><span class="va">chr</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/gplot.html">gplot</a></span><span class="op">(</span><span class="va">chr</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># XcmsExperiment BPI and MS map visualization</span></span>
+<span><span class="fu"><a href="reference/gplot.html">gplot</a></span><span class="op">(</span><span class="va">xdata</span><span class="op">)</span>  <span class="co"># Creates combined BPI + MS map with patchwork</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="advanced-filtered-peak-highlighting">Advanced: Filtered Peak Highlighting<a class="anchor" aria-label="anchor" href="#advanced-filtered-peak-highlighting"></a></h3>

@@ -22,6 +22,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes"><li><a class="dropdown-item" href="articles/gplotAdjustedRtime.html">gplotAdjustedRtime - Retention Time Adjustment</a></li>
     <li><a class="dropdown-item" href="articles/peak-visualization.html">Peak Visualization Functions</a></li>
     <li><a class="dropdown-item" href="articles/chromatogram-visualization.html">Chromatogram and Peak Density Visualization</a></li>
+    <li><a class="dropdown-item" href="articles/feature-groups-visualization.html">Feature Groups Visualization</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/stanstrup/xcmsVis" aria-label="GitHub repository"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -275,9 +276,44 @@
 </ul></div>
 </div>
 <div class="section level2">
+<h2 id="finding-xcms-source-code">Finding XCMS Source Code<a class="anchor" aria-label="anchor" href="#finding-xcms-source-code"></a></h2>
+<p>When you need to find the source code for an XCMS function to implement:</p>
+<ol style="list-style-type: decimal"><li>
+<p><strong>Use the branch reference format</strong> (preferred): This always gets the latest code from the branch:</p>
+<pre><code>https://raw.githubusercontent.com/sneumann/xcms/refs/heads/devel/R/FILENAME.R</code></pre>
+<ul><li>Example: <code>https://raw.githubusercontent.com/sneumann/xcms/refs/heads/devel/R/methods-group-features.R</code>
+</li>
+<li>This automatically uses the latest code from the <code>devel</code> branch</li>
+</ul></li>
+<li>
+<p><strong>Alternative - Use specific commit hash</strong> (for reproducibility):</p>
+<pre><code>https://raw.githubusercontent.com/sneumann/xcms/COMMIT_HASH/R/FILENAME.R</code></pre>
+<ul><li>Example: <code>https://raw.githubusercontent.com/sneumann/xcms/e2f76c8512bd0244f9524c075fe240138335f3e4/R/methods-group-features.R</code>
+</li>
+<li>Use this when you need a specific version</li>
+</ul></li>
+<li>
+<p><strong>Common XCMS source files</strong>:</p>
+<ul><li>
+<code>methods-group-features.R</code> - Feature grouping methods (plotFeatureGroups)</li>
+<li>
+<code>functions-XCMSnExp.R</code> - XCMSnExp-specific functions</li>
+<li>
+<code>methods-XCMSnExp.R</code> - XCMSnExp S4 methods</li>
+<li>
+<code>functions-Chromatogram.R</code> - Chromatogram plotting functions</li>
+<li>
+<code>functions-xcmsSet.R</code> - Legacy xcmsSet functions</li>
+</ul></li>
+<li><p><strong>Use WebFetch or Task tool</strong>: Once you have the URL, use WebFetch to retrieve the source code</p></li>
+</ol></div>
+<div class="section level2">
 <h2 id="key-resources">Key Resources<a class="anchor" aria-label="anchor" href="#key-resources"></a></h2>
 <ul><li>
 <strong>XCMS Repository</strong>: <a href="https://github.com/sneumann/xcms" class="external-link uri">https://github.com/sneumann/xcms</a>
+</li>
+<li>
+<strong>XCMS Source Code</strong>: <a href="https://github.com/sneumann/xcms/tree/devel/R" class="external-link uri">https://github.com/sneumann/xcms/tree/devel/R</a>
 </li>
 <li>
 <strong>Metabonaut Tutorials</strong>: <a href="https://github.com/rformassspectrometry/Metabonaut" class="external-link uri">https://github.com/rformassspectrometry/Metabonaut</a>
@@ -310,7 +346,7 @@
 <p><strong>IMPORTANT</strong>: When implementing functions that support both XCMSnExp and XcmsExperiment:</p>
 <div class="section level3">
 <h3 id="do-use-shared-implementation-pattern">DO: Use Shared Implementation Pattern<a class="anchor" aria-label="anchor" href="#do-use-shared-implementation-pattern"></a></h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Internal implementation function (single source of truth)</span></span>
 <span><span class="va">.gplot_function_impl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="reference/dot-validate_xcms_object.html">.validate_xcms_object</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
@@ -337,7 +373,7 @@
 <div class="section level3">
 <h3 id="dont-duplicate-code-in-methods">DON’T: Duplicate Code in Methods<a class="anchor" aria-label="anchor" href="#dont-duplicate-code-in-methods"></a></h3>
 <p>❌ <strong>BAD</strong> - Duplicating identical code in both methods:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/methods/setMethod.html" class="external-link">setMethod</a></span><span class="op">(</span><span class="st">"gplot_function"</span>, <span class="st">"XCMSnExp"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># 100+ lines of code</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
@@ -391,21 +427,21 @@
 </div>
 <div class="section level3">
 <h3 id="id_1-regenerate-documentation">1. Regenerate Documentation<a class="anchor" aria-label="anchor" href="#id_1-regenerate-documentation"></a></h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Update NAMESPACE and .Rd files from roxygen2 comments</span></span>
 <span><span class="fu">roxygen2</span><span class="fu">::</span><span class="fu">roxygenize</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>This ensures all function documentation and imports are up to date.</p>
 </div>
 <div class="section level3">
 <h3 id="id_2-r-cmd-check">2. R CMD Check<a class="anchor" aria-label="anchor" href="#id_2-r-cmd-check"></a></h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Check package for errors, warnings, and notes</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Fix all errors and warnings before committing. Address notes if relevant.</p>
 </div>
 <div class="section level3">
 <h3 id="id_3-build-pkgdown-site">3. Build pkgdown Site<a class="anchor" aria-label="anchor" href="#id_3-build-pkgdown-site"></a></h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load all package code</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">load_all</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -416,7 +452,7 @@
 </div>
 <div class="section level3">
 <h3 id="id_4-reinstall-package">4. Reinstall Package<a class="anchor" aria-label="anchor" href="#id_4-reinstall-package"></a></h3>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Reinstall the package to ensure all changes are properly loaded</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>This ensures the package is fully functional after your changes.</p>
@@ -424,12 +460,12 @@
 <div class="section level3">
 <h3 id="id_5-commit-changes">5. Commit Changes<a class="anchor" aria-label="anchor" href="#id_5-commit-changes"></a></h3>
 <p>After all checks pass, commit your changes using semantic-release format: - Use conventional commit messages (feat:, fix:, docs:, etc.) - Always include co-authorship footer when using Claude Code - Example:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">git</span> add <span class="at">-A</span></span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"feat: add new visualization function</span></span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="st">🤖 Generated with [Claude Code](https://claude.com/claude-code)</span></span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="st">Co-Authored-By: Claude &lt;noreply@anthropic.com&gt;"</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">git</span> add <span class="at">-A</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"feat: add new visualization function</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="st">🤖 Generated with [Claude Code](https://claude.com/claude-code)</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="st">Co-Authored-By: Claude &lt;noreply@anthropic.com&gt;"</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

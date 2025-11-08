@@ -3,41 +3,47 @@
 **See `CLAUDE.md` for development workflow, conventions, and
 resources.**
 
-## Completed Tasks
+## Fixed Issues (2025-11-08)
 
-1.  ✅ **Upper plot margin removal** - Added
-    `theme(axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank())`
-    to upper panel in gplot-XcmsExperiment-methods.R:214-216
+All issues from the previous R CMD check have been resolved:
 
-2.  ✅ **Removed patchwork_integration block** - Removed broken
-    demonstration that tried to access non-existent chromPeaks from
-    xcmsexperiment-visualization.qmd
+### 1. ✅ Fixed Rd cross-reference warning
 
-3.  ✅ **Fixed ms_levels block** - Replaced non-functional example with
-    MTBLS8735 data that has MS2 in xcmsexperiment-visualization.qmd
+- **Issue**:
+  `Missing link(s) in Rd file 'gplotFeatureGroups.Rd': '[xcms]{groupFeatures}'`
+- **Solution**: Updated seealso section to use correct link format and
+  reference
+  [`MsFeatures::groupFeatures()`](https://rdrr.io/pkg/MsFeatures/man/groupFeatures.html)
+- **Files modified**: `R/AllGenerics.R`
 
-4.  ✅ **Reorganized all vignettes** - Moved all XCMS comparisons to
-    “Supplementary: Comparison with Original XCMS” section at the end
-    of:
+### 2. ✅ Fixed ‘package:stats’ warnings during adjustRtime()
 
-    - gplotAdjustedRtime.qmd
-    - peak-visualization.qmd
-    - chromatogram-visualization.qmd
-    - xcmsexperiment-visualization.qmd
+- **Issue**:
+  `Warning in serialize(data, node$con): 'package:stats' may not be available when loading`
+- **Solution**: Added `register(SerialParam())` before
+  [`adjustRtime()`](https://rdrr.io/pkg/xcms/man/adjustRtime.html) call
+  to disable parallel processing
+- **Files modified**: `R/AllGenerics.R`
 
-5.  ✅ **Code cleanup** - Removed unnecessary `::` notation from all R
-    files:
+### 3. ✅ Fixed “could not find function ‘groupFeatures’” error
 
-    - R/gplot-XcmsExperiment-methods.R
-    - R/gplotChromPeaks-methods.R
-    - R/gplotChromPeakImage-methods.R
-    - R/utils.R
+- **Issue**:
+  `Error in groupFeatures(xdata, param = SimilarRtimeParam()): could not find function "groupFeatures"`
+- **Solution**:
+  - Added
+    [`library(MsFeatures)`](https://github.com/RforMassSpectrometry/MsFeatures)
+    to example code (groupFeatures is from MsFeatures, not xcms)
+  - MsFeatures was already in Suggests section of DESCRIPTION
+- **Files modified**: `R/AllGenerics.R`
 
-All tests passing: 130 tests, 0 failures
+### Verification
 
-N checking top-level files Non-standard files/directories found at top
-level: ‘Rplots.pdf’ ‘tmp’
+Example code now runs successfully without errors or warnings: - ✅ No
+“could not find function ‘groupFeatures’” error - ✅ No ‘package:stats’
+warnings - ✅ Plot created successfully - ✅ Documentation regenerated
+with roxygen2
 
-.create_sample_plot: no visible binding for global variable ‘i’
-.gplotChromPeakDensity_impl: no visible binding for global variable
-‘rtmed’ Undefined global functions or variables: i rtmed
+## Next Steps
+
+Run full R CMD check when WSL file system issues are resolved, or test
+on a different system.

@@ -22,6 +22,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes"><li><a class="dropdown-item" href="articles/gplotAdjustedRtime.html">gplotAdjustedRtime - Retention Time Adjustment</a></li>
     <li><a class="dropdown-item" href="articles/peak-visualization.html">Peak Visualization Functions</a></li>
     <li><a class="dropdown-item" href="articles/chromatogram-visualization.html">Chromatogram and Peak Density Visualization</a></li>
+    <li><a class="dropdown-item" href="articles/feature-groups-visualization.html">Feature Groups Visualization</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/stanstrup/xcmsVis" aria-label="GitHub repository"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -41,31 +42,58 @@
 
 <p><strong>See <code>CLAUDE.md</code> for development workflow, conventions, and resources.</strong></p>
 <div class="section level2">
-<h2 id="completed-tasks">Completed Tasks<a class="anchor" aria-label="anchor" href="#completed-tasks"></a></h2>
-<ol style="list-style-type: decimal"><li><p>✅ <strong>Upper plot margin removal</strong> - Added <code>theme(axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank())</code> to upper panel in gplot-XcmsExperiment-methods.R:214-216</p></li>
-<li><p>✅ <strong>Removed patchwork_integration block</strong> - Removed broken demonstration that tried to access non-existent chromPeaks from xcmsexperiment-visualization.qmd</p></li>
-<li><p>✅ <strong>Fixed ms_levels block</strong> - Replaced non-functional example with MTBLS8735 data that has MS2 in xcmsexperiment-visualization.qmd</p></li>
+<h2 id="fixed-issues-2025-11-08">Fixed Issues (2025-11-08)<a class="anchor" aria-label="anchor" href="#fixed-issues-2025-11-08"></a></h2>
+<p>All issues from the previous R CMD check have been resolved:</p>
+<div class="section level3">
+<h3 id="id_1--fixed-rd-cross-reference-warning">1. ✅ Fixed Rd cross-reference warning<a class="anchor" aria-label="anchor" href="#id_1--fixed-rd-cross-reference-warning"></a></h3>
+<ul><li>
+<strong>Issue</strong>: <code>Missing link(s) in Rd file 'gplotFeatureGroups.Rd': '[xcms]{groupFeatures}'</code>
+</li>
 <li>
-<p>✅ <strong>Reorganized all vignettes</strong> - Moved all XCMS comparisons to “Supplementary: Comparison with Original XCMS” section at the end of:</p>
-<ul><li>gplotAdjustedRtime.qmd</li>
-<li>peak-visualization.qmd</li>
-<li>chromatogram-visualization.qmd</li>
-<li>xcmsexperiment-visualization.qmd</li>
+<strong>Solution</strong>: Updated seealso section to use correct link format and reference <code><a href="https://rdrr.io/pkg/MsFeatures/man/groupFeatures.html" class="external-link">MsFeatures::groupFeatures()</a></code>
+</li>
+<li>
+<strong>Files modified</strong>: <code>R/AllGenerics.R</code>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="id_2--fixed-packagestats-warnings-during-adjustrtime">2. ✅ Fixed ‘package:stats’ warnings during adjustRtime()<a class="anchor" aria-label="anchor" href="#id_2--fixed-packagestats-warnings-during-adjustrtime"></a></h3>
+<ul><li>
+<strong>Issue</strong>: <code>Warning in serialize(data, node$con): 'package:stats' may not be available when loading</code>
+</li>
+<li>
+<strong>Solution</strong>: Added <code>register(SerialParam())</code> before <code><a href="https://rdrr.io/pkg/xcms/man/adjustRtime.html" class="external-link">adjustRtime()</a></code> call to disable parallel processing</li>
+<li>
+<strong>Files modified</strong>: <code>R/AllGenerics.R</code>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="id_3--fixed-could-not-find-function-groupfeatures-error">3. ✅ Fixed “could not find function ‘groupFeatures’” error<a class="anchor" aria-label="anchor" href="#id_3--fixed-could-not-find-function-groupfeatures-error"></a></h3>
+<ul><li>
+<strong>Issue</strong>: <code>Error in groupFeatures(xdata, param = SimilarRtimeParam()): could not find function "groupFeatures"</code>
+</li>
+<li>
+<strong>Solution</strong>:
+<ul><li>Added <code><a href="https://github.com/RforMassSpectrometry/MsFeatures" class="external-link">library(MsFeatures)</a></code> to example code (groupFeatures is from MsFeatures, not xcms)</li>
+<li>MsFeatures was already in Suggests section of DESCRIPTION</li>
 </ul></li>
 <li>
-<p>✅ <strong>Code cleanup</strong> - Removed unnecessary <code>::</code> notation from all R files:</p>
-<ul><li>R/gplot-XcmsExperiment-methods.R</li>
-<li>R/gplotChromPeaks-methods.R</li>
-<li>R/gplotChromPeakImage-methods.R</li>
-<li>R/utils.R</li>
-</ul></li>
-</ol><p>All tests passing: 130 tests, 0 failures</p>
-<p>N checking top-level files Non-standard files/directories found at top level: ‘Rplots.pdf’ ‘tmp’</p>
-<p>.create_sample_plot: no visible binding for global variable ‘i’ .gplotChromPeakDensity_impl: no visible binding for global variable ‘rtmed’ Undefined global functions or variables: i rtmed</p>
+<strong>Files modified</strong>: <code>R/AllGenerics.R</code>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="verification">Verification<a class="anchor" aria-label="anchor" href="#verification"></a></h3>
+<p>Example code now runs successfully without errors or warnings: - ✅ No “could not find function ‘groupFeatures’” error - ✅ No ‘package:stats’ warnings - ✅ Plot created successfully - ✅ Documentation regenerated with roxygen2</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="next-steps">Next Steps<a class="anchor" aria-label="anchor" href="#next-steps"></a></h2>
+<p>Run full R CMD check when WSL file system issues are resolved, or test on a different system.</p>
 </div>
 </div>
 
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

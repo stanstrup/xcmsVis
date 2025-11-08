@@ -283,9 +283,43 @@ coordinate transformations
 - Test with empty/zero-length data
 - Compare visual output with XCMS when possible
 
+## Finding XCMS Source Code
+
+When you need to find the source code for an XCMS function to implement:
+
+1.  **Use the branch reference format** (preferred): This always gets
+    the latest code from the branch:
+
+        https://raw.githubusercontent.com/sneumann/xcms/refs/heads/devel/R/FILENAME.R
+
+    - Example:
+      `https://raw.githubusercontent.com/sneumann/xcms/refs/heads/devel/R/methods-group-features.R`
+    - This automatically uses the latest code from the `devel` branch
+
+2.  **Alternative - Use specific commit hash** (for reproducibility):
+
+        https://raw.githubusercontent.com/sneumann/xcms/COMMIT_HASH/R/FILENAME.R
+
+    - Example:
+      `https://raw.githubusercontent.com/sneumann/xcms/e2f76c8512bd0244f9524c075fe240138335f3e4/R/methods-group-features.R`
+    - Use this when you need a specific version
+
+3.  **Common XCMS source files**:
+
+    - `methods-group-features.R` - Feature grouping methods
+      (plotFeatureGroups)
+    - `functions-XCMSnExp.R` - XCMSnExp-specific functions
+    - `methods-XCMSnExp.R` - XCMSnExp S4 methods
+    - `functions-Chromatogram.R` - Chromatogram plotting functions
+    - `functions-xcmsSet.R` - Legacy xcmsSet functions
+
+4.  **Use WebFetch or Task tool**: Once you have the URL, use WebFetch
+    to retrieve the source code
+
 ## Key Resources
 
 - **XCMS Repository**: <https://github.com/sneumann/xcms>
+- **XCMS Source Code**: <https://github.com/sneumann/xcms/tree/devel/R>
 - **Metabonaut Tutorials**:
   <https://github.com/rformassspectrometry/Metabonaut>
 - **Original Discussion**: <https://github.com/sneumann/xcms/issues/551>

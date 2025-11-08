@@ -4,6 +4,8 @@
 
 - [Visualizing Chromatograms and Peak
   Density](https://stanstrup.github.io/xcmsVis/articles/chromatogram-visualization.md):
+- [Visualizing Feature
+  Groups](https://stanstrup.github.io/xcmsVis/articles/feature-groups-visualization.md):
 - [Visualizing Retention Time Adjustment with
   gplotAdjustedRtime](https://stanstrup.github.io/xcmsVis/articles/gplotAdjustedRtime.md):
 - [Visualizing Chromatographic

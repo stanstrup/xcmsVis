@@ -1,6 +1,6 @@
 # xcmsVis Project Status
 
-**Last Updated**: 2025-11-06
+**Last Updated**: 2025-11-08
 
 ------------------------------------------------------------------------
 
@@ -12,10 +12,10 @@ functions with support for both legacy (`XCMSnExp`) and modern
 
 | Metric                    | Status                          |
 |---------------------------|---------------------------------|
-| **Functions Implemented** | 7 / 9 priority functions        |
+| **Functions Implemented** | 9 / 9 priority functions        |
 | **Object Support**        | XCMSnExp ✅ / XcmsExperiment ✅ |
-| **Vignettes**             | 2 comprehensive guides          |
-| **Test Coverage**         | 5 test files, all passing       |
+| **Vignettes**             | 5 comprehensive guides          |
+| **Test Coverage**         | 9 test files, 153 tests passing |
 | **R CMD check**           | ✅ 0 errors, 0 warnings         |
 | **GitHub Actions**        | ✅ All workflows passing        |
 
@@ -31,16 +31,21 @@ functions with support for both legacy (`XCMSnExp`) and modern
 | `gplotChromPeakDensity`     | `plotChromPeakDensity`     | Peak density for parameter tuning | XChromatograms, MChromatograms                | R/gplotChromPeakDensity-methods.R     |
 | `gplotChromatogramsOverlay` | `plotChromatogramsOverlay` | Overlay multiple EICs             | XChromatograms, MChromatograms                | R/gplotChromatogramsOverlay-methods.R |
 | `gplot`                     | `plot` (S4)                | Chromatogram with peaks           | XChromatogram, XChromatograms, MChromatograms | R/gplot-methods.R                     |
+| `gplot` (XcmsExperiment)    | `plot` (S4)                | BPI and MS map visualization      | XcmsExperiment                                | R/gplot-XcmsExperiment-methods.R      |
+| `gplotFeatureGroups`        | `plotFeatureGroups`        | Feature group visualization       | XCMSnExp, XcmsExperiment                      | R/gplotFeatureGroups-methods.R        |
 | `ghighlightChromPeaks`      | `highlightChromPeaks`      | Peak annotation layers            | XCMSnExp, XcmsExperiment                      | R/ghighlightChromPeaks-methods.R      |
 
 ------------------------------------------------------------------------
 
 ## Vignettes
 
-| File                               | Title                                         | Topics Covered                                                               |
-|------------------------------------|-----------------------------------------------|------------------------------------------------------------------------------|
-| `vignettes/gplotAdjustedRtime.qmd` | Retention Time Alignment Visualization        | RT alignment, sample grouping, customization, NSE usage                      |
-| `vignettes/peak-visualization.qmd` | Peak Detection and Chromatogram Visualization | Peak detection, density heatmaps, chromatograms, peak annotations, filtering |
+| File                                         | Title                                         | Topics Covered                                                                         |
+|----------------------------------------------|-----------------------------------------------|----------------------------------------------------------------------------------------|
+| `vignettes/gplotAdjustedRtime.qmd`           | Retention Time Alignment Visualization        | RT alignment, sample grouping, customization, NSE usage                                |
+| `vignettes/peak-visualization.qmd`           | Peak Detection and Chromatogram Visualization | Peak detection, density heatmaps, chromatograms, peak annotations, filtering           |
+| `vignettes/chromatogram-visualization.qmd`   | Chromatogram and Peak Density Visualization   | Chromatogram plotting, peak density, overlay plots, parameter tuning                   |
+| `vignettes/xcmsexperiment-visualization.qmd` | XcmsExperiment Visualization                  | BPI and MS map visualization, multi-level MS data, interactive plots                   |
+| `vignettes/feature-groups-visualization.qmd` | Feature Groups Visualization                  | Feature grouping, related features, isotopes/adducts, customization, interactive plots |
 
 ------------------------------------------------------------------------
 
@@ -52,7 +57,7 @@ functions with support for both legacy (`XCMSnExp`) and modern
 |--------------------------------|--------------------------------|-------------|----------------|
 | ~~`plotChromPeakDensity`~~     | XChromatograms, MChromatograms | ⭐⭐⭐ High | ✅ Implemented |
 | ~~`plotChromatogramsOverlay`~~ | XChromatograms, MChromatograms | ⭐⭐⭐ High | ✅ Implemented |
-| `plotFeatureGroups`            | XCMSnExp, XcmsExperiment       | ⭐⭐ Medium | Pending        |
+| ~~`plotFeatureGroups`~~        | XCMSnExp, XcmsExperiment       | ⭐⭐ Medium | ✅ Implemented |
 
 ### Lower Priority
 
@@ -74,18 +79,22 @@ modern XCMS workflow
     xcmsVis/
     ├── R/
     │   ├── AllGenerics.R                      # All generic declarations
-    │   ├── gplotAdjustedRtime-methods.R      # 5 method files
+    │   ├── gplotAdjustedRtime-methods.R      # 9 method files
     │   ├── gplotChromPeaks-methods.R
     │   ├── gplotChromPeakImage-methods.R
+    │   ├── gplotChromPeakDensity-methods.R
+    │   ├── gplotChromatogramsOverlay-methods.R
+    │   ├── gplotFeatureGroups-methods.R
     │   ├── gplot-methods.R
+    │   ├── gplot-XcmsExperiment-methods.R
     │   └── ghighlightChromPeaks-methods.R
     │
-    ├── man/                                   # Auto-generated docs (5 files)
+    ├── man/                                   # Auto-generated docs (9 files)
     ├── tests/testthat/
     │   ├── setup-biocparallel.R              # Test infrastructure
-    │   └── test-*.R                          # 3 test files
+    │   └── test-*.R                          # 9 test files
     │
-    ├── vignettes/                             # 2 vignettes
+    ├── vignettes/                             # 5 vignettes
     ├── dev-docs/
     │   ├── XCMS_REFERENCE.md                 # Consolidated XCMS reference
     │   ├── S4_GUIDE.md                       # Consolidated S4 guide
@@ -152,9 +161,11 @@ check**: Tests on multiple R versions and platforms
 
 ### 1. Multi-Sample Peak Highlighting
 
-`ghighlightChromPeaks` follows XCMS convention: - Takes full
-XCMSnExp/XcmsExperiment object - Searches **all** peaks across all
-samples - Filters by rt/mz parameters
+`ghighlightChromPeaks` follows XCMS convention:
+
+- Takes full XCMSnExp/XcmsExperiment object
+- Searches **all** peaks across all samples
+- Filters by rt/mz parameters
 
 **Recommended**: Use `filterFile()` first for single-sample
 visualization.
@@ -321,14 +332,20 @@ setGeneric("functionName", ...)
 
 ## Key Achievements
 
-1.  ✅ **5 core functions** implemented with full dual-object support
+1.  ✅ **9 core functions** implemented with full dual-object support
 2.  ✅ **Exact XCMS replication** for all visualization behaviors
 3.  ✅ **Comprehensive documentation** with side-by-side comparisons
-4.  ✅ **Full test coverage** including edge cases
+4.  ✅ **Full test coverage** including edge cases (9 test files, 153
+    tests passing)
 5.  ✅ **Clean package structure** following R best practices
 6.  ✅ **GitHub Actions** CI/CD pipeline
 7.  ✅ **NSE support** for user-friendly API
-8.  ✅ **Two comprehensive vignettes** with examples
+8.  ✅ **Five comprehensive vignettes** covering all major use cases
+9.  ✅ **XcmsExperiment BPI/MS map visualization** with patchwork
+    integration
+10. ✅ **Chromatogram overlay** and peak density visualization
+11. ✅ **Feature group visualization** with connected features across
+    RT-m/z space
 
 ------------------------------------------------------------------------
 
@@ -361,6 +378,9 @@ gplotAdjustedRtime(xdata, color_by = sample_name)
 # Chromatogram plotting
 chr <- chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
 gplot(chr[1, 1])
+
+# XcmsExperiment BPI and MS map visualization
+gplot(xdata)  # Creates combined BPI + MS map with patchwork
 ```
 
 ### Advanced: Filtered Peak Highlighting
