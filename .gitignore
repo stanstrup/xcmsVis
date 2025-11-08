@@ -16,6 +16,7 @@ docs/
 # Vignettes
 vignettes/*_files/
 vignettes/*.html
+vignettes/*.rmarkdown
 vignettes/_quarto.yaml
 vignettes/.quarto/
 vignettes/.gitignore
