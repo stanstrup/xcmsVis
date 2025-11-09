@@ -2,43 +2,9 @@
 
 **See `CLAUDE.md` for development workflow, conventions, and resources.**
 
-N  checking for hidden files and directories ... 
-   Found the following hidden files and directories:
-     xcms-reference/.BBSoptions
-     xcms-reference/.Rbuildignore
-     xcms-reference/.editorconfig
-     xcms-reference/.github
-     
-     
-N  checking top-level files ...
-   Non-standard files/directories found at top level:
-     'Rplots.pdf' 'xcms-reference'
-     
-N  checking package subdirectories (1.9s)
-   Found the following CITATION file in a non-standard place:
-     xcms-reference/inst/CITATION
-   Most likely 'inst/CITATION' should be used instead.
-   
-   
-   .gplotFeatureGroups_impl: no visible binding for global variable
-     'feature_group'
-   .gplotFeatureGroups_impl: no visible binding for global variable
-     'Retention Time'
-   .gplotFeatureGroups_impl: no visible binding for global variable 'm/z'
-   .gplotFeatureGroups_impl: no visible binding for global variable
-     'group'
-   Undefined global functions or variables:
-     Retention Time feature_group group m/z
-     
-from the example:
-   > gplotFeatureGroups(xdata, featureGroups = c("FG.001", "FG.002"))
-   Error: None of the specified feature groups found
-   
-   I think it needs to be 0001 and not 001.
-   
-   
-❯ checking top-level files ... NOTE
-  Non-standard files/directories found at top level:
-    'Rplots.pdf' 'xcms-reference'
-    
-    
+
+1) Add to your instructions to use the local copy of XCMS's source code in xcms-reference. Do not try to get it only.
+2) Go through all vignettes and ensure a similar structure.
+3) Again, no need to explain why ggplot2 is better in any vignette. that is done on the front page.
+4) Many of the functions in this package use parameters like main and xlab and ylab. These parameters can be set with ggtitle and labs instead afterwards. Remove these parameters and instead show in the vignette how to set them with the ggplot2 functions. Make especially sure that the comparison to XCMS gives the same plot. Keep current defaults for those parameters you remove.
+5) As in point 4 give suggestions for other parameters that can be handle outside the functions more elegantly.

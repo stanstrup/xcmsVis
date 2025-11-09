@@ -257,13 +257,6 @@ gplot(lama_result, index = 1)
 </div>
 </div>
 
-**Key advantages of ggplot2 version:**
-- Can be easily customized with ggplot2 syntax
-- Seamlessly converts to interactive plots with plotly
-- Better integration with modern R visualization workflows
-- Consistent styling with other xcmsVis functions
-- Better handling of plot annotations and layering
-
 # Comparing Alignment Methods
 
 You can compare LamaParama with other alignment methods like Obiwarp or PeakGroups:

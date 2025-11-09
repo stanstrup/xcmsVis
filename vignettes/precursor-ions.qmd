@@ -258,13 +258,6 @@ gplotPrecursorIons(pest_dda)
 </div>
 </div>
 
-**Key advantages of ggplot2 version:**
-- Can be easily customized with ggplot2 syntax
-- Seamlessly converts to interactive plots with plotly
-- Better integration with modern R visualization workflows
-- Consistent styling with other xcmsVis functions
-- Better handling of plot annotations and layering
-
 # Use Cases
 
 ## 1. Method Development
