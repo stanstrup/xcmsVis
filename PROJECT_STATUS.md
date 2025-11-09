@@ -16,15 +16,15 @@ editor_options:
 functions with support for both legacy (`XCMSnExp`) and modern
 (`XcmsExperiment`) objects.
 
-| Metric                    | Status                                |
-|---------------------------|---------------------------------------|
-| **Core Functions**        | 9 / 9 modern XCMS functions complete  |
-| **Object Support**        | XCMSnExp ✅ / XcmsExperiment ✅       |
-| **Vignettes**             | 5 comprehensive guides                |
-| **Test Coverage**         | 9 test files, all tests passing       |
-| **R CMD check**           | ✅ 0 errors, 0 warnings               |
-| **GitHub Actions**        | ✅ All workflows passing              |
-| **Remaining XCMS plots**  | 2 low-priority MS/MS-specific         |
+| Metric                   | Status                               |
+|--------------------------|--------------------------------------|
+| **Core Functions**       | 9 / 9 modern XCMS functions complete |
+| **Object Support**       | XCMSnExp ✅ / XcmsExperiment ✅      |
+| **Vignettes**            | 5 comprehensive guides               |
+| **Test Coverage**        | 9 test files, all tests passing      |
+| **R CMD check**          | ✅ 0 errors, 0 warnings              |
+| **GitHub Actions**       | ✅ All workflows passing             |
+| **Remaining XCMS plots** | 2 low-priority MS/MS-specific        |
 
 ------------------------------------------------------------------------
 
@@ -58,18 +58,26 @@ functions with support for both legacy (`XCMSnExp`) and modern
 
 ## Additional XCMS Plotting Functions
 
+**Complete analysis based on comprehensive search of XCMS source code (66 R files reviewed)**
+
 ### Potential Future Implementations
 
 | XCMS Function | Input Objects | Priority | Notes |
 |----|----|----|----|
 | `plotPrecursorIons` | MsExperiment | ⭐ Low | MS/MS-specific precursor ion visualization |
-| `plotMsData` | Various | ⭐ Low | General MS data plotting, may overlap with existing functions |
 
-### Not Implementing - Legacy xcmsRaw/xcmsSet Objects
+### Deprecated/Internal Functions - Not Implementing
 
-The following 15 functions are for legacy xcmsRaw/xcmsSet objects and are not planned for implementation as the focus is on modern XCMSnExp and XcmsExperiment workflows:
+| XCMS Function | Status | Reason |
+|----|----|----|
+| `plotMsData` | Deprecated | XCMS deprecated in favor of `plot(x, type = "XIC")` |
+| `plotSpecWindow` | Internal | xcmsSet helper function, not exported |
 
-`plotQC`, `plotrt`, `plotTIC`, `plotRaw`, `plotEIC`, `plotChrom`, `plotScan`, `plotSpec`, `plotPeaks`, `plotSurf`, `image`, `levelplot`, `plot.xcmsEIC`, `plotTree`, `plotMsData` (legacy versions)
+### Not Implementing - Legacy xcmsRaw/xcmsSet/xcmsFragments Objects
+
+The following 12 functions are for legacy objects and are not planned for implementation as the focus is on modern XCMSnExp and XcmsExperiment workflows:
+
+`plotChrom`, `plotEIC`, `plotPeaks`, `plotRaw`, `plotScan`, `plotSpec`, `plotSurf`, `plotTIC` (xcmsRaw); `plotrt`, `plotQC` (xcmsSet); `plotTree` (xcmsFragments); `plot` (LamaParama)
 
 ------------------------------------------------------------------------
 
@@ -186,7 +194,7 @@ See: `R/ghighlightChromPeaks-methods.R` lines 95-150
 ### Potential Enhancements
 
 | Category | Task | Description | Priority | Effort |
-|----------|------|-------------|----------|--------|
+|----|----|----|----|----|
 | **Functions** | Additional XCMS plots | `plotPrecursorIons`, `plotMsData` | Low | Medium |
 | **Testing** | Visual regression tests | Using vdiffr package for plot comparison | Medium | Low |
 | **Documentation** | Interactive plotting guide | Best practices for plotly integration | Medium | Low |
@@ -199,7 +207,7 @@ See: `R/ghighlightChromPeaks-methods.R` lines 95-150
 ### Not Planned
 
 | Task | Reason |
-|------|--------|
+|----|----|
 | Shiny apps | Out of scope; users can build with existing functions |
 | Ion mobility support | Waiting for XCMS implementation |
 | Legacy function ports | Focus is on modern XCMSnExp/XcmsExperiment workflow |

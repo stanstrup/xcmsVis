@@ -32,3 +32,6 @@ package-lock.json
 # R plots and temporary files
 Rplots.pdf
 tmp/
+
+# XCMS reference repository
+xcms-reference/
