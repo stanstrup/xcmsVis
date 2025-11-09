@@ -129,7 +129,7 @@ xdata <- groupFeatures(xdata, param = SimilarRtimeParam())
 gplotFeatureGroups(xdata)
 
 # Visualize specific feature groups only
-gplotFeatureGroups(xdata, featureGroups = c("FG.001", "FG.002"))
+gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002"))
 }
 
 }

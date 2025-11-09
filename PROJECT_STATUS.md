@@ -58,7 +58,8 @@ functions with support for both legacy (`XCMSnExp`) and modern
 
 ## Additional XCMS Plotting Functions
 
-**Complete analysis based on comprehensive search of XCMS source code (66 R files reviewed)**
+**Complete analysis based on comprehensive search of XCMS source code
+(66 R files reviewed)**
 
 ### Potential Future Implementations
 
@@ -75,9 +76,13 @@ functions with support for both legacy (`XCMSnExp`) and modern
 
 ### Not Implementing - Legacy xcmsRaw/xcmsSet/xcmsFragments Objects
 
-The following 12 functions are for legacy objects and are not planned for implementation as the focus is on modern XCMSnExp and XcmsExperiment workflows:
+The following 12 functions are for legacy objects and are not planned
+for implementation as the focus is on modern XCMSnExp and XcmsExperiment
+workflows:
 
-`plotChrom`, `plotEIC`, `plotPeaks`, `plotRaw`, `plotScan`, `plotSpec`, `plotSurf`, `plotTIC` (xcmsRaw); `plotrt`, `plotQC` (xcmsSet); `plotTree` (xcmsFragments); `plot` (LamaParama)
+`plotChrom`, `plotEIC`, `plotPeaks`, `plotRaw`, `plotScan`, `plotSpec`,
+`plotSurf`, `plotTIC` (xcmsRaw); `plotrt`, `plotQC` (xcmsSet);
+`plotTree` (xcmsFragments); `plot` (LamaParama)
 
 ------------------------------------------------------------------------
 

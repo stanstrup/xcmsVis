@@ -23,3 +23,5 @@
 ^xcmsVis.BiocCheck$
 PROJECT_STATUS.md
 vignettes/*_files
+^xcms-reference$
+^Rplots\.pdf$

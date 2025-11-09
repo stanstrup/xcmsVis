@@ -1,6 +1,9 @@
 #' @include AllGenerics.R
 NULL
 
+# Declare global variables to avoid R CMD check NOTE
+utils::globalVariables(c("Retention Time", "m/z", "group", "feature_group"))
+
 # Shared implementation function for gplotFeatureGroups
 #'
 #' @importFrom xcms featureGroups featureDefinitions
