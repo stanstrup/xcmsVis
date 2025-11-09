@@ -831,7 +831,7 @@ sessionInfo()
 #> 
 #> other attached packages:
 #> [1] viridisLite_0.4.2   patchwork_1.3.2     plotly_4.11.0      
-#> [4] ggplot2_4.0.0       xcmsVis_0.99.15     xcms_4.8.0         
+#> [4] ggplot2_4.0.0       xcmsVis_0.99.16     xcms_4.8.0         
 #> [7] BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):

@@ -288,7 +288,7 @@ sessionInfo()
 #> other attached packages:
 #> [1] plotly_4.11.0       patchwork_1.3.2     ggplot2_4.0.0      
 #> [4] MsFeatures_1.18.0   MsExperiment_1.12.0 ProtGenerics_1.42.0
-#> [7] xcmsVis_0.99.15     xcms_4.8.0          BiocParallel_1.44.0
+#> [7] xcmsVis_0.99.16     xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] DBI_1.2.3                   rlang_1.1.6                
