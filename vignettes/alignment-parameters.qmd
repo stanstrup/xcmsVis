@@ -100,24 +100,29 @@ xdata <- groupChromPeaks(xdata, param = pdp)
 
 # Landmark-Based Alignment
 
-LamaParama alignment uses feature groups as landmarks to align samples. The typical workflow would be to either:
-1. Provide a reference dataset with known landmarks (m/z and RT pairs)
-2. Let XCMS extract feature groups automatically from the data
+LamaParama alignment uses feature groups as landmarks to align samples. We'll create a LamaParama object using the feature groups we've already defined.
 
-For demonstration purposes, we'll show how to visualize a LamaParama result. In practice, LamaParama is most useful when you have a reference dataset.
+**Note**: LamaParama requires a reference set of landmarks (m/z and RT pairs). In this example, we'll extract feature groups from our data to use as landmarks.
 
 ```{r alignment}
-#| eval: false
-# Example LamaParama workflow (requires reference data)
-# ref_data <- matrix(c(mz_values, rt_values), ncol = 2,
-#                    dimnames = list(NULL, c("mz", "rt")))
-# lama_param <- LamaParama(lamas = ref_data, method = "loess", span = 0.5)
-# xdata_aligned <- adjustRtime(xdata, param = lama_param)
+# Extract feature definitions to use as landmarks
+fdef <- featureDefinitions(xdata)
 
-# For this vignette, we'll use PeakGroupsParam as an alternative
-# that also produces alignment results
-pgp <- PeakGroupsParam(minFraction = 0.85, smooth = "loess", span = 0.4)
-xdata_aligned <- adjustRtime(xdata, param = pgp)
+# Create landmark matrix (mz and rt columns)
+lamas <- cbind(
+  mz = fdef$mzmed,
+  rt = fdef$rtmed
+)
+
+# Create LamaParama object
+lama_param <- LamaParama(
+  lamas = lamas,
+  method = "loess",
+  span = 0.4
+)
+
+# Perform alignment
+xdata_aligned <- adjustRtime(xdata, param = lama_param)
 ```
 
 # Visualizing LamaParama Results
@@ -130,18 +135,12 @@ The LamaParama object stores:
 - **Parameters**: span, outlierTolerance, zeroWeight, etc.
 
 ```{r extract_params}
-#| eval: false
 # Extract LamaParama from process history
 proc_hist <- processHistory(xdata_aligned, type = .PROCSTEP.RTIME.CORRECTION)
 lama_result <- proc_hist[[length(proc_hist)]]@param
 
-# Check if it's a LamaParama object
-if (inherits(lama_result, "LamaParama")) {
-  # LamaParama object found - can visualize
-} else {
-  # Different alignment method was used
-  message("Note: This example used PeakGroupsParam, not LamaParama")
-}
+# Verify it's a LamaParama object
+class(lama_result)
 ```
 
 ## Basic Alignment Plot
@@ -151,8 +150,7 @@ Each plot shows:
 - **Line**: The fitted retention time correction model
 
 ```{r basic_plot}
-#| eval: false
-# Plot alignment for first sample (when you have LamaParama results)
+# Plot alignment for first sample
 p <- gplot(lama_result, index = 1)
 p
 ```
@@ -164,7 +162,6 @@ The x-axis shows the observed retention times in the sample, while the y-axis sh
 We can visualize the alignment for different samples by changing the index:
 
 ```{r multiple_samples}
-#| eval: false
 # Create plots for first 3 samples
 p1 <- gplot(lama_result, index = 1) + ggtitle("Sample 1")
 p2 <- gplot(lama_result, index = 2) + ggtitle("Sample 2")
@@ -181,7 +178,6 @@ p3
 ### Custom Colors
 
 ```{r custom_colors}
-#| eval: false
 p_custom <- gplot(lama_result,
                   index = 1,
                   colPoints = "#E41A1C",
@@ -196,7 +192,6 @@ p_custom
 Since the output is a ggplot object, we can add layers and customizations:
 
 ```{r ggplot_enhancements}
-#| eval: false
 gplot(lama_result, index = 1) +
   ggtitle("Landmark-Based Alignment Model") +
   theme_minimal() +
@@ -209,7 +204,6 @@ gplot(lama_result, index = 1) +
 ## Interactive Plots with plotly
 
 ```{r interactive}
-#| eval: false
 p_interactive <- gplot(lama_result, index = 1)
 ggplotly(p_interactive)
 ```
@@ -232,27 +226,52 @@ Watch for:
 - **Many outliers**: May suggest RT shifts that are too complex for the model
 - **Gaps in coverage**: Some RT regions may not be well-represented
 
+# Comparison with Original XCMS
+
+<div class="row">
+<div class="col-md-6">
+
+## Original XCMS Version
+
+```{r original_comparison}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "XCMS plot showing LamaParama alignment model using base R graphics."
+# XCMS original (base R graphics)
+plot(lama_result, index = 1)
+```
+
+</div>
+<div class="col-md-6">
+
+## xcmsVis ggplot2 Version
+
+```{r xcmsvis_comparison}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "ggplot2 version of LamaParama alignment showing clean styling and consistent API."
+# xcmsVis version (ggplot2)
+gplot(lama_result, index = 1)
+```
+
+</div>
+</div>
+
+**Key advantages of ggplot2 version:**
+- Can be easily customized with ggplot2 syntax
+- Seamlessly converts to interactive plots with plotly
+- Better integration with modern R visualization workflows
+- Consistent styling with other xcmsVis functions
+- Better handling of plot annotations and layering
+
 # Comparing Alignment Methods
 
 You can compare LamaParama with other alignment methods like Obiwarp or PeakGroups:
 
-```{r comparison}
-#| eval: false
-# Compare with PeakGroups alignment
-pgp <- PeakGroupsParam(
-  minFraction = 0.85,
-  smooth = "loess",
-  span = 0.4
-)
-
-xdata_pg <- adjustRtime(xdata, param = pgp)
-
-# Visualize differences
+```{r comparison_methods}
+# Use gplotAdjustedRtime to visualize the overall alignment result
 gplotAdjustedRtime(xdata_aligned, color_by = sample_group) +
-  ggtitle("LamaParama Alignment")
-
-gplotAdjustedRtime(xdata_pg, color_by = sample_group) +
-  ggtitle("PeakGroups Alignment")
+  ggtitle("LamaParama Alignment Result")
 ```
 
 # Summary
