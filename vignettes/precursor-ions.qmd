@@ -229,16 +229,34 @@ gplotPrecursorIons(pest_dda) +
 
 # Comparison with Original XCMS
 
-The ggplot2 version offers advantages over the original base R implementation:
+<div class="row">
+<div class="col-md-6">
 
-```{r comparison}
-#| eval: false
-# Original XCMS (base R)
+## Original XCMS Version
+
+```{r original_comparison}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "XCMS plotPrecursorIons showing precursor ions in MS/MS data using base R graphics."
+# XCMS original (base R graphics)
 xcms::plotPrecursorIons(pest_dda)
+```
 
-# xcmsVis (ggplot2)
+</div>
+<div class="col-md-6">
+
+## xcmsVis ggplot2 Version
+
+```{r xcmsvis_comparison}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "ggplot2 version of plotPrecursorIons showing precursor ions with clean styling and consistent API."
+# xcmsVis version (ggplot2)
 gplotPrecursorIons(pest_dda)
 ```
+
+</div>
+</div>
 
 **Key advantages of ggplot2 version:**
 - Can be easily customized with ggplot2 syntax
