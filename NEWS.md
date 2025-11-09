@@ -1,3 +1,17 @@
+## Changes in v0.99.18
+
+
+### Bug Fixes
+
+* Update alignment-parameters vignette to avoid LamaParama validation error ([9498619](https://github.com/stanstrup/xcmsVis/commit/9498619c18c258b38a916d49ac766391f0bd068f))
+* Update alignment-parameters vignette to eval and add XCMS comparison ([094989e](https://github.com/stanstrup/xcmsVis/commit/094989ee520ba2b9f424839f5b22b58f331dd636))
+* Update precursor-ions vignette with side-by-side comparison ([27be196](https://github.com/stanstrup/xcmsVis/commit/27be1963bbe15ee7692c84b444e1d185940431f7))
+
+
+### Features
+
+* Add gplot for LamaParama and gplotPrecursorIons ([0a99b75](https://github.com/stanstrup/xcmsVis/commit/0a99b75ed419559babbbbf73e2132f8266c31e3b))
+
 ## Changes in v0.99.17
 
 
