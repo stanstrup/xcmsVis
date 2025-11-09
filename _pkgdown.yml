@@ -26,6 +26,10 @@ navbar:
         href: articles/chromatogram-visualization.html
       - text: Feature Groups Visualization
         href: articles/feature-groups-visualization.html
+      - text: RT Alignment Parameters (LamaParama)
+        href: articles/alignment-parameters.html
+      - text: Precursor Ion Visualization
+        href: articles/precursor-ions.html
     news:
       text: Changelog
       href: news/index.html
@@ -52,4 +56,5 @@ reference:
       - gplotChromPeakImage
       - gplotChromatogramsOverlay
       - gplotFeatureGroups
+      - gplotPrecursorIons
       - ghighlightChromPeaks
