@@ -197,12 +197,12 @@ test_that("gplotFeatureGroups creates proper plot structure", {
     # Create plot with default type="o"
     p <- gplotFeatureGroups(xdata)
 
-    # Should have both line and point layers (type = "o")
+    # Should have both path and point layers (type = "o")
     expect_true(length(p$layers) >= 2)
 
-    # Check for expected geoms
+    # Check for expected geoms (using GeomPath instead of GeomLine to preserve data order)
     geom_classes <- sapply(p$layers, function(l) class(l$geom)[1])
-    expect_true("GeomLine" %in% geom_classes)
+    expect_true("GeomPath" %in% geom_classes)
     expect_true("GeomPoint" %in% geom_classes)
 })
 
