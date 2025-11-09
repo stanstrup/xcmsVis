@@ -1,3 +1,10 @@
+## Changes in v0.99.17
+
+
+### Bug Fixes
+
+* Resolve R CMD check warnings and errors ([8327a96](https://github.com/stanstrup/xcmsVis/commit/8327a967958d6bb834f6f94a66689556ea513036))
+
 ## Changes in v0.99.16
 
 
