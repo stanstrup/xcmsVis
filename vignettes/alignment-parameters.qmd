@@ -136,7 +136,7 @@ The LamaParama object stores:
 
 ```{r extract_params}
 # Extract LamaParama from process history
-proc_hist <- processHistory(xdata_aligned, type = .PROCSTEP.RTIME.CORRECTION)
+proc_hist <- processHistory(xdata_aligned, type = xcms:::.PROCSTEP.RTIME.CORRECTION)
 lama_result <- proc_hist[[length(proc_hist)]]@param
 
 # Verify it's a LamaParama object
