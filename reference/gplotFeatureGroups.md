@@ -176,7 +176,9 @@ gplotFeatureGroups(xdata)
 
 
 # Visualize specific feature groups only
-gplotFeatureGroups(xdata, featureGroups = c("FG.001", "FG.002"))
-#> Error: None of the specified feature groups found
+gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002"))
+#> Warning: Removed 2 rows containing missing values or values outside the scale range
+#> (`geom_path()`).
+
 # }
 ```
