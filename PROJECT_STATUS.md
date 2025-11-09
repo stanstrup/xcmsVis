@@ -6,7 +6,7 @@ editor_options:
 
 # xcmsVis Project Status
 
-**Last Updated**: 2025-11-08
+**Last Updated**: 2025-11-09
 
 ------------------------------------------------------------------------
 
@@ -16,14 +16,15 @@ editor_options:
 functions with support for both legacy (`XCMSnExp`) and modern
 (`XcmsExperiment`) objects.
 
-| Metric                    | Status                          |
-|---------------------------|---------------------------------|
-| **Functions Implemented** | 9 / 9 priority functions        |
-| **Object Support**        | XCMSnExp ✅ / XcmsExperiment ✅ |
-| **Vignettes**             | 5 comprehensive guides          |
-| **Test Coverage**         | 9 test files, 153 tests passing |
-| **R CMD check**           | ✅ 0 errors, 0 warnings         |
-| **GitHub Actions**        | ✅ All workflows passing        |
+| Metric                    | Status                                |
+|---------------------------|---------------------------------------|
+| **Core Functions**        | 9 / 9 modern XCMS functions complete  |
+| **Object Support**        | XCMSnExp ✅ / XcmsExperiment ✅       |
+| **Vignettes**             | 5 comprehensive guides                |
+| **Test Coverage**         | 9 test files, all tests passing       |
+| **R CMD check**           | ✅ 0 errors, 0 warnings               |
+| **GitHub Actions**        | ✅ All workflows passing              |
+| **Remaining XCMS plots**  | 2 low-priority MS/MS-specific         |
 
 ------------------------------------------------------------------------
 
@@ -55,34 +56,26 @@ functions with support for both legacy (`XCMSnExp`) and modern
 
 ------------------------------------------------------------------------
 
-## Not Yet Implemented (Candidates for Implementation)
+## Additional XCMS Plotting Functions
 
-### High Priority - Modern XCMS Objects
-
-| XCMS Function | Input Objects | Priority | Status |
-|----|----|----|----|
-| ~~`plotChromPeakDensity`~~ | XChromatograms, MChromatograms | ⭐⭐⭐ High | ✅ Implemented |
-| ~~`plotChromatogramsOverlay`~~ | XChromatograms, MChromatograms | ⭐⭐⭐ High | ✅ Implemented |
-| ~~`plotFeatureGroups`~~ | XCMSnExp, XcmsExperiment | ⭐⭐ Medium | ✅ Implemented |
-
-### Lower Priority
+### Potential Future Implementations
 
 | XCMS Function | Input Objects | Priority | Notes |
 |----|----|----|----|
-| `plotPrecursorIons` | MsExperiment | ⭐ Low | MS/MS specific, specialized use case |
+| `plotPrecursorIons` | MsExperiment | ⭐ Low | MS/MS-specific precursor ion visualization |
+| `plotMsData` | Various | ⭐ Low | General MS data plotting, may overlap with existing functions |
 
-### Not Implementing - Legacy Objects
+### Not Implementing - Legacy xcmsRaw/xcmsSet Objects
 
-15 functions for xcmsRaw/xcmsSet objects (plotQC, plotrt, plotTIC,
-plotRaw, plotEIC, plotChrom, plotScan, plotSpec, plotPeaks, plotSurf,
-image, levelplot, plot.xcmsEIC, plotTree, plotMsData) - focus is on
-modern XCMS workflow
+The following 15 functions are for legacy xcmsRaw/xcmsSet objects and are not planned for implementation as the focus is on modern XCMSnExp and XcmsExperiment workflows:
+
+`plotQC`, `plotrt`, `plotTIC`, `plotRaw`, `plotEIC`, `plotChrom`, `plotScan`, `plotSpec`, `plotPeaks`, `plotSurf`, `image`, `levelplot`, `plot.xcmsEIC`, `plotTree`, `plotMsData` (legacy versions)
 
 ------------------------------------------------------------------------
 
 ## File Structure
 
-```
+```         
 xcmsVis/
 ├── R/
 │   ├── AllGenerics.R                      # All generic declarations
@@ -190,49 +183,26 @@ See: `R/ghighlightChromPeaks-methods.R` lines 95-150
 
 ## Future Work
 
-### High Priority - Core Visualization Functions
+### Potential Enhancements
 
-| Task | Input Objects | Description | Effort |
-|----|----|----|----|
-| `gplotChromPeakDensity` | XChromatograms, MChromatograms | Peak density visualization for parameter tuning | Medium |
-| `gplotChromatogramsOverlay` | XChromatograms, MChromatograms | Overlay multiple EICs in one plot | Medium |
-| `gplotFeatureGroups` | XCMSnExp, XcmsExperiment | Feature annotation QC and relationships | Medium |
+| Category | Task | Description | Priority | Effort |
+|----------|------|-------------|----------|--------|
+| **Functions** | Additional XCMS plots | `plotPrecursorIons`, `plotMsData` | Low | Medium |
+| **Testing** | Visual regression tests | Using vdiffr package for plot comparison | Medium | Low |
+| **Documentation** | Interactive plotting guide | Best practices for plotly integration | Medium | Low |
+| **Performance** | Large dataset profiling | Test and optimize for 100+ samples | Medium | Low |
+| **Customization** | Color palette support | viridis, ColorBrewer integration | Low | Low |
+| **Export** | Publication helpers | Functions for high-res figures | Low | Low |
+| **Infrastructure** | Code coverage reporting | codecov integration | Low | Low |
+| **Community** | Bioconductor submission | Package submission to Bioconductor | Future | High |
 
-### High Priority - Package Quality
+### Not Planned
 
-| Task                     | Description                      | Effort |
-|--------------------------|----------------------------------|--------|
-| Visual regression tests  | Using vdiffr package             | Low    |
-| Plotly integration guide | Optimize tooltips, interactivity | Low    |
-| Performance profiling    | Test with large datasets         | Low    |
-
-### Medium Priority
-
-| Task                  | Description                        | Effort |
-|-----------------------|------------------------------------|--------|
-| Additional vignettes  | Interactive plotting, QC workflows | Medium |
-| Performance profiling | Test with large datasets           | Low    |
-| Color palette support | viridis, ColorBrewer, etc.         | Low    |
-| Export helpers        | Publication-ready figures          | Low    |
-
-### Low Priority
-
-| Task                      | Description              | Effort |
-|---------------------------|--------------------------|--------|
-| Shiny apps                | Interactive exploration  | High   |
-| Ion mobility support      | When available in XCMS   | High   |
-| Additional XCMS functions | TIC, BPC, spectrum plots | Medium |
-| Bioconductor submission   | Package submission       | Medium |
-
-### Infrastructure
-
-| Task                    | Description         | Status  |
-|-------------------------|---------------------|---------|
-| Code coverage reporting | codecov integration | Planned |
-| Hex sticker logo        | Package branding    | Planned |
-| pkgdown articles        | Advanced topics     | Planned |
-| Tutorial videos         | YouTube/Vimeo       | Idea    |
-| Blog posts              | Package features    | Idea    |
+| Task | Reason |
+|------|--------|
+| Shiny apps | Out of scope; users can build with existing functions |
+| Ion mobility support | Waiting for XCMS implementation |
+| Legacy function ports | Focus is on modern XCMSnExp/XcmsExperiment workflow |
 
 ------------------------------------------------------------------------
 
@@ -339,14 +309,17 @@ setGeneric("functionName", ...)
 1.  ✅ **9 core functions** implemented with full dual-object support
 2.  ✅ **Exact XCMS replication** for all visualization behaviors
 3.  ✅ **Comprehensive documentation** with side-by-side comparisons
-4.  ✅ **Full test coverage** including edge cases (9 test files, 153 tests passing)
+4.  ✅ **Full test coverage** including edge cases (9 test files, 153
+    tests passing)
 5.  ✅ **Clean package structure** following R best practices
 6.  ✅ **GitHub Actions** CI/CD pipeline
 7.  ✅ **NSE support** for user-friendly API
 8.  ✅ **Five comprehensive vignettes** covering all major use cases
-9.  ✅ **XcmsExperiment BPI/MS map visualization** with patchwork integration
+9.  ✅ **XcmsExperiment BPI/MS map visualization** with patchwork
+    integration
 10. ✅ **Chromatogram overlay** and peak density visualization
-11. ✅ **Feature group visualization** with connected features across RT-m/z space
+11. ✅ **Feature group visualization** with connected features across
+    RT-m/z space
 
 ------------------------------------------------------------------------
 
