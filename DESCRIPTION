@@ -81,6 +81,7 @@ Collate:
     'utils.R'
     'AllGenerics.R'
     'ghighlightChromPeaks-methods.R'
+    'gplot-LamaParama-methods.R'
     'gplot-XcmsExperiment-methods.R'
     'gplot-methods.R'
     'gplotAdjustedRtime-methods.R'
@@ -89,3 +90,4 @@ Collate:
     'gplotChromPeaks-methods.R'
     'gplotChromatogramsOverlay-methods.R'
     'gplotFeatureGroups-methods.R'
+    'gplotPrecursorIons-methods.R'

@@ -619,3 +619,63 @@ setGeneric("gplotFeatureGroups", function(x,
                                           featureGroups = character(),
                                           ...)
   standardGeneric("gplotFeatureGroups"))
+
+#' ggplot2 Version of plotPrecursorIons
+#'
+#' @description
+#' Creates a ggplot2 version of precursor ion visualization for MsExperiment objects.
+#' This function plots the m/z and retention time of all precursor ions in MS2 spectra,
+#' useful for visualizing DDA (Data-Dependent Acquisition) data.
+#'
+#' @param object An `MsExperiment` object containing MS/MS data.
+#' @param pch Point shape for precursor ions (default: 21 = filled circle).
+#' @param col Point color (default: semi-transparent black).
+#' @param bg Point background/fill color (default: very transparent black).
+#' @param xlab X-axis label (default: "retention time").
+#' @param ylab Y-axis label (default: "m/z").
+#' @param main Plot title (default: file basename from dataOrigin).
+#' @param ... Additional ggplot2 parameters.
+#'
+#' @return A ggplot object (or list of ggplot objects if multiple files).
+#'
+#' @details
+#' This function visualizes the precursor ions selected for fragmentation in MS/MS experiments.
+#' Each point represents a precursor ion, with:
+#' \itemize{
+#'   \item X-axis: Retention time of the MS2 spectrum
+#'   \item Y-axis: Precursor m/z value
+#' }
+#'
+#' For MsExperiment objects with multiple files, separate plots are created for each file.
+#'
+#' The plot range includes all MS1 data to provide context, but only shows precursor ions
+#' from MS2 spectra.
+#'
+#' @examples
+#' \donttest{
+#' library(xcmsVis)
+#' library(MsExperiment)
+#'
+#' ## Load a test data file with DDA LC-MS/MS data
+#' fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
+#' pest_dda <- readMsExperiment(fl)
+#'
+#' gplotPrecursorIons(pest_dda)
+#'
+#' ## Subset the data object to plot the data specifically for one or
+#' ## selected file/sample:
+#' gplotPrecursorIons(pest_dda[1L])
+#' }
+#'
+#' @seealso
+#' \code{\link[xcms]{plotPrecursorIons}} for the original XCMS implementation.
+#'
+#' @export
+setGeneric("gplotPrecursorIons", function(object,
+                                          pch = 21,
+                                          col = "#00000080",
+                                          bg = "#00000020",
+                                          xlab = "retention time",
+                                          ylab = "m/z",
+                                          main = character(), ...)
+  standardGeneric("gplotPrecursorIons"))
