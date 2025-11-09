@@ -40,24 +40,26 @@
 
 <div id="xcmsvis-project-status" class="section level1">
 
-<p><strong>Last Updated</strong>: 2025-11-08</p>
+<p><strong>Last Updated</strong>: 2025-11-09</p>
 <hr><div class="section level2">
 <h2 id="quick-summary">Quick Summary<a class="anchor" aria-label="anchor" href="#quick-summary"></a></h2>
 <p><strong>xcmsVis</strong> provides ggplot2-based implementations of XCMS plotting functions with support for both legacy (<code>XCMSnExp</code>) and modern (<code>XcmsExperiment</code>) objects.</p>
 <table class="table"><thead><tr class="header"><th>Metric</th>
 <th>Status</th>
-</tr></thead><tbody><tr class="odd"><td><strong>Functions Implemented</strong></td>
-<td>9 / 9 priority functions</td>
+</tr></thead><tbody><tr class="odd"><td><strong>Core Functions</strong></td>
+<td>9 / 9 modern XCMS functions complete</td>
 </tr><tr class="even"><td><strong>Object Support</strong></td>
 <td>XCMSnExp ✅ / XcmsExperiment ✅</td>
 </tr><tr class="odd"><td><strong>Vignettes</strong></td>
 <td>5 comprehensive guides</td>
 </tr><tr class="even"><td><strong>Test Coverage</strong></td>
-<td>9 test files, 153 tests passing</td>
+<td>9 test files, all tests passing</td>
 </tr><tr class="odd"><td><strong>R CMD check</strong></td>
 <td>✅ 0 errors, 0 warnings</td>
 </tr><tr class="even"><td><strong>GitHub Actions</strong></td>
 <td>✅ All workflows passing</td>
+</tr><tr class="odd"><td><strong>Remaining XCMS plots</strong></td>
+<td>2 low-priority MS/MS-specific</td>
 </tr></tbody></table><hr></div>
 <div class="section level2">
 <h2 id="implemented-functions">Implemented Functions<a class="anchor" aria-label="anchor" href="#implemented-functions"></a></h2>
@@ -137,28 +139,10 @@
 <td>Feature grouping, related features, isotopes/adducts, customization, interactive plots</td>
 </tr></tbody></table><hr></div>
 <div class="section level2">
-<h2 id="not-yet-implemented-candidates-for-implementation">Not Yet Implemented (Candidates for Implementation)<a class="anchor" aria-label="anchor" href="#not-yet-implemented-candidates-for-implementation"></a></h2>
+<h2 id="additional-xcms-plotting-functions">Additional XCMS Plotting Functions<a class="anchor" aria-label="anchor" href="#additional-xcms-plotting-functions"></a></h2>
+<p><strong>Complete analysis based on comprehensive search of XCMS source code (66 R files reviewed)</strong></p>
 <div class="section level3">
-<h3 id="high-priority---modern-xcms-objects">High Priority - Modern XCMS Objects<a class="anchor" aria-label="anchor" href="#high-priority---modern-xcms-objects"></a></h3>
-<table class="table"><colgroup><col width="25%"><col width="25%"><col width="25%"><col width="25%"></colgroup><thead><tr class="header"><th>XCMS Function</th>
-<th>Input Objects</th>
-<th>Priority</th>
-<th>Status</th>
-</tr></thead><tbody><tr class="odd"><td><del><code>plotChromPeakDensity</code></del></td>
-<td>XChromatograms, MChromatograms</td>
-<td>⭐⭐⭐ High</td>
-<td>✅ Implemented</td>
-</tr><tr class="even"><td><del><code>plotChromatogramsOverlay</code></del></td>
-<td>XChromatograms, MChromatograms</td>
-<td>⭐⭐⭐ High</td>
-<td>✅ Implemented</td>
-</tr><tr class="odd"><td><del><code>plotFeatureGroups</code></del></td>
-<td>XCMSnExp, XcmsExperiment</td>
-<td>⭐⭐ Medium</td>
-<td>✅ Implemented</td>
-</tr></tbody></table></div>
-<div class="section level3">
-<h3 id="lower-priority">Lower Priority<a class="anchor" aria-label="anchor" href="#lower-priority"></a></h3>
+<h3 id="potential-future-implementations">Potential Future Implementations<a class="anchor" aria-label="anchor" href="#potential-future-implementations"></a></h3>
 <table class="table"><colgroup><col width="25%"><col width="25%"><col width="25%"><col width="25%"></colgroup><thead><tr class="header"><th>XCMS Function</th>
 <th>Input Objects</th>
 <th>Priority</th>
@@ -166,11 +150,25 @@
 </tr></thead><tbody><tr class="odd"><td><code>plotPrecursorIons</code></td>
 <td>MsExperiment</td>
 <td>⭐ Low</td>
-<td>MS/MS specific, specialized use case</td>
+<td>MS/MS-specific precursor ion visualization</td>
 </tr></tbody></table></div>
 <div class="section level3">
-<h3 id="not-implementing---legacy-objects">Not Implementing - Legacy Objects<a class="anchor" aria-label="anchor" href="#not-implementing---legacy-objects"></a></h3>
-<p>15 functions for xcmsRaw/xcmsSet objects (plotQC, plotrt, plotTIC, plotRaw, plotEIC, plotChrom, plotScan, plotSpec, plotPeaks, plotSurf, image, levelplot, plot.xcmsEIC, plotTree, plotMsData) - focus is on modern XCMS workflow</p>
+<h3 id="deprecatedinternal-functions---not-implementing">Deprecated/Internal Functions - Not Implementing<a class="anchor" aria-label="anchor" href="#deprecatedinternal-functions---not-implementing"></a></h3>
+<table class="table"><colgroup><col width="33%"><col width="33%"><col width="33%"></colgroup><thead><tr class="header"><th>XCMS Function</th>
+<th>Status</th>
+<th>Reason</th>
+</tr></thead><tbody><tr class="odd"><td><code>plotMsData</code></td>
+<td>Deprecated</td>
+<td>XCMS deprecated in favor of <code>plot(x, type = "XIC")</code>
+</td>
+</tr><tr class="even"><td><code>plotSpecWindow</code></td>
+<td>Internal</td>
+<td>xcmsSet helper function, not exported</td>
+</tr></tbody></table></div>
+<div class="section level3">
+<h3 id="not-implementing---legacy-xcmsrawxcmssetxcmsfragments-objects">Not Implementing - Legacy xcmsRaw/xcmsSet/xcmsFragments Objects<a class="anchor" aria-label="anchor" href="#not-implementing---legacy-xcmsrawxcmssetxcmsfragments-objects"></a></h3>
+<p>The following 12 functions are for legacy objects and are not planned for implementation as the focus is on modern XCMSnExp and XcmsExperiment workflows:</p>
+<p><code>plotChrom</code>, <code>plotEIC</code>, <code>plotPeaks</code>, <code>plotRaw</code>, <code>plotScan</code>, <code>plotSpec</code>, <code>plotSurf</code>, <code>plotTIC</code> (xcmsRaw); <code>plotrt</code>, <code>plotQC</code> (xcmsSet); <code>plotTree</code> (xcmsFragments); <code>plot</code> (LamaParama)</p>
 <hr></div>
 </div>
 <div class="section level2">
@@ -268,95 +266,65 @@
 <div class="section level2">
 <h2 id="future-work">Future Work<a class="anchor" aria-label="anchor" href="#future-work"></a></h2>
 <div class="section level3">
-<h3 id="high-priority---core-visualization-functions">High Priority - Core Visualization Functions<a class="anchor" aria-label="anchor" href="#high-priority---core-visualization-functions"></a></h3>
-<table class="table"><colgroup><col width="25%"><col width="25%"><col width="25%"><col width="25%"></colgroup><thead><tr class="header"><th>Task</th>
-<th>Input Objects</th>
+<h3 id="potential-enhancements">Potential Enhancements<a class="anchor" aria-label="anchor" href="#potential-enhancements"></a></h3>
+<table class="table"><colgroup><col width="20%"><col width="20%"><col width="20%"><col width="20%"><col width="20%"></colgroup><thead><tr class="header"><th>Category</th>
+<th>Task</th>
 <th>Description</th>
+<th>Priority</th>
 <th>Effort</th>
-</tr></thead><tbody><tr class="odd"><td><code>gplotChromPeakDensity</code></td>
-<td>XChromatograms, MChromatograms</td>
-<td>Peak density visualization for parameter tuning</td>
-<td>Medium</td>
-</tr><tr class="even"><td><code>gplotChromatogramsOverlay</code></td>
-<td>XChromatograms, MChromatograms</td>
-<td>Overlay multiple EICs in one plot</td>
-<td>Medium</td>
-</tr><tr class="odd"><td><code>gplotFeatureGroups</code></td>
-<td>XCMSnExp, XcmsExperiment</td>
-<td>Feature annotation QC and relationships</td>
-<td>Medium</td>
-</tr></tbody></table></div>
-<div class="section level3">
-<h3 id="high-priority---package-quality">High Priority - Package Quality<a class="anchor" aria-label="anchor" href="#high-priority---package-quality"></a></h3>
-<table class="table"><thead><tr class="header"><th>Task</th>
-<th>Description</th>
-<th>Effort</th>
-</tr></thead><tbody><tr class="odd"><td>Visual regression tests</td>
-<td>Using vdiffr package</td>
+</tr></thead><tbody><tr class="odd"><td><strong>Functions</strong></td>
+<td>Additional XCMS plots</td>
+<td>
+<code>plotPrecursorIons</code>, <code>plotMsData</code>
+</td>
 <td>Low</td>
-</tr><tr class="even"><td>Plotly integration guide</td>
-<td>Optimize tooltips, interactivity</td>
-<td>Low</td>
-</tr><tr class="odd"><td>Performance profiling</td>
-<td>Test with large datasets</td>
-<td>Low</td>
-</tr></tbody></table></div>
-<div class="section level3">
-<h3 id="medium-priority">Medium Priority<a class="anchor" aria-label="anchor" href="#medium-priority"></a></h3>
-<table class="table"><thead><tr class="header"><th>Task</th>
-<th>Description</th>
-<th>Effort</th>
-</tr></thead><tbody><tr class="odd"><td>Additional vignettes</td>
-<td>Interactive plotting, QC workflows</td>
 <td>Medium</td>
-</tr><tr class="even"><td>Performance profiling</td>
-<td>Test with large datasets</td>
-<td>Low</td>
-</tr><tr class="odd"><td>Color palette support</td>
-<td>viridis, ColorBrewer, etc.</td>
-<td>Low</td>
-</tr><tr class="even"><td>Export helpers</td>
-<td>Publication-ready figures</td>
-<td>Low</td>
-</tr></tbody></table></div>
-<div class="section level3">
-<h3 id="low-priority">Low Priority<a class="anchor" aria-label="anchor" href="#low-priority"></a></h3>
-<table class="table"><thead><tr class="header"><th>Task</th>
-<th>Description</th>
-<th>Effort</th>
-</tr></thead><tbody><tr class="odd"><td>Shiny apps</td>
-<td>Interactive exploration</td>
-<td>High</td>
-</tr><tr class="even"><td>Ion mobility support</td>
-<td>When available in XCMS</td>
-<td>High</td>
-</tr><tr class="odd"><td>Additional XCMS functions</td>
-<td>TIC, BPC, spectrum plots</td>
+</tr><tr class="even"><td><strong>Testing</strong></td>
+<td>Visual regression tests</td>
+<td>Using vdiffr package for plot comparison</td>
 <td>Medium</td>
-</tr><tr class="even"><td>Bioconductor submission</td>
-<td>Package submission</td>
+<td>Low</td>
+</tr><tr class="odd"><td><strong>Documentation</strong></td>
+<td>Interactive plotting guide</td>
+<td>Best practices for plotly integration</td>
 <td>Medium</td>
-</tr></tbody></table></div>
-<div class="section level3">
-<h3 id="infrastructure">Infrastructure<a class="anchor" aria-label="anchor" href="#infrastructure"></a></h3>
-<table class="table"><thead><tr class="header"><th>Task</th>
-<th>Description</th>
-<th>Status</th>
-</tr></thead><tbody><tr class="odd"><td>Code coverage reporting</td>
+<td>Low</td>
+</tr><tr class="even"><td><strong>Performance</strong></td>
+<td>Large dataset profiling</td>
+<td>Test and optimize for 100+ samples</td>
+<td>Medium</td>
+<td>Low</td>
+</tr><tr class="odd"><td><strong>Customization</strong></td>
+<td>Color palette support</td>
+<td>viridis, ColorBrewer integration</td>
+<td>Low</td>
+<td>Low</td>
+</tr><tr class="even"><td><strong>Export</strong></td>
+<td>Publication helpers</td>
+<td>Functions for high-res figures</td>
+<td>Low</td>
+<td>Low</td>
+</tr><tr class="odd"><td><strong>Infrastructure</strong></td>
+<td>Code coverage reporting</td>
 <td>codecov integration</td>
-<td>Planned</td>
-</tr><tr class="even"><td>Hex sticker logo</td>
-<td>Package branding</td>
-<td>Planned</td>
-</tr><tr class="odd"><td>pkgdown articles</td>
-<td>Advanced topics</td>
-<td>Planned</td>
-</tr><tr class="even"><td>Tutorial videos</td>
-<td>YouTube/Vimeo</td>
-<td>Idea</td>
-</tr><tr class="odd"><td>Blog posts</td>
-<td>Package features</td>
-<td>Idea</td>
+<td>Low</td>
+<td>Low</td>
+</tr><tr class="even"><td><strong>Community</strong></td>
+<td>Bioconductor submission</td>
+<td>Package submission to Bioconductor</td>
+<td>Future</td>
+<td>High</td>
+</tr></tbody></table></div>
+<div class="section level3">
+<h3 id="not-planned">Not Planned<a class="anchor" aria-label="anchor" href="#not-planned"></a></h3>
+<table class="table"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr class="header"><th>Task</th>
+<th>Reason</th>
+</tr></thead><tbody><tr class="odd"><td>Shiny apps</td>
+<td>Out of scope; users can build with existing functions</td>
+</tr><tr class="even"><td>Ion mobility support</td>
+<td>Waiting for XCMS implementation</td>
+</tr><tr class="odd"><td>Legacy function ports</td>
+<td>Focus is on modern XCMSnExp/XcmsExperiment workflow</td>
 </tr></tbody></table><hr></div>
 </div>
 <div class="section level2">
