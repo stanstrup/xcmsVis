@@ -1,3 +1,10 @@
+## Changes in v1.0.1
+
+
+### Bug Fixes
+
+* add missing MsExperiment library to vignette ([af62f59](https://github.com/stanstrup/xcmsVis/commit/af62f5988e5267f224b885be6e061ce4e00b18fe))
+
 ## Changes in v1.0.0
 
 
