@@ -11,8 +11,6 @@ NULL
 #' @param index Integer specifying which retention time map to plot (default: 1).
 #' @param colPoints Color for the matched peak points (default: semi-transparent black).
 #' @param colFit Color for the fitted model line (default: semi-transparent black).
-#' @param xlab X-axis label (default: "Matched Chromatographic peaks").
-#' @param ylab Y-axis label (default: "Lamas").
 #' @param ... Additional parameters (currently unused, for S4 compatibility).
 #'
 #' @return A ggplot object.
@@ -69,9 +67,7 @@ NULL
 setMethod("gplot", "LamaParama",
           function(x, index = 1L,
                    colPoints = "#00000060",
-                   colFit = "#00000080",
-                   xlab = "Matched Chromatographic peaks",
-                   ylab = "Lamas", ...) {
+                   colFit = "#00000080", ...) {
 
   # Get the retention time model using XCMS internal function
   model <- xcms:::.rt_model(method = x@method,
@@ -105,7 +101,7 @@ setMethod("gplot", "LamaParama",
                color = colPoints) +
     geom_line(data = line_data, aes(x = obs, y = ref),
               color = colFit) +
-    labs(x = xlab, y = ylab) +
+    labs(x = "Matched Chromatographic peaks", y = "Lamas") +
     theme_bw()
 
   return(p)

@@ -86,8 +86,6 @@ NULL
 .gplotChromPeakDensity_impl <- function(object,
                                          param,
                                          col = "#00000060",
-                                         xlab = "retention time",
-                                         main = NULL,
                                          peakType = c("polygon", "point", "rectangle", "none"),
                                          peakCol = "#00000060",
                                          peakBg = "#00000020",
@@ -132,7 +130,7 @@ NULL
     xl <- range(lapply(object, function(z) range(xcms::rtime(z))))
 
     # Create upper panel: chromatogram plot
-    p_upper <- gplot(object, col = col, xlab = "", main = main,
+    p_upper <- gplot(object, col = col,
                      peakType = peakType, peakCol = peakCol,
                      peakBg = peakBg, peakPch = peakPch, ...) +
         theme(axis.title.x = element_blank(),
@@ -213,7 +211,7 @@ NULL
             breaks = ypos,
             labels = seq(from = min_max_smple[1], to = min_max_smple[2])
         ) +
-        labs(x = xlab, y = "sample") +
+        labs(x = "retention time", y = "sample") +
         theme_bw() +
         xlim(xl)
 
@@ -227,13 +225,13 @@ NULL
 #' @rdname gplotChromPeakDensity
 #' @export
 setMethod("gplotChromPeakDensity", "XChromatograms",
-          function(object, param, col = "#00000060", xlab = "retention time",
-                   main = NULL, peakType = c("polygon", "point", "rectangle", "none"),
+          function(object, param, col = "#00000060",
+                   peakType = c("polygon", "point", "rectangle", "none"),
                    peakCol = "#00000060", peakBg = "#00000020", peakPch = 1,
                    simulate = TRUE, ...) {
 
               .gplotChromPeakDensity_impl(object = object, param = param,
-                                          col = col, xlab = xlab, main = main,
+                                          col = col,
                                           peakType = peakType, peakCol = peakCol,
                                           peakBg = peakBg, peakPch = peakPch,
                                           simulate = simulate, ...)
@@ -242,15 +240,15 @@ setMethod("gplotChromPeakDensity", "XChromatograms",
 #' @rdname gplotChromPeakDensity
 #' @export
 setMethod("gplotChromPeakDensity", "MChromatograms",
-          function(object, param, col = "#00000060", xlab = "retention time",
-                   main = NULL, peakType = c("polygon", "point", "rectangle", "none"),
+          function(object, param, col = "#00000060",
+                   peakType = c("polygon", "point", "rectangle", "none"),
                    peakCol = "#00000060", peakBg = "#00000020", peakPch = 1,
                    simulate = TRUE, ...) {
 
               # Convert MChromatograms to XChromatograms if needed
               # MChromatograms should work the same way as XChromatograms
               .gplotChromPeakDensity_impl(object = object, param = param,
-                                          col = col, xlab = xlab, main = main,
+                                          col = col,
                                           peakType = peakType, peakCol = peakCol,
                                           peakBg = peakBg, peakPch = peakPch,
                                           simulate = simulate, ...)

@@ -113,10 +113,10 @@ test_that("gplot LamaParama handles custom labels", {
   if (length(proc_hist) > 0) {
     param <- proc_hist[[length(proc_hist)]]@param
 
-    # Test custom labels
-    p <- gplot(param, index = 1,
-               xlab = "Custom X",
-               ylab = "Custom Y")
+    # Test custom labels - use ggplot2 labs() after plot creation
+    p <- gplot(param, index = 1) +
+         ggplot2::labs(x = "Custom X",
+                       y = "Custom Y")
 
     expect_s3_class(p, "ggplot")
     expect_equal(p$labels$x, "Custom X")

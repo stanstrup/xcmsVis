@@ -65,9 +65,6 @@ NULL
                         col = "black",
                         lty = 1,
                         type = "l",
-                        xlab = "retention time",
-                        ylab = "intensity",
-                        main = NULL,
                         peakType = c("polygon", "point", "rectangle", "none"),
                         peakCol = "#00000060",
                         peakBg = "#00000020",
@@ -91,9 +88,8 @@ NULL
         geom_line(color = col, linetype = lty) +
         theme_bw() +
         labs(
-            x = xlab,
-            y = ylab,
-            title = main
+            x = "retention time",
+            y = "intensity"
         )
 
     # Add peak annotations if present
@@ -148,16 +144,12 @@ setMethod("gplot", "XChromatogram",
                    col = "black",
                    lty = 1,
                    type = "l",
-                   xlab = "retention time",
-                   ylab = "intensity",
-                   main = NULL,
                    peakType = c("polygon", "point", "rectangle", "none"),
                    peakCol = "#00000060",
                    peakBg = "#00000020",
                    peakPch = 1,
                    ...) {
-              .gplot_impl(x, col, lty, type, xlab, ylab, main,
-                         peakType, peakCol, peakBg, peakPch, ...)
+              .gplot_impl(x, col, lty, type, peakType, peakCol, peakBg, peakPch, ...)
           })
 
 #' @rdname gplot
@@ -169,9 +161,6 @@ setMethod("gplot", "XChromatograms",
                    col = "#00000060",
                    lty = 1,
                    type = "l",
-                   xlab = "retention time",
-                   ylab = "intensity",
-                   main = NULL,
                    peakType = c("polygon", "point", "rectangle", "none"),
                    peakCol = "#00000060",
                    peakBg = "#00000020",
@@ -204,9 +193,8 @@ setMethod("gplot", "XChromatograms",
                   geom_line(color = col, linetype = lty) +
                   theme_bw() +
                   labs(
-                      x = xlab,
-                      y = ylab,
-                      title = main
+                      x = "retention time",
+                      y = "intensity"
                   )
 
               # Add peak annotations if present and requested
@@ -300,9 +288,6 @@ setMethod("gplot", "MChromatograms",
                    col = "#00000060",
                    lty = 1,
                    type = "l",
-                   xlab = "retention time",
-                   ylab = "intensity",
-                   main = NULL,
                    peakType = c("polygon", "point", "rectangle", "none"),
                    peakCol = "#00000060",
                    peakBg = "#00000020",
@@ -311,8 +296,7 @@ setMethod("gplot", "MChromatograms",
               # MChromatograms can be handled the same way as XChromatograms
               # Convert to XChromatograms if it has peaks, otherwise treat as regular MChromatograms
               if (is(x, "XChromatograms")) {
-                  gplot(x, col = col, lty = lty, type = type, xlab = xlab,
-                       ylab = ylab, main = main, peakType = peakType,
+                  gplot(x, col = col, lty = lty, type = type, peakType = peakType,
                        peakCol = peakCol, peakBg = peakBg, peakPch = peakPch, ...)
               } else {
                   # Regular MChromatograms - plot as overlaid lines
@@ -340,9 +324,8 @@ setMethod("gplot", "MChromatograms",
                       geom_line(color = col, linetype = lty) +
                       theme_bw() +
                       labs(
-                          x = xlab,
-                          y = ylab,
-                          title = main
+                          x = "retention time",
+                          y = "intensity"
                       )
 
                   return(p)
