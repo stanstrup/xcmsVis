@@ -1,3 +1,10 @@
+## Changes in v1.0.2
+
+
+### Bug Fixes
+
+* make gplotAdjustedRtime work with all alignment methods ([a509586](https://github.com/stanstrup/xcmsVis/commit/a5095863365a843d483bf7bc07877fe58b712063))
+
 ## Changes in v1.0.1
 
 
