@@ -357,6 +357,20 @@ gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002", "FG.0003", "FG
 </div>
 </div>
 
+::: {.callout-note}
+## API Differences
+
+Unlike the original XCMS `plotFeatureGroups()`, the ggplot2 version does not have `xlab`, `ylab`, or `main` parameters. Instead, use ggplot2's `labs()` function to customize labels after plot creation:
+
+```r
+# Customize labels with labs()
+gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002")) +
+  labs(x = "Retention Time (s)", y = "Mass/Charge", title = "My Custom Title")
+```
+
+This follows ggplot2 conventions and makes the API more consistent with the broader ggplot2 ecosystem.
+:::
+
 # Session Info
 
 ```{r session_info}

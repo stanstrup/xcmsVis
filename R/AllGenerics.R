@@ -291,9 +291,6 @@ setGeneric("ghighlightChromPeaks", function(object,
 #' @param col Color for the chromatogram line (default: "black").
 #' @param lty Line type for chromatogram (default: 1).
 #' @param type Plot type (default: "l" for line).
-#' @param xlab X-axis label (default: "retention time").
-#' @param ylab Y-axis label (default: "intensity").
-#' @param main Plot title (default: NULL).
 #' @param peakType Type of peak annotation: "polygon", "point", "rectangle", or "none"
 #'   (default: "polygon").
 #' @param peakCol Color for peak markers (default: "#00000060").
@@ -349,8 +346,6 @@ setGeneric("gplot", function(x, ...)
 #'   parameters. If missing, the function will try to extract it from the object's
 #'   process history (if correspondence has been performed).
 #' @param col Color for the chromatogram lines in the upper panel (default: "#00000060").
-#' @param xlab X-axis label (default: "retention time").
-#' @param main Plot title (default: NULL).
 #' @param peakType Type of peak annotation in upper panel: "polygon", "point",
 #'   "rectangle", or "none" (default: "polygon").
 #' @param peakCol Color for peak markers (default: "#00000060").
@@ -421,8 +416,6 @@ setGeneric("gplot", function(x, ...)
 setGeneric("gplotChromPeakDensity", function(object,
                                               param,
                                               col = "#00000060",
-                                              xlab = "retention time",
-                                              main = NULL,
                                               peakType = c("polygon", "point", "rectangle", "none"),
                                               peakCol = "#00000060",
                                               peakBg = "#00000020",
@@ -540,12 +533,9 @@ setGeneric("gplotChromatogramsOverlay", function(object,
 #'   Default: numeric() (auto-calculate from data).
 #' @param ylim Numeric vector of length 2 specifying m/z range.
 #'   Default: numeric() (auto-calculate from data).
-#' @param xlab X-axis label (default: "retention time").
-#' @param ylab Y-axis label (default: "m/z").
 #' @param pch Point character for feature markers (default: 4).
 #' @param col Color for feature points and connecting lines (default: "#00000060").
 #' @param type Plot type (default: "o" for overplotted points and lines).
-#' @param main Plot title (default: "Feature groups").
 #' @param featureGroups Character vector of feature group identifiers to plot.
 #'   If empty (default), all feature groups are plotted.
 #' @param ... Additional arguments passed to geom functions.
@@ -610,12 +600,9 @@ setGeneric("gplotChromatogramsOverlay", function(object,
 setGeneric("gplotFeatureGroups", function(x,
                                           xlim = numeric(),
                                           ylim = numeric(),
-                                          xlab = "retention time",
-                                          ylab = "m/z",
                                           pch = 4,
                                           col = "#00000060",
                                           type = "o",
-                                          main = "Feature groups",
                                           featureGroups = character(),
                                           ...)
   standardGeneric("gplotFeatureGroups"))

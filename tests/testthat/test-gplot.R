@@ -77,11 +77,11 @@ test_that("gplot handles custom labels and title", {
 
   chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
 
-  # Custom labels
-  p <- gplot(chr[1, 1],
-             xlab = "RT (seconds)",
-             ylab = "Signal",
-             main = "Test Chromatogram")
+  # Custom labels - use ggplot2 labs() after plot creation
+  p <- gplot(chr[1, 1]) +
+       ggplot2::labs(x = "RT (seconds)",
+                     y = "Signal",
+                     title = "Test Chromatogram")
   expect_s3_class(p, "ggplot")
 
   # Check labels are set

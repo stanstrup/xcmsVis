@@ -120,12 +120,12 @@ test_that("gplotFeatureGroups handles custom parameters", {
     p1 <- gplotFeatureGroups(xdata, col = "red")
     expect_s3_class(p1, "ggplot")
 
-    # Test custom axis labels
-    p2 <- gplotFeatureGroups(xdata, xlab = "RT (sec)", ylab = "Mass/Charge")
+    # Test custom axis labels - use ggplot2 labs() after plot creation
+    p2 <- gplotFeatureGroups(xdata) + ggplot2::labs(x = "RT (sec)", y = "Mass/Charge")
     expect_s3_class(p2, "ggplot")
 
-    # Test custom title
-    p3 <- gplotFeatureGroups(xdata, main = "Custom Title")
+    # Test custom title - use ggplot2 labs() after plot creation
+    p3 <- gplotFeatureGroups(xdata) + ggplot2::labs(title = "Custom Title")
     expect_s3_class(p3, "ggplot")
 })
 

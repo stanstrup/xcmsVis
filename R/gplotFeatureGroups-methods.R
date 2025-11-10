@@ -14,12 +14,9 @@ utils::globalVariables(c("Retention Time", "m/z", "group", "feature_group"))
 .gplotFeatureGroups_impl <- function(x,
                                      xlim = numeric(),
                                      ylim = numeric(),
-                                     xlab = "retention time",
-                                     ylab = "m/z",
                                      pch = 4,
                                      col = "#00000060",
                                      type = "o",
-                                     main = "Feature groups",
                                      featureGroups = character(),
                                      ...) {
 
@@ -108,7 +105,7 @@ utils::globalVariables(c("Retention Time", "m/z", "group", "feature_group"))
 
     p <- p +
         theme_bw() +
-        labs(x = xlab, y = ylab, title = main) +
+        labs(x = "retention time", y = "m/z", title = "Feature groups") +
         coord_cartesian(xlim = xlim, ylim = ylim)
 
     return(p)
@@ -118,22 +115,18 @@ utils::globalVariables(c("Retention Time", "m/z", "group", "feature_group"))
 #' @export
 setMethod("gplotFeatureGroups", "XCMSnExp",
           function(x, xlim = numeric(), ylim = numeric(),
-                   xlab = "retention time", ylab = "m/z",
                    pch = 4, col = "#00000060", type = "o",
-                   main = "Feature groups", featureGroups = character(),
+                   featureGroups = character(),
                    ...) {
-              .gplotFeatureGroups_impl(x, xlim, ylim, xlab, ylab,
-                                      pch, col, type, main, featureGroups, ...)
+              .gplotFeatureGroups_impl(x, xlim, ylim, pch, col, type, featureGroups, ...)
           })
 
 #' @rdname gplotFeatureGroups
 #' @export
 setMethod("gplotFeatureGroups", "XcmsExperiment",
           function(x, xlim = numeric(), ylim = numeric(),
-                   xlab = "retention time", ylab = "m/z",
                    pch = 4, col = "#00000060", type = "o",
-                   main = "Feature groups", featureGroups = character(),
+                   featureGroups = character(),
                    ...) {
-              .gplotFeatureGroups_impl(x, xlim, ylim, xlab, ylab,
-                                      pch, col, type, main, featureGroups, ...)
+              .gplotFeatureGroups_impl(x, xlim, ylim, pch, col, type, featureGroups, ...)
           })
