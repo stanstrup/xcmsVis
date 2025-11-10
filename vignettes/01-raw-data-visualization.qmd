@@ -1,0 +1,448 @@
+---
+title: "Step 1: Raw Data Visualization"
+author: "xcmsVis Package"
+date: today
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: false
+    theme: cosmo
+vignette: >
+  %\VignetteIndexEntry{Step 1: Raw Data Visualization}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup}
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 10,
+  fig.height = 8,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# Introduction
+
+This vignette covers the **first step** in the XCMS metabolomics workflow: **visualizing raw MS data** before any processing. These visualizations help you:
+
+- Assess data quality before analysis
+- Understand the structure of your LC-MS acquisition
+- Identify potential issues early
+- Visualize MS/MS (DDA) experiment coverage
+
+## XCMS Workflow Context
+
+```
+┌─────────────────────────────────────┐
+│ 1. RAW DATA VISUALIZATION ← YOU ARE HERE
+├─────────────────────────────────────┤
+│ 2. Peak Detection                   │
+│ 3. Peak Correspondence               │
+│ 4. Retention Time Alignment          │
+│ 5. Feature Grouping                  │
+└─────────────────────────────────────┘
+```
+
+## Functions Covered
+
+- **`gplot(XcmsExperiment)`**: Visualize full MS acquisitions with BPI chromatogram and m/z scatter
+- **`gplotPrecursorIons()`**: Visualize MS/MS precursor ion selection in DDA experiments
+
+# Setup
+
+```{r libraries}
+library(xcms)
+library(xcmsVis)
+library(ggplot2)
+library(plotly)
+library(patchwork)
+library(msdata)
+```
+
+# Part 1: Full MS Data Visualization
+
+## Overview
+
+The `gplot()` method for XcmsExperiment and XCMSnExp objects creates a two-panel visualization:
+
+- **Upper panel**: Base Peak Intensity (BPI) chromatogram vs retention time
+- **Lower panel**: m/z vs retention time scatter plot
+
+Both panels use intensity-based coloring, and detected peaks (if any) are automatically overlaid as rectangles.
+
+## Data Preparation
+
+We'll use pre-processed test data from XCMS:
+
+```{r load_ms1_data}
+# Load pre-processed data
+xdata <- loadXcmsData("faahko_sub2")
+
+# Check data
+cat("Samples:", length(xdata), "\n")
+cat("Total peaks detected:", nrow(chromPeaks(xdata)), "\n")
+```
+
+For visualization, we'll filter to a specific retention time and m/z region:
+
+```{r filter_data}
+# Filter to focused region
+mse <- filterRt(xdata, rt = c(2500, 2800))
+mse <- filterMzRange(mse, mz = c(218, 220.5))
+
+cat("Filtered data:\n")
+cat("  RT range:", paste(range(rtime(spectra(mse[1]))), collapse = " - "), "\n")
+cat("  Number of spectra in sample 1:", length(spectra(mse[1])), "\n")
+```
+
+## Basic Usage
+
+### Single Sample Visualization
+
+```{r gplot_basic}
+#| fig-height: 6
+#| fig-width: 8
+#| fig-alt: "Two-panel plot showing BPI chromatogram (upper panel) and m/z vs retention time scatter plot (lower panel) with intensity-based coloring."
+gplot(mse[1])
+```
+
+### Understanding the Two Panels
+
+#### Upper Panel: BPI Chromatogram
+
+The **Base Peak Intensity (BPI)** shows the maximum intensity at each retention time across all m/z values in the filtered range.
+
+- Each point represents one retention time
+- Y-axis shows the maximum intensity observed at that time
+- Color indicates intensity magnitude
+- Useful for identifying retention time regions with strong signals
+
+#### Lower Panel: m/z vs RT Scatter
+
+The **m/z vs retention time scatter** shows the complete mass spectral data:
+
+- X-axis: retention time
+- Y-axis: m/z values
+- Each point represents one data point from the raw spectra
+- Color indicates intensity of that specific m/z at that retention time
+- Shows the full two-dimensional structure of the LC-MS data
+
+#### Peak Overlays
+
+If chromatographic peaks have been detected (via `findChromPeaks()`), they are automatically overlaid as rectangles showing:
+
+- Peak retention time boundaries (left/right edges)
+- Peak m/z boundaries (top/bottom edges)
+- Semi-transparent red color by default
+
+## Multiple Samples
+
+When visualizing multiple samples, `gplot()` creates a vertically stacked layout:
+
+```{r multiple_samples}
+#| fig-height: 12
+#| fig-width: 8
+#| fig-alt: "Three sets of two-panel plots stacked vertically, one for each sample, showing BPI and m/z scatter plots."
+# Plot all three samples
+gplot(mse)
+```
+
+## Customization
+
+### Custom Colors
+
+```{r custom_colors}
+#| fig-height: 6
+#| fig-width: 8
+#| fig-alt: "Two-panel plot with blue point borders and red peak rectangles, demonstrating color customization."
+gplot(mse[1],
+      col = "blue",           # Point border color
+      peakCol = "red")        # Peak rectangle color
+```
+
+### Custom Color Ramps
+
+The intensity coloring uses a color ramp function. The viridis scales are reversed to follow MS convention (low=dark, high=bright):
+
+```{r color_ramps}
+#| fig-height: 6
+#| fig-width: 12
+#| fig-alt: "Three plots showing different color ramps: viridis, magma, and plasma."
+library(viridisLite)
+
+# Create reversed versions for MS convention (low=dark, high=bright)
+viridis_rev <- function(n) rev(viridis(n))
+magma_rev <- function(n) rev(magma(n))
+plasma_rev <- function(n) rev(plasma(n))
+
+p1 <- gplot(mse[1], colramp = viridis_rev) + ggtitle("Viridis")
+p2 <- gplot(mse[1], colramp = magma_rev) + ggtitle("Magma")
+p3 <- gplot(mse[1], colramp = plasma_rev) + ggtitle("Plasma")
+
+(p1 | p2 | p3)
+```
+
+### Custom Titles
+
+```{r custom_titles}
+#| fig-height: 12
+#| fig-width: 8
+#| fig-alt: "Three stacked two-panel plots with custom sample names as titles."
+# Custom sample names
+gplot(mse, main = c("Knockout 1", "Knockout 2", "Wild Type"))
+```
+
+## Interactive Visualization
+
+Convert to interactive plotly for data exploration:
+
+```{r interactive}
+#| fig-height: 8
+#| fig-width: 10
+#| fig-alt: "Interactive plotly version with hover tooltips, zoom, and pan capabilities."
+p <- gplot(mse[1])
+ggplotly(p)
+```
+
+## Use Cases
+
+### Quality Control
+
+Visualize raw MS data to check for:
+
+- Signal intensity across retention time
+- Presence of expected m/z ranges
+- Peak detection quality
+- Sample-to-sample consistency
+
+```{r qc_example}
+#| fig-height: 12
+#| fig-width: 10
+#| fig-alt: "QC visualization showing all three samples for comparison of data quality."
+gplot(mse, main = paste("QC:", c("Sample 1", "Sample 2", "Sample 3")))
+```
+
+### Method Development
+
+During method development, use `gplot()` to:
+
+- Evaluate extraction efficiency across m/z ranges
+- Optimize retention time windows
+- Assess peak shapes and detection
+
+# Part 2: MS/MS Precursor Ion Visualization
+
+## Overview
+
+The `gplotPrecursorIons()` function visualizes precursor ions selected for fragmentation in MS/MS (tandem mass spectrometry) experiments. This is particularly useful for:
+
+- Assessing DDA (Data-Dependent Acquisition) performance
+- Visualizing MS/MS coverage across the chromatographic run
+- Quality control of MS/MS experiments
+- Understanding which compounds were fragmented
+
+## What are Precursor Ions?
+
+In MS/MS experiments, the mass spectrometer:
+
+1. Performs MS1 scans to detect all ions
+2. Selects specific ions (precursors) based on criteria (intensity, exclusion lists, etc.)
+3. Fragments these precursors and records MS2 spectra
+
+The `gplotPrecursorIons()` function plots where and which precursor ions were selected across the LC-MS run.
+
+## Loading DDA Data
+
+We'll use example DDA data from the msdata package:
+
+```{r load_dda_data}
+# Load DDA MS/MS data
+fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML",
+                  package = "msdata")
+
+pest_dda <- readMsExperiment(fl)
+
+# Check data structure
+pest_dda
+```
+
+## Basic Precursor Ion Visualization
+
+### Default Plot
+
+```{r basic_precursor_plot}
+p <- gplotPrecursorIons(pest_dda)
+p
+```
+
+The plot shows:
+
+- **X-axis**: Retention time when MS2 spectrum was acquired
+- **Y-axis**: m/z of the precursor ion selected for fragmentation
+- **Points**: Each precursor ion
+
+### Interpretation
+
+From this plot, you can see:
+
+- **Distribution of MS/MS events** across the chromatographic run
+- **m/z range** of fragmented ions
+- **Density patterns** - where fragmentation was most active
+- **Coverage gaps** - RT or m/z regions without MS/MS data
+
+## Customization
+
+### Custom Colors and Symbols
+
+```{r custom_precursor_colors}
+p_custom <- gplotPrecursorIons(
+  pest_dda,
+  pch = 16,                    # filled circle
+  col = "#E41A1C",             # point color
+  xlab = "Retention Time (s)",
+  ylab = "Precursor m/z"
+)
+
+p_custom
+```
+
+### Adding ggplot2 Layers
+
+```{r ggplot_enhancements}
+gplotPrecursorIons(pest_dda) +
+  ggtitle("DDA Precursor Ion Map") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    axis.title = element_text(size = 12),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_blank()
+  )
+```
+
+## Interactive Precursor Visualization
+
+```{r interactive_precursor}
+p_interactive <- gplotPrecursorIons(pest_dda)
+ggplotly(p_interactive)
+```
+
+## Assessing DDA Performance
+
+### Coverage Assessment
+
+```{r coverage}
+# Add horizontal lines to show m/z ranges
+gplotPrecursorIons(pest_dda) +
+  geom_hline(yintercept = c(100, 200, 300, 400, 500),
+             linetype = "dashed", alpha = 0.3) +
+  annotate("text", x = max(rtime(spectra(pest_dda))) * 0.98,
+           y = c(100, 200, 300, 400, 500),
+           label = paste0(c(100, 200, 300, 400, 500), " m/z"),
+           hjust = 1, vjust = -0.5, size = 3, color = "gray40")
+```
+
+### Quality Control
+
+Check for expected MS/MS coverage:
+
+```{r precursor_qc}
+gplotPrecursorIons(pest_dda) +
+  ggtitle("QC: Precursor Ion Coverage Check") +
+  theme_minimal() +
+  labs(caption = paste("Total MS/MS scans:",
+                       sum(!is.na(precursorMz(spectra(pest_dda))))))
+```
+
+# Summary
+
+## Functions Covered
+
+| Function | Purpose | Input Type |
+|----------|---------|------------|
+| `gplot(XcmsExperiment)` | Visualize full MS data | XcmsExperiment, XCMSnExp |
+| `gplotPrecursorIons()` | Visualize MS/MS precursors | MsExperiment with MS2 |
+
+## When to Use
+
+- **Before any processing**: Assess raw data quality
+- **Method development**: Evaluate acquisition parameters
+- **Quality control**: Ensure expected coverage and signals
+- **DDA experiments**: Verify MS/MS performance
+
+## Next Steps
+
+After visualizing and assessing your raw data, proceed to:
+
+→ **[Step 2: Peak Detection](02-peak-detection.html)** - Detect chromatographic peaks in your data
+
+# Comparison with Original XCMS
+
+## gplot(XcmsExperiment) vs plot()
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS
+
+```{r original_plot}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "XCMS base R plot showing two panels with traditional graphics."
+plot(mse[1])
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2
+
+```{r xcmsvis_plot}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "ggplot2 version with modern aesthetics and customization options."
+gplot(mse[1])
+```
+
+</div>
+</div>
+
+## gplotPrecursorIons() vs plotPrecursorIons()
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS
+
+```{r original_precursor}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "XCMS plotPrecursorIons using base R graphics."
+xcms::plotPrecursorIons(pest_dda)
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2
+
+```{r xcmsvis_precursor}
+#| fig-height: 6
+#| fig-width: 5
+#| fig-alt: "ggplot2 version with clean styling and consistent API."
+gplotPrecursorIons(pest_dda)
+```
+
+</div>
+</div>
+
+# Session Info
+
+```{r session_info}
+sessionInfo()
+```
