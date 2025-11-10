@@ -40,7 +40,7 @@
     select(colnames(sample_data), spectraOrigin_base, raw = rtime, adjusted = rtime_adjusted)
 
 
-  # Get the peak groups matrix and prepare for plotting
+  # Get the peak groups matrix and prepare for plotting (optional - only for PeakGroupsParam)
   # Find which processHistory element contains PeakGroupsParam
   which_is_groups <- object %>%
     processHistory() %>%
@@ -48,55 +48,54 @@
     map_lgl(~ is(., "PeakGroupsParam")) %>%
     which()
 
-  if (length(which_is_groups) == 0) {
-    stop("No PeakGroupsParam found in processHistory. ",
-         "Retention time adjustment may not have been performed with peak groups.")
+  # Initialize good_peaks as NULL - will only populate if PeakGroupsParam is present
+  good_peaks <- NULL
+
+  if (length(which_is_groups) > 0) {
+    # PeakGroupsParam found - extract and visualize peak groups
+    pkGroup <- object %>%
+      processHistory() %>%
+      map(processParam) %>%
+      pluck(which_is_groups) %>%
+      xcms:::peakGroupsMatrix() %>%
+      as.data.frame()
+
+    pkGroup <- pkGroup %>%
+      rownames_to_column("feature") %>%
+      as_tibble() %>%
+      pivot_longer(-feature, names_to = "spectraOrigin_base", values_to = "rtime") %>%
+      group_by(spectraOrigin_base) %>%
+      group_nest(.key = "feature")
+
+    # Calculate adjusted retention times for peak groups
+    good_peaks <- rts %>%
+      select(spectraOrigin_base, raw, adjusted) %>%
+      filter(spectraOrigin_base %in% pkGroup$spectraOrigin_base   ) %>%
+      group_by(spectraOrigin_base) %>%
+      group_nest(.key = "correction") %>%
+      inner_join(pkGroup, by = "spectraOrigin_base") %>%
+      mutate(
+        feature_correct = map2(
+          feature,
+          correction,
+          function(feat, corr) {
+            feat %>%
+              mutate(
+                adjusted = xcms:::.applyRtAdjustment(
+                  rtime,
+                  corr$raw,
+                  corr$adjusted
+                )
+              ) %>%
+              select(adjusted)
+          }
+        )
+      ) %>%
+      select(-correction) %>%
+      unnest(cols = c(feature, feature_correct)) %>%
+      rename(raw = rtime) %>%
+      filter(!is.na(raw))
   }
-
-  pkGroup <- object %>%
-    processHistory() %>%
-    map(processParam) %>%
-    pluck(which_is_groups) %>%
-    xcms:::peakGroupsMatrix() %>%
-    as.data.frame()
-
-  pkGroup <- pkGroup %>%
-    rownames_to_column("feature") %>%
-    as_tibble() %>%
-    pivot_longer(-feature, names_to = "spectraOrigin_base", values_to = "rtime") %>%
-    group_by(spectraOrigin_base) %>%
-    group_nest(.key = "feature")
-
-
-
-  # Calculate adjusted retention times for peak groups
-  good_peaks <- rts %>%
-    select(spectraOrigin_base, raw, adjusted) %>%
-    filter(spectraOrigin_base %in% pkGroup$spectraOrigin_base   ) %>%
-    group_by(spectraOrigin_base) %>%
-    group_nest(.key = "correction") %>%
-    inner_join(pkGroup, by = "spectraOrigin_base") %>%
-    mutate(
-      feature_correct = map2(
-        feature,
-        correction,
-        function(feat, corr) {
-          feat %>%
-            mutate(
-              adjusted = xcms:::.applyRtAdjustment(
-                rtime,
-                corr$raw,
-                corr$adjusted
-              )
-            ) %>%
-            select(adjusted)
-        }
-      )
-    ) %>%
-    select(-correction) %>%
-    unnest(cols = c(feature, feature_correct)) %>%
-    rename(raw = rtime) %>%
-    filter(!is.na(raw))
 
   # Add tooltip text for interactive plotting
   if (is.null(include_columns)) {
@@ -124,21 +123,26 @@
     )
   ) +
     geom_line() +
-    theme_bw() +
-    geom_point(
-      data = good_peaks,
-      aes(x = adjusted, y = adjusted - raw),
-      inherit.aes = FALSE,
-      color = "grey",
-      shape = 19
-    ) +
-    geom_line(
-      data = good_peaks,
-      aes(x = adjusted, y = adjusted - raw, group = feature),
-      inherit.aes = FALSE,
-      color = "grey",
-      linetype = 2
-    )
+    theme_bw()
+
+  # Add peak groups visualization if available (only for PeakGroupsParam alignment)
+  if (!is.null(good_peaks)) {
+    p <- p +
+      geom_point(
+        data = good_peaks,
+        aes(x = adjusted, y = adjusted - raw),
+        inherit.aes = FALSE,
+        color = "grey",
+        shape = 19
+      ) +
+      geom_line(
+        data = good_peaks,
+        aes(x = adjusted, y = adjusted - raw, group = feature),
+        inherit.aes = FALSE,
+        color = "grey",
+        linetype = 2
+      )
+  }
 
   return(p)
 }
