@@ -273,7 +273,7 @@ xdata_lama <- adjustRtime(xdata_lama, param = lama_param)
 
 ```{r extract_lama}
 # Extract LamaParama from process history
-proc_hist <- processHistory(xdata_lama, type = .PROCSTEP.RTIME.CORRECTION)
+proc_hist <- processHistory(xdata_lama, type = xcms:::.PROCSTEP.RTIME.CORRECTION)
 lama_result <- proc_hist[[length(proc_hist)]]@param
 
 # Verify it's a LamaParama object
