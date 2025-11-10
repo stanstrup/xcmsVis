@@ -10,31 +10,33 @@
 functions with support for both legacy (`XCMSnExp`) and modern
 (`XcmsExperiment`) objects.
 
-| Metric                   | Status                               |
-|--------------------------|--------------------------------------|
-| **Core Functions**       | 9 / 9 modern XCMS functions complete |
-| **Object Support**       | XCMSnExp ✅ / XcmsExperiment ✅      |
-| **Vignettes**            | 5 comprehensive guides               |
-| **Test Coverage**        | 9 test files, all tests passing      |
-| **R CMD check**          | ✅ 0 errors, 0 warnings              |
-| **GitHub Actions**       | ✅ All workflows passing             |
-| **Remaining XCMS plots** | 2 low-priority MS/MS-specific        |
+| Metric                   | Status                                          |
+|--------------------------|-------------------------------------------------|
+| **Core Functions**       | 11 / 11 modern XCMS functions complete          |
+| **Object Support**       | XCMSnExp ✅ / XcmsExperiment ✅ / LamaParama ✅ |
+| **Vignettes**            | 7 comprehensive guides                          |
+| **Test Coverage**        | 11 test files, all tests passing                |
+| **R CMD check**          | ✅ 0 errors, 0 warnings                         |
+| **GitHub Actions**       | ✅ All workflows passing                        |
+| **Remaining XCMS plots** | 0 - All modern functions implemented            |
 
 ------------------------------------------------------------------------
 
 ## Implemented Functions
 
-| Function                    | XCMS Original              | Purpose                           | Objects Supported                             | Files                                 |
-|-----------------------------|----------------------------|-----------------------------------|-----------------------------------------------|---------------------------------------|
-| `gplotAdjustedRtime`        | `plotAdjustedRtime`        | RT alignment visualization        | XCMSnExp, XcmsExperiment                      | R/gplotAdjustedRtime-methods.R        |
-| `gplotChromPeaks`           | `plotChromPeaks`           | Peak detection in RT-m/z space    | XCMSnExp, XcmsExperiment                      | R/gplotChromPeaks-methods.R           |
-| `gplotChromPeakImage`       | `plotChromPeakImage`       | Peak density heatmap              | XCMSnExp, XcmsExperiment                      | R/gplotChromPeakImage-methods.R       |
-| `gplotChromPeakDensity`     | `plotChromPeakDensity`     | Peak density for parameter tuning | XChromatograms, MChromatograms                | R/gplotChromPeakDensity-methods.R     |
-| `gplotChromatogramsOverlay` | `plotChromatogramsOverlay` | Overlay multiple EICs             | XChromatograms, MChromatograms                | R/gplotChromatogramsOverlay-methods.R |
-| `gplot`                     | `plot` (S4)                | Chromatogram with peaks           | XChromatogram, XChromatograms, MChromatograms | R/gplot-methods.R                     |
-| `gplot` (XcmsExperiment)    | `plot` (S4)                | BPI and MS map visualization      | XcmsExperiment                                | R/gplot-XcmsExperiment-methods.R      |
-| `gplotFeatureGroups`        | `plotFeatureGroups`        | Feature group visualization       | XCMSnExp, XcmsExperiment                      | R/gplotFeatureGroups-methods.R        |
-| `ghighlightChromPeaks`      | `highlightChromPeaks`      | Peak annotation layers            | XCMSnExp, XcmsExperiment                      | R/ghighlightChromPeaks-methods.R      |
+| Function                    | XCMS Original              | Purpose                              | Objects Supported                             | Files                                 |
+|-----------------------------|----------------------------|--------------------------------------|-----------------------------------------------|---------------------------------------|
+| `gplotAdjustedRtime`        | `plotAdjustedRtime`        | RT alignment visualization           | XCMSnExp, XcmsExperiment                      | R/gplotAdjustedRtime-methods.R        |
+| `gplotChromPeaks`           | `plotChromPeaks`           | Peak detection in RT-m/z space       | XCMSnExp, XcmsExperiment                      | R/gplotChromPeaks-methods.R           |
+| `gplotChromPeakImage`       | `plotChromPeakImage`       | Peak density heatmap                 | XCMSnExp, XcmsExperiment                      | R/gplotChromPeakImage-methods.R       |
+| `gplotChromPeakDensity`     | `plotChromPeakDensity`     | Peak density for parameter tuning    | XChromatograms, MChromatograms                | R/gplotChromPeakDensity-methods.R     |
+| `gplotChromatogramsOverlay` | `plotChromatogramsOverlay` | Overlay multiple EICs                | XChromatograms, MChromatograms                | R/gplotChromatogramsOverlay-methods.R |
+| `gplot`                     | `plot` (S4)                | Chromatogram with peaks              | XChromatogram, XChromatograms, MChromatograms | R/gplot-methods.R                     |
+| `gplot`                     | `plot` (S4)                | BPI and MS map visualization         | XcmsExperiment                                | R/gplot-XcmsExperiment-methods.R      |
+| `gplot`                     | `plot` (S4)                | RT alignment parameter visualization | LamaParama                                    | R/gplot-LamaParama-methods.R          |
+| `gplotFeatureGroups`        | `plotFeatureGroups`        | Feature group visualization          | XCMSnExp, XcmsExperiment                      | R/gplotFeatureGroups-methods.R        |
+| `gplotPrecursorIons`        | `plotPrecursorIons`        | Precursor ion visualization          | MsExperiment                                  | R/gplotPrecursorIons-methods.R        |
+| `ghighlightChromPeaks`      | `highlightChromPeaks`      | Peak annotation layers               | XCMSnExp, XcmsExperiment                      | R/ghighlightChromPeaks-methods.R      |
 
 ------------------------------------------------------------------------
 
@@ -47,6 +49,8 @@ functions with support for both legacy (`XCMSnExp`) and modern
 | `vignettes/chromatogram-visualization.qmd`   | Chromatogram and Peak Density Visualization   | Chromatogram plotting, peak density, overlay plots, parameter tuning                   |
 | `vignettes/xcmsexperiment-visualization.qmd` | XcmsExperiment Visualization                  | BPI and MS map visualization, multi-level MS data, interactive plots                   |
 | `vignettes/feature-groups-visualization.qmd` | Feature Groups Visualization                  | Feature grouping, related features, isotopes/adducts, customization, interactive plots |
+| `vignettes/alignment-parameters.qmd`         | RT Alignment Parameter Visualization          | LamaParama objects, parameter assessment, alignment quality                            |
+| `vignettes/precursor-ions.qmd`               | Precursor Ion Visualization                   | MS/MS precursor ions, fragment relationships, MS2 data exploration                     |
 
 ------------------------------------------------------------------------
 
@@ -55,11 +59,10 @@ functions with support for both legacy (`XCMSnExp`) and modern
 **Complete analysis based on comprehensive search of XCMS source code
 (66 R files reviewed)**
 
-### Potential Future Implementations
+### ✅ All Modern Functions Implemented
 
-| XCMS Function       | Input Objects | Priority | Notes                                      |
-|---------------------|---------------|----------|--------------------------------------------|
-| `plotPrecursorIons` | MsExperiment  | ⭐ Low   | MS/MS-specific precursor ion visualization |
+All modern XCMS plotting functions for XCMSnExp, XcmsExperiment,
+MsExperiment, and LamaParama objects have been implemented.
 
 ### Deprecated/Internal Functions - Not Implementing
 
@@ -70,13 +73,13 @@ functions with support for both legacy (`XCMSnExp`) and modern
 
 ### Not Implementing - Legacy xcmsRaw/xcmsSet/xcmsFragments Objects
 
-The following 12 functions are for legacy objects and are not planned
+The following 11 functions are for legacy objects and are not planned
 for implementation as the focus is on modern XCMSnExp and XcmsExperiment
 workflows:
 
 `plotChrom`, `plotEIC`, `plotPeaks`, `plotRaw`, `plotScan`, `plotSpec`,
 `plotSurf`, `plotTIC` (xcmsRaw); `plotrt`, `plotQC` (xcmsSet);
-`plotTree` (xcmsFragments); `plot` (LamaParama)
+`plotTree` (xcmsFragments)
 
 ------------------------------------------------------------------------
 

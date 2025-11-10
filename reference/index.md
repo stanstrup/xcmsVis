@@ -23,5 +23,7 @@ graphics to ggplot2 while preserving the original visualization logic.
   : ggplot2 Version of plotChromatogramsOverlay
 - [`gplotFeatureGroups()`](https://stanstrup.github.io/xcmsVis/reference/gplotFeatureGroups.md)
   : ggplot2 Version of plotFeatureGroups
+- [`gplotPrecursorIons()`](https://stanstrup.github.io/xcmsVis/reference/gplotPrecursorIons.md)
+  : ggplot2 Version of plotPrecursorIons
 - [`ghighlightChromPeaks()`](https://stanstrup.github.io/xcmsVis/reference/ghighlightChromPeaks.md)
   : ggplot2 Version of highlightChromPeaks

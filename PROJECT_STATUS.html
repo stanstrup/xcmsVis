@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.22</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,10 +19,12 @@
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Vignettes</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes"><li><a class="dropdown-item" href="articles/gplotAdjustedRtime.html">gplotAdjustedRtime - Retention Time Adjustment</a></li>
-    <li><a class="dropdown-item" href="articles/peak-visualization.html">Peak Visualization Functions</a></li>
-    <li><a class="dropdown-item" href="articles/chromatogram-visualization.html">Chromatogram and Peak Density Visualization</a></li>
-    <li><a class="dropdown-item" href="articles/feature-groups-visualization.html">Feature Groups Visualization</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes"><li><h6 class="dropdown-header" data-toc-skip>---------- XCMS Workflow ----------</h6></li>
+    <li><a class="dropdown-item" href="articles/01-raw-data-visualization.html">Step 1: Raw Data Visualization</a></li>
+    <li><a class="dropdown-item" href="articles/02-peak-detection.html">Step 2: Peak Detection Visualization</a></li>
+    <li><a class="dropdown-item" href="articles/03-peak-correspondence.html">Step 3: Peak Correspondence Visualization</a></li>
+    <li><a class="dropdown-item" href="articles/04-retention-time-alignment.html">Step 4: Retention Time Alignment Visualization</a></li>
+    <li><a class="dropdown-item" href="articles/05-feature-grouping.html">Step 5: Feature Grouping Visualization</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/stanstrup/xcmsVis" aria-label="GitHub repository"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -44,22 +46,22 @@
 <hr><div class="section level2">
 <h2 id="quick-summary">Quick Summary<a class="anchor" aria-label="anchor" href="#quick-summary"></a></h2>
 <p><strong>xcmsVis</strong> provides ggplot2-based implementations of XCMS plotting functions with support for both legacy (<code>XCMSnExp</code>) and modern (<code>XcmsExperiment</code>) objects.</p>
-<table class="table"><thead><tr class="header"><th>Metric</th>
+<table class="table"><colgroup><col width="40%"><col width="59%"></colgroup><thead><tr class="header"><th>Metric</th>
 <th>Status</th>
 </tr></thead><tbody><tr class="odd"><td><strong>Core Functions</strong></td>
-<td>9 / 9 modern XCMS functions complete</td>
+<td>11 / 11 modern XCMS functions complete</td>
 </tr><tr class="even"><td><strong>Object Support</strong></td>
-<td>XCMSnExp ✅ / XcmsExperiment ✅</td>
+<td>XCMSnExp ✅ / XcmsExperiment ✅ / LamaParama ✅</td>
 </tr><tr class="odd"><td><strong>Vignettes</strong></td>
-<td>5 comprehensive guides</td>
+<td>7 comprehensive guides</td>
 </tr><tr class="even"><td><strong>Test Coverage</strong></td>
-<td>9 test files, all tests passing</td>
+<td>11 test files, all tests passing</td>
 </tr><tr class="odd"><td><strong>R CMD check</strong></td>
 <td>✅ 0 errors, 0 warnings</td>
 </tr><tr class="even"><td><strong>GitHub Actions</strong></td>
 <td>✅ All workflows passing</td>
 </tr><tr class="odd"><td><strong>Remaining XCMS plots</strong></td>
-<td>2 low-priority MS/MS-specific</td>
+<td>0 - All modern functions implemented</td>
 </tr></tbody></table><hr></div>
 <div class="section level2">
 <h2 id="implemented-functions">Implemented Functions<a class="anchor" aria-label="anchor" href="#implemented-functions"></a></h2>
@@ -99,18 +101,28 @@
 <td>Chromatogram with peaks</td>
 <td>XChromatogram, XChromatograms, MChromatograms</td>
 <td>R/gplot-methods.R</td>
-</tr><tr class="odd"><td>
-<code>gplot</code> (XcmsExperiment)</td>
+</tr><tr class="odd"><td><code>gplot</code></td>
 <td>
 <code>plot</code> (S4)</td>
 <td>BPI and MS map visualization</td>
 <td>XcmsExperiment</td>
 <td>R/gplot-XcmsExperiment-methods.R</td>
-</tr><tr class="even"><td><code>gplotFeatureGroups</code></td>
+</tr><tr class="even"><td><code>gplot</code></td>
+<td>
+<code>plot</code> (S4)</td>
+<td>RT alignment parameter visualization</td>
+<td>LamaParama</td>
+<td>R/gplot-LamaParama-methods.R</td>
+</tr><tr class="odd"><td><code>gplotFeatureGroups</code></td>
 <td><code>plotFeatureGroups</code></td>
 <td>Feature group visualization</td>
 <td>XCMSnExp, XcmsExperiment</td>
 <td>R/gplotFeatureGroups-methods.R</td>
+</tr><tr class="even"><td><code>gplotPrecursorIons</code></td>
+<td><code>plotPrecursorIons</code></td>
+<td>Precursor ion visualization</td>
+<td>MsExperiment</td>
+<td>R/gplotPrecursorIons-methods.R</td>
 </tr><tr class="odd"><td><code>ghighlightChromPeaks</code></td>
 <td><code>highlightChromPeaks</code></td>
 <td>Peak annotation layers</td>
@@ -137,21 +149,20 @@
 </tr><tr class="odd"><td><code>vignettes/feature-groups-visualization.qmd</code></td>
 <td>Feature Groups Visualization</td>
 <td>Feature grouping, related features, isotopes/adducts, customization, interactive plots</td>
+</tr><tr class="even"><td><code>vignettes/alignment-parameters.qmd</code></td>
+<td>RT Alignment Parameter Visualization</td>
+<td>LamaParama objects, parameter assessment, alignment quality</td>
+</tr><tr class="odd"><td><code>vignettes/precursor-ions.qmd</code></td>
+<td>Precursor Ion Visualization</td>
+<td>MS/MS precursor ions, fragment relationships, MS2 data exploration</td>
 </tr></tbody></table><hr></div>
 <div class="section level2">
 <h2 id="additional-xcms-plotting-functions">Additional XCMS Plotting Functions<a class="anchor" aria-label="anchor" href="#additional-xcms-plotting-functions"></a></h2>
 <p><strong>Complete analysis based on comprehensive search of XCMS source code (66 R files reviewed)</strong></p>
 <div class="section level3">
-<h3 id="potential-future-implementations">Potential Future Implementations<a class="anchor" aria-label="anchor" href="#potential-future-implementations"></a></h3>
-<table class="table"><colgroup><col width="25%"><col width="25%"><col width="25%"><col width="25%"></colgroup><thead><tr class="header"><th>XCMS Function</th>
-<th>Input Objects</th>
-<th>Priority</th>
-<th>Notes</th>
-</tr></thead><tbody><tr class="odd"><td><code>plotPrecursorIons</code></td>
-<td>MsExperiment</td>
-<td>⭐ Low</td>
-<td>MS/MS-specific precursor ion visualization</td>
-</tr></tbody></table></div>
+<h3 id="id_-all-modern-functions-implemented">✅ All Modern Functions Implemented<a class="anchor" aria-label="anchor" href="#id_-all-modern-functions-implemented"></a></h3>
+<p>All modern XCMS plotting functions for XCMSnExp, XcmsExperiment, MsExperiment, and LamaParama objects have been implemented.</p>
+</div>
 <div class="section level3">
 <h3 id="deprecatedinternal-functions---not-implementing">Deprecated/Internal Functions - Not Implementing<a class="anchor" aria-label="anchor" href="#deprecatedinternal-functions---not-implementing"></a></h3>
 <table class="table"><colgroup><col width="33%"><col width="33%"><col width="33%"></colgroup><thead><tr class="header"><th>XCMS Function</th>
@@ -167,8 +178,8 @@
 </tr></tbody></table></div>
 <div class="section level3">
 <h3 id="not-implementing---legacy-xcmsrawxcmssetxcmsfragments-objects">Not Implementing - Legacy xcmsRaw/xcmsSet/xcmsFragments Objects<a class="anchor" aria-label="anchor" href="#not-implementing---legacy-xcmsrawxcmssetxcmsfragments-objects"></a></h3>
-<p>The following 12 functions are for legacy objects and are not planned for implementation as the focus is on modern XCMSnExp and XcmsExperiment workflows:</p>
-<p><code>plotChrom</code>, <code>plotEIC</code>, <code>plotPeaks</code>, <code>plotRaw</code>, <code>plotScan</code>, <code>plotSpec</code>, <code>plotSurf</code>, <code>plotTIC</code> (xcmsRaw); <code>plotrt</code>, <code>plotQC</code> (xcmsSet); <code>plotTree</code> (xcmsFragments); <code>plot</code> (LamaParama)</p>
+<p>The following 11 functions are for legacy objects and are not planned for implementation as the focus is on modern XCMSnExp and XcmsExperiment workflows:</p>
+<p><code>plotChrom</code>, <code>plotEIC</code>, <code>plotPeaks</code>, <code>plotRaw</code>, <code>plotScan</code>, <code>plotSpec</code>, <code>plotSurf</code>, <code>plotTIC</code> (xcmsRaw); <code>plotrt</code>, <code>plotQC</code> (xcmsSet); <code>plotTree</code> (xcmsFragments)</p>
 <hr></div>
 </div>
 <div class="section level2">

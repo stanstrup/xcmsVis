@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.22</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,10 +19,12 @@
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Vignettes</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes"><li><a class="dropdown-item" href="../articles/gplotAdjustedRtime.html">gplotAdjustedRtime - Retention Time Adjustment</a></li>
-    <li><a class="dropdown-item" href="../articles/peak-visualization.html">Peak Visualization Functions</a></li>
-    <li><a class="dropdown-item" href="../articles/chromatogram-visualization.html">Chromatogram and Peak Density Visualization</a></li>
-    <li><a class="dropdown-item" href="../articles/feature-groups-visualization.html">Feature Groups Visualization</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes"><li><h6 class="dropdown-header" data-toc-skip>---------- XCMS Workflow ----------</h6></li>
+    <li><a class="dropdown-item" href="../articles/01-raw-data-visualization.html">Step 1: Raw Data Visualization</a></li>
+    <li><a class="dropdown-item" href="../articles/02-peak-detection.html">Step 2: Peak Detection Visualization</a></li>
+    <li><a class="dropdown-item" href="../articles/03-peak-correspondence.html">Step 3: Peak Correspondence Visualization</a></li>
+    <li><a class="dropdown-item" href="../articles/04-retention-time-alignment.html">Step 4: Retention Time Alignment Visualization</a></li>
+    <li><a class="dropdown-item" href="../articles/05-feature-grouping.html">Step 5: Feature Grouping Visualization</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/stanstrup/xcmsVis" aria-label="GitHub repository"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -38,6 +40,68 @@
       <small>Source: <a href="https://github.com/stanstrup/xcmsVis/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.1" id="changes-in-v101">Changes in v1.0.1<a class="anchor" aria-label="anchor" href="#changes-in-v101"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-1"></a></h3>
+<ul><li>add missing MsExperiment library to vignette (<a href="https://github.com/stanstrup/xcmsVis/commit/af62f5988e5267f224b885be6e061ce4e00b18fe" class="external-link">af62f59</a>)</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.0" id="changes-in-v100">Changes in v1.0.0<a class="anchor" aria-label="anchor" href="#changes-in-v100"></a></h2>
+<div class="section level3">
+<h3 id="code-refactoring-1-0-0">Code Refactoring<a class="anchor" aria-label="anchor" href="#code-refactoring-1-0-0"></a></h3>
+<ul><li>remove main/xlab/ylab from simple plotting functions (<a href="https://github.com/stanstrup/xcmsVis/commit/1e6672ce48aba54d17f7b99f2dea10386ad82cb1" class="external-link">1e6672c</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-1-0-0">BREAKING CHANGES<a class="anchor" aria-label="anchor" href="#breaking-changes-1-0-0"></a></h3>
+<ul><li>
+<p>These functions no longer accept main, xlab, or ylab parameters. Users should use + labs() after plot creation instead:</p>
+<h1 id="old-api-no-longer-works">Old API (no longer works)</h1>
+<p>gplotFeatureGroups(x, xlab = “RT”, main = “Title”)</p>
+<h1 id="new-api-ggplot2-idiomatic">New API (ggplot2-idiomatic)</h1>
+<p>gplotFeatureGroups(x) + labs(x = “RT”, title = “Title”)</p>
+</li>
+</ul><p>Updated: - Function implementations to use hardcoded sensible defaults - Generic definitions in AllGenerics.R - Roxygen documentation for all affected functions - Tests to demonstrate new + labs() approach - Vignettes with API difference callout notes</p>
+<p>Functions with complex handling (gplotChromatogramsOverlay, gplot.XcmsExperiment, gplotPrecursorIons) retain their parameters due to special requirements (faceting, conditional labels, metadata defaults).</p>
+<p>🤖 Generated with <a href="https://claude.com/claude-code" class="external-link">Claude Code</a></p>
+<p>Co-Authored-By: Claude <a href="mailto:noreply@anthropic.com" class="email">noreply@anthropic.com</a></p>
+</div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.99.20" id="changes-in-v09920">Changes in v0.99.20<a class="anchor" aria-label="anchor" href="#changes-in-v09920"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-99-20">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-99-20"></a></h3>
+<ul><li>Add namespace prefix to .PROCSTEP.RTIME.CORRECTION (<a href="https://github.com/stanstrup/xcmsVis/commit/bbd8012d4e44fcc0189251e501bea4269a291ba8" class="external-link">bbd8012</a>)</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.99.19" id="changes-in-v09919">Changes in v0.99.19<a class="anchor" aria-label="anchor" href="#changes-in-v09919"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-99-19">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-99-19"></a></h3>
+<ul><li>Add namespace prefix to .PROCSTEP.RTIME.CORRECTION in vignette (<a href="https://github.com/stanstrup/xcmsVis/commit/e4cf1048a4f42995ad23251866bb0ba26d924baa" class="external-link">e4cf104</a>)</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.99.18" id="changes-in-v09918">Changes in v0.99.18<a class="anchor" aria-label="anchor" href="#changes-in-v09918"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-99-18">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-99-18"></a></h3>
+<ul><li>Update alignment-parameters vignette to avoid LamaParama validation error (<a href="https://github.com/stanstrup/xcmsVis/commit/9498619c18c258b38a916d49ac766391f0bd068f" class="external-link">9498619</a>)</li>
+<li>Update alignment-parameters vignette to eval and add XCMS comparison (<a href="https://github.com/stanstrup/xcmsVis/commit/094989ee520ba2b9f424839f5b22b58f331dd636" class="external-link">094989e</a>)</li>
+<li>Update precursor-ions vignette with side-by-side comparison (<a href="https://github.com/stanstrup/xcmsVis/commit/27be1963bbe15ee7692c84b444e1d185940431f7" class="external-link">27be196</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="features-0-99-18">Features<a class="anchor" aria-label="anchor" href="#features-0-99-18"></a></h3>
+<ul><li>Add gplot for LamaParama and gplotPrecursorIons (<a href="https://github.com/stanstrup/xcmsVis/commit/0a99b75ed419559babbbbf73e2132f8266c31e3b" class="external-link">0a99b75</a>)</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.99.17" id="changes-in-v09917">Changes in v0.99.17<a class="anchor" aria-label="anchor" href="#changes-in-v09917"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-99-17">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-99-17"></a></h3>
+<ul><li>Resolve R CMD check warnings and errors (<a href="https://github.com/stanstrup/xcmsVis/commit/8327a967958d6bb834f6f94a66689556ea513036" class="external-link">8327a96</a>)</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.99.16" id="changes-in-v09916">Changes in v0.99.16<a class="anchor" aria-label="anchor" href="#changes-in-v09916"></a></h2>
 <div class="section level3">

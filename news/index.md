@@ -1,5 +1,83 @@
 # Changelog
 
+## Changes in v1.0.1
+
+### Bug Fixes
+
+- add missing MsExperiment library to vignette
+  ([af62f59](https://github.com/stanstrup/xcmsVis/commit/af62f5988e5267f224b885be6e061ce4e00b18fe))
+
+## Changes in v1.0.0
+
+### Code Refactoring
+
+- remove main/xlab/ylab from simple plotting functions
+  ([1e6672c](https://github.com/stanstrup/xcmsVis/commit/1e6672ce48aba54d17f7b99f2dea10386ad82cb1))
+
+### BREAKING CHANGES
+
+- These functions no longer accept main, xlab, or ylab parameters. Users
+  should use + labs() after plot creation instead:
+
+  # Old API (no longer works)
+
+  gplotFeatureGroups(x, xlab = “RT”, main = “Title”)
+
+  # New API (ggplot2-idiomatic)
+
+  gplotFeatureGroups(x) + labs(x = “RT”, title = “Title”)
+
+Updated: - Function implementations to use hardcoded sensible defaults -
+Generic definitions in AllGenerics.R - Roxygen documentation for all
+affected functions - Tests to demonstrate new + labs() approach -
+Vignettes with API difference callout notes
+
+Functions with complex handling (gplotChromatogramsOverlay,
+gplot.XcmsExperiment, gplotPrecursorIons) retain their parameters due to
+special requirements (faceting, conditional labels, metadata defaults).
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+## Changes in v0.99.20
+
+### Bug Fixes
+
+- Add namespace prefix to .PROCSTEP.RTIME.CORRECTION
+  ([bbd8012](https://github.com/stanstrup/xcmsVis/commit/bbd8012d4e44fcc0189251e501bea4269a291ba8))
+
+## Changes in v0.99.19
+
+### Bug Fixes
+
+- Add namespace prefix to .PROCSTEP.RTIME.CORRECTION in vignette
+  ([e4cf104](https://github.com/stanstrup/xcmsVis/commit/e4cf1048a4f42995ad23251866bb0ba26d924baa))
+
+## Changes in v0.99.18
+
+### Bug Fixes
+
+- Update alignment-parameters vignette to avoid LamaParama validation
+  error
+  ([9498619](https://github.com/stanstrup/xcmsVis/commit/9498619c18c258b38a916d49ac766391f0bd068f))
+- Update alignment-parameters vignette to eval and add XCMS comparison
+  ([094989e](https://github.com/stanstrup/xcmsVis/commit/094989ee520ba2b9f424839f5b22b58f331dd636))
+- Update precursor-ions vignette with side-by-side comparison
+  ([27be196](https://github.com/stanstrup/xcmsVis/commit/27be1963bbe15ee7692c84b444e1d185940431f7))
+
+### Features
+
+- Add gplot for LamaParama and gplotPrecursorIons
+  ([0a99b75](https://github.com/stanstrup/xcmsVis/commit/0a99b75ed419559babbbbf73e2132f8266c31e3b))
+
+## Changes in v0.99.17
+
+### Bug Fixes
+
+- Resolve R CMD check warnings and errors
+  ([8327a96](https://github.com/stanstrup/xcmsVis/commit/8327a967958d6bb834f6f94a66689556ea513036))
+
 ## Changes in v0.99.16
 
 ### Bug Fixes
