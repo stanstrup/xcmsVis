@@ -1,3 +1,37 @@
+## Changes in v1.0.0
+
+
+### Code Refactoring
+
+* remove main/xlab/ylab from simple plotting functions ([1e6672c](https://github.com/stanstrup/xcmsVis/commit/1e6672ce48aba54d17f7b99f2dea10386ad82cb1))
+
+
+### BREAKING CHANGES
+
+* These functions no longer accept main, xlab, or ylab
+parameters. Users should use + labs() after plot creation instead:
+
+  # Old API (no longer works)
+  gplotFeatureGroups(x, xlab = "RT", main = "Title")
+
+  # New API (ggplot2-idiomatic)
+  gplotFeatureGroups(x) + labs(x = "RT", title = "Title")
+
+Updated:
+- Function implementations to use hardcoded sensible defaults
+- Generic definitions in AllGenerics.R
+- Roxygen documentation for all affected functions
+- Tests to demonstrate new + labs() approach
+- Vignettes with API difference callout notes
+
+Functions with complex handling (gplotChromatogramsOverlay, gplot.XcmsExperiment,
+gplotPrecursorIons) retain their parameters due to special requirements
+(faceting, conditional labels, metadata defaults).
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
 ## Changes in v0.99.20
 
 
