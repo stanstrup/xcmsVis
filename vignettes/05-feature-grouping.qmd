@@ -1,5 +1,5 @@
 ---
-title: "Visualizing Feature Groups"
+title: "Step 5: Feature Grouping Visualization"
 author: "xcmsVis Package"
 date: today
 format:
@@ -9,7 +9,7 @@ format:
     code-fold: false
     theme: cosmo
 vignette: >
-  %\VignetteIndexEntry{Visualizing Feature Groups}
+  %\VignetteIndexEntry{Step 5: Feature Grouping Visualization}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
@@ -28,14 +28,40 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette demonstrates the `gplotFeatureGroups()` function for visualizing relationships between features in LC-MS data. After feature detection and correspondence, `groupFeatures()` identifies features that likely represent the same compound (e.g., isotopes, adducts, fragments). The `gplotFeatureGroups()` function visualizes these relationships by plotting features connected by lines within each group across retention time and m/z dimensions.
+This vignette covers the **final step** in the XCMS metabolomics workflow: **feature grouping**. After retention time alignment, these functions help you:
 
-This is a ggplot2 reimplementation of XCMS's `plotFeatureGroups()` function, enabling:
+- Visualize relationships between features
+- Identify isotopes, adducts, and fragments
+- Assess feature annotation quality
+- Create publication-ready feature network plots
 
-- Interactive plots with plotly
-- Customizable styling
-- Publication-quality graphics
-- Consistent API with other xcmsVis functions
+## XCMS Workflow Context
+
+```
+┌─────────────────────────────────────┐
+│ 1. Raw Data Visualization           │
+│ 2. Peak Detection                   │
+│ 3. Peak Correspondence               │
+│ 4. Retention Time Alignment          │
+├─────────────────────────────────────┤
+│ 5. FEATURE GROUPING      ← YOU ARE HERE
+└─────────────────────────────────────┘
+```
+
+## What is Feature Grouping?
+
+Feature grouping identifies features that likely represent the same compound. After feature detection and correspondence, `groupFeatures()` connects features that may be:
+
+- **Isotopes**: M+1, M+2 isotopic peaks
+- **Adducts**: [M+H]+, [M+Na]+, [M+K]+, etc.
+- **Fragments**: In-source fragmentation products
+- **Correlated features**: Compounds with similar abundance patterns
+
+The `gplotFeatureGroups()` function visualizes these relationships by plotting features connected by lines within each group across retention time and m/z dimensions.
+
+## Functions Covered
+
+- **`gplotFeatureGroups()`**: Visualize feature group relationships in RT/m/z space
 
 # Setup
 
@@ -46,6 +72,7 @@ library(MsExperiment)
 library(MsFeatures)
 library(ggplot2)
 library(BiocParallel)
+library(patchwork)
 
 # Configure for serial processing
 register(SerialParam())
@@ -70,7 +97,7 @@ sampleData(xdata)$sample_group <- c("KO", "KO", "WT")
 cat("Loaded", length(fileNames(xdata)), "files\n")
 ```
 
-# Complete XCMS Workflow
+## Complete XCMS Workflow
 
 ```{r workflow}
 # 1. Peak detection
@@ -124,8 +151,8 @@ all_groups <- unique(featureGroups(xdata))
 cat("Feature groups:", head(all_groups, 10), "\n")
 
 # Plot first 5 groups
-  gplotFeatureGroups(xdata, featureGroups = all_groups[1:5]) +
-    ggtitle("First 5 Feature Groups")
+gplotFeatureGroups(xdata, featureGroups = all_groups[1:5]) +
+  ggtitle("First 5 Feature Groups")
 ```
 
 # Customization
@@ -154,8 +181,6 @@ The `type` parameter controls whether to show lines, points, or both:
 ```{r plot_types}
 #| fig-height: 12
 #| fig-width: 10
-library(patchwork)
-
 # Use subset of feature groups for clearer visualization
 fg_subset <- all_groups[1:5]
 
@@ -236,6 +261,71 @@ gplotFeatureGroups(xdata_cor, featureGroups = fg_cor[1:5]) +
   ggtitle("Feature Groups: Abundance Correlation (threshold = 0.7)")
 ```
 
+# Use Cases
+
+## Isotope Pattern Identification
+
+Features grouped by similar RT and m/z spacing may represent isotope patterns (M, M+1, M+2).
+
+## Adduct Identification
+
+Features with similar RT but different m/z values that correlate in abundance may be different adducts of the same compound.
+
+## Quality Control
+
+Visualize feature groups to:
+
+- Verify grouping parameters are appropriate
+- Identify over-grouping (too many features in one group)
+- Identify under-grouping (features that should be grouped but aren't)
+
+## Publication Figures
+
+Create clean, customizable figures showing compound annotation:
+
+```{r publication}
+#| fig-height: 6
+#| fig-width: 10
+gplotFeatureGroups(xdata, featureGroups = fg_subset) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    axis.title = element_text(size = 12),
+    panel.grid.major = element_line(color = "gray90")
+  ) +
+  labs(
+    title = "Feature Group Relationships",
+    caption = "Connected features represent potential isotopes, adducts, or fragments"
+  )
+```
+
+# Summary
+
+## Functions Covered
+
+| Function | Purpose | Input |
+|----------|---------|-------|
+| `gplotFeatureGroups()` | Visualize feature group relationships | XcmsExperiment, XCMSnExp |
+
+## Use Cases
+
+- **Compound annotation**: Identify isotopes, adducts, and fragments
+- **Quality control**: Verify feature grouping quality
+- **Method development**: Optimize groupFeatures parameters
+- **Publication**: Create network plots of feature relationships
+
+## Workflow Complete!
+
+You've now completed the full XCMS visualization workflow:
+
+```
+✓ 1. Raw Data Visualization
+✓ 2. Peak Detection
+✓ 3. Peak Correspondence
+✓ 4. Retention Time Alignment
+✓ 5. Feature Grouping
+```
+
 # Comparison with Original XCMS
 
 <div class="row">
@@ -246,7 +336,7 @@ gplotFeatureGroups(xdata_cor, featureGroups = fg_cor[1:5]) +
 ```{r original_comparison}
 #| fig-height: 6
 #| fig-width: 5
-#| fig-alt: "XCMS plotFeatureGroups showing features connected by lines within groups across retention time and m/z dimensions using base R graphics."
+#| fig-alt: "XCMS plotFeatureGroups using base R graphics."
 # XCMS original (base R graphics)
 plotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002", "FG.0003", "FG.0004", "FG.0005"))
 ```
@@ -259,14 +349,13 @@ plotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002", "FG.0003", "FG.
 ```{r xcmsvis_comparison}
 #| fig-height: 6
 #| fig-width: 5
-#| fig-alt: "ggplot2 version of plotFeatureGroups showing the same feature groups with clean styling and consistent API."
+#| fig-alt: "ggplot2 version with clean styling and consistent API."
 # xcmsVis version (ggplot2)
 gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002", "FG.0003", "FG.0004", "FG.0005"))
 ```
 
 </div>
 </div>
-
 
 # Session Info
 

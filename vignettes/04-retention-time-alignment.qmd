@@ -1,0 +1,453 @@
+---
+title: "Step 4: Retention Time Alignment Visualization"
+author: "xcmsVis Package"
+date: today
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: false
+    theme: cosmo
+vignette: >
+  %\VignetteIndexEntry{Step 4: Retention Time Alignment Visualization}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup}
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 6,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# Introduction
+
+This vignette covers the **fourth step** in the XCMS metabolomics workflow: **retention time alignment**. After peak correspondence, these functions help you:
+
+- Visualize retention time corrections across samples
+- Assess alignment quality
+- Compare different alignment methods
+- Examine alignment model parameters (LamaParama)
+
+## XCMS Workflow Context
+
+```
+┌─────────────────────────────────────┐
+│ 1. Raw Data Visualization           │
+│ 2. Peak Detection                   │
+│ 3. Peak Correspondence               │
+├─────────────────────────────────────┤
+│ 4. RT ALIGNMENT          ← YOU ARE HERE
+├─────────────────────────────────────┤
+│ 5. Feature Grouping                  │
+└─────────────────────────────────────┘
+```
+
+## What is Retention Time Alignment?
+
+Retention time alignment (also called retention time correction) adjusts for systematic shifts in retention time between samples. This improves feature detection by ensuring that the same compound elutes at consistent times across all samples.
+
+## Functions Covered
+
+- **`gplotAdjustedRtime()`**: Visualize retention time corrections for any alignment method
+- **`gplot(LamaParama)`**: Visualize the LamaParama alignment model specifically
+
+# Setup
+
+```{r libraries}
+library(xcms)
+library(xcmsVis)
+library(ggplot2)
+library(plotly)
+library(faahKO)
+library(MsExperiment)
+library(BiocParallel)
+```
+
+# Data Preparation
+
+We'll use the faahKO package data:
+
+```{r load_data}
+# Get example CDF files
+cdf_files <- dir(system.file("cdf", package = "faahKO"),
+                  recursive = TRUE, full.names = TRUE)
+
+# Using 6 samples (3 from each group)
+cdf_files <- cdf_files[c(1:3, 7:9)]
+
+# Load data as XcmsExperiment
+xdata_raw <- readMsExperiment(
+  spectraFiles = cdf_files,
+  BPPARAM = SerialParam()
+)
+
+# Add sample metadata
+sample_group <- rep(c("KO", "WT"), each = 3)
+sampleData(xdata_raw)$sample_name <- basename(cdf_files)
+sampleData(xdata_raw)$sample_group <- sample_group
+```
+
+## Peak Detection and Correspondence
+
+```{r peak_detection}
+# Peak detection
+cwp <- CentWaveParam(
+  peakwidth = c(20, 80),
+  ppm = 25
+)
+xdata_peaks <- findChromPeaks(xdata_raw, param = cwp, BPPARAM = SerialParam())
+
+# Initial correspondence (peak grouping)
+sample_data <- xcmsVis:::.get_sample_data(xdata_peaks)
+
+pdp <- PeakDensityParam(
+  sampleGroups = sample_data$sample_group,
+  minFraction = 0.4,
+  bw = 30
+)
+xdata_grouped <- groupChromPeaks(xdata_peaks, param = pdp)
+```
+
+# Part 1: General Alignment Visualization
+
+## gplotAdjustedRtime(): PeakGroups Method
+
+### Basic Workflow
+
+```{r peakgroups_alignment}
+# Work with a copy of the grouped data
+xdata <- xdata_grouped
+
+# Retention time alignment using peak groups
+pgp <- PeakGroupsParam(
+  minFraction = 0.4,
+  smooth = "loess",
+  span = 0.2,
+  family = "gaussian"
+)
+xdata <- adjustRtime(xdata, param = pgp)
+```
+
+### Creating the Plot
+
+```{r gplot_adjustedrtime}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "ggplot2 version of retention time adjustment plot."
+p <- gplotAdjustedRtime(xdata, color_by = sample_group)
+print(p)
+```
+
+The plot shows:
+
+- **Lines**: One per sample, showing RT deviation across the chromatographic run
+- **Grey circles**: Individual peaks used for alignment
+- **Grey dashed lines**: Connect peaks from the same feature across samples
+
+### Customizing the Plot
+
+```{r custom_plot}
+#| fig-height: 5
+#| fig-width: 7
+#| fig-alt: "Customized retention time adjustment plot."
+p +
+  labs(
+    title = "Retention Time Correction - faahKO Dataset",
+    x = "Adjusted Retention Time (s)",
+    y = "RT Adjustment (s)",
+    color = "Sample Group"
+  ) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1") +
+  theme(legend.position = "top")
+```
+
+### Interactive Visualization
+
+```{r interactive_rt}
+#| fig-alt: "Interactive plotly version of RT adjustment plot."
+p_interactive <- ggplotly(p, tooltip = "text")
+p_interactive
+```
+
+## Advanced Use Cases
+
+### With filterFile()
+
+```{r with_filter}
+# Work with a fresh copy from grouped data
+xdata_filtered <- xdata_grouped
+
+# Filter to specific samples (files 2-5)
+xdata_filtered <- filterFile(xdata_filtered, c(2:5))
+
+# Filtering removes correspondence - need to re-group with filtered samples
+sample_data_filtered <- xcmsVis:::.get_sample_data(xdata_filtered)
+pdp_filtered <- PeakDensityParam(
+  sampleGroups = sample_data_filtered$sample_group,
+  minFraction = 0.4,
+  bw = 30
+)
+xdata_filtered <- groupChromPeaks(xdata_filtered, param = pdp_filtered)
+
+# Align filtered data
+pgp_filter <- PeakGroupsParam(minFraction = 0.4)
+xdata_filtered <- adjustRtime(xdata_filtered, param = pgp_filter)
+```
+
+```{r plot_filtered}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "RT adjustment plot for filtered dataset."
+gplotAdjustedRtime(xdata_filtered, color_by = sample_group)
+```
+
+### With subset Parameter
+
+You can use only specific samples for alignment calculation while keeping all samples in the dataset:
+
+```{r with_subset}
+# Work with a fresh copy of grouped data
+xdata_subset <- xdata_grouped
+
+# Use subset parameter to align using only specific samples
+pgp_subset <- PeakGroupsParam(
+  minFraction = 0.4,
+  smooth = "loess",
+  span = 0.2,
+  family = "gaussian",
+  subset = c(1, 2, 3, 5)  # Exclude sample 4 from alignment calculation
+)
+xdata_subset <- adjustRtime(xdata_subset, param = pgp_subset)
+```
+
+```{r plot_subset}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "RT adjustment plot with subset alignment."
+gplotAdjustedRtime(xdata_subset, color_by = sample_group)
+```
+
+# Part 2: LamaParama Alignment Visualization
+
+## What is LamaParama?
+
+LamaParama (Landmark-based Alignment Parameters) is an alignment method in XCMS that uses feature groups as "landmarks" to correct retention time shifts. Unlike other methods, it explicitly models the RT relationship and stores the alignment parameters for visualization and quality assessment.
+
+## Landmark-Based Alignment
+
+```{r lama_alignment}
+# Work with fresh grouped data
+xdata_lama <- xdata_grouped
+
+# Extract feature definitions to use as landmarks
+fdef <- featureDefinitions(xdata_lama)
+
+# Create landmark matrix (mz and rt columns)
+lamas <- cbind(
+  mz = fdef$mzmed,
+  rt = fdef$rtmed
+)
+
+# Create LamaParama object
+lama_param <- LamaParama(
+  lamas = lamas,
+  method = "loess",
+  span = 0.4
+)
+
+# Perform alignment
+xdata_lama <- adjustRtime(xdata_lama, param = lama_param)
+```
+
+## Visualizing LamaParama Results
+
+### Extract LamaParama Object
+
+```{r extract_lama}
+# Extract LamaParama from process history
+proc_hist <- processHistory(xdata_lama, type = .PROCSTEP.RTIME.CORRECTION)
+lama_result <- proc_hist[[length(proc_hist)]]@param
+
+# Verify it's a LamaParama object
+class(lama_result)
+```
+
+### Basic Alignment Plot
+
+Each plot shows:
+
+- **Points**: Matched peaks between the sample and reference
+- **Line**: The fitted retention time correction model
+
+```{r lama_plot}
+# Plot alignment for first sample
+p <- gplot(lama_result, index = 1)
+p
+```
+
+The x-axis shows the observed retention times in the sample, while the y-axis shows the reference (or "Lama") retention times. The fitted line shows how retention times should be adjusted.
+
+### Multiple Samples
+
+```{r lama_multiple}
+# Create plots for first 3 samples
+p1 <- gplot(lama_result, index = 1) + ggtitle("Sample 1")
+p2 <- gplot(lama_result, index = 2) + ggtitle("Sample 2")
+p3 <- gplot(lama_result, index = 3) + ggtitle("Sample 3")
+
+# Display plots
+library(patchwork)
+p1 / p2 / p3
+```
+
+### Customization
+
+#### Custom Colors
+
+```{r lama_custom}
+p_custom <- gplot(lama_result,
+                  index = 1,
+                  colPoints = "#E41A1C",
+                  colFit = "#377EB8",
+                  xlab = "Observed RT",
+                  ylab = "Reference RT")
+p_custom
+```
+
+#### With ggplot2 Enhancements
+
+```{r lama_enhanced}
+gplot(lama_result, index = 1) +
+  ggtitle("Landmark-Based Alignment Model") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    axis.title = element_text(size = 12)
+  )
+```
+
+#### Interactive
+
+```{r lama_interactive}
+p_interactive <- gplot(lama_result, index = 1)
+ggplotly(p_interactive)
+```
+
+## Interpretation
+
+### Good Alignment
+
+A good alignment shows:
+
+- Many matched points across the RT range
+- Smooth fitted line (not too wiggly)
+- Points closely following the fitted line
+- Few outliers
+
+### Potential Issues
+
+Watch for:
+
+- **Few matched points**: May indicate poor peak grouping or too strict tolerance
+- **Non-smooth fit**: Could indicate overfitting or poor parameter choice
+- **Many outliers**: May suggest RT shifts that are too complex for the model
+- **Gaps in coverage**: Some RT regions may not be well-represented
+
+## Comparing with Overall Alignment
+
+You can use `gplotAdjustedRtime()` to visualize the overall LamaParama alignment result:
+
+```{r lama_overall}
+gplotAdjustedRtime(xdata_lama, color_by = sample_group) +
+  ggtitle("LamaParama Alignment Result")
+```
+
+# Comparing Alignment Methods
+
+Create side-by-side comparisons of different alignment approaches:
+
+```{r method_comparison}
+#| fig-height: 4
+#| fig-width: 10
+#| fig-alt: "Comparison of PeakGroups and LamaParama alignment methods."
+# PeakGroups alignment
+p_pg <- gplotAdjustedRtime(xdata, color_by = sample_group) +
+  ggtitle("PeakGroups Alignment")
+
+# LamaParama alignment
+p_lama <- gplotAdjustedRtime(xdata_lama, color_by = sample_group) +
+  ggtitle("LamaParama Alignment")
+
+p_pg | p_lama
+```
+
+# Summary
+
+## Functions Covered
+
+| Function | Purpose | Input Type |
+|----------|---------|------------|
+| `gplotAdjustedRtime()` | General RT alignment visualization | XcmsExperiment, XCMSnExp |
+| `gplot(LamaParama)` | LamaParama-specific model visualization | LamaParama object |
+
+## Use Cases
+
+- **Quality control**: Verify alignment quality across samples
+- **Method comparison**: Compare PeakGroups, Obiwarp, LamaParama
+- **Parameter optimization**: Tune alignment parameters
+- **Troubleshooting**: Identify samples with problematic alignment
+
+## Next Steps
+
+After aligning retention times, proceed to:
+
+→ **[Step 5: Feature Grouping](05-feature-grouping.html)** - Group features (isotopes, adducts)
+
+# Comparison with Original XCMS
+
+<div class="row">
+<div class="col-md-6">
+
+## Original XCMS
+
+```{r original_rt}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "XCMS plotAdjustedRtime using base R graphics."
+sample_data <- xcmsVis:::.get_sample_data(xdata)
+
+plotAdjustedRtime(
+  xdata,
+  col = as.factor(sample_data$sample_group),
+  peakGroupsCol = "grey"
+)
+```
+
+</div>
+<div class="col-md-6">
+
+## xcmsVis ggplot2
+
+```{r xcmsvis_rt}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "ggplot2 version with modern aesthetics."
+gplotAdjustedRtime(xdata, color_by = sample_group)
+```
+
+</div>
+</div>
+
+# Session Info
+
+```{r session_info}
+sessionInfo()
+```
