@@ -1,3 +1,10 @@
+## Changes in v0.99.19
+
+
+### Bug Fixes
+
+* Add namespace prefix to .PROCSTEP.RTIME.CORRECTION in vignette ([e4cf104](https://github.com/stanstrup/xcmsVis/commit/e4cf1048a4f42995ad23251866bb0ba26d924baa))
+
 ## Changes in v0.99.18
 
 
