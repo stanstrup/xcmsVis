@@ -58,6 +58,7 @@ This vignette covers the **first step** in the XCMS metabolomics workflow: **vis
 ```{r libraries}
 library(xcms)
 library(xcmsVis)
+library(MsExperiment)
 library(ggplot2)
 library(plotly)
 library(patchwork)
