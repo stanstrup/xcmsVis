@@ -11,9 +11,6 @@ gplotChromatogramsOverlay(
   object,
   col = "#00000060",
   type = "l",
-  main = NULL,
-  xlab = "retention time",
-  ylab = "intensity",
   xlim = numeric(),
   ylim = numeric(),
   peakType = c("polygon", "point", "rectangle", "none"),
@@ -29,9 +26,6 @@ gplotChromatogramsOverlay(
   object,
   col = "#00000060",
   type = "l",
-  main = NULL,
-  xlab = "retention time",
-  ylab = "intensity",
   xlim = numeric(),
   ylim = numeric(),
   peakType = c("polygon", "point", "rectangle", "none"),
@@ -47,9 +41,6 @@ gplotChromatogramsOverlay(
   object,
   col = "#00000060",
   type = "l",
-  main = NULL,
-  xlab = "retention time",
-  ylab = "intensity",
   xlim = numeric(),
   ylim = numeric(),
   peakType = c("polygon", "point", "rectangle", "none"),
@@ -68,14 +59,8 @@ gplotChromatogramsOverlay(
 
 \item{type}{Plot type (default: "l" for line).}
 
-\item{main}{Plot title or vector of titles (one per row). Default: NULL.}
-
-\item{xlab}{X-axis label (default: "retention time").}
-
-\item{ylab}{Y-axis label (default: "intensity").}
-
 \item{xlim}{Numeric vector of length 2 specifying retention time range.
-Default: numeric() (auto-calculate).}
+Default: numeric() (auto-calculate). Use \code{+ labs()} to customize axis labels and titles.}
 
 \item{ylim}{Numeric vector of length 2 specifying intensity range.
 Default: numeric() (auto-calculate).}
