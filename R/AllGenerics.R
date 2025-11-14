@@ -618,12 +618,10 @@ setGeneric("gplotFeatureGroups", function(x,
 #' @param pch Point shape for precursor ions (default: 21 = filled circle).
 #' @param col Point color (default: semi-transparent black).
 #' @param bg Point background/fill color (default: very transparent black).
-#' @param xlab X-axis label (default: "retention time").
-#' @param ylab Y-axis label (default: "m/z").
-#' @param main Plot title (default: file basename from dataOrigin).
-#' @param ... Additional ggplot2 parameters.
+#' @param ... Additional arguments passed to ggplot2 functions.
 #'
 #' @return A ggplot object (or list of ggplot objects if multiple files).
+#'   Use `+ labs()` to customize axis labels and titles.
 #'
 #' @details
 #' This function visualizes the precursor ions selected for fragmentation in MS/MS experiments.
@@ -638,16 +636,23 @@ setGeneric("gplotFeatureGroups", function(x,
 #' The plot range includes all MS1 data to provide context, but only shows precursor ions
 #' from MS2 spectra.
 #'
+#' Default labels are provided ("retention time", "m/z"), but can be customized using
+#' ggplot2's `labs()` function, e.g., `gplotPrecursorIons(x) + labs(x = "RT (s)")`.
+#'
 #' @examples
 #' \donttest{
 #' library(xcmsVis)
 #' library(MsExperiment)
+#' library(ggplot2)
 #'
 #' ## Load a test data file with DDA LC-MS/MS data
 #' fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
 #' pest_dda <- readMsExperiment(fl)
 #'
 #' gplotPrecursorIons(pest_dda)
+#'
+#' ## Customize labels with ggplot2
+#' gplotPrecursorIons(pest_dda) + labs(x = "RT (s)", y = "Precursor m/z", title = "DDA Analysis")
 #'
 #' ## Subset the data object to plot the data specifically for one or
 #' ## selected file/sample:
@@ -661,8 +666,5 @@ setGeneric("gplotFeatureGroups", function(x,
 setGeneric("gplotPrecursorIons", function(object,
                                           pch = 21,
                                           col = "#00000080",
-                                          bg = "#00000020",
-                                          xlab = "retention time",
-                                          ylab = "m/z",
-                                          main = character(), ...)
+                                          bg = "#00000020", ...)
   standardGeneric("gplotPrecursorIons"))

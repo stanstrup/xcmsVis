@@ -10,10 +10,7 @@ setMethod("gplotPrecursorIons", "MsExperiment",
           function(object,
                    pch = 21,
                    col = "#00000080",
-                   bg = "#00000020",
-                   xlab = "retention time",
-                   ylab = "m/z",
-                   main = character(), ...) {
+                   bg = "#00000020", ...) {
 
   if (!inherits(object, "MsExperiment"))
     stop("'object' should be a 'MsExperiment' object or an object of a ",
@@ -37,11 +34,8 @@ setMethod("gplotPrecursorIons", "MsExperiment",
     prt <- rtime(spctra[!is.na(pmz)])
     pmz <- pmz[!is.na(pmz)]
 
-    # Get plot title
-    if (!length(main))
-      plot_title <- basename(dataOrigin(spctra[1L]))
-    else
-      plot_title <- main[1L]
+    # Get default title from file name
+    plot_title <- basename(dataOrigin(spctra[1L]))
 
     # Create data frame for plotting
     if (length(pmz) > 0) {
@@ -54,12 +48,13 @@ setMethod("gplotPrecursorIons", "MsExperiment",
       p <- ggplot(plot_data, aes(x = rt, y = mz)) +
         geom_point(shape = pch, color = col, fill = bg, size = 2) +
         coord_cartesian(xlim = rtr, ylim = mzr) +
-        labs(x = xlab, y = ylab, title = plot_title) +
+        labs(x = "retention time", y = "m/z", title = plot_title) +
         theme_bw()
     } else {
       # No precursor ions found - create empty plot with message
       p <- ggplot() +
-        labs(x = xlab, y = ylab, title = paste0(plot_title, " (no MS2 data)")) +
+        labs(x = "retention time", y = "m/z",
+             title = paste0(plot_title, " (no MS2 data)")) +
         theme_bw()
     }
 

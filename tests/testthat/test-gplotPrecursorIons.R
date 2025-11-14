@@ -49,17 +49,15 @@ test_that("gplotPrecursorIons handles custom colors", {
   }
 })
 
-test_that("gplotPrecursorIons handles custom labels", {
+test_that("gplotPrecursorIons handles custom labels with ggplot2", {
   fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
 
   if (file.exists(fl)) {
     pest_dda <- readMsExperiment(fl)
 
-    # Test custom labels
-    p <- gplotPrecursorIons(pest_dda,
-                            xlab = "Custom RT",
-                            ylab = "Custom m/z",
-                            main = "Custom Title")
+    # Test custom labels using ggplot2 labs() function
+    p <- gplotPrecursorIons(pest_dda) +
+      ggplot2::labs(x = "Custom RT", y = "Custom m/z", title = "Custom Title")
 
     expect_s3_class(p, "ggplot")
     expect_equal(p$labels$x, "Custom RT")
