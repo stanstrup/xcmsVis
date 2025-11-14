@@ -436,11 +436,8 @@ setGeneric("gplotChromPeakDensity", function(object,
 #' @param object An `XChromatograms` or `MChromatograms` object.
 #' @param col Color for the chromatogram lines (default: "#00000060").
 #' @param type Plot type (default: "l" for line).
-#' @param main Plot title or vector of titles (one per row). Default: NULL.
-#' @param xlab X-axis label (default: "retention time").
-#' @param ylab Y-axis label (default: "intensity").
 #' @param xlim Numeric vector of length 2 specifying retention time range.
-#'   Default: numeric() (auto-calculate).
+#'   Default: numeric() (auto-calculate). Use `+ labs()` to customize axis labels and titles.
 #' @param ylim Numeric vector of length 2 specifying intensity range.
 #'   Default: numeric() (auto-calculate).
 #' @param peakType Type of peak annotation: "polygon", "point", "rectangle", or "none"
@@ -507,9 +504,6 @@ setGeneric("gplotChromPeakDensity", function(object,
 setGeneric("gplotChromatogramsOverlay", function(object,
                                                   col = "#00000060",
                                                   type = "l",
-                                                  main = NULL,
-                                                  xlab = "retention time",
-                                                  ylab = "intensity",
                                                   xlim = numeric(),
                                                   ylim = numeric(),
                                                   peakType = c("polygon", "point", "rectangle", "none"),

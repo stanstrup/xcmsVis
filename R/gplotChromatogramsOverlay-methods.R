@@ -11,9 +11,6 @@ NULL
 .gplotChromatogramsOverlay_impl <- function(object,
                                             col = "#00000060",
                                             type = "l",
-                                            main = NULL,
-                                            xlab = "retention time",
-                                            ylab = "intensity",
                                             xlim = numeric(),
                                             ylim = numeric(),
                                             peakType = c("polygon", "point", "rectangle", "none"),
@@ -136,13 +133,13 @@ NULL
     p <- ggplot(combined_df, aes(x = rt, y = intensity, group = row)) +
         geom_line(color = col) +
         theme_bw() +
-        labs(x = xlab) +
+        labs(x = "retention time") +
         xlim(xlim_use[1], xlim_use[2]) +
         ylim(ylim_use[1], ylim_use[2])
 
     # Add y-axis label only if not stacking
     if (stacked == 0) {
-        p <- p + labs(y = ylab)
+        p <- p + labs(y = "intensity")
     } else {
         # Remove y-axis and label when stacking is enabled
         p <- p +
@@ -154,11 +151,6 @@ NULL
     # Add faceting if multiple columns (samples)
     if (ncols > 1) {
         p <- p + facet_wrap(~ panel_title, ncol = 1, scales = "free_y")
-    } else {
-        # Single sample - add title if provided
-        if (!is.null(main) && main[1] != "") {
-            p <- p + labs(title = main[1])
-        }
     }
 
     # Add peak annotations if present and requested
@@ -296,16 +288,15 @@ NULL
 #' @rdname gplotChromatogramsOverlay
 #' @export
 setMethod("gplotChromatogramsOverlay", "XChromatograms",
-          function(object, col = "#00000060", type = "l", main = NULL,
-                   xlab = "retention time", ylab = "intensity",
+          function(object, col = "#00000060", type = "l",
                    xlim = numeric(), ylim = numeric(),
                    peakType = c("polygon", "point", "rectangle", "none"),
                    peakBg = NULL, peakCol = NULL, peakPch = 1,
                    stacked = 0, transform = identity, ...) {
 
               .gplotChromatogramsOverlay_impl(
-                  object = object, col = col, type = type, main = main,
-                  xlab = xlab, ylab = ylab, xlim = xlim, ylim = ylim,
+                  object = object, col = col, type = type,
+                  xlim = xlim, ylim = ylim,
                   peakType = peakType, peakBg = peakBg, peakCol = peakCol,
                   peakPch = peakPch, stacked = stacked, transform = transform, ...
               )
@@ -314,15 +305,14 @@ setMethod("gplotChromatogramsOverlay", "XChromatograms",
 #' @rdname gplotChromatogramsOverlay
 #' @export
 setMethod("gplotChromatogramsOverlay", "MChromatograms",
-          function(object, col = "#00000060", type = "l", main = NULL,
-                   xlab = "retention time", ylab = "intensity",
+          function(object, col = "#00000060", type = "l",
                    xlim = numeric(), ylim = numeric(),
                    stacked = 0, transform = identity, ...) {
 
               # MChromatograms doesn't have peaks, so set peakType to "none"
               .gplotChromatogramsOverlay_impl(
-                  object = object, col = col, type = type, main = main,
-                  xlab = xlab, ylab = ylab, xlim = xlim, ylim = ylim,
+                  object = object, col = col, type = type,
+                  xlim = xlim, ylim = ylim,
                   peakType = "none", peakBg = NULL, peakCol = NULL,
                   peakPch = 1, stacked = stacked, transform = transform, ...
               )
