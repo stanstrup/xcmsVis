@@ -5,14 +5,16 @@ NULL
 #'
 #' @param chr_obj Chromatogram object to extract data from (for single chromatogram)
 #' @param peaks_df Data frame with peak information
+#' @param peak_ids Character vector of peak IDs (rownames from chromPeaks)
 #' @param peakCol Color for polygon border
 #' @param peakBg Color for polygon fill
 #' @keywords internal
 #' @noRd
-.add_polygon_peaks <- function(chr_obj, peaks_df, peakCol, peakBg) {
+.add_polygon_peaks <- function(chr_obj, peaks_df, peak_ids, peakCol, peakBg) {
     # Collect all polygons with NA breaks (matches XCMS behavior)
     xs_all <- numeric()
     ys_all <- numeric()
+    ids_all <- character()
 
     for (i in seq_len(nrow(peaks_df))) {
         pk <- peaks_df[i, ]
@@ -35,19 +37,24 @@ NULL
         # Filter out NA values (both xs and ys together)
         nona <- !is.na(ys)
 
+        # Get peak ID for this peak
+        peak_id <- if (i <= length(peak_ids)) peak_ids[i] else paste0("Peak_", i)
+
         # Add NA break between peaks (not before first peak)
         if (length(xs_all) > 0) {
             xs_all <- c(xs_all, NA)
             ys_all <- c(ys_all, NA)
+            ids_all <- c(ids_all, NA)
         }
 
         xs_all <- c(xs_all, xs[nona])
         ys_all <- c(ys_all, ys[nona])
+        ids_all <- c(ids_all, rep(peak_id, sum(nona)))
     }
 
     # Return data frame for polygon, or NULL if no data
     if (length(xs_all) > 0) {
-        data.frame(rt = xs_all, intensity = ys_all)
+        data.frame(rt = xs_all, intensity = ys_all, peak_id = ids_all)
     } else {
         NULL
     }
@@ -99,11 +106,14 @@ NULL
         if (nrow(peaks) > 0) {
             peaks_df <- as_tibble(peaks)
 
+            # Add peak IDs for tooltip support
+            peaks_df$peak_id <- rownames(peaks)
+
             if (peakType == "point") {
                 # Add points at peak apex
                 p <- p + geom_point(
                     data = peaks_df,
-                    aes(x = rt, y = maxo),
+                    aes(x = rt, y = maxo, text = peak_id),
                     color = peakCol,
                     shape = peakPch,
                     inherit.aes = FALSE
@@ -112,19 +122,22 @@ NULL
                 # Add rectangles spanning peak bounds
                 p <- p + geom_rect(
                     data = peaks_df,
-                    aes(xmin = rtmin, xmax = rtmax, ymin = 0, ymax = maxo),
+                    aes(xmin = rtmin, xmax = rtmax, ymin = 0, ymax = maxo, text = peak_id),
                     color = peakCol,
                     fill = peakBg,
                     inherit.aes = FALSE
                 )
             } else if (peakType == "polygon") {
+                # Get peak IDs from rownames
+                peak_ids <- rownames(peaks)
+
                 # Use helper function to generate polygon data
-                poly_df <- .add_polygon_peaks(x, peaks_df, peakCol, peakBg)
+                poly_df <- .add_polygon_peaks(x, peaks_df, peak_ids, peakCol, peakBg)
 
                 if (!is.null(poly_df)) {
                     p <- p + geom_polygon(
                         data = poly_df,
-                        aes(x = rt, y = intensity),
+                        aes(x = rt, y = intensity, text = peak_id),
                         color = peakCol,
                         fill = peakBg,
                         inherit.aes = FALSE

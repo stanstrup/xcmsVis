@@ -71,33 +71,16 @@ library(xcmsVis)
 
 # Data Preparation
 
-We'll use the faahKO package example data:
+We'll use pre-processed example data with peaks already detected:
 
 ```{r load_data}
-# Get example CDF files
-cdf_files <- dir(system.file("cdf", package = "faahKO"),
-                  recursive = TRUE, full.names = TRUE)[1:3]
+# Load pre-processed data with detected peaks
+# This dataset contains 248 detected peaks from 3 samples
+xdata <- loadXcmsData("faahko_sub2")
 
-# Load data as XcmsExperiment
-xdata <- readMsExperiment(
-  spectraFiles = cdf_files,
-  BPPARAM = SerialParam()
-)
-
-# Add sample metadata
-sampleData(xdata)$sample_name <- basename(cdf_files)
+# Add sample metadata for visualization
+sampleData(xdata)$sample_name <- c("KO01", "KO02", "WT01")
 sampleData(xdata)$sample_group <- c("KO", "KO", "WT")
-```
-
-## Peak Detection
-
-```{r peak_detection}
-# Detect peaks using CentWave algorithm
-cwp <- CentWaveParam(
-  peakwidth = c(20, 80),
-  ppm = 25
-)
-xdata <- findChromPeaks(xdata, param = cwp, BPPARAM = SerialParam())
 
 # Check number of peaks detected
 cat("Total peaks detected:", nrow(chromPeaks(xdata)), "\n")
@@ -115,22 +98,7 @@ The `gplotChromPeaks()` function creates a scatter plot showing detected peaks a
 #| fig-height: 5
 #| fig-width: 5
 #| fig-alt: "ggplot2 version showing detected peaks as semi-transparent rectangles in RT vs m/z space."
-gplotChromPeaks(xdata, file = 1, xlim = c(3500, 3800), ylim = c(240, 260))
-```
-
-### Customizing the Plot
-
-```{r custom_chrompeaks}
-#| fig-height: 5
-#| fig-width: 7
-#| fig-alt: "Customized chromatographic peaks plot with custom styling."
-gplotChromPeaks(xdata, file = 1, xlim = c(3500, 3800), ylim = c(240, 260)) +
-  labs(
-    title = "Detected Peaks - Sample 1",
-    x = "Retention Time (s)",
-    y = "m/z"
-  ) +
-  theme_minimal()
+gplotChromPeaks(xdata, file = 1)
 ```
 
 ### Focusing on a Region
@@ -141,13 +109,32 @@ gplotChromPeaks(xdata, file = 1, xlim = c(3500, 3800), ylim = c(240, 260)) +
 #| fig-alt: "Zoomed view of chromatographic peaks in a specific region."
 # Focus on a specific RT and m/z region
 gplotChromPeaks(
-  xdata,
-  file = 1,
-  xlim = c(3500, 3800),
-  ylim = c(240, 260),
-  border = "darkblue",
-  fill = "lightblue"
-)
+                xdata,
+                file = 1,
+                xlim = c(3500, 3800),
+                ylim = c(240, 260)
+              )
+```
+
+
+### Customizing the Plot
+
+```{r custom_chrompeaks}
+#| fig-height: 5
+#| fig-width: 7
+#| fig-alt: "Customized chromatographic peaks plot with custom styling."
+gplotChromPeaks(xdata, file = 1, 
+                xlim = c(3500, 3800), 
+                ylim = c(240, 260),
+                border = "darkblue",
+                fill = "lightblue"
+                ) +
+  labs(
+    title = "Detected Peaks - Sample 1",
+    x = "Retention Time (s)",
+    y = "m/z"
+  ) +
+  theme_minimal()
 ```
 
 ### Comparing Multiple Samples
@@ -221,9 +208,9 @@ ggplotly(p3)
 First, let's extract a chromatogram for a specific m/z range:
 
 ```{r extract_chrom}
-# Extract chromatogram for m/z 200-210
-mz_range <- c(200, 210)
-rt_range <- c(2500, 3500)
+# Extract chromatogram for m/z 300-350 (contains several peaks for demonstration)
+mz_range <- c(300, 350)
+rt_range <- c(2700, 3200)
 
 # Get chromatogram data
 chr <- chromatogram(xdata, mz = mz_range, rt = rt_range)
