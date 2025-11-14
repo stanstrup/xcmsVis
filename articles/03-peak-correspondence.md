@@ -14,15 +14,15 @@ help you:
 
 ### XCMS Workflow Context
 
-    ┌─────────────────────────────────────┐
-    │ 1. Raw Data Visualization           │
-    │ 2. Peak Detection                   │
-    ├─────────────────────────────────────┤
-    │ 3. PEAK CORRESPONDENCE   ← YOU ARE HERE
-    ├─────────────────────────────────────┤
-    │ 4. Retention Time Alignment          │
-    │ 5. Feature Grouping                  │
-    └─────────────────────────────────────┘
+    ┌───────────────────────────────┐
+    │ 1. Raw Data Visualization     │
+    │ 2. Peak Detection             │
+    ├───────────────────────────────┤
+    │ 3. PEAK CORRESPONDENCE        │ ← YOU ARE HERE
+    ├───────────────────────────────┤
+    │ 4. Retention Time Alignment   │
+    │ 5. Feature Grouping           │
+    └───────────────────────────────┘
 
 ### What is Peak Correspondence?
 
@@ -391,7 +391,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] xcmsVis_0.99.22     patchwork_1.3.2     plotly_4.11.0      
+#> [1] xcmsVis_0.99.23     patchwork_1.3.2     plotly_4.11.0      
 #> [4] ggplot2_4.0.0       xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
@@ -399,7 +399,7 @@ sessionInfo()
 #>   [3] magrittr_2.0.4              clue_0.3-66                
 #>   [5] MassSpecWavelet_1.76.0      matrixStats_1.5.0          
 #>   [7] compiler_4.5.2              vctrs_0.6.5                
-#>   [9] reshape2_1.4.4              stringr_1.6.0              
+#>   [9] reshape2_1.4.5              stringr_1.6.0              
 #>  [11] ProtGenerics_1.42.0         pkgconfig_2.0.3            
 #>  [13] MetaboCoreUtils_1.18.0      crayon_1.5.3               
 #>  [15] fastmap_1.2.0               XVector_0.50.0             
@@ -442,7 +442,7 @@ sessionInfo()
 #>  [89] viridisLite_0.4.2           S4Arrays_1.10.0            
 #>  [91] dplyr_1.1.4                 AnnotationFilter_1.34.0    
 #>  [93] pcaMethods_2.2.0            gtable_0.3.6               
-#>  [95] digest_0.6.37               BiocGenerics_0.56.0        
+#>  [95] digest_0.6.38               BiocGenerics_0.56.0        
 #>  [97] SparseArray_1.10.1          htmlwidgets_1.6.4          
 #>  [99] farver_2.1.2                htmltools_0.5.8.1          
 #> [101] lifecycle_1.0.4             httr_1.4.7                 

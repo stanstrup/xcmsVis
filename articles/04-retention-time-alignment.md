@@ -13,15 +13,15 @@ functions help you:
 
 ### XCMS Workflow Context
 
-    ┌─────────────────────────────────────┐
-    │ 1. Raw Data Visualization           │
-    │ 2. Peak Detection                   │
-    │ 3. Peak Correspondence               │
-    ├─────────────────────────────────────┤
-    │ 4. RT ALIGNMENT          ← YOU ARE HERE
-    ├─────────────────────────────────────┤
-    │ 5. Feature Grouping                  │
-    └─────────────────────────────────────┘
+    ┌───────────────────────────────┐
+    │ 1. Raw Data Visualization     │
+    │ 2. Peak Detection             │
+    │ 3. Peak Correspondence        │
+    ├───────────────────────────────┤
+    │ 4. RT ALIGNMENT               │ ← YOU ARE HERE
+    ├───────────────────────────────┤
+    │ 5. Feature Grouping           │
+    └───────────────────────────────┘
 
 ### What is Retention Time Alignment?
 
@@ -471,14 +471,14 @@ sessionInfo()
 #> other attached packages:
 #> [1] patchwork_1.3.2     MsExperiment_1.12.0 ProtGenerics_1.42.0
 #> [4] faahKO_1.50.0       plotly_4.11.0       ggplot2_4.0.0      
-#> [7] xcmsVis_0.99.22     xcms_4.8.0          BiocParallel_1.44.0
+#> [7] xcmsVis_0.99.23     xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] DBI_1.2.3                   rlang_1.1.6                
 #>   [3] magrittr_2.0.4              clue_0.3-66                
 #>   [5] MassSpecWavelet_1.76.0      matrixStats_1.5.0          
 #>   [7] compiler_4.5.2              vctrs_0.6.5                
-#>   [9] reshape2_1.4.4              stringr_1.6.0              
+#>   [9] reshape2_1.4.5              stringr_1.6.0              
 #>  [11] pkgconfig_2.0.3             MetaboCoreUtils_1.18.0     
 #>  [13] crayon_1.5.3                fastmap_1.2.0              
 #>  [15] XVector_0.50.0              labeling_0.4.3             
@@ -520,7 +520,7 @@ sessionInfo()
 #>  [87] viridisLite_0.4.2           S4Arrays_1.10.0            
 #>  [89] dplyr_1.1.4                 AnnotationFilter_1.34.0    
 #>  [91] pcaMethods_2.2.0            gtable_0.3.6               
-#>  [93] digest_0.6.37               BiocGenerics_0.56.0        
+#>  [93] digest_0.6.38               BiocGenerics_0.56.0        
 #>  [95] SparseArray_1.10.1          htmlwidgets_1.6.4          
 #>  [97] farver_2.1.2                htmltools_0.5.8.1          
 #>  [99] lifecycle_1.0.4             httr_1.4.7                 

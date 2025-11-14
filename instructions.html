@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.22</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.23</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,11 +43,12 @@
 <div id="current-tasks" class="section level1">
 
 <p><strong>See <code>CLAUDE.md</code> for development workflow, conventions, and resources.</strong></p>
-<ol style="list-style-type: decimal"><li>Add to your instructions to use the local copy of XCMS’s source code in xcms-reference. Do not try to get it only.</li>
-<li>Go through all vignettes and ensure a similar structure.</li>
-<li>Again, no need to explain why ggplot2 is better in any vignette. that is done on the front page.</li>
-<li>Many of the functions in this package use parameters like main and xlab and ylab. These parameters can be set with ggtitle and labs instead afterwards. Remove these parameters and instead show in the vignette how to set them with the ggplot2 functions. Make especially sure that the comparison to XCMS gives the same plot. Keep current defaults for those parameters you remove.</li>
-<li>As in point 4 give suggestions for other parameters that can be handle outside the functions more elegantly.</li>
+<ol style="list-style-type: decimal"><li>index.md is outdated. please update.</li>
+<li>update the XCMS Workflow Context in teh vignettes to have the arrow outside the box and the box porperly aligned. I fixed it in the first vignette. fix the otehrs in the same way.</li>
+<li>replace plaste with glue in the vignettes. remember to update description file.</li>
+<li>in the interactive section of vignette 1 explain that you can get each part of teh plot by ggplotly(p[[1]]) and ggplotly(p[[2]])</li>
+<li>xlab and ylab are parameters for gplotPrecursorIons. change like in the other functions to use ggplot functions “added” to the plot instead.</li>
+<li>find other parameter across all functions that could be changed to native ggplot2 functions that change colors/title etc</li>
 </ol></div>
 
   </main></div>

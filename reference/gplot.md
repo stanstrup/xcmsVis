@@ -15,15 +15,7 @@ parameters and results from landmark-based retention time alignment.
 gplot(x, ...)
 
 # S4 method for class 'LamaParama'
-gplot(
-  x,
-  index = 1L,
-  colPoints = "#00000060",
-  colFit = "#00000080",
-  xlab = "Matched Chromatographic peaks",
-  ylab = "Lamas",
-  ...
-)
+gplot(x, index = 1L, colPoints = "#00000060", colFit = "#00000080", ...)
 
 # S4 method for class 'XChromatogram'
 gplot(
@@ -31,9 +23,6 @@ gplot(
   col = "black",
   lty = 1,
   type = "l",
-  xlab = "retention time",
-  ylab = "intensity",
-  main = NULL,
   peakType = c("polygon", "point", "rectangle", "none"),
   peakCol = "#00000060",
   peakBg = "#00000020",
@@ -47,9 +36,6 @@ gplot(
   col = "#00000060",
   lty = 1,
   type = "l",
-  xlab = "retention time",
-  ylab = "intensity",
-  main = NULL,
   peakType = c("polygon", "point", "rectangle", "none"),
   peakCol = "#00000060",
   peakBg = "#00000020",
@@ -63,9 +49,6 @@ gplot(
   col = "#00000060",
   lty = 1,
   type = "l",
-  xlab = "retention time",
-  ylab = "intensity",
-  main = NULL,
   peakType = c("polygon", "point", "rectangle", "none"),
   peakCol = "#00000060",
   peakBg = "#00000020",
@@ -97,14 +80,6 @@ gplot(
 
   Color for the fitted model line (default: semi-transparent black).
 
-- xlab:
-
-  X-axis label (default: "Matched Chromatographic peaks").
-
-- ylab:
-
-  Y-axis label (default: "Lamas").
-
 - col:
 
   Color for the chromatogram line (default: "black").
@@ -116,10 +91,6 @@ gplot(
 - type:
 
   Plot type (default: "l" for line).
-
-- main:
-
-  Plot title (default: NULL).
 
 - peakType:
 

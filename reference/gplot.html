@@ -13,7 +13,7 @@ LamaParama objects contain parameters and results from landmark-based retention 
 
     <a class="navbar-brand me-2" href="../index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.22</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.23</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,15 +59,7 @@ LamaParama objects contain parameters and results from landmark-based retention 
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gplot</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'LamaParama'</span></span>
-<span><span class="fu">gplot</span><span class="op">(</span></span>
-<span>  <span class="va">x</span>,</span>
-<span>  index <span class="op">=</span> <span class="fl">1L</span>,</span>
-<span>  colPoints <span class="op">=</span> <span class="st">"#00000060"</span>,</span>
-<span>  colFit <span class="op">=</span> <span class="st">"#00000080"</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="st">"Matched Chromatographic peaks"</span>,</span>
-<span>  ylab <span class="op">=</span> <span class="st">"Lamas"</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">gplot</span><span class="op">(</span><span class="va">x</span>, index <span class="op">=</span> <span class="fl">1L</span>, colPoints <span class="op">=</span> <span class="st">"#00000060"</span>, colFit <span class="op">=</span> <span class="st">"#00000080"</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'XChromatogram'</span></span>
 <span><span class="fu">gplot</span><span class="op">(</span></span>
@@ -75,9 +67,6 @@ LamaParama objects contain parameters and results from landmark-based retention 
 <span>  col <span class="op">=</span> <span class="st">"black"</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"l"</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="st">"retention time"</span>,</span>
-<span>  ylab <span class="op">=</span> <span class="st">"intensity"</span>,</span>
-<span>  main <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  peakType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"polygon"</span>, <span class="st">"point"</span>, <span class="st">"rectangle"</span>, <span class="st">"none"</span><span class="op">)</span>,</span>
 <span>  peakCol <span class="op">=</span> <span class="st">"#00000060"</span>,</span>
 <span>  peakBg <span class="op">=</span> <span class="st">"#00000020"</span>,</span>
@@ -91,9 +80,6 @@ LamaParama objects contain parameters and results from landmark-based retention 
 <span>  col <span class="op">=</span> <span class="st">"#00000060"</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"l"</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="st">"retention time"</span>,</span>
-<span>  ylab <span class="op">=</span> <span class="st">"intensity"</span>,</span>
-<span>  main <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  peakType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"polygon"</span>, <span class="st">"point"</span>, <span class="st">"rectangle"</span>, <span class="st">"none"</span><span class="op">)</span>,</span>
 <span>  peakCol <span class="op">=</span> <span class="st">"#00000060"</span>,</span>
 <span>  peakBg <span class="op">=</span> <span class="st">"#00000020"</span>,</span>
@@ -107,9 +93,6 @@ LamaParama objects contain parameters and results from landmark-based retention 
 <span>  col <span class="op">=</span> <span class="st">"#00000060"</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"l"</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="st">"retention time"</span>,</span>
-<span>  ylab <span class="op">=</span> <span class="st">"intensity"</span>,</span>
-<span>  main <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  peakType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"polygon"</span>, <span class="st">"point"</span>, <span class="st">"rectangle"</span>, <span class="st">"none"</span><span class="op">)</span>,</span>
 <span>  peakCol <span class="op">=</span> <span class="st">"#00000060"</span>,</span>
 <span>  peakBg <span class="op">=</span> <span class="st">"#00000020"</span>,</span>
@@ -142,14 +125,6 @@ LamaParama objects contain parameters and results from landmark-based retention 
 <dd><p>Color for the fitted model line (default: semi-transparent black).</p></dd>
 
 
-<dt id="arg-xlab">xlab<a class="anchor" aria-label="anchor" href="#arg-xlab"></a></dt>
-<dd><p>X-axis label (default: "Matched Chromatographic peaks").</p></dd>
-
-
-<dt id="arg-ylab">ylab<a class="anchor" aria-label="anchor" href="#arg-ylab"></a></dt>
-<dd><p>Y-axis label (default: "Lamas").</p></dd>
-
-
 <dt id="arg-col">col<a class="anchor" aria-label="anchor" href="#arg-col"></a></dt>
 <dd><p>Color for the chromatogram line (default: "black").</p></dd>
 
@@ -160,10 +135,6 @@ LamaParama objects contain parameters and results from landmark-based retention 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
 <dd><p>Plot type (default: "l" for line).</p></dd>
-
-
-<dt id="arg-main">main<a class="anchor" aria-label="anchor" href="#arg-main"></a></dt>
-<dd><p>Plot title (default: NULL).</p></dd>
 
 
 <dt id="arg-peaktype">peakType<a class="anchor" aria-label="anchor" href="#arg-peaktype"></a></dt>

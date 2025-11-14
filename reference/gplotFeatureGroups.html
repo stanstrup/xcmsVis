@@ -11,7 +11,7 @@ function, enabling modern visualization and interactive plotting capabilities.">
 
     <a class="navbar-brand me-2" href="../index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.22</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.23</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,12 +57,9 @@ function, enabling modern visualization and interactive plotting capabilities.</
 <span>  <span class="va">x</span>,</span>
 <span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="st">"retention time"</span>,</span>
-<span>  ylab <span class="op">=</span> <span class="st">"m/z"</span>,</span>
 <span>  pch <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  col <span class="op">=</span> <span class="st">"#00000060"</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"o"</span>,</span>
-<span>  main <span class="op">=</span> <span class="st">"Feature groups"</span>,</span>
 <span>  featureGroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
@@ -72,12 +69,9 @@ function, enabling modern visualization and interactive plotting capabilities.</
 <span>  <span class="va">x</span>,</span>
 <span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="st">"retention time"</span>,</span>
-<span>  ylab <span class="op">=</span> <span class="st">"m/z"</span>,</span>
 <span>  pch <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  col <span class="op">=</span> <span class="st">"#00000060"</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"o"</span>,</span>
-<span>  main <span class="op">=</span> <span class="st">"Feature groups"</span>,</span>
 <span>  featureGroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
@@ -87,12 +81,9 @@ function, enabling modern visualization and interactive plotting capabilities.</
 <span>  <span class="va">x</span>,</span>
 <span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="st">"retention time"</span>,</span>
-<span>  ylab <span class="op">=</span> <span class="st">"m/z"</span>,</span>
 <span>  pch <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  col <span class="op">=</span> <span class="st">"#00000060"</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"o"</span>,</span>
-<span>  main <span class="op">=</span> <span class="st">"Feature groups"</span>,</span>
 <span>  featureGroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -116,14 +107,6 @@ Default: numeric() (auto-calculate from data).</p></dd>
 Default: numeric() (auto-calculate from data).</p></dd>
 
 
-<dt id="arg-xlab">xlab<a class="anchor" aria-label="anchor" href="#arg-xlab"></a></dt>
-<dd><p>X-axis label (default: "retention time").</p></dd>
-
-
-<dt id="arg-ylab">ylab<a class="anchor" aria-label="anchor" href="#arg-ylab"></a></dt>
-<dd><p>Y-axis label (default: "m/z").</p></dd>
-
-
 <dt id="arg-pch">pch<a class="anchor" aria-label="anchor" href="#arg-pch"></a></dt>
 <dd><p>Point character for feature markers (default: 4).</p></dd>
 
@@ -134,10 +117,6 @@ Default: numeric() (auto-calculate from data).</p></dd>
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
 <dd><p>Plot type (default: "o" for overplotted points and lines).</p></dd>
-
-
-<dt id="arg-main">main<a class="anchor" aria-label="anchor" href="#arg-main"></a></dt>
-<dd><p>Plot title (default: "Feature groups").</p></dd>
 
 
 <dt id="arg-featuregroups">featureGroups<a class="anchor" aria-label="anchor" href="#arg-featuregroups"></a></dt>

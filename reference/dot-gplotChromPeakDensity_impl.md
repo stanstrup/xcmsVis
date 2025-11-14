@@ -9,8 +9,6 @@ Shared implementation function for gplotChromPeakDensity
   object,
   param,
   col = "#00000060",
-  xlab = "retention time",
-  main = NULL,
   peakType = c("polygon", "point", "rectangle", "none"),
   peakCol = "#00000060",
   peakBg = "#00000020",

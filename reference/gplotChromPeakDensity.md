@@ -13,8 +13,6 @@ gplotChromPeakDensity(
   object,
   param,
   col = "#00000060",
-  xlab = "retention time",
-  main = NULL,
   peakType = c("polygon", "point", "rectangle", "none"),
   peakCol = "#00000060",
   peakBg = "#00000020",
@@ -28,8 +26,6 @@ gplotChromPeakDensity(
   object,
   param,
   col = "#00000060",
-  xlab = "retention time",
-  main = NULL,
   peakType = c("polygon", "point", "rectangle", "none"),
   peakCol = "#00000060",
   peakBg = "#00000020",
@@ -43,8 +39,6 @@ gplotChromPeakDensity(
   object,
   param,
   col = "#00000060",
-  xlab = "retention time",
-  main = NULL,
   peakType = c("polygon", "point", "rectangle", "none"),
   peakCol = "#00000060",
   peakBg = "#00000020",
@@ -71,14 +65,6 @@ gplotChromPeakDensity(
 
   Color for the chromatogram lines in the upper panel (default:
   "#00000060").
-
-- xlab:
-
-  X-axis label (default: "retention time").
-
-- main:
-
-  Plot title (default: NULL).
 
 - peakType:
 

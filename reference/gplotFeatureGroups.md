@@ -14,12 +14,9 @@ gplotFeatureGroups(
   x,
   xlim = numeric(),
   ylim = numeric(),
-  xlab = "retention time",
-  ylab = "m/z",
   pch = 4,
   col = "#00000060",
   type = "o",
-  main = "Feature groups",
   featureGroups = character(),
   ...
 )
@@ -29,12 +26,9 @@ gplotFeatureGroups(
   x,
   xlim = numeric(),
   ylim = numeric(),
-  xlab = "retention time",
-  ylab = "m/z",
   pch = 4,
   col = "#00000060",
   type = "o",
-  main = "Feature groups",
   featureGroups = character(),
   ...
 )
@@ -44,12 +38,9 @@ gplotFeatureGroups(
   x,
   xlim = numeric(),
   ylim = numeric(),
-  xlab = "retention time",
-  ylab = "m/z",
   pch = 4,
   col = "#00000060",
   type = "o",
-  main = "Feature groups",
   featureGroups = character(),
   ...
 )
@@ -72,14 +63,6 @@ gplotFeatureGroups(
   Numeric vector of length 2 specifying m/z range. Default: numeric()
   (auto-calculate from data).
 
-- xlab:
-
-  X-axis label (default: "retention time").
-
-- ylab:
-
-  Y-axis label (default: "m/z").
-
 - pch:
 
   Point character for feature markers (default: 4).
@@ -91,10 +74,6 @@ gplotFeatureGroups(
 - type:
 
   Plot type (default: "o" for overplotted points and lines).
-
-- main:
-
-  Plot title (default: "Feature groups").
 
 - featureGroups:
 

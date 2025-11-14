@@ -13,14 +13,14 @@ visualizations help you:
 
 ### XCMS Workflow Context
 
-    ┌─────────────────────────────────────┐
-    │ 1. RAW DATA VISUALIZATION ← YOU ARE HERE
-    ├─────────────────────────────────────┤
-    │ 2. Peak Detection                   │
-    │ 3. Peak Correspondence               │
-    │ 4. Retention Time Alignment          │
-    │ 5. Feature Grouping                  │
-    └─────────────────────────────────────┘
+    ┌───────────────────────────────┐
+    │ 1. RAW DATA VISUALIZATION     | ← YOU ARE HERE
+    ├────────────────────────────-──┤
+    │ 2. Peak Detection             │
+    │ 3. Peak Correspondence        │
+    │ 4. Retention Time Alignment   │
+    │ 5. Feature Grouping           │
+    └──────────────────────────----─┘
 
 ### Functions Covered
 
@@ -76,15 +76,19 @@ region:
 
 ``` r
 # Filter to focused region
-mse <- filterRt(xdata, rt = c(2500, 2800))
-mse <- filterMzRange(mse, mz = c(218, 220.5))
+mse <- filterRt(xdata, rt = c(2785-100, 2785+100))
+mse <- filterMzRange(mse, mz = c(278, 283))
 
-cat("Filtered data:\n")
+library(glue)
+rt_range <- range(rtime(spectra(mse[1])))
+n_spectra <- length(spectra(mse[1]))
+cat(glue("Filtered data:
+  RT range: {rt_range[1]} - {rt_range[2]}
+  Number of spectra in sample 1: {n_spectra}
+"))
 #> Filtered data:
-cat("  RT range:", paste(range(rtime(spectra(mse[1]))), collapse = " - "), "\n")
-#>   RT range: 2501.378 - 2798.719
-cat("  Number of spectra in sample 1:", length(spectra(mse[1])), "\n")
-#>   Number of spectra in sample 1: 191
+#> RT range: 2686.043 - 2884.792
+#> Number of spectra in sample 1: 128
 ```
 
 ### Basic Usage
@@ -203,6 +207,24 @@ p <- gplot(mse[1])
 ggplotly(p)
 ```
 
+**Accessing Individual Panels:**
+
+Since
+[`gplot()`](https://stanstrup.github.io/xcmsVis/reference/gplot.md)
+returns a patchwork object combining two panels, you can access and make
+each panel interactive separately:
+
+``` r
+# Upper panel (BPI chromatogram)
+ggplotly(p[[1]])
+
+# Lower panel (m/z vs RT scatter)
+ggplotly(p[[2]])
+```
+
+This is useful when you want to customize each panel independently or
+embed them separately in reports.
+
 ### Use Cases
 
 #### Quality Control
@@ -215,7 +237,7 @@ Visualize raw MS data to check for:
 - Sample-to-sample consistency
 
 ``` r
-gplot(mse, main = paste("QC:", c("Sample 1", "Sample 2", "Sample 3")))
+gplot(mse, main = glue("QC: {c('Sample 1', 'Sample 2', 'Sample 3')}"))
 ```
 
 ![QC visualization showing all three samples for comparison of data
@@ -345,37 +367,6 @@ p_interactive <- gplotPrecursorIons(pest_dda)
 ggplotly(p_interactive)
 ```
 
-### Assessing DDA Performance
-
-#### Coverage Assessment
-
-``` r
-# Add horizontal lines to show m/z ranges
-gplotPrecursorIons(pest_dda) +
-  geom_hline(yintercept = c(100, 200, 300, 400, 500),
-             linetype = "dashed", alpha = 0.3) +
-  annotate("text", x = max(rtime(spectra(pest_dda))) * 0.98,
-           y = c(100, 200, 300, 400, 500),
-           label = paste0(c(100, 200, 300, 400, 500), " m/z"),
-           hjust = 1, vjust = -0.5, size = 3, color = "gray40")
-```
-
-![](01-raw-data-visualization_files/figure-html/coverage-1.png)
-
-#### Quality Control
-
-Check for expected MS/MS coverage:
-
-``` r
-gplotPrecursorIons(pest_dda) +
-  ggtitle("QC: Precursor Ion Coverage Check") +
-  theme_minimal() +
-  labs(caption = paste("Total MS/MS scans:",
-                       sum(!is.na(precursorMz(spectra(pest_dda))))))
-```
-
-![](01-raw-data-visualization_files/figure-html/precursor_qc-1.png)
-
 ## Summary
 
 ### Functions Covered
@@ -467,17 +458,17 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#>  [1] viridisLite_0.4.2   msdata_0.50.0       patchwork_1.3.2    
-#>  [4] plotly_4.11.0       ggplot2_4.0.0       MsExperiment_1.12.0
-#>  [7] ProtGenerics_1.42.0 xcmsVis_0.99.22     xcms_4.8.0         
-#> [10] BiocParallel_1.44.0
+#>  [1] viridisLite_0.4.2   glue_1.8.0          msdata_0.50.0      
+#>  [4] patchwork_1.3.2     plotly_4.11.0       ggplot2_4.0.0      
+#>  [7] MsExperiment_1.12.0 ProtGenerics_1.42.0 xcmsVis_0.99.23    
+#> [10] xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] DBI_1.2.3                   rlang_1.1.6                
 #>   [3] magrittr_2.0.4              clue_0.3-66                
 #>   [5] MassSpecWavelet_1.76.0      matrixStats_1.5.0          
 #>   [7] compiler_4.5.2              vctrs_0.6.5                
-#>   [9] reshape2_1.4.4              stringr_1.6.0              
+#>   [9] reshape2_1.4.5              stringr_1.6.0              
 #>  [11] pkgconfig_2.0.3             MetaboCoreUtils_1.18.0     
 #>  [13] crayon_1.5.3                fastmap_1.2.0              
 #>  [15] XVector_0.50.0              labeling_0.4.3             
@@ -507,21 +498,20 @@ sessionInfo()
 #>  [63] MALDIquant_1.22.3           ncdf4_1.24                 
 #>  [65] generics_0.1.4              S4Vectors_0.48.0           
 #>  [67] hms_1.1.4                   scales_1.4.0               
-#>  [69] glue_1.8.0                  MsFeatures_1.18.0          
-#>  [71] lazyeval_0.2.2              tools_4.5.2                
-#>  [73] mzID_1.48.0                 data.table_1.17.8          
-#>  [75] QFeatures_1.20.0            vsn_3.78.0                 
-#>  [77] mzR_2.44.0                  fs_1.6.6                   
-#>  [79] XML_3.99-0.20               grid_4.5.2                 
-#>  [81] impute_1.84.0               tidyr_1.3.1                
-#>  [83] crosstalk_1.2.2             MsCoreUtils_1.21.0         
-#>  [85] PSMatch_1.14.0              cli_3.6.5                  
-#>  [87] S4Arrays_1.10.0             dplyr_1.1.4                
-#>  [89] AnnotationFilter_1.34.0     pcaMethods_2.2.0           
-#>  [91] gtable_0.3.6                digest_0.6.37              
-#>  [93] BiocGenerics_0.56.0         SparseArray_1.10.1         
-#>  [95] htmlwidgets_1.6.4           farver_2.1.2               
-#>  [97] htmltools_0.5.8.1           lifecycle_1.0.4            
-#>  [99] httr_1.4.7                  statmod_1.5.1              
-#> [101] MASS_7.3-65
+#>  [69] MsFeatures_1.18.0           lazyeval_0.2.2             
+#>  [71] tools_4.5.2                 mzID_1.48.0                
+#>  [73] data.table_1.17.8           QFeatures_1.20.0           
+#>  [75] vsn_3.78.0                  mzR_2.44.0                 
+#>  [77] fs_1.6.6                    XML_3.99-0.20              
+#>  [79] grid_4.5.2                  impute_1.84.0              
+#>  [81] tidyr_1.3.1                 crosstalk_1.2.2            
+#>  [83] MsCoreUtils_1.21.0          PSMatch_1.14.0             
+#>  [85] cli_3.6.5                   S4Arrays_1.10.0            
+#>  [87] dplyr_1.1.4                 AnnotationFilter_1.34.0    
+#>  [89] pcaMethods_2.2.0            gtable_0.3.6               
+#>  [91] digest_0.6.38               BiocGenerics_0.56.0        
+#>  [93] SparseArray_1.10.1          htmlwidgets_1.6.4          
+#>  [95] farver_2.1.2                htmltools_0.5.8.1          
+#>  [97] lifecycle_1.0.4             httr_1.4.7                 
+#>  [99] statmod_1.5.1               MASS_7.3-65
 ```
