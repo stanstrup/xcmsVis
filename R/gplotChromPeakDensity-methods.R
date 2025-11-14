@@ -161,10 +161,11 @@ NULL
         y = ypos[pks[, smpl_col]]
     )
 
-    # Create density line data frame
+    # Create density line data frame with descriptive names for tooltips
     dens_df <- data.frame(
-        x = dens$x,
-        y = dens$y
+        `Retention time` = dens$x,
+        `Peak density` = dens$y,
+        check.names = FALSE  # Preserve column names with spaces
     )
 
     # Prepare feature rectangles data (if applicable) - must be added FIRST as bottom layer
@@ -206,7 +207,7 @@ NULL
                    color = peakCol, fill = peakBg, shape = peakPch) +
         geom_point(data = peaks_df, aes(x = rt, y = 0),
                    color = peakCol, fill = peakBg, shape = peakPch) +
-        geom_line(data = dens_df, aes(x = x, y = y)) +
+        geom_line(data = dens_df, aes(x = `Retention time`, y = `Peak density`)) +
         scale_y_continuous(
             breaks = ypos,
             labels = seq(from = min_max_smple[1], to = min_max_smple[2])

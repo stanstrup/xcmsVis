@@ -105,7 +105,7 @@ cwp <- CentWaveParam(
 xdata_peaks <- findChromPeaks(xdata_raw, param = cwp, BPPARAM = SerialParam())
 
 # Initial correspondence (peak grouping)
-sample_data <- xcmsVis:::.get_sample_data(xdata_peaks)
+sample_data <- sampleData(xdata_peaks)
 
 pdp <- PeakDensityParam(
   sampleGroups = sample_data$sample_group,
@@ -189,7 +189,7 @@ xdata_filtered <- xdata_grouped
 xdata_filtered <- filterFile(xdata_filtered, c(2:5))
 
 # Filtering removes correspondence - need to re-group with filtered samples
-sample_data_filtered <- xcmsVis:::.get_sample_data(xdata_filtered)
+sample_data_filtered <- sampleData(xdata_filtered)
 pdp_filtered <- PeakDensityParam(
   sampleGroups = sample_data_filtered$sample_group,
   minFraction = 0.4,
@@ -275,9 +275,6 @@ xdata_lama <- adjustRtime(xdata_lama, param = lama_param)
 # Extract LamaParama from process history
 proc_hist <- processHistory(xdata_lama, type = xcms:::.PROCSTEP.RTIME.CORRECTION)
 lama_result <- proc_hist[[length(proc_hist)]]@param
-
-# Verify it's a LamaParama object
-class(lama_result)
 ```
 
 ### Basic Alignment Plot
@@ -307,6 +304,9 @@ p3 <- gplot(lama_result, index = 3) + ggtitle("Sample 3")
 library(patchwork)
 p1 / p2 / p3
 ```
+
+Note here that since we just took all the peaks from the samples it is essential a perfect match. When you bring your own landmarks it will look different.
+
 
 ### Customization
 
@@ -422,7 +422,7 @@ After aligning retention times, proceed to:
 #| fig-height: 4
 #| fig-width: 5
 #| fig-alt: "XCMS plotAdjustedRtime using base R graphics."
-sample_data <- xcmsVis:::.get_sample_data(xdata)
+sample_data <- sampleData(xdata)
 
 plotAdjustedRtime(
   xdata,
