@@ -239,32 +239,64 @@ gplotAdjustedRtime(xdata_subset, color_by = sample_group)
 
 ## What is LamaParama?
 
-LamaParama (Landmark-based Alignment Parameters) is an alignment method in XCMS that uses feature groups as "landmarks" to correct retention time shifts. Unlike other methods, it explicitly models the RT relationship and stores the alignment parameters for visualization and quality assessment.
+LamaParama (Landmark-based Alignment Parameters) enables alignment of LC-MS datasets to external reference data. This is particularly useful when:
 
-## Landmark-Based Alignment
+- Comparing samples across different laboratories
+- Aligning data collected at different time points
+- Matching experimental data to a reference dataset (e.g., from QC samples)
+
+The method works by:
+1. Defining **landmarks** (reference features with known m/z and RT)
+2. Matching chromatographic peaks from your data to these landmarks
+3. Fitting a model (loess, polynomial, etc.) based on matched peaks
+4. Applying RT corrections to minimize differences between datasets
+
+## Example: Aligning to Reference Dataset
+
+Following the XCMS vignette approach, we'll align a test dataset to a reference:
+
+```{r lama_setup}
+# Load reference dataset (contains QC samples)
+ref <- loadXcmsData("xmse")
+
+# Load test dataset (to be aligned)
+tst <- loadXcmsData("faahko_sub2")
+```
+
+### Extract Landmarks from Reference
+
+Landmarks should be features consistently present across samples. Here we use features found in all QC samples:
+
+```{r lama_landmarks}
+# Filter to features present in all QC samples
+f <- sampleData(ref)$sample_type
+f[f != "QC"] <- NA
+ref_filtered <- filterFeatures(ref, PercentMissingFilter(threshold = 0, f = f))
+
+# Extract landmark m/z and RT values
+ref_mz_rt <- featureDefinitions(ref_filtered)[, c("mzmed", "rtmed")]
+cat("Number of landmarks extracted:", nrow(ref_mz_rt), "\n")
+head(ref_mz_rt)
+```
+
+### Perform Alignment
 
 ```{r lama_alignment}
-# Work with fresh grouped data
-xdata_lama <- xdata_grouped
-
-# Extract feature definitions to use as landmarks
-fdef <- featureDefinitions(xdata_lama)
-
-# Create landmark matrix (mz and rt columns)
-lamas <- cbind(
-  mz = fdef$mzmed,
-  rt = fdef$rtmed
-)
-
-# Create LamaParama object
+# Create LamaParama object with landmarks
 lama_param <- LamaParama(
-  lamas = lamas,
+  lamas = ref_mz_rt,
   method = "loess",
-  span = 0.4
+  span = 0.5,
+  outlierTolerance = 3,
+  zeroWeight = 10,
+  ppm = 20,
+  tolerance = 0,
+  toleranceRt = 20
 )
 
-# Perform alignment
-xdata_lama <- adjustRtime(xdata_lama, param = lama_param)
+# Apply alignment to test dataset
+tst_adjusted <- adjustRtime(tst, param = lama_param)
+tst_adjusted <- applyAdjustedRtime(tst_adjusted)
 ```
 
 ## Visualizing LamaParama Results
@@ -273,39 +305,45 @@ xdata_lama <- adjustRtime(xdata_lama, param = lama_param)
 
 ```{r extract_lama}
 # Extract LamaParama from process history
-proc_hist <- processHistory(xdata_lama, type = xcms:::.PROCSTEP.RTIME.CORRECTION)
+proc_hist <- processHistory(tst_adjusted, type = xcms:::.PROCSTEP.RTIME.CORRECTION)
 lama_result <- proc_hist[[length(proc_hist)]]@param
 ```
 
-### Basic Alignment Plot
+### Visualize Alignment Model
 
-Each plot shows:
+The `gplot(LamaParama)` function visualizes the RT alignment model for each sample:
 
-- **Points**: Matched peaks between the sample and reference
-- **Line**: The fitted retention time correction model
+- **Points**: Chromatographic peaks from test data matched to reference landmarks
+- **Line**: Fitted model showing RT corrections
 
 ```{r lama_plot}
-# Plot alignment for first sample
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "Landmark-based alignment model for sample 1."
+# Plot alignment model for first sample
 p <- gplot(lama_result, index = 1)
 p
 ```
 
-The x-axis shows the observed retention times in the sample, while the y-axis shows the reference (or "Lama") retention times. The fitted line shows how retention times should be adjusted.
+The x-axis shows observed retention times (test data), the y-axis shows reference retention times (landmarks). The fitted line shows the correction model applied to align the datasets.
 
 ### Multiple Samples
 
 ```{r lama_multiple}
+#| fig-height: 12
+#| fig-width: 5
+#| fig-alt: "Alignment models for first 3 samples."
 # Create plots for first 3 samples
-p1 <- gplot(lama_result, index = 1) + ggtitle("Sample 1")
-p2 <- gplot(lama_result, index = 2) + ggtitle("Sample 2")
-p3 <- gplot(lama_result, index = 3) + ggtitle("Sample 3")
+p1 <- gplot(lama_result, index = 1) + labs(title = "Sample 1")
+p2 <- gplot(lama_result, index = 2) + labs(title = "Sample 2")
+p3 <- gplot(lama_result, index = 3) + labs(title = "Sample 3")
 
 # Display plots
 library(patchwork)
 p1 / p2 / p3
 ```
 
-Note here that since we just took all the peaks from the samples it is essential a perfect match. When you bring your own landmarks it will look different.
+Each plot shows how well the test sample's peaks match the reference landmarks and the fitted correction model.
 
 
 ### Customization
@@ -341,6 +379,36 @@ p_interactive <- gplot(lama_result, index = 1)
 ggplotly(p_interactive)
 ```
 
+## API Differences: gplot(LamaParama) vs plot(LamaParama)
+
+### Side-by-Side Comparison
+
+```{r lama_comparison}
+#| fig-height: 4
+#| fig-width: 10
+#| fig-alt: "Side-by-side comparison of gplot vs XCMS original plot for LamaParama."
+# ggplot2 version
+p_gg <- gplot(lama_result, index = 1) +
+  labs(title = "gplot(LamaParama) - ggplot2", x = "Observed RT", y = "Reference RT")
+
+# XCMS original
+par(mar = c(4, 4, 2, 1))
+plot(lama_result, index = 1, main = "plot(LamaParama) - Base R")
+
+# Display ggplot2 version
+p_gg
+```
+
+### Key Differences
+
+| Aspect | `gplot()` (ggplot2) | `plot()` (XCMS) |
+|--------|---------------------|-----------------|
+| **Graphics System** | ggplot2 | Base R |
+| **Customization** | Use `+ labs()`, `+ theme()`, etc. | Pass parameters to `plot()` |
+| **Interactive** | Easy with `ggplotly()` | Requires plotly conversion |
+| **Layering** | Can add geoms with `+` | Limited layering |
+| **Return Value** | ggplot object | NULL (side effect only) |
+
 ## Interpretation
 
 ### Good Alignment
@@ -361,32 +429,17 @@ Watch for:
 - **Many outliers**: May suggest RT shifts that are too complex for the model
 - **Gaps in coverage**: Some RT regions may not be well-represented
 
-## Comparing with Overall Alignment
+## Visualizing Overall Alignment Result
 
-You can use `gplotAdjustedRtime()` to visualize the overall LamaParama alignment result:
+You can use `gplotAdjustedRtime()` to visualize the overall alignment result after applying LamaParama:
 
 ```{r lama_overall}
-gplotAdjustedRtime(xdata_lama, color_by = sample_group) +
-  ggtitle("LamaParama Alignment Result")
-```
-
-# Comparing Alignment Methods
-
-Create side-by-side comparisons of different alignment approaches:
-
-```{r method_comparison}
-#| fig-height: 4
-#| fig-width: 10
-#| fig-alt: "Comparison of PeakGroups and LamaParama alignment methods."
-# PeakGroups alignment
-p_pg <- gplotAdjustedRtime(xdata, color_by = sample_group) +
-  ggtitle("PeakGroups Alignment")
-
-# LamaParama alignment
-p_lama <- gplotAdjustedRtime(xdata_lama, color_by = sample_group) +
-  ggtitle("LamaParama Alignment")
-
-p_pg | p_lama
+#| fig-height: 5
+#| fig-width: 8
+#| fig-alt: "Overall RT adjustment visualization after LamaParama alignment."
+sample_data_tst <- sampleData(tst_adjusted)
+gplotAdjustedRtime(tst_adjusted, color_by = sample_group) +
+  labs(title = "LamaParama Alignment Result")
 ```
 
 # Summary

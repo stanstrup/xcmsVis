@@ -255,8 +255,8 @@ xdata_cor <- groupFeatures(xdata, param = AbundanceSimilarityParam(threshold = 0
 cat("AbundanceSimilarityParam (threshold=0.7):",
     length(unique(featureGroups(xdata_cor))), "groups\n")
 
-# Show first 5 groups
-fg_cor <- unique(featureGroups(xdata_cor))
+# Show some groups with multiple Features
+fg_cor <- names(rev(sort(table(featureGroups(xdata_cor)))))
 gplotFeatureGroups(xdata_cor, featureGroups = fg_cor[1:5]) +
   ggtitle("Feature Groups: Abundance Correlation (threshold = 0.7)")
 ```
