@@ -11,6 +11,7 @@ NULL
 .gplotChromatogramsOverlay_impl <- function(object,
                                             col = "#00000060",
                                             type = "l",
+                                            main = NULL,
                                             xlim = numeric(),
                                             ylim = numeric(),
                                             peakType = c("polygon", "point", "rectangle", "none"),
@@ -289,6 +290,7 @@ NULL
 #' @export
 setMethod("gplotChromatogramsOverlay", "XChromatograms",
           function(object, col = "#00000060", type = "l",
+                   main = NULL,
                    xlim = numeric(), ylim = numeric(),
                    peakType = c("polygon", "point", "rectangle", "none"),
                    peakBg = NULL, peakCol = NULL, peakPch = 1,
@@ -296,6 +298,7 @@ setMethod("gplotChromatogramsOverlay", "XChromatograms",
 
               .gplotChromatogramsOverlay_impl(
                   object = object, col = col, type = type,
+                  main = main,
                   xlim = xlim, ylim = ylim,
                   peakType = peakType, peakBg = peakBg, peakCol = peakCol,
                   peakPch = peakPch, stacked = stacked, transform = transform, ...
@@ -306,12 +309,14 @@ setMethod("gplotChromatogramsOverlay", "XChromatograms",
 #' @export
 setMethod("gplotChromatogramsOverlay", "MChromatograms",
           function(object, col = "#00000060", type = "l",
+                   main = NULL,
                    xlim = numeric(), ylim = numeric(),
                    stacked = 0, transform = identity, ...) {
 
               # MChromatograms doesn't have peaks, so set peakType to "none"
               .gplotChromatogramsOverlay_impl(
                   object = object, col = col, type = type,
+                  main = main,
                   xlim = xlim, ylim = ylim,
                   peakType = "none", peakBg = NULL, peakCol = NULL,
                   peakPch = 1, stacked = stacked, transform = transform, ...

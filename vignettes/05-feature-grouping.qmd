@@ -168,10 +168,10 @@ all_groups <- unique(featureGroups(xdata))
 gplotFeatureGroups(xdata,
                    featureGroups = all_groups[1:5],
                    col = "#E31A1C",  # Red color
-                   pch = 16,          # Solid circles
-                   xlab = "Retention Time (sec)",
-                   ylab = "Mass-to-Charge Ratio (m/z)",
-                   main = "Custom Styled Feature Groups")
+                   pch = 16) +       # Solid circles
+  labs(x = "Retention Time (sec)",
+       y = "Mass-to-Charge Ratio (m/z)",
+       title = "Custom Styled Feature Groups")
 ```
 
 ## Different Plot Types

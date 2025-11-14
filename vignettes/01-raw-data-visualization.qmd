@@ -197,9 +197,9 @@ p3 <- gplot(mse[1], colramp = plasma_rev) + ggtitle("Plasma")
 ```{r custom_titles}
 #| fig-height: 12
 #| fig-width: 8
-#| fig-alt: "Three stacked two-panel plots with custom sample names as titles."
-# Custom sample names
-gplot(mse, main = c("Knockout 1", "Knockout 2", "Wild Type"))
+#| fig-alt: "Three stacked two-panel plots showing multiple samples."
+# Plot shows sample names from data automatically
+gplot(mse)
 ```
 
 ## Interactive Visualization
@@ -244,7 +244,8 @@ Visualize raw MS data to check for:
 #| fig-height: 12
 #| fig-width: 10
 #| fig-alt: "QC visualization showing all three samples for comparison of data quality."
-gplot(mse, main = glue("QC: {c('Sample 1', 'Sample 2', 'Sample 3')}"))
+# Plot automatically shows sample names from the data
+gplot(mse)
 ```
 
 ### Method Development
@@ -323,10 +324,12 @@ From this plot, you can see:
 p_custom <- gplotPrecursorIons(
   pest_dda,
   pch = 16,                    # filled circle
-  col = "#E41A1C",             # point color
-  xlab = "Retention Time (s)",
-  ylab = "Precursor m/z"
-)
+  col = "#E41A1C"              # point color
+) +
+  labs(
+    x = "Retention Time (s)",
+    y = "Precursor m/z"
+  )
 
 p_custom
 ```

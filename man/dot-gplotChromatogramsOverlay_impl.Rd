@@ -8,6 +8,7 @@
   object,
   col = "#00000060",
   type = "l",
+  main = NULL,
   xlim = numeric(),
   ylim = numeric(),
   peakType = c("polygon", "point", "rectangle", "none"),
