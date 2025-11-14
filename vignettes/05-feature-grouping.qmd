@@ -82,43 +82,38 @@ register(SerialParam())
 
 Feature grouping requires a complete XCMS workflow: peak detection, correspondence, retention time alignment, re-correspondence, and then feature grouping.
 
-```{r load_data}
-# Load example data
-cdf_files <- dir(system.file("cdf", package = "faahKO"),
-                 recursive = TRUE, full.names = TRUE)[1:3]
+We'll use pre-processed data with peaks already detected:
 
-# Create XcmsExperiment
-xdata <- readMsExperiment(spectraFiles = cdf_files)
+```{r load_data}
+# Load pre-processed data with detected peaks
+# This dataset contains 248 detected peaks from 3 samples
+xdata <- loadXcmsData("faahko_sub2")
 
 # Add sample metadata
-sampleData(xdata)$sample_name <- basename(cdf_files)
+sampleData(xdata)$sample_name <- c("KO01", "KO02", "WT01")
 sampleData(xdata)$sample_group <- c("KO", "KO", "WT")
 
 cat("Loaded", length(fileNames(xdata)), "files\n")
+cat("Detected peaks:", nrow(chromPeaks(xdata)), "\n")
 ```
 
 ## Complete XCMS Workflow
 
 ```{r workflow}
-# 1. Peak detection
-cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25, noise = 1000)
-xdata <- findChromPeaks(xdata, param = cwp)
-cat("Detected", nrow(chromPeaks(xdata)), "peaks\n")
-
-# 2. Peak grouping (correspondence)
+# 1. Peak grouping (correspondence)
 pdp <- PeakDensityParam(sampleGroups = sampleData(xdata)$sample_group,
                         minFraction = 0.5, bw = 30)
 xdata <- groupChromPeaks(xdata, param = pdp)
 cat("Grouped into", nrow(featureDefinitions(xdata)), "features\n")
 
-# 3. Retention time alignment
+# 2. Retention time alignment
 xdata <- adjustRtime(xdata, param = ObiwarpParam())
 
-# 4. Re-group after alignment
+# 3. Re-group after alignment
 xdata <- groupChromPeaks(xdata, param = pdp)
 cat("After alignment:", nrow(featureDefinitions(xdata)), "features\n")
 
-# 5. Group features (identify related features)
+# 4. Group features (identify related features)
 xdata <- groupFeatures(xdata, param = SimilarRtimeParam(diffRt = 20))
 cat("Identified", length(unique(featureGroups(xdata))), "feature groups\n")
 ```
