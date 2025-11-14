@@ -74,7 +74,8 @@ Suggests:
     faahKO,
     viridisLite,
     MsFeatures,
-    msdata
+    msdata,
+    glue
 VignetteBuilder: quarto
 SystemRequirements: quarto
 biocViews: Metabolomics, MassSpectrometry, Visualization

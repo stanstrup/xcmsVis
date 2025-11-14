@@ -96,9 +96,13 @@ For visualization, we'll filter to a specific retention time and m/z region:
 mse <- filterRt(xdata, rt = c(2785-100, 2785+100))
 mse <- filterMzRange(mse, mz = c(278, 283))
 
-cat("Filtered data:\n")
-cat("  RT range:", paste(range(rtime(spectra(mse[1]))), collapse = " - "), "\n")
-cat("  Number of spectra in sample 1:", length(spectra(mse[1])), "\n")
+library(glue)
+rt_range <- range(rtime(spectra(mse[1])))
+n_spectra <- length(spectra(mse[1]))
+cat(glue("Filtered data:
+  RT range: {rt_range[1]} - {rt_range[2]}
+  Number of spectra in sample 1: {n_spectra}
+"))
 ```
 
 ## Basic Usage
@@ -210,6 +214,21 @@ p <- gplot(mse[1])
 ggplotly(p)
 ```
 
+**Accessing Individual Panels:**
+
+Since `gplot()` returns a patchwork object combining two panels, you can access and make each panel interactive separately:
+
+```{r interactive_panels}
+#| eval: false
+# Upper panel (BPI chromatogram)
+ggplotly(p[[1]])
+
+# Lower panel (m/z vs RT scatter)
+ggplotly(p[[2]])
+```
+
+This is useful when you want to customize each panel independently or embed them separately in reports.
+
 ## Use Cases
 
 ### Quality Control
@@ -225,7 +244,7 @@ Visualize raw MS data to check for:
 #| fig-height: 12
 #| fig-width: 10
 #| fig-alt: "QC visualization showing all three samples for comparison of data quality."
-gplot(mse, main = paste("QC:", c("Sample 1", "Sample 2", "Sample 3")))
+gplot(mse, main = glue("QC: {c('Sample 1', 'Sample 2', 'Sample 3')}"))
 ```
 
 ### Method Development
