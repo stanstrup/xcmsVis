@@ -17,13 +17,12 @@ NULL
 #' @param col character(1) color for point borders (default: "grey")
 #' @param colramp function color ramp for intensity mapping (default: grDevices::topo.colors)
 #' @param pch integer(1) point shape (default: 21 = filled circle)
-#' @param main character vector of titles (one per sample). If NULL, uses sample names.
-#' @param xlab character(1) x-axis label (default: "Retention time")
 #' @param ... additional arguments (for compatibility)
 #'
 #' @return A ggplot or patchwork object showing the two-panel visualization.
 #'   For single samples, returns a patchwork object with two panels.
 #'   For multiple samples, returns a patchwork object with all sample plots stacked.
+#'   Use `+ labs()` to customize axis labels and titles.
 #'
 #' @details
 #' The function:
@@ -75,7 +74,7 @@ NULL
 setMethod("gplot", "XcmsExperiment",
           function(x, msLevel = 1L, peakCol = "#ff000060",
                    col = "grey", colramp = grDevices::topo.colors,
-                   pch = 21, main = NULL, xlab = "Retention time", ...) {
+                   pch = 21, ...) {
 
               # Apply adjusted retention times if present
               if (xcms::hasAdjustedRtime(x)) {
@@ -99,16 +98,12 @@ setMethod("gplot", "XcmsExperiment",
               # Convert to MsExperiment for data extraction
               mse <- methods::as(x, "MsExperiment")
 
-              # Get sample names for titles
-              if (is.null(main)) {
-                  fns <- MsExperiment::sampleData(mse)$spectraOrigin
-                  if (is.null(fns) || length(fns) == 0) {
-                      fns <- paste("Sample", seq_along(mse))
-                  } else {
-                      fns <- basename(fns)
-                  }
+              # Get sample names for default titles
+              fns <- MsExperiment::sampleData(mse)$spectraOrigin
+              if (is.null(fns) || length(fns) == 0) {
+                  fns <- paste("Sample", seq_along(mse))
               } else {
-                  fns <- main
+                  fns <- basename(fns)
               }
 
               # Create plot for each sample
@@ -146,8 +141,7 @@ setMethod("gplot", "XcmsExperiment",
                   # Create two-panel plot for this sample
                   p <- .create_sample_plot(df, pks, main = fns[i],
                                            col = col, colramp = colramp,
-                                           pch = pch, peakCol = peakCol,
-                                           xlab = xlab, ...)
+                                           pch = pch, peakCol = peakCol, ...)
 
                   plot_list[[i]] <- p
               }
@@ -167,14 +161,13 @@ setMethod("gplot", "XcmsExperiment",
 setMethod("gplot", "XCMSnExp",
           function(x, msLevel = 1L, peakCol = "#ff000060",
                    col = "grey", colramp = grDevices::topo.colors,
-                   pch = 21, main = NULL, xlab = "Retention time", ...) {
+                   pch = 21, ...) {
 
               # Convert XCMSnExp to XcmsExperiment and use the same method
               # XCMSnExp can be processed similarly
               xdata <- methods::as(x, "XcmsExperiment")
               gplot(xdata, msLevel = msLevel, peakCol = peakCol,
-                    col = col, colramp = colramp, pch = pch,
-                    main = main, xlab = xlab, ...)
+                    col = col, colramp = colramp, pch = pch, ...)
           })
 
 #' Helper function to create two-panel plot for a single sample
@@ -183,8 +176,7 @@ setMethod("gplot", "XCMSnExp",
 #' @noRd
 .create_sample_plot <- function(df, pks, main = "", col = "grey",
                                 colramp = grDevices::topo.colors,
-                                pch = 21, peakCol = "#ff000060",
-                                xlab = "Retention time", ...) {
+                                pch = 21, peakCol = "#ff000060", ...) {
 
     # Calculate BPI (max intensity per RT)
     bpi_df <- df %>%
@@ -225,7 +217,7 @@ setMethod("gplot", "XCMSnExp",
         scale_fill_gradientn(colors = colramp(256),
                             limits = intensity_range,
                             name = "Intensity") +
-        labs(x = xlab, y = "m/z") +
+        labs(x = "Retention time", y = "m/z") +
         theme_bw() +
         theme(legend.position = "right",
               plot.margin = margin(0, 5, 5, 5)) +
