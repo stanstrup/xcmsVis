@@ -25,3 +25,5 @@ PROJECT_STATUS.md
 vignettes/*_files
 ^xcms-reference$
 ^Rplots\.pdf$
+tests/testthat/_snap
+vignettes/*_files

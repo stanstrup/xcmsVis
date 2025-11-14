@@ -11,8 +11,6 @@ gplotChromPeakDensity(
   object,
   param,
   col = "#00000060",
-  xlab = "retention time",
-  main = NULL,
   peakType = c("polygon", "point", "rectangle", "none"),
   peakCol = "#00000060",
   peakBg = "#00000020",
@@ -25,8 +23,6 @@ gplotChromPeakDensity(
   object,
   param,
   col = "#00000060",
-  xlab = "retention time",
-  main = NULL,
   peakType = c("polygon", "point", "rectangle", "none"),
   peakCol = "#00000060",
   peakBg = "#00000020",
@@ -39,8 +35,6 @@ gplotChromPeakDensity(
   object,
   param,
   col = "#00000060",
-  xlab = "retention time",
-  main = NULL,
   peakType = c("polygon", "point", "rectangle", "none"),
   peakCol = "#00000060",
   peakBg = "#00000020",
@@ -58,10 +52,6 @@ parameters. If missing, the function will try to extract it from the object's
 process history (if correspondence has been performed).}
 
 \item{col}{Color for the chromatogram lines in the upper panel (default: "#00000060").}
-
-\item{xlab}{X-axis label (default: "retention time").}
-
-\item{main}{Plot title (default: NULL).}
 
 \item{peakType}{Type of peak annotation in upper panel: "polygon", "point",
 "rectangle", or "none" (default: "polygon").}

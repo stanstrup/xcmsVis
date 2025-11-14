@@ -38,14 +38,14 @@ This vignette covers the **final step** in the XCMS metabolomics workflow: **fea
 ## XCMS Workflow Context
 
 ```
-┌─────────────────────────────────────┐
-│ 1. Raw Data Visualization           │
-│ 2. Peak Detection                   │
-│ 3. Peak Correspondence               │
-│ 4. Retention Time Alignment          │
-├─────────────────────────────────────┤
-│ 5. FEATURE GROUPING      ← YOU ARE HERE
-└─────────────────────────────────────┘
+┌───────────────────────────────┐
+│ 1. Raw Data Visualization     │
+│ 2. Peak Detection             │
+│ 3. Peak Correspondence        │
+│ 4. Retention Time Alignment   │
+├───────────────────────────────┤
+│ 5. FEATURE GROUPING           │ ← YOU ARE HERE
+└───────────────────────────────┘
 ```
 
 ## What is Feature Grouping?

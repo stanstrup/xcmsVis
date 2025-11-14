@@ -38,15 +38,15 @@ This vignette covers the **second step** in the XCMS metabolomics workflow: **vi
 ## XCMS Workflow Context
 
 ```
-┌─────────────────────────────────────┐
-│ 1. Raw Data Visualization           │
-├─────────────────────────────────────┤
-│ 2. PEAK DETECTION        ← YOU ARE HERE
-├─────────────────────────────────────┤
-│ 3. Peak Correspondence               │
-│ 4. Retention Time Alignment          │
-│ 5. Feature Grouping                  │
-└─────────────────────────────────────┘
+┌───────────────────────────────┐
+│ 1. Raw Data Visualization     │
+├───────────────────────────────┤
+│ 2. PEAK DETECTION             │ ← YOU ARE HERE
+├───────────────────────────────┤
+│ 3. Peak Correspondence        │
+│ 4. Retention Time Alignment   │
+│ 5. Feature Grouping           │
+└───────────────────────────────┘
 ```
 
 ## Functions Covered

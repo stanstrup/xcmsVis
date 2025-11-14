@@ -10,12 +10,9 @@ gplotFeatureGroups(
   x,
   xlim = numeric(),
   ylim = numeric(),
-  xlab = "retention time",
-  ylab = "m/z",
   pch = 4,
   col = "#00000060",
   type = "o",
-  main = "Feature groups",
   featureGroups = character(),
   ...
 )
@@ -24,12 +21,9 @@ gplotFeatureGroups(
   x,
   xlim = numeric(),
   ylim = numeric(),
-  xlab = "retention time",
-  ylab = "m/z",
   pch = 4,
   col = "#00000060",
   type = "o",
-  main = "Feature groups",
   featureGroups = character(),
   ...
 )
@@ -38,12 +32,9 @@ gplotFeatureGroups(
   x,
   xlim = numeric(),
   ylim = numeric(),
-  xlab = "retention time",
-  ylab = "m/z",
   pch = 4,
   col = "#00000060",
   type = "o",
-  main = "Feature groups",
   featureGroups = character(),
   ...
 )
@@ -57,17 +48,11 @@ Default: numeric() (auto-calculate from data).}
 \item{ylim}{Numeric vector of length 2 specifying m/z range.
 Default: numeric() (auto-calculate from data).}
 
-\item{xlab}{X-axis label (default: "retention time").}
-
-\item{ylab}{Y-axis label (default: "m/z").}
-
 \item{pch}{Point character for feature markers (default: 4).}
 
 \item{col}{Color for feature points and connecting lines (default: "#00000060").}
 
 \item{type}{Plot type (default: "o" for overplotted points and lines).}
-
-\item{main}{Plot title (default: "Feature groups").}
 
 \item{featureGroups}{Character vector of feature group identifiers to plot.
 If empty (default), all feature groups are plotted.}

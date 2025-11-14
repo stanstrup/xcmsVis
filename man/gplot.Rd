@@ -11,24 +11,13 @@
 \usage{
 gplot(x, ...)
 
-\S4method{gplot}{LamaParama}(
-  x,
-  index = 1L,
-  colPoints = "#00000060",
-  colFit = "#00000080",
-  xlab = "Matched Chromatographic peaks",
-  ylab = "Lamas",
-  ...
-)
+\S4method{gplot}{LamaParama}(x, index = 1L, colPoints = "#00000060", colFit = "#00000080", ...)
 
 \S4method{gplot}{XChromatogram}(
   x,
   col = "black",
   lty = 1,
   type = "l",
-  xlab = "retention time",
-  ylab = "intensity",
-  main = NULL,
   peakType = c("polygon", "point", "rectangle", "none"),
   peakCol = "#00000060",
   peakBg = "#00000020",
@@ -41,9 +30,6 @@ gplot(x, ...)
   col = "#00000060",
   lty = 1,
   type = "l",
-  xlab = "retention time",
-  ylab = "intensity",
-  main = NULL,
   peakType = c("polygon", "point", "rectangle", "none"),
   peakCol = "#00000060",
   peakBg = "#00000020",
@@ -56,9 +42,6 @@ gplot(x, ...)
   col = "#00000060",
   lty = 1,
   type = "l",
-  xlab = "retention time",
-  ylab = "intensity",
-  main = NULL,
   peakType = c("polygon", "point", "rectangle", "none"),
   peakCol = "#00000060",
   peakBg = "#00000020",
@@ -77,17 +60,11 @@ gplot(x, ...)
 
 \item{colFit}{Color for the fitted model line (default: semi-transparent black).}
 
-\item{xlab}{X-axis label (default: "Matched Chromatographic peaks").}
-
-\item{ylab}{Y-axis label (default: "Lamas").}
-
 \item{col}{Color for the chromatogram line (default: "black").}
 
 \item{lty}{Line type for chromatogram (default: 1).}
 
 \item{type}{Plot type (default: "l" for line).}
-
-\item{main}{Plot title (default: NULL).}
 
 \item{peakType}{Type of peak annotation: "polygon", "point", "rectangle", or "none"
 (default: "polygon").}

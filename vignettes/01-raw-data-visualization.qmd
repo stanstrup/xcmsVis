@@ -38,14 +38,14 @@ This vignette covers the **first step** in the XCMS metabolomics workflow: **vis
 ## XCMS Workflow Context
 
 ```
-┌─────────────────────────────────────┐
-│ 1. RAW DATA VISUALIZATION ← YOU ARE HERE
-├─────────────────────────────────────┤
-│ 2. Peak Detection                   │
-│ 3. Peak Correspondence               │
-│ 4. Retention Time Alignment          │
-│ 5. Feature Grouping                  │
-└─────────────────────────────────────┘
+┌───────────────────────────────┐
+│ 1. RAW DATA VISUALIZATION     | ← YOU ARE HERE
+├────────────────────────────-──┤
+│ 2. Peak Detection             │
+│ 3. Peak Correspondence        │
+│ 4. Retention Time Alignment   │
+│ 5. Feature Grouping           │
+└──────────────────────────----─┘
 ```
 
 ## Functions Covered
@@ -93,8 +93,8 @@ For visualization, we'll filter to a specific retention time and m/z region:
 
 ```{r filter_data}
 # Filter to focused region
-mse <- filterRt(xdata, rt = c(2500, 2800))
-mse <- filterMzRange(mse, mz = c(218, 220.5))
+mse <- filterRt(xdata, rt = c(2785-100, 2785+100))
+mse <- filterMzRange(mse, mz = c(278, 283))
 
 cat("Filtered data:\n")
 cat("  RT range:", paste(range(rtime(spectra(mse[1]))), collapse = " - "), "\n")
@@ -333,32 +333,6 @@ p_interactive <- gplotPrecursorIons(pest_dda)
 ggplotly(p_interactive)
 ```
 
-## Assessing DDA Performance
-
-### Coverage Assessment
-
-```{r coverage}
-# Add horizontal lines to show m/z ranges
-gplotPrecursorIons(pest_dda) +
-  geom_hline(yintercept = c(100, 200, 300, 400, 500),
-             linetype = "dashed", alpha = 0.3) +
-  annotate("text", x = max(rtime(spectra(pest_dda))) * 0.98,
-           y = c(100, 200, 300, 400, 500),
-           label = paste0(c(100, 200, 300, 400, 500), " m/z"),
-           hjust = 1, vjust = -0.5, size = 3, color = "gray40")
-```
-
-### Quality Control
-
-Check for expected MS/MS coverage:
-
-```{r precursor_qc}
-gplotPrecursorIons(pest_dda) +
-  ggtitle("QC: Precursor Ion Coverage Check") +
-  theme_minimal() +
-  labs(caption = paste("Total MS/MS scans:",
-                       sum(!is.na(precursorMz(spectra(pest_dda))))))
-```
 
 # Summary
 

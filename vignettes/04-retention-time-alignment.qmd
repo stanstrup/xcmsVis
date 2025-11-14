@@ -38,15 +38,15 @@ This vignette covers the **fourth step** in the XCMS metabolomics workflow: **re
 ## XCMS Workflow Context
 
 ```
-┌─────────────────────────────────────┐
-│ 1. Raw Data Visualization           │
-│ 2. Peak Detection                   │
-│ 3. Peak Correspondence               │
-├─────────────────────────────────────┤
-│ 4. RT ALIGNMENT          ← YOU ARE HERE
-├─────────────────────────────────────┤
-│ 5. Feature Grouping                  │
-└─────────────────────────────────────┘
+┌───────────────────────────────┐
+│ 1. Raw Data Visualization     │
+│ 2. Peak Detection             │
+│ 3. Peak Correspondence        │
+├───────────────────────────────┤
+│ 4. RT ALIGNMENT               │ ← YOU ARE HERE
+├───────────────────────────────┤
+│ 5. Feature Grouping           │
+└───────────────────────────────┘
 ```
 
 ## What is Retention Time Alignment?

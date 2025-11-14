@@ -17,43 +17,71 @@ Modern, interactive visualizations for XCMS metabolomics data using ggplot2.
 
 This package complements the [XCMS package](https://github.com/sneumann/xcms) by reimplementing its base graphics plots using ggplot2.
 
+## Status
+
+**All 11 modern XCMS plotting functions are now implemented!**
+
+| Metric | Status |
+|--------|--------|
+| Core Functions | 11/11 complete ✅ |
+| Object Support | XCMSnExp ✅ / XcmsExperiment ✅ / LamaParama ✅ |
+| Vignettes | 7 comprehensive guides |
+| Test Coverage | All tests passing ✅ |
+
 ## Installation
 
 ```r
-# Install from GitHub (development version)
-# devtools::install_github("yourusername/xcmsVis")
+# Install from GitHub
+devtools::install_github("stanstrup/xcmsVis")
 ```
 
-## Features
+## Implemented Functions
 
-### Current Functions
+### Retention Time and Alignment
 
-- `gplotAdjustedRtime()` - ggplot2 version of XCMS's `plotAdjustedRtime()`
-  - Works with both XCMSnExp and XcmsExperiment objects
-  - Interactive tooltips for plotly
-  - Modern ggplot2 aesthetics
+- **`gplotAdjustedRtime()`** - Visualize retention time corrections
+- **`gplot(LamaParama)`** - Landmark-based alignment parameters
 
-### Planned Functions
+### Peak Detection and Visualization
 
-Future releases will include ggplot2 versions of:
-- `plotQC()` - Quality control diagnostics
-- `plotChromPeaks()` - Chromatographic peak visualization
-- `plotChromPeakImage()` - Peak intensity heatmap
-- `plotChromPeakDensity()` - Peak density visualization
-- `plotEIC()` - Extracted ion chromatograms
-- And more!
+- **`gplotChromPeaks()`** - Detected peaks in RT-m/z space
+- **`gplotChromPeakImage()`** - Peak density heatmap across samples
+- **`gplotChromPeakDensity()`** - Peak density for parameter optimization
+- **`ghighlightChromPeaks()`** - Peak annotation layers
 
-## Usage
+### Chromatograms and EICs
+
+- **`gplot(XChromatogram)`** - Single chromatogram with detected peaks
+- **`gplot(XChromatograms)`** - Multiple chromatograms (stacked or separate)
+- **`gplotChromatogramsOverlay()`** - Overlay multiple EICs
+
+### Feature Groups and MS/MS
+
+- **`gplotFeatureGroups()`** - Related features (isotopes, adducts, fragments)
+- **`gplotPrecursorIons()`** - MS/MS precursor ion visualization
+
+### Full Experiment Visualization
+
+- **`gplot(XcmsExperiment)`** - Base peak intensity and MS map
+
+All functions work with both legacy (XCMSnExp) and modern (XcmsExperiment) XCMS objects.
+
+## Quick Start
 
 ```r
 library(xcmsVis)
 library(xcms)
+library(MsExperiment)
 
-# Works with XcmsExperiment (XCMS v4+)
+# Load data
 xdata <- readMsExperiment(files = mzml_files)
-# ... perform peak detection, alignment, etc.
 
-# Create retention time adjustment plot
+# XCMS workflow
+xdata <- findChromPeaks(xdata, param = CentWaveParam())
+xdata <- groupChromPeaks(xdata, param = PeakDensityParam())
+xdata <- adjustRtime(xdata, param = PeakGroupsParam())
+
+# Visualize results
 p <- gplotAdjustedRtime(xdata, color_by = sample_group)
 print(p)
 
@@ -61,10 +89,82 @@ print(p)
 library(plotly)
 ggplotly(p, tooltip = "text")
 
-# Also works with XCMSnExp (XCMS v3)
-xdata_v3 <- readMSData(files = mzml_files, mode = "onDisk")
-# ... perform XCMS workflow
-p <- gplotAdjustedRtime(xdata_v3, color_by = sample_group)
+# Customize with ggplot2
+p +
+  theme_minimal() +
+  labs(title = "RT Alignment Results")
+```
+
+## Example Visualizations
+
+### Retention Time Alignment
+
+```r
+gplotAdjustedRtime(xdata, color_by = sample_group)
+```
+
+### Chromatographic Peaks
+
+```r
+gplotChromPeaks(xdata)
+```
+
+### Feature Groups
+
+```r
+gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002"))
+```
+
+### Extract Ion Chromatograms
+
+```r
+chr <- chromatogram(xdata, mz = c(305, 306), rt = c(2500, 3500))
+gplot(chr)
+```
+
+## Vignettes
+
+Comprehensive guides are available:
+
+- [Retention Time Alignment Visualization](articles/gplotAdjustedRtime.html)
+- [Peak Detection and Visualization](articles/peak-visualization.html)
+- [Chromatogram Visualization](articles/chromatogram-visualization.html)
+- [Feature Groups Visualization](articles/feature-groups-visualization.html)
+- [RT Alignment Parameters (LamaParama)](articles/alignment-parameters.html)
+- [Precursor Ion Visualization](articles/precursor-ions.html)
+
+## Why xcmsVis?
+
+### Interactive Plots
+
+All plots are ggplot2 objects that seamlessly convert to interactive plotly visualizations:
+
+```r
+p <- gplotAdjustedRtime(xdata)
+ggplotly(p)  # Instant interactivity with zoom, pan, hover tooltips
+```
+
+### Composable
+
+Use patchwork to create custom layouts:
+
+```r
+library(patchwork)
+p1 <- gplotAdjustedRtime(xdata)
+p2 <- gplotChromPeaks(xdata)
+p1 / p2  # Stack vertically
+```
+
+### Publication-Ready
+
+Full ggplot2 customization:
+
+```r
+gplotAdjustedRtime(xdata) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1") +
+  labs(title = "Retention Time Correction",
+       subtitle = "PeakGroups alignment method")
 ```
 
 ## Motivation
@@ -78,3 +178,15 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 MIT License - see LICENSE file for details
+
+## Citation
+
+This package reuses and adapts substantial code and algorithms from the XCMS package, translating base R graphics implementations to ggplot2 while preserving the original visualization logic and functionality.
+
+Original XCMS authors:
+- Colin A. Smith (original author)
+- Ralf Tautenhahn (original author)
+- Steffen Neumann (original author)
+- And many contributors
+
+When using xcmsVis, please also cite the original XCMS package.
