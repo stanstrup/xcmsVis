@@ -1,3 +1,33 @@
+## Changes in v2.0.0
+
+
+### Code Refactoring
+
+* Remove xlab/ylab/main parameters from gplotPrecursorIons ([19eb454](https://github.com/stanstrup/xcmsVis/commit/19eb454d703f7df42a95072e0ae209ea9894034b))
+
+
+### Features
+
+* Replace paste with glue and add patchwork documentation ([d1976b2](https://github.com/stanstrup/xcmsVis/commit/d1976b254da3f893db63657c6be6d26bfa785959))
+
+
+### BREAKING CHANGES
+
+* Removed xlab, ylab, and main parameters from gplotPrecursorIons.
+Use ggplot2's labs() function to customize labels instead:
+  gplotPrecursorIons(x) + labs(x = "RT (s)", y = "m/z", title = "My Title")
+
+This follows ggplot2 conventions and provides more flexibility for customization.
+
+- Updated function signature and implementation
+- Updated documentation with ggplot2 customization examples
+- Updated test to use + labs() instead of parameters
+- Default labels still provided ("retention time", "m/z")
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
 ## Changes in v1.0.2
 
 
