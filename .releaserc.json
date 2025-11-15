@@ -1,6 +1,6 @@
 {
   "branches": ["main", "master"],
-  "tagFormat": "${version}",
+  "tagFormat": "semantic-release-${version}",
   "plugins": [
     [
       "@semantic-release/commit-analyzer",
@@ -14,24 +14,11 @@
     ],
     "@semantic-release/release-notes-generator",
     [
-      "@semantic-release/changelog",
-      {
-        "changelogFile": "NEWS.md"
-      }
-    ],
-    [
       "@semantic-release/exec",
       {
-        "prepareCmd": "./.github/prepare-news.sh ${nextRelease.version}"
+        "prepareCmd": "./.github/prepare-news.sh ${nextRelease.version} \"${nextRelease.notes}\"",
+        "successCmd": "./.github/sync-bioc-tag.sh ${nextRelease.version} \"${nextRelease.notes}\""
       }
-    ],
-    [
-      "@semantic-release/git",
-      {
-        "assets": ["NEWS.md", "DESCRIPTION"],
-        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-      }
-    ],
-    "@semantic-release/github"
+    ]
   ]
 }
