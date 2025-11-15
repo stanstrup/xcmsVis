@@ -558,7 +558,7 @@ highlightChromPeaks(xdata_xcmsnexp, rt = rt_range, mz = mz_range,
 #| fig-height: 5
 #| fig-width: 5
 #| fig-alt: "ggplot2 version as composable layers."
-gplot(chr[1, 1], peakType = "none") +
+gplot(chr[1, 1]) +
   ghighlightChromPeaks(xdata_filtered, rt = rt_range, mz = mz_range,
                        type = "rect", border = "red", fill = NA)
 ```
