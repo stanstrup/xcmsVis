@@ -2,9 +2,9 @@
 # prepare-news.sh
 set -e
 
-# Get parameters from semantic-release
+# Get parameters from semantic-release (via environment variables)
 SEMANTIC_VERSION=${SEMANTIC_RELEASE_NEXT_RELEASE_VERSION:-$1}
-RELEASE_NOTES=$2
+RELEASE_NOTES=${SEMANTIC_RELEASE_NEXT_RELEASE_NOTES:-$2}
 
 if [ -z "$SEMANTIC_VERSION" ]; then
   echo "ERROR: Next release version not set."

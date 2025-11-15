@@ -2,9 +2,9 @@
 # sync-bioc-tag.sh - Create 0.99.x tag and GitHub release
 set -e
 
-# Get parameters from semantic-release
-SEMANTIC_VERSION=$1
-RELEASE_NOTES=$2
+# Get parameters from semantic-release (via environment variables)
+SEMANTIC_VERSION=${SEMANTIC_RELEASE_NEXT_RELEASE_VERSION:-$1}
+RELEASE_NOTES=${SEMANTIC_RELEASE_NEXT_RELEASE_NOTES:-$2}
 
 echo "Semantic-release version: $SEMANTIC_VERSION"
 
