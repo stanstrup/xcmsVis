@@ -25,7 +25,6 @@ vignettes/peak-visualization.rmarkdown
 # Node.js (for semantic-release)
 node_modules/
 package-lock.json
-.bioc_version
 
 # Claude Code
 .claude/
