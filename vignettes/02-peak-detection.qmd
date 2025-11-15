@@ -209,8 +209,8 @@ First, let's extract a chromatogram for a specific m/z range:
 
 ```{r extract_chrom}
 # Extract chromatogram for m/z 200-210
-mz_range <- c(200, 210)
-rt_range <- c(2500, 3500)
+mz_range <- c(343-0.2,343+0.2)
+rt_range <- c(2600, 2750)
 
 # Get chromatogram data
 chr <- chromatogram(xdata, mz = mz_range, rt = rt_range)
@@ -560,7 +560,7 @@ highlightChromPeaks(xdata_xcmsnexp, rt = rt_range, mz = mz_range,
 #| fig-alt: "ggplot2 version as composable layers."
 gplot(chr[1, 1], peakType = "none") +
   ghighlightChromPeaks(xdata_filtered, rt = rt_range, mz = mz_range,
-                       type = "rect", border = "red", fill = alpha("red", 0.2))
+                       type = "rect", border = "red", fill = NA)
 ```
 
 </div>
