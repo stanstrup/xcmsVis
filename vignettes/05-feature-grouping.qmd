@@ -332,8 +332,11 @@ You've now completed the full XCMS visualization workflow:
 #| fig-height: 6
 #| fig-width: 5
 #| fig-alt: "XCMS plotFeatureGroups using base R graphics."
+# Get first 5 feature groups for comparison
+fg_compare <- unique(featureGroups(xdata))[1:5]
+
 # XCMS original (base R graphics)
-plotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002", "FG.0003", "FG.0004", "FG.0005"))
+plotFeatureGroups(xdata, featureGroups = fg_compare)
 ```
 
 </div>
@@ -346,7 +349,7 @@ plotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002", "FG.0003", "FG.
 #| fig-width: 5
 #| fig-alt: "ggplot2 version with clean styling and consistent API."
 # xcmsVis version (ggplot2)
-gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002", "FG.0003", "FG.0004", "FG.0005"))
+gplotFeatureGroups(xdata, featureGroups = fg_compare)
 ```
 
 </div>
@@ -359,7 +362,8 @@ Unlike the original XCMS `plotFeatureGroups()`, the ggplot2 version does not hav
 
 ```r
 # Customize labels with labs()
-gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002")) +
+fg_subset <- unique(featureGroups(xdata))[1:2]
+gplotFeatureGroups(xdata, featureGroups = fg_subset) +
   labs(x = "Retention Time (s)", y = "Mass/Charge", title = "My Custom Title")
 ```
 
