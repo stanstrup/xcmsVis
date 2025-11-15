@@ -55,8 +55,10 @@ Retention time alignment (also called retention time correction) adjusts for sys
 
 ## Functions Covered
 
-- **`gplotAdjustedRtime()`**: Visualize retention time corrections for any alignment method
-- **`gplot(LamaParama)`**: Visualize the LamaParama alignment model specifically
+| Function | Purpose | Input Type |
+|----------|---------|------------|
+| `gplotAdjustedRtime()` | General RT alignment visualization | XcmsExperiment, XCMSnExp |
+| `gplot(LamaParama)` | LamaParama-specific model visualization | LamaParama object |
 
 # Setup
 
@@ -390,13 +392,6 @@ p_pg | p_lama
 ```
 
 # Summary
-
-## Functions Covered
-
-| Function | Purpose | Input Type |
-|----------|---------|------------|
-| `gplotAdjustedRtime()` | General RT alignment visualization | XcmsExperiment, XCMSnExp |
-| `gplot(LamaParama)` | LamaParama-specific model visualization | LamaParama object |
 
 ## Use Cases
 

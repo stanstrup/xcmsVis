@@ -50,8 +50,10 @@ This vignette covers the **first step** in the XCMS metabolomics workflow: **vis
 
 ## Functions Covered
 
-- **`gplot(XcmsExperiment)`**: Visualize full MS acquisitions with BPI chromatogram and m/z scatter
-- **`gplotPrecursorIons()`**: Visualize MS/MS precursor ion selection in DDA experiments
+| Function | Purpose | Input Type |
+|----------|---------|------------|
+| `gplot(XcmsExperiment)` | Visualize full MS data | XcmsExperiment, XCMSnExp |
+| `gplotPrecursorIons()` | Visualize MS/MS precursors | MsExperiment with MS2 |
 
 # Setup
 
@@ -331,13 +333,6 @@ ggplotly(p_interactive)
 
 
 # Summary
-
-## Functions Covered
-
-| Function | Purpose | Input Type |
-|----------|---------|------------|
-| `gplot(XcmsExperiment)` | Visualize full MS data | XcmsExperiment, XCMSnExp |
-| `gplotPrecursorIons()` | Visualize MS/MS precursors | MsExperiment with MS2 |
 
 ## When to Use
 

@@ -51,10 +51,12 @@ This vignette covers the **second step** in the XCMS metabolomics workflow: **vi
 
 ## Functions Covered
 
-- **`gplotChromPeaks()`**: Visualize detected peaks as rectangles in RT vs m/z space
-- **`gplotChromPeakImage()`**: Heatmap showing peak density across samples and retention time
-- **`gplot(XChromatogram)`**: Plot individual chromatograms with detected peaks
-- **`ghighlightChromPeaks()`**: Add peak annotations to existing chromatogram plots
+| Function | Purpose | Input |
+|----------|---------|-------|
+| `gplotChromPeaks()` | Show peaks in RT/m/z space | XcmsExperiment |
+| `gplotChromPeakImage()` | Peak density heatmap | XcmsExperiment |
+| `gplot(XChromatogram)` | Chromatogram with peaks | XChromatogram |
+| `ghighlightChromPeaks()` | Add peak annotations | Layer for ggplot |
 
 # Setup
 
@@ -420,15 +422,6 @@ p_dist / p_density
 ```
 
 # Summary
-
-## Functions Covered
-
-| Function | Purpose | Input |
-|----------|---------|-------|
-| `gplotChromPeaks()` | Show peaks in RT/m/z space | XcmsExperiment |
-| `gplotChromPeakImage()` | Peak density heatmap | XcmsExperiment |
-| `gplot(XChromatogram)` | Chromatogram with peaks | XChromatogram |
-| `ghighlightChromPeaks()` | Add peak annotations | Layer for ggplot |
 
 ## Use Cases
 

@@ -55,8 +55,11 @@ Peak correspondence groups chromatographic peaks detected across different sampl
 
 ## Functions Covered
 
-- **`gplotChromPeakDensity()`**: Visualize peak density for optimizing correspondence parameters
-- **`gplotChromatogramsOverlay()`**: Create overlay plots of multiple extracted ion chromatograms
+| Function | Purpose | What it Overlays |
+|----------|---------|------------------|
+| `gplotChromPeakDensity()` | Optimize correspondence parameters | Density of peaks across samples |
+| `gplotChromatogramsOverlay()` | Compare different EICs within sample | DIFFERENT m/z, SAME sample |
+| `gplot(XChromatogram)` | Compare same EIC across samples | SAME m/z, DIFFERENT samples |
 
 # Setup
 
@@ -324,14 +327,6 @@ p4 <- gplot(chr_workflow[1, 1]) +
 ```
 
 # Summary
-
-## Functions Covered
-
-| Function | Purpose | What it Overlays |
-|----------|---------|------------------|
-| `gplotChromPeakDensity()` | Optimize correspondence parameters | Density of peaks across samples |
-| `gplotChromatogramsOverlay()` | Compare different EICs within sample | DIFFERENT m/z, SAME sample |
-| `gplot(XChromatogram)` | Compare same EIC across samples | SAME m/z, DIFFERENT samples |
 
 ## Use Cases
 
