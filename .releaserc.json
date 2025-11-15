@@ -16,8 +16,8 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "./.github/prepare-news.sh ${nextRelease.version} \"${nextRelease.notes}\"",
-        "successCmd": "./.github/sync-bioc-tag.sh ${nextRelease.version} \"${nextRelease.notes}\""
+        "prepareCmd": "./.github/prepare-news.sh ${nextRelease.version}",
+        "successCmd": "./.github/sync-bioc-tag.sh ${nextRelease.version}"
       }
     ]
   ]
