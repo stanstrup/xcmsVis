@@ -1,5 +1,52 @@
 # Changelog
 
+## Changes in v3.0.1
+
+### Bug Fixes
+
+- Actually use pre-processed data in vignette 2
+  ([5d86dd0](https://github.com/stanstrup/xcmsVis/commit/5d86dd0502ff2a011bb134009791e0834cd8dcce))
+- Add missing documentation and imports for R CMD check
+  ([e5abf8d](https://github.com/stanstrup/xcmsVis/commit/e5abf8db9943851cef75ebac8c8ed84d2d747f7e))
+- Convert to XCMSnExp for highlightChromPeaks comparison
+  ([69bdad9](https://github.com/stanstrup/xcmsVis/commit/69bdad949d898cda49d0ba5f8476480669716ad7))
+- Handle missing rtime_adjusted column after applyAdjustedRtime()
+  ([56386b2](https://github.com/stanstrup/xcmsVis/commit/56386b2b30d560c6cee1880272adcd90ed147a0b))
+- Remove applyAdjustedRtime() call in vignette 4
+  ([09b50f3](https://github.com/stanstrup/xcmsVis/commit/09b50f387be5082d64ccff7dc49f34a69bd480eb))
+- Update tests after parameter refactoring
+  ([dd17613](https://github.com/stanstrup/xcmsVis/commit/dd17613626d853ccfe20fcd72a0f3a140b904d7c))
+- Update vignettes to use ggplot2 labs() and restore main parameter
+  ([1a9562b](https://github.com/stanstrup/xcmsVis/commit/1a9562b8218c0cf8f97747b0f6dfd3613e96d735))
+- Use actual feature groups instead of hardcoded IDs in vignette 5
+  ([07476eb](https://github.com/stanstrup/xcmsVis/commit/07476eb48ee626376d9d331125fbbe64fd3daf66))
+
+### Features
+
+- Add missing XCMS comparison sections to all vignettes
+  ([c2634c0](https://github.com/stanstrup/xcmsVis/commit/c2634c0103ada2d32e3fbeab26d7454969466535))
+- Improve tooltip labels and use public API in vignettes
+  ([874d113](https://github.com/stanstrup/xcmsVis/commit/874d1134f57e0c7348047554ffaee670683c3210))
+- Improve vignette 2 with pre-processed data and peak ID tooltips
+  ([1a684ad](https://github.com/stanstrup/xcmsVis/commit/1a684ad0bbf279a1f66359f59d5f5c24ef6a3aa0))
+- Improve vignette 4 LamaParama example and add API comparison
+  ([09ed921](https://github.com/stanstrup/xcmsVis/commit/09ed921165cb697d91ac83534556497c5d63694d))
+- Use pre-processed data in vignette 5
+  ([b94073b](https://github.com/stanstrup/xcmsVis/commit/b94073b751e1f5c59a86222660690451f9c9c149))
+
+### BREAKING CHANGES
+
+- gplotPrecursorIons no longer accepts xlab/ylab/main parameters. Users
+  must use ggplot2’s + labs() function to customize labels.
+
+Note: gplotChromatogramsOverlay keeps main parameter as it’s needed for
+facet titles when plotting multiple samples. Simple label customization
+still uses + labs().
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
 ## Changes in v3.0.0
 
 ### Code Refactoring

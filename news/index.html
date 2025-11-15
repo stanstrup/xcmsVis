@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,6 +40,35 @@
       <small>Source: <a href="https://github.com/stanstrup/xcmsVis/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="3.0.1" id="changes-in-v301">Changes in v3.0.1<a class="anchor" aria-label="anchor" href="#changes-in-v301"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-3-0-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-3-0-1"></a></h3>
+<ul><li>Actually use pre-processed data in vignette 2 (<a href="https://github.com/stanstrup/xcmsVis/commit/5d86dd0502ff2a011bb134009791e0834cd8dcce" class="external-link">5d86dd0</a>)</li>
+<li>Add missing documentation and imports for R CMD check (<a href="https://github.com/stanstrup/xcmsVis/commit/e5abf8db9943851cef75ebac8c8ed84d2d747f7e" class="external-link">e5abf8d</a>)</li>
+<li>Convert to XCMSnExp for highlightChromPeaks comparison (<a href="https://github.com/stanstrup/xcmsVis/commit/69bdad949d898cda49d0ba5f8476480669716ad7" class="external-link">69bdad9</a>)</li>
+<li>Handle missing rtime_adjusted column after applyAdjustedRtime() (<a href="https://github.com/stanstrup/xcmsVis/commit/56386b2b30d560c6cee1880272adcd90ed147a0b" class="external-link">56386b2</a>)</li>
+<li>Remove applyAdjustedRtime() call in vignette 4 (<a href="https://github.com/stanstrup/xcmsVis/commit/09b50f387be5082d64ccff7dc49f34a69bd480eb" class="external-link">09b50f3</a>)</li>
+<li>Update tests after parameter refactoring (<a href="https://github.com/stanstrup/xcmsVis/commit/dd17613626d853ccfe20fcd72a0f3a140b904d7c" class="external-link">dd17613</a>)</li>
+<li>Update vignettes to use ggplot2 labs() and restore main parameter (<a href="https://github.com/stanstrup/xcmsVis/commit/1a9562b8218c0cf8f97747b0f6dfd3613e96d735" class="external-link">1a9562b</a>)</li>
+<li>Use actual feature groups instead of hardcoded IDs in vignette 5 (<a href="https://github.com/stanstrup/xcmsVis/commit/07476eb48ee626376d9d331125fbbe64fd3daf66" class="external-link">07476eb</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="features-3-0-1">Features<a class="anchor" aria-label="anchor" href="#features-3-0-1"></a></h3>
+<ul><li>Add missing XCMS comparison sections to all vignettes (<a href="https://github.com/stanstrup/xcmsVis/commit/c2634c0103ada2d32e3fbeab26d7454969466535" class="external-link">c2634c0</a>)</li>
+<li>Improve tooltip labels and use public API in vignettes (<a href="https://github.com/stanstrup/xcmsVis/commit/874d1134f57e0c7348047554ffaee670683c3210" class="external-link">874d113</a>)</li>
+<li>Improve vignette 2 with pre-processed data and peak ID tooltips (<a href="https://github.com/stanstrup/xcmsVis/commit/1a684ad0bbf279a1f66359f59d5f5c24ef6a3aa0" class="external-link">1a684ad</a>)</li>
+<li>Improve vignette 4 LamaParama example and add API comparison (<a href="https://github.com/stanstrup/xcmsVis/commit/09ed921165cb697d91ac83534556497c5d63694d" class="external-link">09ed921</a>)</li>
+<li>Use pre-processed data in vignette 5 (<a href="https://github.com/stanstrup/xcmsVis/commit/b94073b751e1f5c59a86222660690451f9c9c149" class="external-link">b94073b</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-3-0-1">BREAKING CHANGES<a class="anchor" aria-label="anchor" href="#breaking-changes-3-0-1"></a></h3>
+<ul><li>gplotPrecursorIons no longer accepts xlab/ylab/main parameters. Users must use ggplot2’s + labs() function to customize labels.</li>
+</ul><p>Note: gplotChromatogramsOverlay keeps main parameter as it’s needed for facet titles when plotting multiple samples. Simple label customization still uses + labs().</p>
+<p>🤖 Generated with <a href="https://claude.com/claude-code" class="external-link">Claude Code</a></p>
+<p>Co-Authored-By: Claude <a href="mailto:noreply@anthropic.com" class="email">noreply@anthropic.com</a></p>
+</div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="3.0.0" id="changes-in-v300">Changes in v3.0.0<a class="anchor" aria-label="anchor" href="#changes-in-v300"></a></h2>
 <div class="section level3">
