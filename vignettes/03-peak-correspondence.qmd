@@ -38,15 +38,15 @@ This vignette covers the **third step** in the XCMS metabolomics workflow: **pea
 ## XCMS Workflow Context
 
 ```
-┌───────────────────────────────┐
-│ 1. Raw Data Visualization     │
-│ 2. Peak Detection             │
-├───────────────────────────────┤
-│ 3. PEAK CORRESPONDENCE        │ ← YOU ARE HERE
-├───────────────────────────────┤
-│ 4. Retention Time Alignment   │
-│ 5. Feature Grouping           │
-└───────────────────────────────┘
+┌─────────────────────────────────────┐
+│ 1. Raw Data Visualization           │
+│ 2. Peak Detection                   │
+├─────────────────────────────────────┤
+│ 3. PEAK CORRESPONDENCE   ← YOU ARE HERE
+├─────────────────────────────────────┤
+│ 4. Retention Time Alignment          │
+│ 5. Feature Grouping                  │
+└─────────────────────────────────────┘
 ```
 
 ## What is Peak Correspondence?
@@ -266,7 +266,7 @@ Apply transformations for better visualization of low-intensity features:
 #| fig-width: 8
 #| fig-alt: "Overlay plot with log-transformed intensities."
 gplotChromatogramsOverlay(chr_multi, transform = log1p, main = "Sample 1") +
-  labs(title = "Log-Transformed Intensities")
+  ggtitle("Log-Transformed Intensities")
 ```
 
 ### Custom Colors and Peak Styles
@@ -282,8 +282,7 @@ gplotChromatogramsOverlay(
   peakBg = "#ff000020",
   peakType = "rectangle",
   main = "Sample 1"
-) +
-  labs(title = "Custom Styling")
+) + ggtitle("Custom Styling")
 ```
 
 # Complete Workflow Example
@@ -313,7 +312,7 @@ chr_overlay <- chromatogram(xdata[1,], mz = rbind(
   c(344.0, 344.2)
 ))
 p3 <- gplotChromatogramsOverlay(chr_overlay, main = "Sample 1") +
-  labs(title = "Multiple EICs Overlaid")
+  ggtitle("Multiple EICs Overlaid")
 
 # 4. Individual chromatogram detail
 p4 <- gplot(chr_workflow[1, 1]) +

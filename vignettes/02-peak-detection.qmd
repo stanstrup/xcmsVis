@@ -208,9 +208,9 @@ ggplotly(p3)
 First, let's extract a chromatogram for a specific m/z range:
 
 ```{r extract_chrom}
-# Extract chromatogram for m/z 300-350 (contains several peaks for demonstration)
-mz_range <- c(300, 350)
-rt_range <- c(2700, 3200)
+# Extract chromatogram for m/z 200-210
+mz_range <- c(200, 210)
+rt_range <- c(2500, 3500)
 
 # Get chromatogram data
 chr <- chromatogram(xdata, mz = mz_range, rt = rt_range)

@@ -120,8 +120,10 @@ library(ggplot2)
 
 # Load and process example data
 cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
-xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
-xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam())
+xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files,
+                                        BPPARAM = BiocParallel::SerialParam())
+xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam(),
+                               BPPARAM = BiocParallel::SerialParam())
 
 # Extract chromatogram
 chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
@@ -130,27 +132,34 @@ chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
 gplot(chr[1, 1])
 }
 
-\donttest{
+\dontrun{
 library(xcmsVis)
 library(xcms)
-library(faahKO)
 library(MsExperiment)
 
-# Load example data
-fls <- dir(system.file("cdf/KO", package = "faahKO"), full.names = TRUE)[1:3]
-xdata <- readMsExperiment(fls, BPPARAM = SerialParam())
+# LamaParama requires a reference dataset with landmarks
+# See vignette("04-retention-time-alignment") for complete workflow
 
-# Perform peak detection
-xdata <- findChromPeaks(xdata, param = CentWaveParam(), BPPARAM = SerialParam())
-xdata <- groupChromPeaks(xdata, param = PeakDensityParam(sampleGroups = rep(1, 3)))
+# Load reference and test datasets
+ref <- loadXcmsData("xmse")
+tst <- loadXcmsData("faahko_sub2")
 
-# Get alignment parameters with landmark alignment
-param <- LamaParama(tolerance = 50)
-# Note: LamaParama needs to be run via adjustRtime to populate rtMap
-# This example shows the structure but may not run without proper setup
+# Extract landmarks from QC samples in reference
+f <- sampleData(ref)$sample_type
+f[f != "QC"] <- NA
+ref_filtered <- filterFeatures(ref, PercentMissingFilter(threshold = 0, f = f))
+ref_mz_rt <- featureDefinitions(ref_filtered)[, c("mzmed", "rtmed")]
 
-# Visualize the first alignment
-# gplot(param, index = 1)
+# Create and apply LamaParama alignment
+lama_param <- LamaParama(lamas = ref_mz_rt, method = "loess", span = 0.5)
+tst_adjusted <- adjustRtime(tst, param = lama_param)
+
+# Extract LamaParama result for visualization
+proc_hist <- processHistory(tst_adjusted, type = xcms:::.PROCSTEP.RTIME.CORRECTION)
+lama_result <- proc_hist[[length(proc_hist)]]@param
+
+# Visualize the first sample's alignment
+gplot(lama_result, index = 1)
 }
 
 }

@@ -62,6 +62,9 @@ gplotChromatogramsOverlay(
 
 \item{type}{Plot type (default: "l" for line).}
 
+\item{main}{Character vector of panel titles, one per row. If NULL (default), no titles are used.
+If length 1, the same title is used for all panels. Use \code{+ labs()} for ggplot2-style customization.}
+
 \item{xlim}{Numeric vector of length 2 specifying retention time range.
 Default: numeric() (auto-calculate). Use \code{+ labs()} to customize axis labels and titles.}
 
