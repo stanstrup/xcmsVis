@@ -32,10 +32,10 @@ consistent times across all samples.
 
 ### Functions Covered
 
-- **[`gplotAdjustedRtime()`](https://stanstrup.github.io/xcmsVis/reference/gplotAdjustedRtime.md)**:
-  Visualize retention time corrections for any alignment method
-- **`gplot(LamaParama)`**: Visualize the LamaParama alignment model
-  specifically
+| Function                                                                                      | Purpose                                 | Input Type               |
+|-----------------------------------------------------------------------------------------------|-----------------------------------------|--------------------------|
+| [`gplotAdjustedRtime()`](https://stanstrup.github.io/xcmsVis/reference/gplotAdjustedRtime.md) | General RT alignment visualization      | XcmsExperiment, XCMSnExp |
+| `gplot(LamaParama)`                                                                           | LamaParama-specific model visualization | LamaParama object        |
 
 ## Setup
 
@@ -393,13 +393,6 @@ p_pg | p_lama
 methods.](04-retention-time-alignment_files/figure-html/method_comparison-1.png)
 
 ## Summary
-
-### Functions Covered
-
-| Function                                                                                      | Purpose                                 | Input Type               |
-|-----------------------------------------------------------------------------------------------|-----------------------------------------|--------------------------|
-| [`gplotAdjustedRtime()`](https://stanstrup.github.io/xcmsVis/reference/gplotAdjustedRtime.md) | General RT alignment visualization      | XcmsExperiment, XCMSnExp |
-| `gplot(LamaParama)`                                                                           | LamaParama-specific model visualization | LamaParama object        |
 
 ### Use Cases
 

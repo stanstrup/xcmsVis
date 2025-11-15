@@ -33,10 +33,11 @@ time that likely derive from the same molecule.
 
 ### Functions Covered
 
-- **[`gplotChromPeakDensity()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeakDensity.md)**:
-  Visualize peak density for optimizing correspondence parameters
-- **[`gplotChromatogramsOverlay()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromatogramsOverlay.md)**:
-  Create overlay plots of multiple extracted ion chromatograms
+| Function                                                                                                    | Purpose                              | What it Overlays                |
+|-------------------------------------------------------------------------------------------------------------|--------------------------------------|---------------------------------|
+| [`gplotChromPeakDensity()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeakDensity.md)         | Optimize correspondence parameters   | Density of peaks across samples |
+| [`gplotChromatogramsOverlay()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromatogramsOverlay.md) | Compare different EICs within sample | DIFFERENT m/z, SAME sample      |
+| `gplot(XChromatogram)`                                                                                      | Compare same EIC across samples      | SAME m/z, DIFFERENT samples     |
 
 ## Setup
 
@@ -320,14 +321,6 @@ p4 <- gplot(chr_workflow[1, 1]) +
 example.](03-peak-correspondence_files/figure-html/workflow-1.png)
 
 ## Summary
-
-### Functions Covered
-
-| Function                                                                                                    | Purpose                              | What it Overlays                |
-|-------------------------------------------------------------------------------------------------------------|--------------------------------------|---------------------------------|
-| [`gplotChromPeakDensity()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeakDensity.md)         | Optimize correspondence parameters   | Density of peaks across samples |
-| [`gplotChromatogramsOverlay()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromatogramsOverlay.md) | Compare different EICs within sample | DIFFERENT m/z, SAME sample      |
-| `gplot(XChromatogram)`                                                                                      | Compare same EIC across samples      | SAME m/z, DIFFERENT samples     |
 
 ### Use Cases
 

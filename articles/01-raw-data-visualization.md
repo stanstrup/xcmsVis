@@ -24,10 +24,10 @@ visualizations help you:
 
 ### Functions Covered
 
-- **`gplot(XcmsExperiment)`**: Visualize full MS acquisitions with BPI
-  chromatogram and m/z scatter
-- **[`gplotPrecursorIons()`](https://stanstrup.github.io/xcmsVis/reference/gplotPrecursorIons.md)**:
-  Visualize MS/MS precursor ion selection in DDA experiments
+| Function                                                                                      | Purpose                    | Input Type               |
+|-----------------------------------------------------------------------------------------------|----------------------------|--------------------------|
+| `gplot(XcmsExperiment)`                                                                       | Visualize full MS data     | XcmsExperiment, XCMSnExp |
+| [`gplotPrecursorIons()`](https://stanstrup.github.io/xcmsVis/reference/gplotPrecursorIons.md) | Visualize MS/MS precursors | MsExperiment with MS2    |
 
 ## Setup
 
@@ -343,13 +343,6 @@ ggplotly(p_interactive)
 ```
 
 ## Summary
-
-### Functions Covered
-
-| Function                                                                                      | Purpose                    | Input Type               |
-|-----------------------------------------------------------------------------------------------|----------------------------|--------------------------|
-| `gplot(XcmsExperiment)`                                                                       | Visualize full MS data     | XcmsExperiment, XCMSnExp |
-| [`gplotPrecursorIons()`](https://stanstrup.github.io/xcmsVis/reference/gplotPrecursorIons.md) | Visualize MS/MS precursors | MsExperiment with MS2    |
 
 ### When to Use
 

@@ -41,8 +41,9 @@ by lines within each group across retention time and m/z dimensions.
 
 ### Functions Covered
 
-- **[`gplotFeatureGroups()`](https://stanstrup.github.io/xcmsVis/reference/gplotFeatureGroups.md)**:
-  Visualize feature group relationships in RT/m/z space
+| Function                                                                                      | Purpose                               | Input                    |
+|-----------------------------------------------------------------------------------------------|---------------------------------------|--------------------------|
+| [`gplotFeatureGroups()`](https://stanstrup.github.io/xcmsVis/reference/gplotFeatureGroups.md) | Visualize feature group relationships | XcmsExperiment, XCMSnExp |
 
 ## Setup
 
@@ -195,7 +196,7 @@ Use `xlim` and `ylim` to focus on specific retention time or m/z ranges:
 # Focus on features between 3200-3300 seconds RT and specific feature groups
 gplotFeatureGroups(xdata,
                    featureGroups = fg_subset,
-                   xlim = c(3200, 3300),
+                   xlim = c(3100, 3400),
                    ylim = c(200, 600)) +
   ggtitle("Features in RT 3200-3300 sec, m/z 200-600")
 ```
@@ -257,8 +258,9 @@ gplotFeatureGroups(xdata_cor, featureGroups = fg_cor[1:5]) +
 
 ### Isotope Pattern Identification
 
-Features grouped by similar RT and m/z spacing may represent isotope
-patterns (M, M+1, M+2).
+Features grouped by similar RT and abundance correlation may represent
+isotope patterns (e.g. M, M+1, M+2) or adducts (e.g. \[M+H\]+,
+\[M+Na\]+).
 
 ### Adduct Identification
 
@@ -273,33 +275,7 @@ Visualize feature groups to:
 - Identify over-grouping (too many features in one group)
 - Identify under-grouping (features that should be grouped but aren’t)
 
-### Publication Figures
-
-Create clean, customizable figures showing compound annotation:
-
-``` r
-gplotFeatureGroups(xdata, featureGroups = fg_subset) +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
-    axis.title = element_text(size = 12),
-    panel.grid.major = element_line(color = "gray90")
-  ) +
-  labs(
-    title = "Feature Group Relationships",
-    caption = "Connected features represent potential isotopes, adducts, or fragments"
-  )
-```
-
-![](05-feature-grouping_files/figure-html/publication-1.png)
-
 ## Summary
-
-### Functions Covered
-
-| Function                                                                                      | Purpose                               | Input                    |
-|-----------------------------------------------------------------------------------------------|---------------------------------------|--------------------------|
-| [`gplotFeatureGroups()`](https://stanstrup.github.io/xcmsVis/reference/gplotFeatureGroups.md) | Visualize feature group relationships | XcmsExperiment, XCMSnExp |
 
 ### Use Cases
 

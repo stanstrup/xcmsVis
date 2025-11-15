@@ -26,14 +26,12 @@ these functions help you:
 
 ### Functions Covered
 
-- **[`gplotChromPeaks()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeaks.md)**:
-  Visualize detected peaks as rectangles in RT vs m/z space
-- **[`gplotChromPeakImage()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeakImage.md)**:
-  Heatmap showing peak density across samples and retention time
-- **`gplot(XChromatogram)`**: Plot individual chromatograms with
-  detected peaks
-- **[`ghighlightChromPeaks()`](https://stanstrup.github.io/xcmsVis/reference/ghighlightChromPeaks.md)**:
-  Add peak annotations to existing chromatogram plots
+| Function                                                                                          | Purpose                    | Input            |
+|---------------------------------------------------------------------------------------------------|----------------------------|------------------|
+| [`gplotChromPeaks()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeaks.md)           | Show peaks in RT/m/z space | XcmsExperiment   |
+| [`gplotChromPeakImage()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeakImage.md)   | Peak density heatmap       | XcmsExperiment   |
+| `gplot(XChromatogram)`                                                                            | Chromatogram with peaks    | XChromatogram    |
+| [`ghighlightChromPeaks()`](https://stanstrup.github.io/xcmsVis/reference/ghighlightChromPeaks.md) | Add peak annotations       | Layer for ggplot |
 
 ## Setup
 
@@ -407,15 +405,6 @@ p_dist / p_density
 summary.](02-peak-detection_files/figure-html/combined_view-1.png)
 
 ## Summary
-
-### Functions Covered
-
-| Function                                                                                          | Purpose                    | Input            |
-|---------------------------------------------------------------------------------------------------|----------------------------|------------------|
-| [`gplotChromPeaks()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeaks.md)           | Show peaks in RT/m/z space | XcmsExperiment   |
-| [`gplotChromPeakImage()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeakImage.md)   | Peak density heatmap       | XcmsExperiment   |
-| `gplot(XChromatogram)`                                                                            | Chromatogram with peaks    | XChromatogram    |
-| [`ghighlightChromPeaks()`](https://stanstrup.github.io/xcmsVis/reference/ghighlightChromPeaks.md) | Add peak annotations       | Layer for ggplot |
 
 ### Use Cases
 

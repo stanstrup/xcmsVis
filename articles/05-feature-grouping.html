@@ -110,10 +110,23 @@
 <p>The <code><a href="../reference/gplotFeatureGroups.html">gplotFeatureGroups()</a></code> function visualizes these relationships by plotting features connected by lines within each group across retention time and m/z dimensions.</p>
 </section><section class="level2"><h3 id="functions-covered">Functions Covered<a class="anchor" aria-label="anchor" href="#functions-covered"></a>
 </h3>
-<ul>
-<li>
-<strong><code><a href="../reference/gplotFeatureGroups.html">gplotFeatureGroups()</a></code></strong>: Visualize feature group relationships in RT/m/z space</li>
-</ul></section></section><section class="section level2"><h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+<table class="table caption-top">
+<colgroup>
+<col style="width: 38%">
+<col style="width: 34%">
+<col style="width: 26%">
+</colgroup>
+<thead><tr class="header">
+<th>Function</th>
+<th>Purpose</th>
+<th>Input</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td><code><a href="../reference/gplotFeatureGroups.html">gplotFeatureGroups()</a></code></td>
+<td>Visualize feature group relationships</td>
+<td>XcmsExperiment, XCMSnExp</td>
+</tr></tbody>
+</table></section></section><section class="section level2"><h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
@@ -273,7 +286,7 @@
 <code class="sourceCode R"><span><span class="co"># Focus on features between 3200-3300 seconds RT and specific feature groups</span></span>
 <span><span class="fu"><a href="../reference/gplotFeatureGroups.html">gplotFeatureGroups</a></span><span class="op">(</span><span class="va">xdata</span>,</span>
 <span>                   featureGroups <span class="op">=</span> <span class="va">fg_subset</span>,</span>
-<span>                   xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3200</span>, <span class="fl">3300</span><span class="op">)</span>,</span>
+<span>                   xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3100</span>, <span class="fl">3400</span><span class="op">)</span>,</span>
 <span>                   ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">600</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Features in RT 3200-3300 sec, m/z 200-600"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
@@ -294,8 +307,8 @@
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gplotFeatureGroups.html">gplotFeatureGroups</a></span><span class="op">(</span><span class="va">xdata</span>, featureGroups <span class="op">=</span> <span class="va">fg_subset</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/plotly/man/ggplotly.html" class="external-link">ggplotly</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item" id="htmlwidget-5aafe948d8ed2bbfaace" style="width:960px;height:576px;"></div>
-<script type="application/json" data-for="htmlwidget-5aafe948d8ed2bbfaace">{"x":{"data":[{"x":[2786.9830000000002,2787.7660000000001,2787.7655,null,null,3662.5729999999999,3661.0079999999998,3661.0095000000001,3656.3139999999999,null,null,3315.154,3319.848,null,null,3207.1729999999998,3202.4769999999999,3196.2170000000001,null,null,2825.3229999999999,null],"y":[579.10003662109375,301,279,null,null,572.20001220703125,436.30001831054688,338.20001220703125,281.20001220703125,null,null,559.29998779296875,280.10000610351562,null,null,568.20001220703125,380.10000610351562,278.10000610351562,null,null,279.10000610351562,null],"text":["Retention Time: 2786.983<br />m/z: 579.1<br />Feature Group: FG.012","Retention Time: 2787.766<br />m/z: 301.0<br />Feature Group: FG.012","Retention Time: 2787.765<br />m/z: 279.0<br />Feature Group: FG.012","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.012",null,"Retention Time: 3662.573<br />m/z: 572.2<br />Feature Group: FG.019","Retention Time: 3661.008<br />m/z: 436.3<br />Feature Group: FG.019","Retention Time: 3661.010<br />m/z: 338.2<br />Feature Group: FG.019","Retention Time: 3656.314<br />m/z: 281.2<br />Feature Group: FG.019","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.019",null,"Retention Time: 3315.154<br />m/z: 559.3<br />Feature Group: FG.038","Retention Time: 3319.848<br />m/z: 280.1<br />Feature Group: FG.038","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.038",null,"Retention Time: 3207.173<br />m/z: 568.2<br />Feature Group: FG.043","Retention Time: 3202.477<br />m/z: 380.1<br />Feature Group: FG.043","Retention Time: 3196.217<br />m/z: 278.1<br />Feature Group: FG.043","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.043",null,"Retention Time: 2825.323<br />m/z: 279.1<br />Feature Group: FG.054","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.054"],"type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,0.3765)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2786.9830000000002,2787.7660000000001,2787.7655,null,3662.5729999999999,3661.0079999999998,3661.0095000000001,3656.3139999999999,null,3315.154,3319.848,null,3207.1729999999998,3202.4769999999999,3196.2170000000001,null,2825.3229999999999,null],"y":[579.10003662109375,301,279,null,572.20001220703125,436.30001831054688,338.20001220703125,281.20001220703125,null,559.29998779296875,280.10000610351562,null,568.20001220703125,380.10000610351562,278.10000610351562,null,279.10000610351562,null],"text":["Retention Time: 2786.983<br />m/z: 579.1<br />Feature Group: FG.012","Retention Time: 2787.766<br />m/z: 301.0<br />Feature Group: FG.012","Retention Time: 2787.765<br />m/z: 279.0<br />Feature Group: FG.012","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.012","Retention Time: 3662.573<br />m/z: 572.2<br />Feature Group: FG.019","Retention Time: 3661.008<br />m/z: 436.3<br />Feature Group: FG.019","Retention Time: 3661.010<br />m/z: 338.2<br />Feature Group: FG.019","Retention Time: 3656.314<br />m/z: 281.2<br />Feature Group: FG.019","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.019","Retention Time: 3315.154<br />m/z: 559.3<br />Feature Group: FG.038","Retention Time: 3319.848<br />m/z: 280.1<br />Feature Group: FG.038","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.038","Retention Time: 3207.173<br />m/z: 568.2<br />Feature Group: FG.043","Retention Time: 3202.477<br />m/z: 380.1<br />Feature Group: FG.043","Retention Time: 3196.217<br />m/z: 278.1<br />Feature Group: FG.043","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.043","Retention Time: 2825.323<br />m/z: 279.1<br />Feature Group: FG.054","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.054"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,0.3765)","opacity":1,"size":5.6692913385826778,"symbol":"x-thin-open","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,0.3765)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.840182648401829,"r":7.3059360730593621,"b":37.260273972602747,"l":43.105022831050235},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Feature groups","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[2743.2035000000001,3706.3525],"tickmode":"array","ticktext":["2750","3000","3250","3500"],"tickvals":[2750,3000,3250,3500],"categoryorder":"array","categoryarray":["2750","3000","3250","3500"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"retention time","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[263.05000457763674,594.15003814697263],"tickmode":"array","ticktext":["300","400","500"],"tickvals":[300,400,500],"categoryorder":"array","categoryarray":["300","400","500"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"m/z","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"rgba(255,255,255,1)","line":{"color":"rgba(51,51,51,1)","width":0,"linetype":"solid"},"yref":"paper","xref":"paper","layer":"below","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"1e49d8a2059":{"x":{},"y":{},"text":{},"type":"scatter"},"1e49e7222d2":{"x":{},"y":{},"text":{}}},"cur_data":"1e49d8a2059","visdat":{"1e49d8a2059":["function (y) ","x"],"1e49e7222d2":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-3db6ab534ce723c71903" style="width:960px;height:576px;"></div>
+<script type="application/json" data-for="htmlwidget-3db6ab534ce723c71903">{"x":{"data":[{"x":[2786.9830000000002,2787.7660000000001,2787.7655,null,null,3662.5729999999999,3661.0079999999998,3661.0095000000001,3656.3139999999999,null,null,3315.154,3319.848,null,null,3207.1729999999998,3202.4769999999999,3196.2170000000001,null,null,2825.3229999999999,null],"y":[579.10003662109375,301,279,null,null,572.20001220703125,436.30001831054688,338.20001220703125,281.20001220703125,null,null,559.29998779296875,280.10000610351562,null,null,568.20001220703125,380.10000610351562,278.10000610351562,null,null,279.10000610351562,null],"text":["Retention Time: 2786.983<br />m/z: 579.1<br />Feature Group: FG.012","Retention Time: 2787.766<br />m/z: 301.0<br />Feature Group: FG.012","Retention Time: 2787.765<br />m/z: 279.0<br />Feature Group: FG.012","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.012",null,"Retention Time: 3662.573<br />m/z: 572.2<br />Feature Group: FG.019","Retention Time: 3661.008<br />m/z: 436.3<br />Feature Group: FG.019","Retention Time: 3661.010<br />m/z: 338.2<br />Feature Group: FG.019","Retention Time: 3656.314<br />m/z: 281.2<br />Feature Group: FG.019","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.019",null,"Retention Time: 3315.154<br />m/z: 559.3<br />Feature Group: FG.038","Retention Time: 3319.848<br />m/z: 280.1<br />Feature Group: FG.038","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.038",null,"Retention Time: 3207.173<br />m/z: 568.2<br />Feature Group: FG.043","Retention Time: 3202.477<br />m/z: 380.1<br />Feature Group: FG.043","Retention Time: 3196.217<br />m/z: 278.1<br />Feature Group: FG.043","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.043",null,"Retention Time: 2825.323<br />m/z: 279.1<br />Feature Group: FG.054","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.054"],"type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,0.3765)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2786.9830000000002,2787.7660000000001,2787.7655,null,3662.5729999999999,3661.0079999999998,3661.0095000000001,3656.3139999999999,null,3315.154,3319.848,null,3207.1729999999998,3202.4769999999999,3196.2170000000001,null,2825.3229999999999,null],"y":[579.10003662109375,301,279,null,572.20001220703125,436.30001831054688,338.20001220703125,281.20001220703125,null,559.29998779296875,280.10000610351562,null,568.20001220703125,380.10000610351562,278.10000610351562,null,279.10000610351562,null],"text":["Retention Time: 2786.983<br />m/z: 579.1<br />Feature Group: FG.012","Retention Time: 2787.766<br />m/z: 301.0<br />Feature Group: FG.012","Retention Time: 2787.765<br />m/z: 279.0<br />Feature Group: FG.012","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.012","Retention Time: 3662.573<br />m/z: 572.2<br />Feature Group: FG.019","Retention Time: 3661.008<br />m/z: 436.3<br />Feature Group: FG.019","Retention Time: 3661.010<br />m/z: 338.2<br />Feature Group: FG.019","Retention Time: 3656.314<br />m/z: 281.2<br />Feature Group: FG.019","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.019","Retention Time: 3315.154<br />m/z: 559.3<br />Feature Group: FG.038","Retention Time: 3319.848<br />m/z: 280.1<br />Feature Group: FG.038","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.038","Retention Time: 3207.173<br />m/z: 568.2<br />Feature Group: FG.043","Retention Time: 3202.477<br />m/z: 380.1<br />Feature Group: FG.043","Retention Time: 3196.217<br />m/z: 278.1<br />Feature Group: FG.043","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.043","Retention Time: 2825.323<br />m/z: 279.1<br />Feature Group: FG.054","Retention Time:       NA<br />m/z:    NA<br />Feature Group: FG.054"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,0.3765)","opacity":1,"size":5.6692913385826778,"symbol":"x-thin-open","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,0.3765)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.840182648401829,"r":7.3059360730593621,"b":37.260273972602747,"l":43.105022831050235},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Feature groups","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[2743.2035000000001,3706.3525],"tickmode":"array","ticktext":["2750","3000","3250","3500"],"tickvals":[2750,3000,3250,3500],"categoryorder":"array","categoryarray":["2750","3000","3250","3500"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"retention time","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[263.05000457763674,594.15003814697263],"tickmode":"array","ticktext":["300","400","500"],"tickvals":[300,400,500],"categoryorder":"array","categoryarray":["300","400","500"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"m/z","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"rgba(255,255,255,1)","line":{"color":"rgba(51,51,51,1)","width":0,"linetype":"solid"},"yref":"paper","xref":"paper","layer":"below","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"1e01760724d2":{"x":{},"y":{},"text":{},"type":"scatter"},"1e012d1c5610":{"x":{},"y":{},"text":{}}},"cur_data":"1e01760724d2","visdat":{"1e01760724d2":["function (y) ","x"],"1e012d1c5610":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section><section class="section level2"><h2 id="understanding-feature-groups">Understanding Feature Groups<a class="anchor" aria-label="anchor" href="#understanding-feature-groups"></a>
@@ -347,7 +360,7 @@
 </h2>
 <section class="level2"><h3 id="isotope-pattern-identification">Isotope Pattern Identification<a class="anchor" aria-label="anchor" href="#isotope-pattern-identification"></a>
 </h3>
-<p>Features grouped by similar RT and m/z spacing may represent isotope patterns (M, M+1, M+2).</p>
+<p>Features grouped by similar RT and abundance correlation may represent isotope patterns (e.g. M, M+1, M+2) or adducts (e.g. [M+H]+, [M+Na]+).</p>
 </section><section class="level2"><h3 id="adduct-identification">Adduct Identification<a class="anchor" aria-label="anchor" href="#adduct-identification"></a>
 </h3>
 <p>Features with similar RT but different m/z values that correlate in abundance may be different adducts of the same compound.</p>
@@ -358,50 +371,9 @@
 <li>Verify grouping parameters are appropriate</li>
 <li>Identify over-grouping (too many features in one group)</li>
 <li>Identify under-grouping (features that should be grouped but aren’t)</li>
-</ul></section><section class="level2"><h3 id="publication-figures">Publication Figures<a class="anchor" aria-label="anchor" href="#publication-figures"></a>
-</h3>
-<p>Create clean, customizable figures showing compound annotation:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/gplotFeatureGroups.html">gplotFeatureGroups</a></span><span class="op">(</span><span class="va">xdata</span>, featureGroups <span class="op">=</span> <span class="va">fg_subset</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
-<span>    plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span>, face <span class="op">=</span> <span class="st">"bold"</span>, size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span>,</span>
-<span>    axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>,</span>
-<span>    panel.grid.major <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_line</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"gray90"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"Feature Group Relationships"</span>,</span>
-<span>    caption <span class="op">=</span> <span class="st">"Connected features represent potential isotopes, adducts, or fragments"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="05-feature-grouping_files/figure-html/publication-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</section></section><section class="section level2"><h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+</ul></section></section><section class="section level2"><h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
-<section class="level2"><h3 id="functions-covered-1">Functions Covered<a class="anchor" aria-label="anchor" href="#functions-covered-1"></a>
-</h3>
-<table class="table caption-top">
-<colgroup>
-<col style="width: 38%">
-<col style="width: 34%">
-<col style="width: 26%">
-</colgroup>
-<thead><tr class="header">
-<th>Function</th>
-<th>Purpose</th>
-<th>Input</th>
-</tr></thead>
-<tbody><tr class="odd">
-<td><code><a href="../reference/gplotFeatureGroups.html">gplotFeatureGroups()</a></code></td>
-<td>Visualize feature group relationships</td>
-<td>XcmsExperiment, XCMSnExp</td>
-</tr></tbody>
-</table></section><section class="level2"><h3 id="use-cases-1">Use Cases<a class="anchor" aria-label="anchor" href="#use-cases-1"></a>
+<section class="level2"><h3 id="use-cases-1">Use Cases<a class="anchor" aria-label="anchor" href="#use-cases-1"></a>
 </h3>
 <ul>
 <li>
@@ -426,7 +398,7 @@
 <section class="level2 col-md-6"><h3 id="original-xcms-version">Original XCMS Version<a class="anchor" aria-label="anchor" href="#original-xcms-version"></a>
 </h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get first 5 feature groups for comparison</span></span>
 <span><span class="va">fg_compare</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/MsFeatures/man/featureGroups.html" class="external-link">featureGroups</a></span><span class="op">(</span><span class="va">xdata</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
 <span></span>
@@ -442,7 +414,7 @@
 </section><section class="level2 col-md-6"><h3 id="xcmsvis-ggplot2-version">xcmsVis ggplot2 Version<a class="anchor" aria-label="anchor" href="#xcmsvis-ggplot2-version"></a>
 </h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># xcmsVis version (ggplot2)</span></span>
 <span><span class="fu"><a href="../reference/gplotFeatureGroups.html">gplotFeatureGroups</a></span><span class="op">(</span><span class="va">xdata</span>, featureGroups <span class="op">=</span> <span class="va">fg_compare</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
@@ -458,7 +430,7 @@
 <blockquote>
 <p><strong>API Differences</strong></p>
 <p>Unlike the original XCMS <code><a href="https://rdrr.io/pkg/xcms/man/plotFeatureGroups.html" class="external-link">plotFeatureGroups()</a></code>, the ggplot2 version does not have <code>xlab</code>, <code>ylab</code>, or <code>main</code> parameters. Instead, use ggplot2’s <code><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs()</a></code> function to customize labels after plot creation:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Customize labels with labs()</span></span>
 <span><span class="va">fg_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/MsFeatures/man/featureGroups.html" class="external-link">featureGroups</a></span><span class="op">(</span><span class="va">xdata</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
 <span><span class="fu"><a href="../reference/gplotFeatureGroups.html">gplotFeatureGroups</a></span><span class="op">(</span><span class="va">xdata</span>, featureGroups <span class="op">=</span> <span class="va">fg_subset</span><span class="op">)</span> <span class="op">+</span></span>
@@ -469,7 +441,7 @@
 </section><section class="section level2"><h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.5.2 (2025-10-31)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
