@@ -10,8 +10,6 @@ Shared implementation function for gplotChromatogramsOverlay
   col = "#00000060",
   type = "l",
   main = NULL,
-  xlab = "retention time",
-  ylab = "intensity",
   xlim = numeric(),
   ylim = numeric(),
   peakType = c("polygon", "point", "rectangle", "none"),

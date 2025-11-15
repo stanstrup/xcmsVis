@@ -84,7 +84,7 @@ cwp <- CentWaveParam(
 xdata_peaks <- findChromPeaks(xdata_raw, param = cwp, BPPARAM = SerialParam())
 
 # Initial correspondence (peak grouping)
-sample_data <- xcmsVis:::.get_sample_data(xdata_peaks)
+sample_data <- sampleData(xdata_peaks)
 
 pdp <- PeakDensityParam(
   sampleGroups = sample_data$sample_group,
@@ -169,7 +169,7 @@ xdata_filtered <- xdata_grouped
 xdata_filtered <- filterFile(xdata_filtered, c(2:5))
 
 # Filtering removes correspondence - need to re-group with filtered samples
-sample_data_filtered <- xcmsVis:::.get_sample_data(xdata_filtered)
+sample_data_filtered <- sampleData(xdata_filtered)
 pdp_filtered <- PeakDensityParam(
   sampleGroups = sample_data_filtered$sample_group,
   minFraction = 0.4,
@@ -260,12 +260,6 @@ xdata_lama <- adjustRtime(xdata_lama, param = lama_param)
 # Extract LamaParama from process history
 proc_hist <- processHistory(xdata_lama, type = xcms:::.PROCSTEP.RTIME.CORRECTION)
 lama_result <- proc_hist[[length(proc_hist)]]@param
-
-# Verify it's a LamaParama object
-class(lama_result)
-#> [1] "LamaParama"
-#> attr(,"package")
-#> [1] "xcms"
 ```
 
 #### Basic Alignment Plot
@@ -302,6 +296,10 @@ p1 / p2 / p3
 
 ![](04-retention-time-alignment_files/figure-html/lama_multiple-1.png)
 
+Note here that since we just took all the peaks from the samples it is
+essential a perfect match. When you bring your own landmarks it will
+look different.
+
 #### Customization
 
 ##### Custom Colors
@@ -310,9 +308,9 @@ p1 / p2 / p3
 p_custom <- gplot(lama_result,
                   index = 1,
                   colPoints = "#E41A1C",
-                  colFit = "#377EB8",
-                  xlab = "Observed RT",
-                  ylab = "Reference RT")
+                  colFit = "#377EB8") +
+  labs(x = "Observed RT", y = "Reference RT")
+
 p_custom
 ```
 
@@ -423,7 +421,7 @@ Group features (isotopes, adducts)
 ### Original XCMS
 
 ``` r
-sample_data <- xcmsVis:::.get_sample_data(xdata)
+sample_data <- sampleData(xdata)
 
 plotAdjustedRtime(
   xdata,
@@ -443,6 +441,26 @@ gplotAdjustedRtime(xdata, color_by = sample_group)
 
 ![ggplot2 version with modern
 aesthetics.](04-retention-time-alignment_files/figure-html/xcmsvis_rt-1.png)
+
+### gplot(LamaParama) vs plot(LamaParama)
+
+#### Original XCMS
+
+``` r
+plot(lama_result, index = 1)
+```
+
+![XCMS plot(LamaParama) using base R
+graphics.](04-retention-time-alignment_files/figure-html/original_lama-1.png)
+
+#### xcmsVis ggplot2
+
+``` r
+gplot(lama_result, index = 1)
+```
+
+![ggplot2 version with modern
+aesthetics.](04-retention-time-alignment_files/figure-html/xcmsvis_lama-1.png)
 
 ## Session Info
 
@@ -471,7 +489,7 @@ sessionInfo()
 #> other attached packages:
 #> [1] patchwork_1.3.2     MsExperiment_1.12.0 ProtGenerics_1.42.0
 #> [4] faahKO_1.50.0       plotly_4.11.0       ggplot2_4.0.0      
-#> [7] xcmsVis_0.99.23     xcms_4.8.0          BiocParallel_1.44.0
+#> [7] xcmsVis_0.99.2      xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] DBI_1.2.3                   rlang_1.1.6                

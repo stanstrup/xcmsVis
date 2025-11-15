@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.23</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,6 +40,54 @@
       <small>Source: <a href="https://github.com/stanstrup/xcmsVis/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="3.0.0" id="changes-in-v300">Changes in v3.0.0<a class="anchor" aria-label="anchor" href="#changes-in-v300"></a></h2>
+<div class="section level3">
+<h3 id="code-refactoring-3-0-0">Code Refactoring<a class="anchor" aria-label="anchor" href="#code-refactoring-3-0-0"></a></h3>
+<ul><li>Remove xlab/main parameters from gplot(XcmsExperiment) (<a href="https://github.com/stanstrup/xcmsVis/commit/315fcb1c8ad27274525a1fe656ea5062fb7d5f4d" class="external-link">315fcb1</a>)</li>
+<li>Remove xlab/ylab/main parameters from gplotChromatogramsOverlay (<a href="https://github.com/stanstrup/xcmsVis/commit/1db0506aa0d94821c93ea5bfab4a7508fd4fd03b" class="external-link">1db0506</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-3-0-0">BREAKING CHANGES<a class="anchor" aria-label="anchor" href="#breaking-changes-3-0-0"></a></h3>
+<ul><li>Removed xlab, ylab, and main parameters from gplotChromatogramsOverlay() for both XChromatograms and MChromatograms. Use ggplot2’s labs() function to customize labels instead: gplotChromatogramsOverlay(x) + labs(x = “RT (s)”, y = “Int”, title = “My Title”)</li>
+</ul><p>This follows ggplot2 conventions and provides more flexibility for customization.</p>
+<ul><li>Updated both method signatures and implementation function</li>
+<li>Removed parameters from generic in AllGenerics.R</li>
+<li>Updated documentation</li>
+<li>Default labels still provided (“retention time”, “intensity”)</li>
+</ul><p>🤖 Generated with <a href="https://claude.com/claude-code" class="external-link">Claude Code</a></p>
+<p>Co-Authored-By: Claude <a href="mailto:noreply@anthropic.com" class="email">noreply@anthropic.com</a> * Removed xlab and main parameters from gplot() methods for XcmsExperiment and XCMSnExp objects. Use ggplot2’s labs() function to customize labels instead: gplot(x) + labs(x = “RT (s)”, title = “My Title”)</p>
+<p>This follows ggplot2 conventions and provides more flexibility for customization.</p>
+<ul><li>Updated both XcmsExperiment and XCMSnExp method signatures</li>
+<li>Removed parameters from helper function .create_sample_plot()</li>
+<li>Default labels still provided (“Retention time”, “m/z”)</li>
+<li>Sample names used as default titles</li>
+</ul><p>🤖 Generated with <a href="https://claude.com/claude-code" class="external-link">Claude Code</a></p>
+<p>Co-Authored-By: Claude <a href="mailto:noreply@anthropic.com" class="email">noreply@anthropic.com</a></p>
+</div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.0.0" id="changes-in-v200">Changes in v2.0.0<a class="anchor" aria-label="anchor" href="#changes-in-v200"></a></h2>
+<div class="section level3">
+<h3 id="code-refactoring-2-0-0">Code Refactoring<a class="anchor" aria-label="anchor" href="#code-refactoring-2-0-0"></a></h3>
+<ul><li>Remove xlab/ylab/main parameters from gplotPrecursorIons (<a href="https://github.com/stanstrup/xcmsVis/commit/19eb454d703f7df42a95072e0ae209ea9894034b" class="external-link">19eb454</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="features-2-0-0">Features<a class="anchor" aria-label="anchor" href="#features-2-0-0"></a></h3>
+<ul><li>Replace paste with glue and add patchwork documentation (<a href="https://github.com/stanstrup/xcmsVis/commit/d1976b254da3f893db63657c6be6d26bfa785959" class="external-link">d1976b2</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-2-0-0">BREAKING CHANGES<a class="anchor" aria-label="anchor" href="#breaking-changes-2-0-0"></a></h3>
+<ul><li>Removed xlab, ylab, and main parameters from gplotPrecursorIons. Use ggplot2’s labs() function to customize labels instead: gplotPrecursorIons(x) + labs(x = “RT (s)”, y = “m/z”, title = “My Title”)</li>
+</ul><p>This follows ggplot2 conventions and provides more flexibility for customization.</p>
+<ul><li>Updated function signature and implementation</li>
+<li>Updated documentation with ggplot2 customization examples</li>
+<li>Updated test to use + labs() instead of parameters</li>
+<li>Default labels still provided (“retention time”, “m/z”)</li>
+</ul><p>🤖 Generated with <a href="https://claude.com/claude-code" class="external-link">Claude Code</a></p>
+<p>Co-Authored-By: Claude <a href="mailto:noreply@anthropic.com" class="email">noreply@anthropic.com</a></p>
+</div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.2" id="changes-in-v102">Changes in v1.0.2<a class="anchor" aria-label="anchor" href="#changes-in-v102"></a></h2>
 <div class="section level3">

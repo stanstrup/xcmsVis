@@ -8,28 +8,10 @@ all precursor ions in MS2 spectra, useful for visualizing DDA
 ## Usage
 
 ``` r
-gplotPrecursorIons(
-  object,
-  pch = 21,
-  col = "#00000080",
-  bg = "#00000020",
-  xlab = "retention time",
-  ylab = "m/z",
-  main = character(),
-  ...
-)
+gplotPrecursorIons(object, pch = 21, col = "#00000080", bg = "#00000020", ...)
 
 # S4 method for class 'MsExperiment'
-gplotPrecursorIons(
-  object,
-  pch = 21,
-  col = "#00000080",
-  bg = "#00000020",
-  xlab = "retention time",
-  ylab = "m/z",
-  main = character(),
-  ...
-)
+gplotPrecursorIons(object, pch = 21, col = "#00000080", bg = "#00000020", ...)
 ```
 
 ## Arguments
@@ -50,25 +32,14 @@ gplotPrecursorIons(
 
   Point background/fill color (default: very transparent black).
 
-- xlab:
-
-  X-axis label (default: "retention time").
-
-- ylab:
-
-  Y-axis label (default: "m/z").
-
-- main:
-
-  Plot title (default: file basename from dataOrigin).
-
 - ...:
 
-  Additional ggplot2 parameters.
+  Additional arguments passed to ggplot2 functions.
 
 ## Value
 
-A ggplot object (or list of ggplot objects if multiple files).
+A ggplot object (or list of ggplot objects if multiple files). Use
+`+ labs()` to customize axis labels and titles.
 
 ## Details
 
@@ -85,6 +56,11 @@ for each file.
 The plot range includes all MS1 data to provide context, but only shows
 precursor ions from MS2 spectra.
 
+Default labels are provided ("retention time", "m/z"), but can be
+customized using ggplot2's
+[`labs()`](https://ggplot2.tidyverse.org/reference/labs.html) function,
+e.g., `gplotPrecursorIons(x) + labs(x = "RT (s)")`.
+
 ## See also
 
 [`plotPrecursorIons`](https://rdrr.io/pkg/xcms/man/plotPrecursorIons.html)
@@ -96,12 +72,17 @@ for the original XCMS implementation.
 # \donttest{
 library(xcmsVis)
 library(MsExperiment)
+library(ggplot2)
 
 ## Load a test data file with DDA LC-MS/MS data
 fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
 pest_dda <- readMsExperiment(fl)
 
 gplotPrecursorIons(pest_dda)
+
+
+## Customize labels with ggplot2
+gplotPrecursorIons(pest_dda) + labs(x = "RT (s)", y = "Precursor m/z", title = "DDA Analysis")
 
 
 ## Subset the data object to plot the data specifically for one or

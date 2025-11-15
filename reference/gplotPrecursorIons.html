@@ -11,7 +11,7 @@ useful for visualizing DDA (Data-Dependent Acquisition) data."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.23</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,28 +53,10 @@ useful for visualizing DDA (Data-Dependent Acquisition) data.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gplotPrecursorIons</span><span class="op">(</span></span>
-<span>  <span class="va">object</span>,</span>
-<span>  pch <span class="op">=</span> <span class="fl">21</span>,</span>
-<span>  col <span class="op">=</span> <span class="st">"#00000080"</span>,</span>
-<span>  bg <span class="op">=</span> <span class="st">"#00000020"</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="st">"retention time"</span>,</span>
-<span>  ylab <span class="op">=</span> <span class="st">"m/z"</span>,</span>
-<span>  main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gplotPrecursorIons</span><span class="op">(</span><span class="va">object</span>, pch <span class="op">=</span> <span class="fl">21</span>, col <span class="op">=</span> <span class="st">"#00000080"</span>, bg <span class="op">=</span> <span class="st">"#00000020"</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'MsExperiment'</span></span>
-<span><span class="fu">gplotPrecursorIons</span><span class="op">(</span></span>
-<span>  <span class="va">object</span>,</span>
-<span>  pch <span class="op">=</span> <span class="fl">21</span>,</span>
-<span>  col <span class="op">=</span> <span class="st">"#00000080"</span>,</span>
-<span>  bg <span class="op">=</span> <span class="st">"#00000020"</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="st">"retention time"</span>,</span>
-<span>  ylab <span class="op">=</span> <span class="st">"m/z"</span>,</span>
-<span>  main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">gplotPrecursorIons</span><span class="op">(</span><span class="va">object</span>, pch <span class="op">=</span> <span class="fl">21</span>, col <span class="op">=</span> <span class="st">"#00000080"</span>, bg <span class="op">=</span> <span class="st">"#00000020"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -97,25 +79,14 @@ useful for visualizing DDA (Data-Dependent Acquisition) data.</p>
 <dd><p>Point background/fill color (default: very transparent black).</p></dd>
 
 
-<dt id="arg-xlab">xlab<a class="anchor" aria-label="anchor" href="#arg-xlab"></a></dt>
-<dd><p>X-axis label (default: "retention time").</p></dd>
-
-
-<dt id="arg-ylab">ylab<a class="anchor" aria-label="anchor" href="#arg-ylab"></a></dt>
-<dd><p>Y-axis label (default: "m/z").</p></dd>
-
-
-<dt id="arg-main">main<a class="anchor" aria-label="anchor" href="#arg-main"></a></dt>
-<dd><p>Plot title (default: file basename from dataOrigin).</p></dd>
-
-
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional ggplot2 parameters.</p></dd>
+<dd><p>Additional arguments passed to ggplot2 functions.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A ggplot object (or list of ggplot objects if multiple files).</p>
+    <p>A ggplot object (or list of ggplot objects if multiple files).
+Use <code>+ labs()</code> to customize axis labels and titles.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -125,6 +96,8 @@ Each point represents a precursor ion, with:</p><ul><li><p>X-axis: Retention tim
 </ul><p>For MsExperiment objects with multiple files, separate plots are created for each file.</p>
 <p>The plot range includes all MS1 data to provide context, but only shows precursor ions
 from MS2 spectra.</p>
+<p>Default labels are provided ("retention time", "m/z"), but can be customized using
+ggplot2's <code><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs()</a></code> function, e.g., <code>gplotPrecursorIons(x) + labs(x = "RT (s)")</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -136,6 +109,7 @@ from MS2 spectra.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stanstrup.github.io/xcmsVis">xcmsVis</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/MsExperiment" class="external-link">MsExperiment</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Load a test data file with DDA LC-MS/MS data</span></span></span>
 <span class="r-in"><span><span class="va">fl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"TripleTOF-SWATH"</span>, <span class="st">"PestMix1_DDA.mzML"</span>, package <span class="op">=</span> <span class="st">"msdata"</span><span class="op">)</span></span></span>
@@ -144,10 +118,14 @@ from MS2 spectra.</p>
 <span class="r-in"><span><span class="fu">gplotPrecursorIons</span><span class="op">(</span><span class="va">pest_dda</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="gplotPrecursorIons-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Customize labels with ggplot2</span></span></span>
+<span class="r-in"><span><span class="fu">gplotPrecursorIons</span><span class="op">(</span><span class="va">pest_dda</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"RT (s)"</span>, y <span class="op">=</span> <span class="st">"Precursor m/z"</span>, title <span class="op">=</span> <span class="st">"DDA Analysis"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="gplotPrecursorIons-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Subset the data object to plot the data specifically for one or</span></span></span>
 <span class="r-in"><span><span class="co">## selected file/sample:</span></span></span>
 <span class="r-in"><span><span class="fu">gplotPrecursorIons</span><span class="op">(</span><span class="va">pest_dda</span><span class="op">[</span><span class="fl">1L</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="gplotPrecursorIons-2.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="gplotPrecursorIons-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

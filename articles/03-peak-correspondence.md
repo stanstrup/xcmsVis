@@ -14,15 +14,15 @@ help you:
 
 ### XCMS Workflow Context
 
-    ┌───────────────────────────────┐
-    │ 1. Raw Data Visualization     │
-    │ 2. Peak Detection             │
-    ├───────────────────────────────┤
-    │ 3. PEAK CORRESPONDENCE        │ ← YOU ARE HERE
-    ├───────────────────────────────┤
-    │ 4. Retention Time Alignment   │
-    │ 5. Feature Grouping           │
-    └───────────────────────────────┘
+    ┌─────────────────────────────────────┐
+    │ 1. Raw Data Visualization           │
+    │ 2. Peak Detection                   │
+    ├─────────────────────────────────────┤
+    │ 3. PEAK CORRESPONDENCE   ← YOU ARE HERE
+    ├─────────────────────────────────────┤
+    │ 4. Retention Time Alignment          │
+    │ 5. Feature Grouping                  │
+    └─────────────────────────────────────┘
 
 ### What is Peak Correspondence?
 
@@ -118,10 +118,13 @@ p1 | p2 | p3
 bandwidth
 values.](03-peak-correspondence_files/figure-html/bandwidth_comparison-1.png)
 
-**Interpretation**: - **Small bandwidth (15)**: More sensitive, creates
-more feature groups, may split real features - **Medium bandwidth
-(30)**: Balanced approach - **Large bandwidth (60)**: Less sensitive,
-merges nearby peaks, may combine distinct features
+**Interpretation**:
+
+- **Small bandwidth (15)**: More sensitive, creates more feature groups,
+  may split real features
+- **Medium bandwidth (30)**: Balanced approach
+- **Large bandwidth (60)**: Less sensitive, merges nearby peaks, may
+  combine distinct features
 
 #### Showing Actual Correspondence Results
 
@@ -366,6 +369,26 @@ gplotChromPeakDensity(chr, param = prm)
 ![ggplot2 version with clean
 aesthetics.](03-peak-correspondence_files/figure-html/xcmsvis_density-1.png)
 
+### gplotChromatogramsOverlay() vs plotChromatogramsOverlay()
+
+#### Original XCMS
+
+``` r
+plotChromatogramsOverlay(chr_multi)
+```
+
+![XCMS plotChromatogramsOverlay using base R
+graphics.](03-peak-correspondence_files/figure-html/original_overlay-1.png)
+
+#### xcmsVis ggplot2
+
+``` r
+gplotChromatogramsOverlay(chr_multi)
+```
+
+![ggplot2 version with modern
+aesthetics.](03-peak-correspondence_files/figure-html/xcmsvis_overlay-1.png)
+
 ## Session Info
 
 ``` r
@@ -391,7 +414,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] xcmsVis_0.99.23     patchwork_1.3.2     plotly_4.11.0      
+#> [1] xcmsVis_0.99.2      patchwork_1.3.2     plotly_4.11.0      
 #> [4] ggplot2_4.0.0       xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):

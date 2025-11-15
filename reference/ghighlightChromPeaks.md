@@ -126,8 +126,10 @@ library(ggplot2)
 
 # Load and process example data
 cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
-xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
-xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam())
+xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files,
+                                        BPPARAM = BiocParallel::SerialParam())
+xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam(),
+                               BPPARAM = BiocParallel::SerialParam())
 
 # Extract chromatogram for plotting
 chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))

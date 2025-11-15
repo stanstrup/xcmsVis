@@ -19,7 +19,7 @@ enabling modern visualization and interactive plotting capabilities."></head><bo
 
     <a class="navbar-brand me-2" href="../index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.23</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,8 +70,6 @@ enabling modern visualization and interactive plotting capabilities.</p>
 <span>  col <span class="op">=</span> <span class="st">"grey"</span>,</span>
 <span>  colramp <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">topo.colors</a></span>,</span>
 <span>  pch <span class="op">=</span> <span class="fl">21</span>,</span>
-<span>  main <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="st">"Retention time"</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -83,8 +81,6 @@ enabling modern visualization and interactive plotting capabilities.</p>
 <span>  col <span class="op">=</span> <span class="st">"grey"</span>,</span>
 <span>  colramp <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">topo.colors</a></span>,</span>
 <span>  pch <span class="op">=</span> <span class="fl">21</span>,</span>
-<span>  main <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="st">"Retention time"</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -117,14 +113,6 @@ enabling modern visualization and interactive plotting capabilities.</p>
 <dd><p>integer(1) point shape (default: 21 = filled circle)</p></dd>
 
 
-<dt id="arg-main">main<a class="anchor" aria-label="anchor" href="#arg-main"></a></dt>
-<dd><p>character vector of titles (one per sample). If NULL, uses sample names.</p></dd>
-
-
-<dt id="arg-xlab">xlab<a class="anchor" aria-label="anchor" href="#arg-xlab"></a></dt>
-<dd><p>character(1) x-axis label (default: "Retention time")</p></dd>
-
-
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>additional arguments (for compatibility)</p></dd>
 
@@ -133,7 +121,8 @@ enabling modern visualization and interactive plotting capabilities.</p>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A ggplot or patchwork object showing the two-panel visualization.
 For single samples, returns a patchwork object with two panels.
-For multiple samples, returns a patchwork object with all sample plots stacked.</p>
+For multiple samples, returns a patchwork object with all sample plots stacked.
+Use <code>+ labs()</code> to customize axis labels and titles.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

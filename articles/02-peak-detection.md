@@ -50,37 +50,20 @@ library(xcmsVis)
 
 ## Data Preparation
 
-We’ll use the faahKO package example data:
+We’ll use pre-processed example data with peaks already detected:
 
 ``` r
-# Get example CDF files
-cdf_files <- dir(system.file("cdf", package = "faahKO"),
-                  recursive = TRUE, full.names = TRUE)[1:3]
+# Load pre-processed data with detected peaks
+# This dataset contains 248 detected peaks from 3 samples
+xdata <- loadXcmsData("faahko_sub2")
 
-# Load data as XcmsExperiment
-xdata <- readMsExperiment(
-  spectraFiles = cdf_files,
-  BPPARAM = SerialParam()
-)
-
-# Add sample metadata
-sampleData(xdata)$sample_name <- basename(cdf_files)
+# Add sample metadata for visualization
+sampleData(xdata)$sample_name <- c("KO01", "KO02", "WT01")
 sampleData(xdata)$sample_group <- c("KO", "KO", "WT")
-```
-
-### Peak Detection
-
-``` r
-# Detect peaks using CentWave algorithm
-cwp <- CentWaveParam(
-  peakwidth = c(20, 80),
-  ppm = 25
-)
-xdata <- findChromPeaks(xdata, param = cwp, BPPARAM = SerialParam())
 
 # Check number of peaks detected
 cat("Total peaks detected:", nrow(chromPeaks(xdata)), "\n")
-#> Total peaks detected: 6535
+#> Total peaks detected: 248
 ```
 
 ## Part 1: Peak Distribution Visualization
@@ -95,17 +78,37 @@ retention time vs m/z space.
 #### Basic Usage
 
 ``` r
-gplotChromPeaks(xdata, file = 1, xlim = c(3500, 3800), ylim = c(240, 260))
+gplotChromPeaks(xdata, file = 1)
 ```
 
 ![ggplot2 version showing detected peaks as semi-transparent rectangles
 in RT vs m/z
 space.](02-peak-detection_files/figure-html/gplot_chrompeaks-1.png)
 
+#### Focusing on a Region
+
+``` r
+# Focus on a specific RT and m/z region
+gplotChromPeaks(
+                xdata,
+                file = 1,
+                xlim = c(2600, 2750),
+                ylim = c(325,460)
+              )
+```
+
+![Zoomed view of chromatographic peaks in a specific
+region.](02-peak-detection_files/figure-html/zoom_chrompeaks-1.png)
+
 #### Customizing the Plot
 
 ``` r
-gplotChromPeaks(xdata, file = 1, xlim = c(3500, 3800), ylim = c(240, 260)) +
+gplotChromPeaks(xdata, file = 1, 
+                xlim = c(2600, 2750),
+                ylim = c(325,460),
+                border = "darkblue",
+                fill = "lightblue"
+                ) +
   labs(
     title = "Detected Peaks - Sample 1",
     x = "Retention Time (s)",
@@ -116,23 +119,6 @@ gplotChromPeaks(xdata, file = 1, xlim = c(3500, 3800), ylim = c(240, 260)) +
 
 ![Customized chromatographic peaks plot with custom
 styling.](02-peak-detection_files/figure-html/custom_chrompeaks-1.png)
-
-#### Focusing on a Region
-
-``` r
-# Focus on a specific RT and m/z region
-gplotChromPeaks(
-  xdata,
-  file = 1,
-  xlim = c(3500, 3800),
-  ylim = c(240, 260),
-  border = "darkblue",
-  fill = "lightblue"
-)
-```
-
-![Zoomed view of chromatographic peaks in a specific
-region.](02-peak-detection_files/figure-html/zoom_chrompeaks-1.png)
 
 #### Comparing Multiple Samples
 
@@ -208,8 +194,8 @@ First, let’s extract a chromatogram for a specific m/z range:
 
 ``` r
 # Extract chromatogram for m/z 200-210
-mz_range <- c(200, 210)
-rt_range <- c(2500, 3500)
+mz_range <- c(343-0.2,343+0.2)
+rt_range <- c(2600, 2750)
 
 # Get chromatogram data
 chr <- chromatogram(xdata, mz = mz_range, rt = rt_range)
@@ -451,7 +437,7 @@ Group peaks across samples
 ### Original XCMS
 
 ``` r
-plotChromPeaks(xdata, file = 1, xlim = c(3500, 3800), ylim = c(240, 260))
+plotChromPeaks(xdata, file = 1, xlim = c(2600, 2750), ylim = c(325,460))
 ```
 
 ![XCMS plotChromPeaks using base R
@@ -460,11 +446,78 @@ graphics.](02-peak-detection_files/figure-html/original_chrompeaks-1.png)
 ### xcmsVis ggplot2
 
 ``` r
-gplotChromPeaks(xdata, file = 1, xlim = c(3500, 3800), ylim = c(240, 260))
+gplotChromPeaks(xdata, file = 1, xlim = c(2600, 2750), ylim = c(325,460))
 ```
 
 ![ggplot2 version with modern
 aesthetics.](02-peak-detection_files/figure-html/ggplot_chrompeaks_supp-1.png)
+
+### gplotChromPeakImage() vs plotChromPeakImage()
+
+#### Original XCMS
+
+``` r
+plotChromPeakImage(xdata, binSize = 30)
+```
+
+![XCMS plotChromPeakImage using base R
+graphics.](02-peak-detection_files/figure-html/original_peakimage-1.png)
+
+#### xcmsVis ggplot2
+
+``` r
+gplotChromPeakImage(xdata, binSize = 30)
+```
+
+![ggplot2 version with viridis color
+scale.](02-peak-detection_files/figure-html/xcmsvis_peakimage-1.png)
+
+### gplot(XChromatogram) vs plot(Chromatogram)
+
+#### Original XCMS
+
+``` r
+plot(chr[1, 1])
+```
+
+![XCMS plot for Chromatogram using base R
+graphics.](02-peak-detection_files/figure-html/original_chromatogram-1.png)
+
+#### xcmsVis ggplot2
+
+``` r
+gplot(chr[1, 1])
+```
+
+![ggplot2 version with detected
+peaks.](02-peak-detection_files/figure-html/xcmsvis_chromatogram-1.png)
+
+### ghighlightChromPeaks() vs highlightChromPeaks()
+
+#### Original XCMS
+
+``` r
+xdata_filtered <- filterFile(xdata, 1)
+# Convert to XCMSnExp for original XCMS function
+xdata_xcmsnexp <- as(xdata_filtered, "XCMSnExp")
+plot(chr[1, 1])
+highlightChromPeaks(xdata_xcmsnexp, rt = rt_range, mz = mz_range,
+                    type = "rect", border = "red")
+```
+
+![XCMS highlightChromPeaks using base R
+graphics.](02-peak-detection_files/figure-html/original_highlight-1.png)
+
+#### xcmsVis ggplot2
+
+``` r
+gplot(chr[1, 1]) +
+  ghighlightChromPeaks(xdata_filtered, rt = rt_range, mz = mz_range,
+                       type = "rect", border = "red", fill = NA)
+```
+
+![ggplot2 version as composable
+layers.](02-peak-detection_files/figure-html/xcmsvis_highlight-1.png)
 
 ## Session Info
 
@@ -491,7 +544,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] xcmsVis_0.99.23     patchwork_1.3.2     MsExperiment_1.12.0
+#> [1] xcmsVis_0.99.2      patchwork_1.3.2     MsExperiment_1.12.0
 #> [4] ProtGenerics_1.42.0 faahKO_1.50.0       plotly_4.11.0      
 #> [7] ggplot2_4.0.0       xcms_4.8.0          BiocParallel_1.44.0
 #> 

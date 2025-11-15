@@ -1,5 +1,80 @@
 # Changelog
 
+## Changes in v3.0.0
+
+### Code Refactoring
+
+- Remove xlab/main parameters from gplot(XcmsExperiment)
+  ([315fcb1](https://github.com/stanstrup/xcmsVis/commit/315fcb1c8ad27274525a1fe656ea5062fb7d5f4d))
+- Remove xlab/ylab/main parameters from gplotChromatogramsOverlay
+  ([1db0506](https://github.com/stanstrup/xcmsVis/commit/1db0506aa0d94821c93ea5bfab4a7508fd4fd03b))
+
+### BREAKING CHANGES
+
+- Removed xlab, ylab, and main parameters from
+  gplotChromatogramsOverlay() for both XChromatograms and
+  MChromatograms. Use ggplot2’s labs() function to customize labels
+  instead: gplotChromatogramsOverlay(x) + labs(x = “RT (s)”, y = “Int”,
+  title = “My Title”)
+
+This follows ggplot2 conventions and provides more flexibility for
+customization.
+
+- Updated both method signatures and implementation function
+- Removed parameters from generic in AllGenerics.R
+- Updated documentation
+- Default labels still provided (“retention time”, “intensity”)
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com> \* Removed xlab and main
+parameters from gplot() methods for XcmsExperiment and XCMSnExp objects.
+Use ggplot2’s labs() function to customize labels instead: gplot(x) +
+labs(x = “RT (s)”, title = “My Title”)
+
+This follows ggplot2 conventions and provides more flexibility for
+customization.
+
+- Updated both XcmsExperiment and XCMSnExp method signatures
+- Removed parameters from helper function .create_sample_plot()
+- Default labels still provided (“Retention time”, “m/z”)
+- Sample names used as default titles
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+## Changes in v2.0.0
+
+### Code Refactoring
+
+- Remove xlab/ylab/main parameters from gplotPrecursorIons
+  ([19eb454](https://github.com/stanstrup/xcmsVis/commit/19eb454d703f7df42a95072e0ae209ea9894034b))
+
+### Features
+
+- Replace paste with glue and add patchwork documentation
+  ([d1976b2](https://github.com/stanstrup/xcmsVis/commit/d1976b254da3f893db63657c6be6d26bfa785959))
+
+### BREAKING CHANGES
+
+- Removed xlab, ylab, and main parameters from gplotPrecursorIons. Use
+  ggplot2’s labs() function to customize labels instead:
+  gplotPrecursorIons(x) + labs(x = “RT (s)”, y = “m/z”, title = “My
+  Title”)
+
+This follows ggplot2 conventions and provides more flexibility for
+customization.
+
+- Updated function signature and implementation
+- Updated documentation with ggplot2 customization examples
+- Updated test to use + labs() instead of parameters
+- Default labels still provided (“retention time”, “m/z”)
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
 ## Changes in v1.0.2
 
 ### Bug Fixes

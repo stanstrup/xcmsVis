@@ -16,8 +16,6 @@ gplotChromatogramsOverlay(
   col = "#00000060",
   type = "l",
   main = NULL,
-  xlab = "retention time",
-  ylab = "intensity",
   xlim = numeric(),
   ylim = numeric(),
   peakType = c("polygon", "point", "rectangle", "none"),
@@ -35,8 +33,6 @@ gplotChromatogramsOverlay(
   col = "#00000060",
   type = "l",
   main = NULL,
-  xlab = "retention time",
-  ylab = "intensity",
   xlim = numeric(),
   ylim = numeric(),
   peakType = c("polygon", "point", "rectangle", "none"),
@@ -54,8 +50,6 @@ gplotChromatogramsOverlay(
   col = "#00000060",
   type = "l",
   main = NULL,
-  xlab = "retention time",
-  ylab = "intensity",
   xlim = numeric(),
   ylim = numeric(),
   peakType = c("polygon", "point", "rectangle", "none"),
@@ -84,20 +78,15 @@ gplotChromatogramsOverlay(
 
 - main:
 
-  Plot title or vector of titles (one per row). Default: NULL.
-
-- xlab:
-
-  X-axis label (default: "retention time").
-
-- ylab:
-
-  Y-axis label (default: "intensity").
+  Character vector of panel titles, one per row. If NULL (default), no
+  titles are used. If length 1, the same title is used for all panels.
+  Use `+ labs()` for ggplot2-style customization.
 
 - xlim:
 
   Numeric vector of length 2 specifying retention time range. Default:
-  numeric() (auto-calculate).
+  numeric() (auto-calculate). Use `+ labs()` to customize axis labels
+  and titles.
 
 - ylim:
 

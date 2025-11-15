@@ -191,12 +191,12 @@ plasma.](01-raw-data-visualization_files/figure-html/color_ramps-1.png)
 #### Custom Titles
 
 ``` r
-# Custom sample names
-gplot(mse, main = c("Knockout 1", "Knockout 2", "Wild Type"))
+# Plot shows sample names from data automatically
+gplot(mse)
 ```
 
-![Three stacked two-panel plots with custom sample names as
-titles.](01-raw-data-visualization_files/figure-html/custom_titles-1.png)
+![Three stacked two-panel plots showing multiple
+samples.](01-raw-data-visualization_files/figure-html/custom_titles-1.png)
 
 ### Interactive Visualization
 
@@ -224,33 +224,6 @@ ggplotly(p[[2]])
 
 This is useful when you want to customize each panel independently or
 embed them separately in reports.
-
-### Use Cases
-
-#### Quality Control
-
-Visualize raw MS data to check for:
-
-- Signal intensity across retention time
-- Presence of expected m/z ranges
-- Peak detection quality
-- Sample-to-sample consistency
-
-``` r
-gplot(mse, main = glue("QC: {c('Sample 1', 'Sample 2', 'Sample 3')}"))
-```
-
-![QC visualization showing all three samples for comparison of data
-quality.](01-raw-data-visualization_files/figure-html/qc_example-1.png)
-
-#### Method Development
-
-During method development, use
-[`gplot()`](https://stanstrup.github.io/xcmsVis/reference/gplot.md) to:
-
-- Evaluate extraction efficiency across m/z ranges
-- Optimize retention time windows
-- Assess peak shapes and detection
 
 ## Part 2: MS/MS Precursor Ion Visualization
 
@@ -334,10 +307,12 @@ From this plot, you can see:
 p_custom <- gplotPrecursorIons(
   pest_dda,
   pch = 16,                    # filled circle
-  col = "#E41A1C",             # point color
-  xlab = "Retention Time (s)",
-  ylab = "Precursor m/z"
-)
+  col = "#E41A1C"              # point color
+) +
+  labs(
+    x = "Retention Time (s)",
+    y = "Precursor m/z"
+  )
 
 p_custom
 ```
@@ -460,7 +435,7 @@ sessionInfo()
 #> other attached packages:
 #>  [1] viridisLite_0.4.2   glue_1.8.0          msdata_0.50.0      
 #>  [4] patchwork_1.3.2     plotly_4.11.0       ggplot2_4.0.0      
-#>  [7] MsExperiment_1.12.0 ProtGenerics_1.42.0 xcmsVis_0.99.23    
+#>  [7] MsExperiment_1.12.0 ProtGenerics_1.42.0 xcmsVis_0.99.2     
 #> [10] xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):

@@ -65,50 +65,45 @@ Feature grouping requires a complete XCMS workflow: peak detection,
 correspondence, retention time alignment, re-correspondence, and then
 feature grouping.
 
-``` r
-# Load example data
-cdf_files <- dir(system.file("cdf", package = "faahKO"),
-                 recursive = TRUE, full.names = TRUE)[1:3]
+We’ll use pre-processed data with peaks already detected:
 
-# Create XcmsExperiment
-xdata <- readMsExperiment(spectraFiles = cdf_files)
+``` r
+# Load pre-processed data with detected peaks
+# This dataset contains 248 detected peaks from 3 samples
+xdata <- loadXcmsData("faahko_sub2")
 
 # Add sample metadata
-sampleData(xdata)$sample_name <- basename(cdf_files)
+sampleData(xdata)$sample_name <- c("KO01", "KO02", "WT01")
 sampleData(xdata)$sample_group <- c("KO", "KO", "WT")
 
 cat("Loaded", length(fileNames(xdata)), "files\n")
 #> Loaded 3 files
+cat("Detected peaks:", nrow(chromPeaks(xdata)), "\n")
+#> Detected peaks: 248
 ```
 
 ### Complete XCMS Workflow
 
 ``` r
-# 1. Peak detection
-cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25, noise = 1000)
-xdata <- findChromPeaks(xdata, param = cwp)
-cat("Detected", nrow(chromPeaks(xdata)), "peaks\n")
-#> Detected 3385 peaks
-
-# 2. Peak grouping (correspondence)
+# 1. Peak grouping (correspondence)
 pdp <- PeakDensityParam(sampleGroups = sampleData(xdata)$sample_group,
                         minFraction = 0.5, bw = 30)
 xdata <- groupChromPeaks(xdata, param = pdp)
 cat("Grouped into", nrow(featureDefinitions(xdata)), "features\n")
-#> Grouped into 1934 features
+#> Grouped into 152 features
 
-# 3. Retention time alignment
+# 2. Retention time alignment
 xdata <- adjustRtime(xdata, param = ObiwarpParam())
 
-# 4. Re-group after alignment
+# 3. Re-group after alignment
 xdata <- groupChromPeaks(xdata, param = pdp)
 cat("After alignment:", nrow(featureDefinitions(xdata)), "features\n")
-#> After alignment: 1934 features
+#> After alignment: 152 features
 
-# 5. Group features (identify related features)
+# 4. Group features (identify related features)
 xdata <- groupFeatures(xdata, param = SimilarRtimeParam(diffRt = 20))
 cat("Identified", length(unique(featureGroups(xdata))), "feature groups\n")
-#> Identified 604 feature groups
+#> Identified 63 feature groups
 ```
 
 ## Basic Feature Group Visualization
@@ -138,7 +133,7 @@ You can visualize specific feature groups of interest:
 # Get all feature group IDs
 all_groups <- unique(featureGroups(xdata))
 cat("Feature groups:", head(all_groups, 10), "\n")
-#> Feature groups: FG.0001 FG.0002 FG.0003 FG.0004 FG.0005 FG.0006 FG.0007 FG.0008 FG.0009 FG.0010
+#> Feature groups: FG.043 FG.012 FG.054 FG.038 FG.019 FG.023 FG.028 FG.048 FG.009 FG.018
 
 # Plot first 5 groups
 gplotFeatureGroups(xdata, featureGroups = all_groups[1:5]) +
@@ -158,10 +153,10 @@ all_groups <- unique(featureGroups(xdata))
 gplotFeatureGroups(xdata,
                    featureGroups = all_groups[1:5],
                    col = "#E31A1C",  # Red color
-                   pch = 16,          # Solid circles
-                   xlab = "Retention Time (sec)",
-                   ylab = "Mass-to-Charge Ratio (m/z)",
-                   main = "Custom Styled Feature Groups")
+                   pch = 16) +       # Solid circles
+  labs(x = "Retention Time (sec)",
+       y = "Mass-to-Charge Ratio (m/z)",
+       title = "Custom Styled Feature Groups")
 ```
 
 ![](05-feature-grouping_files/figure-html/custom_style-1.png)
@@ -231,7 +226,7 @@ compound. Common grouping parameters:
 xdata_rt <- groupFeatures(xdata, param = SimilarRtimeParam(diffRt = 10))
 cat("SimilarRtimeParam (diffRt=10):",
     length(unique(featureGroups(xdata_rt))), "groups\n")
-#> SimilarRtimeParam (diffRt=10): 609 groups
+#> SimilarRtimeParam (diffRt=10): 76 groups
 
 # Show first 5 groups
 fg_rt <- unique(featureGroups(xdata_rt))
@@ -248,10 +243,10 @@ gplotFeatureGroups(xdata_rt, featureGroups = fg_rt[1:5]) +
 xdata_cor <- groupFeatures(xdata, param = AbundanceSimilarityParam(threshold = 0.7))
 cat("AbundanceSimilarityParam (threshold=0.7):",
     length(unique(featureGroups(xdata_cor))), "groups\n")
-#> AbundanceSimilarityParam (threshold=0.7): 1834 groups
+#> AbundanceSimilarityParam (threshold=0.7): 139 groups
 
-# Show first 5 groups
-fg_cor <- unique(featureGroups(xdata_cor))
+# Show some groups with multiple Features
+fg_cor <- names(rev(sort(table(featureGroups(xdata_cor)))))
 gplotFeatureGroups(xdata_cor, featureGroups = fg_cor[1:5]) +
   ggtitle("Feature Groups: Abundance Correlation (threshold = 0.7)")
 ```
@@ -328,8 +323,11 @@ You’ve now completed the full XCMS visualization workflow:
 ### Original XCMS Version
 
 ``` r
+# Get first 5 feature groups for comparison
+fg_compare <- unique(featureGroups(xdata))[1:5]
+
 # XCMS original (base R graphics)
-plotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002", "FG.0003", "FG.0004", "FG.0005"))
+plotFeatureGroups(xdata, featureGroups = fg_compare)
 ```
 
 ![XCMS plotFeatureGroups using base R
@@ -339,7 +337,7 @@ graphics.](05-feature-grouping_files/figure-html/original_comparison-1.png)
 
 ``` r
 # xcmsVis version (ggplot2)
-gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002", "FG.0003", "FG.0004", "FG.0005"))
+gplotFeatureGroups(xdata, featureGroups = fg_compare)
 ```
 
 ![ggplot2 version with clean styling and consistent
@@ -356,7 +354,8 @@ API.](05-feature-grouping_files/figure-html/xcmsvis_comparison-1.png)
 >
 > ``` r
 > # Customize labels with labs()
-> gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002")) +
+> fg_subset <- unique(featureGroups(xdata))[1:2]
+> gplotFeatureGroups(xdata, featureGroups = fg_subset) +
 >   labs(x = "Retention Time (s)", y = "Mass/Charge", title = "My Custom Title")
 > ```
 >
@@ -390,7 +389,7 @@ sessionInfo()
 #> other attached packages:
 #> [1] plotly_4.11.0       patchwork_1.3.2     ggplot2_4.0.0      
 #> [4] MsFeatures_1.18.0   MsExperiment_1.12.0 ProtGenerics_1.42.0
-#> [7] xcmsVis_0.99.23     xcms_4.8.0          BiocParallel_1.44.0
+#> [7] xcmsVis_0.99.2      xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] DBI_1.2.3                   rlang_1.1.6                

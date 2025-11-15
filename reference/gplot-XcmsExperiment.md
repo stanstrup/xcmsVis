@@ -23,8 +23,6 @@ gplot(
   col = "grey",
   colramp = grDevices::topo.colors,
   pch = 21,
-  main = NULL,
-  xlab = "Retention time",
   ...
 )
 
@@ -36,8 +34,6 @@ gplot(
   col = "grey",
   colramp = grDevices::topo.colors,
   pch = 21,
-  main = NULL,
-  xlab = "Retention time",
   ...
 )
 ```
@@ -69,15 +65,6 @@ gplot(
 
   integer(1) point shape (default: 21 = filled circle)
 
-- main:
-
-  character vector of titles (one per sample). If NULL, uses sample
-  names.
-
-- xlab:
-
-  character(1) x-axis label (default: "Retention time")
-
 - ...:
 
   additional arguments (for compatibility)
@@ -86,7 +73,8 @@ gplot(
 
 A ggplot or patchwork object showing the two-panel visualization. For
 single samples, returns a patchwork object with two panels. For multiple
-samples, returns a patchwork object with all sample plots stacked.
+samples, returns a patchwork object with all sample plots stacked. Use
+`+ labs()` to customize axis labels and titles.
 
 ## Details
 
