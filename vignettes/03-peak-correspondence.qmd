@@ -131,6 +131,7 @@ p1 | p2 | p3
 ```
 
 **Interpretation**:
+
 - **Small bandwidth (15)**: More sensitive, creates more feature groups, may split real features
 - **Medium bandwidth (30)**: Balanced approach
 - **Large bandwidth (60)**: Less sensitive, merges nearby peaks, may combine distinct features
