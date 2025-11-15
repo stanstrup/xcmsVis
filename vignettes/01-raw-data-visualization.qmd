@@ -229,32 +229,6 @@ ggplotly(p[[2]])
 
 This is useful when you want to customize each panel independently or embed them separately in reports.
 
-## Use Cases
-
-### Quality Control
-
-Visualize raw MS data to check for:
-
-- Signal intensity across retention time
-- Presence of expected m/z ranges
-- Peak detection quality
-- Sample-to-sample consistency
-
-```{r qc_example}
-#| fig-height: 12
-#| fig-width: 10
-#| fig-alt: "QC visualization showing all three samples for comparison of data quality."
-# Plot automatically shows sample names from the data
-gplot(mse)
-```
-
-### Method Development
-
-During method development, use `gplot()` to:
-
-- Evaluate extraction efficiency across m/z ranges
-- Optimize retention time windows
-- Assess peak shapes and detection
 
 # Part 2: MS/MS Precursor Ion Visualization
 

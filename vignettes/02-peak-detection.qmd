@@ -111,8 +111,8 @@ gplotChromPeaks(xdata, file = 1)
 gplotChromPeaks(
                 xdata,
                 file = 1,
-                xlim = c(3500, 3800),
-                ylim = c(240, 260)
+                xlim = c(2600, 2750),
+                ylim = c(325,460)
               )
 ```
 
@@ -124,8 +124,8 @@ gplotChromPeaks(
 #| fig-width: 7
 #| fig-alt: "Customized chromatographic peaks plot with custom styling."
 gplotChromPeaks(xdata, file = 1, 
-                xlim = c(3500, 3800), 
-                ylim = c(240, 260),
+                xlim = c(2600, 2750),
+                ylim = c(325,460),
                 border = "darkblue",
                 fill = "lightblue"
                 ) +
@@ -454,7 +454,7 @@ After visualizing detected peaks, proceed to:
 #| fig-height: 5
 #| fig-width: 5
 #| fig-alt: "XCMS plotChromPeaks using base R graphics."
-plotChromPeaks(xdata, file = 1, xlim = c(3500, 3800), ylim = c(240, 260))
+plotChromPeaks(xdata, file = 1, xlim = c(2600, 2750), ylim = c(325,460))
 ```
 
 </div>
@@ -466,7 +466,99 @@ plotChromPeaks(xdata, file = 1, xlim = c(3500, 3800), ylim = c(240, 260))
 #| fig-height: 5
 #| fig-width: 5
 #| fig-alt: "ggplot2 version with modern aesthetics."
-gplotChromPeaks(xdata, file = 1, xlim = c(3500, 3800), ylim = c(240, 260))
+gplotChromPeaks(xdata, file = 1, xlim = c(2600, 2750), ylim = c(325,460))
+```
+
+</div>
+</div>
+
+## gplotChromPeakImage() vs plotChromPeakImage()
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS
+
+```{r original_peakimage}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "XCMS plotChromPeakImage using base R graphics."
+plotChromPeakImage(xdata, binSize = 30)
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2
+
+```{r xcmsvis_peakimage}
+#| fig-height: 4
+#| fig-width: 5
+#| fig-alt: "ggplot2 version with viridis color scale."
+gplotChromPeakImage(xdata, binSize = 30)
+```
+
+</div>
+</div>
+
+## gplot(XChromatogram) vs plot(Chromatogram)
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS
+
+```{r original_chromatogram}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "XCMS plot for Chromatogram using base R graphics."
+plot(chr[1, 1])
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2
+
+```{r xcmsvis_chromatogram}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "ggplot2 version with detected peaks."
+gplot(chr[1, 1])
+```
+
+</div>
+</div>
+
+## ghighlightChromPeaks() vs highlightChromPeaks()
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS
+
+```{r original_highlight}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "XCMS highlightChromPeaks using base R graphics."
+xdata_filtered <- filterFile(xdata, 1)
+plot(chr[1, 1])
+highlightChromPeaks(xdata_filtered, rt = rt_range, mz = mz_range,
+                    type = "rect", border = "red")
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2
+
+```{r xcmsvis_highlight}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "ggplot2 version as composable layers."
+gplot(chr[1, 1], peakType = "none") +
+  ghighlightChromPeaks(xdata_filtered, rt = rt_range, mz = mz_range,
+                       type = "rect", border = "red", fill = alpha("red", 0.2))
 ```
 
 </div>

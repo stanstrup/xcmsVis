@@ -373,6 +373,35 @@ gplotChromPeakDensity(chr, param = prm)
 </div>
 </div>
 
+## gplotChromatogramsOverlay() vs plotChromatogramsOverlay()
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS
+
+```{r original_overlay}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "XCMS plotChromatogramsOverlay using base R graphics."
+plotChromatogramsOverlay(chr_multi)
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2
+
+```{r xcmsvis_overlay}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "ggplot2 version with modern aesthetics."
+gplotChromatogramsOverlay(chr_multi)
+```
+
+</div>
+</div>
+
 # Session Info
 
 ```{r session_info}

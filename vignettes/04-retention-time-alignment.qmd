@@ -446,6 +446,35 @@ gplotAdjustedRtime(xdata, color_by = sample_group)
 </div>
 </div>
 
+## gplot(LamaParama) vs plot(LamaParama)
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS
+
+```{r original_lama}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "XCMS plot(LamaParama) using base R graphics."
+plot(lama_result, index = 1)
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2
+
+```{r xcmsvis_lama}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "ggplot2 version with modern aesthetics."
+gplot(lama_result, index = 1)
+```
+
+</div>
+</div>
+
 # Session Info
 
 ```{r session_info}
