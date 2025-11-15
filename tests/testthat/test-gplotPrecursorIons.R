@@ -3,7 +3,11 @@
 library(testthat)
 library(xcmsVis)
 library(MsExperiment)
-library(msdata)
+
+# Load msdata if available (for DDA test data)
+if (requireNamespace("msdata", quietly = TRUE)) {
+  library(msdata)
+}
 
 test_that("gplotPrecursorIons works with DDA data", {
   # Load DDA test data
@@ -120,8 +124,9 @@ test_that("gplotPrecursorIons returns list for multiple files", {
 
 test_that("gplotPrecursorIons validates input object", {
   # Test that function requires MsExperiment object
+  # S4 method dispatch error occurs before function body
   expect_error(
     gplotPrecursorIons("not an MsExperiment"),
-    "MsExperiment"
+    "unable to find an inherited method"
   )
 })
