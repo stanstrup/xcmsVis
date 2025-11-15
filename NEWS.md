@@ -1,3 +1,10 @@
+## Changes in v3.0.2
+
+
+### Bug Fixes
+
+* update gplotPrecursorIons test to match S4 dispatch error ([2316403](https://github.com/stanstrup/xcmsVis/commit/23164031993514dbec96db604cdf8860887a9618))
+
 ## Changes in v3.0.1
 
 
