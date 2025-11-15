@@ -33,9 +33,8 @@ test_that("gplot works with XcmsExperiment objects", {
   p_colramp <- gplot(mse[1], colramp = grDevices::heat.colors)
   expect_s3_class(p_colramp, "patchwork")
 
-  # Test with custom main title
-  p_main <- gplot(mse[1], main = "Test Sample")
-  expect_s3_class(p_main, "patchwork")
+  # Note: main parameter removed in favor of ggplot2 + labs() approach
+  # Use p + labs(title = "Test Sample") instead
 })
 
 test_that("gplot handles XcmsExperiment with peaks", {
