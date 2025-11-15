@@ -542,8 +542,10 @@ gplot(chr[1, 1])
 #| fig-width: 5
 #| fig-alt: "XCMS highlightChromPeaks using base R graphics."
 xdata_filtered <- filterFile(xdata, 1)
+# Convert to XCMSnExp for original XCMS function
+xdata_xcmsnexp <- as(xdata_filtered, "XCMSnExp")
 plot(chr[1, 1])
-highlightChromPeaks(xdata_filtered, rt = rt_range, mz = mz_range,
+highlightChromPeaks(xdata_xcmsnexp, rt = rt_range, mz = mz_range,
                     type = "rect", border = "red")
 ```
 
