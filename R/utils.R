@@ -35,7 +35,12 @@ utils::globalVariables(c(
   "y",
   "maxo",
   "i",
-  "rtmed"
+  "rtmed",
+  "Retention time",
+  "Peak density",
+  "peak_id",
+  "obs",
+  "ref"
 ))
 
 #' Get sample data from XCMS object

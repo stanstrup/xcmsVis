@@ -251,8 +251,10 @@ setGeneric("gplotChromPeakImage", function(object,
 #'
 #' # Load and process example data
 #' cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
-#' xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
-#' xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam())
+#' xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files,
+#'                                         BPPARAM = BiocParallel::SerialParam())
+#' xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam(),
+#'                                BPPARAM = BiocParallel::SerialParam())
 #'
 #' # Extract chromatogram for plotting
 #' chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
@@ -316,8 +318,10 @@ setGeneric("ghighlightChromPeaks", function(object,
 #'
 #' # Load and process example data
 #' cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
-#' xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files)
-#' xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam())
+#' xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files,
+#'                                         BPPARAM = BiocParallel::SerialParam())
+#' xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam(),
+#'                                BPPARAM = BiocParallel::SerialParam())
 #'
 #' # Extract chromatogram
 #' chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
@@ -436,6 +440,8 @@ setGeneric("gplotChromPeakDensity", function(object,
 #' @param object An `XChromatograms` or `MChromatograms` object.
 #' @param col Color for the chromatogram lines (default: "#00000060").
 #' @param type Plot type (default: "l" for line).
+#' @param main Character vector of panel titles, one per row. If NULL (default), no titles are used.
+#'   If length 1, the same title is used for all panels. Use `+ labs()` for ggplot2-style customization.
 #' @param xlim Numeric vector of length 2 specifying retention time range.
 #'   Default: numeric() (auto-calculate). Use `+ labs()` to customize axis labels and titles.
 #' @param ylim Numeric vector of length 2 specifying intensity range.

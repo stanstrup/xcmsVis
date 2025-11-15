@@ -27,3 +27,4 @@ vignettes/*_files
 ^Rplots\.pdf$
 tests/testthat/_snap
 vignettes/*_files
+inst/doc/*
