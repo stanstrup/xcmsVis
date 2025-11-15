@@ -1,10 +1,14 @@
 # xcmsVis
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/stanstrup/xcmsVis/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stanstrup/xcmsVis/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://img.shields.io/github/actions/workflow/status/stanstrup/xcmsVis/R-CMD-check.yaml?label=R-CMD-check)](https://github.com/stanstrup/xcmsVis/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://img.shields.io/github/actions/workflow/status/stanstrup/xcmsVis/pkgdown.yaml?label=pkgdown)](https://github.com/stanstrup/xcmsVis/actions/workflows/pkgdown.yaml)
+[![Codecov test coverage](https://codecov.io/gh/stanstrup/xcmsVis/branch/main/graph/badge.svg)](https://codecov.io/gh/stanstrup/xcmsVis)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![GitHub release](https://img.shields.io/github/release/stanstrup/xcmsVis.svg)](https://github.com/stanstrup/xcmsVis/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Last commit](https://img.shields.io/github/last-commit/stanstrup/xcmsVis)](https://github.com/stanstrup/xcmsVis/commits/main)
+[![GitHub issues](https://img.shields.io/github/issues/stanstrup/xcmsVis)](https://github.com/stanstrup/xcmsVis/issues)
 <!-- badges: end -->
 
 Modern, interactive visualizations for XCMS metabolomics data using ggplot2.
