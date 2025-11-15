@@ -93,12 +93,24 @@ utils::globalVariables(c(
   .validate_xcms_object(object)
 
   if (is(object, "XcmsExperiment")) {
-    out <- object %>%
+    spec_data <- object %>%
             spectra() %>%
             spectraData() %>%
             as.data.frame() %>%
-            mutate(spectraOrigin_base = basename(dataOrigin)) %>%
-            select(dataOrigin, spectraOrigin_base, rtime, rtime_adjusted)
+            mutate(spectraOrigin_base = basename(dataOrigin))
+
+    # Check if rtime_adjusted exists (before applyAdjustedRtime)
+    # After applyAdjustedRtime(), rtime_adjusted column is removed and rtime contains adjusted values
+    if ("rtime_adjusted" %in% names(spec_data)) {
+      out <- spec_data %>%
+              select(dataOrigin, spectraOrigin_base, rtime, rtime_adjusted)
+    } else {
+      # If rtime_adjusted doesn't exist, use rtime for both columns
+      # This happens after applyAdjustedRtime() has been called
+      out <- spec_data %>%
+              select(dataOrigin, spectraOrigin_base, rtime) %>%
+              mutate(rtime_adjusted = rtime)
+    }
 
   } else if (is(object, "XCMSnExp") | is(object, "OnDiskMSnExp")) {
     # Get sample data for joining

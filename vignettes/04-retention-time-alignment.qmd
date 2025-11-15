@@ -437,8 +437,7 @@ You can use `gplotAdjustedRtime()` to visualize the overall alignment result aft
 #| fig-height: 5
 #| fig-width: 8
 #| fig-alt: "Overall RT adjustment visualization after LamaParama alignment."
-sample_data_tst <- sampleData(tst_adjusted)
-gplotAdjustedRtime(tst_adjusted, color_by = sample_group) +
+gplotAdjustedRtime(tst_adjusted) +
   labs(title = "LamaParama Alignment Result")
 ```
 
