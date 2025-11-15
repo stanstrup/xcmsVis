@@ -102,6 +102,12 @@ $RELEASE_NOTES"
 
 # Push the commit using GITHUB_TOKEN
 # Use --no-follow-tags to prevent pushing any tags
-git push --no-follow-tags
+if [ -n "$GITHUB_TOKEN" ]; then
+  # Configure git to use GITHUB_TOKEN for authentication
+  git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+  git push --no-follow-tags
+else
+  echo "WARNING: GITHUB_TOKEN not set, skipping push (only local commit created)"
+fi
 
 echo "Committed and pushed version $BIOC_VERSION"
