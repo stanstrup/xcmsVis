@@ -296,7 +296,6 @@ lama_param <- LamaParama(
 
 # Apply alignment to test dataset
 tst_adjusted <- adjustRtime(tst, param = lama_param)
-tst_adjusted <- applyAdjustedRtime(tst_adjusted)
 ```
 
 ## Visualizing LamaParama Results
