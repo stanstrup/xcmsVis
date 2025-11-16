@@ -43,7 +43,20 @@
 <div id="current-tasks" class="section level1">
 
 <p><strong>See <code>CLAUDE.md</code> for development workflow, conventions, and resources.</strong></p>
-<p>✅ All vignette restructuring tasks completed: - All vignettes use pre-processed data with loadXcmsData(“faahko_sub2”) - All functions have side-by-side comparisons with original XCMS - All vignettes have Functions Covered table at beginning (no duplicates in Summary) - LamaParama examples follow XCMS vignette pattern</p>
+<p>✅ vignette 4 to fix manually:</p>
+<p>the LamaParama example is weird. Model after the LamaParama example in <a href="https://sneumann.github.io/xcms/articles/xcms.html" class="external-link uri">https://sneumann.github.io/xcms/articles/xcms.html</a> instead.</p>
+<p>OK, that fixed it. Lets move ahead. The vignette 4 is still not using lamaparama as intended. it uses all features instead of a subset. Please read the “Alignment to an external reference dataset” section from <a href="https://sneumann.github.io/xcms/articles/xcms.html" class="external-link uri">https://sneumann.github.io/xcms/articles/xcms.html</a> and follow a similar workflow.</p>
+<p>To fix your current repository state, run these <strong>two required scripts</strong>:</p>
+<pre><code><span><span class="co"># 1. Create tags for all historical release commits (0.99.1, 0.99.2, etc.) ./scripts/sync-historical-tags.sh  # 2. Recreate GitHub releases with correct 0.99.x versions ./scripts/cleanup-releases.sh </span></span></code></pre>
+<p><strong>Optional:</strong></p>
+<pre><code><span><span class="co"># 3. Clean up old development branches (preview first) ./scripts/cleanup-branches.sh --dry-run ./scripts/cleanup-branches.sh </span></span></code></pre>
+<div class="section level3">
+<h3 id="next-steps"><strong>Next Steps</strong><a class="anchor" aria-label="anchor" href="#next-steps"></a></h3>
+<ol style="list-style-type: decimal"><li><p><strong>Read <code>scripts/SETUP_INSTRUCTIONS.md</code></strong> - Contains detailed explanations and troubleshooting</p></li>
+<li><p><strong>Run the cleanup scripts</strong> in the order above</p></li>
+<li><p><strong>Verify</strong> tags and releases are correct on GitHub</p></li>
+<li><p>Future releases will be <strong>fully automated</strong> via GitHub Actions</p></li>
+</ol></div>
 </div>
 
   </main></div>
