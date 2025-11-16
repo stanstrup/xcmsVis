@@ -1,5 +1,7 @@
 # Changelog
 
+## Changes in v0.99.3 (commit: d3180d5)
+
 ## Changes in v0.99.2 (commit: 65ff9c5)
 
 ## Changes in v0.99.1 (commit: 483aa5e)
