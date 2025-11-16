@@ -29,5 +29,4 @@ tests/testthat/_snap
 vignettes/*_files
 .bioc_version
 scripts/*
-^inst/doc/.*\.qmd$
-^inst/doc/vignette\.rds$
+^inst/doc$
