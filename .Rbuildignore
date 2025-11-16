@@ -19,6 +19,9 @@
 ^pkgdown$
 ^\.github$
 ^vignettes/\.quarto$
+^vignettes/.*\.html$
+^doc$
+^Meta$
 ^LICENSE\.md$
 ^xcmsVis.BiocCheck$
 PROJECT_STATUS.md
@@ -29,4 +32,3 @@ tests/testthat/_snap
 vignettes/*_files
 .bioc_version
 scripts/*
-^inst/doc$
