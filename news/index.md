@@ -1,5 +1,7 @@
 # Changelog
 
+## Changes in v0.99.5 (commit: 6a418e5)
+
 ## Changes in v3.0.2
 
 ### Bug Fixes
