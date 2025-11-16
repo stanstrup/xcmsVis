@@ -50,3 +50,11 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
+          error-on: '"note"'
+
+      - name: Upload check logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: check-logs-${{ matrix.config.os }}-${{ matrix.config.r }}
+          path: check/*.Rcheck/00*
