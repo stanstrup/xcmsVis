@@ -54,7 +54,7 @@ jobs:
 
       - name: Upload check logs on failure
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: check-logs-${{ matrix.config.os }}-${{ matrix.config.r }}
           path: check/*.Rcheck/00*
