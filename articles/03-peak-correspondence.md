@@ -407,7 +407,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] xcmsVis_0.99.5      patchwork_1.3.2     plotly_4.11.0      
+#> [1] xcmsVis_0.99.1      patchwork_1.3.2     plotly_4.11.0      
 #> [4] ggplot2_4.0.0       xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
