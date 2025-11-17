@@ -46,8 +46,8 @@ NULL
 
     while (dens_y_copy[max_y <- which.max(dens_y_copy)] > dens_max / 20 &&
            snum < param@maxFeatures) {
-        # Use XCMS internal descendMin function
-        feat_range <- xcms:::descendMin(dens_y_copy, max_y)
+        # Use local descendMin (copied from XCMS with C sources)
+        feat_range <- .descendMin(dens_y_copy, max_y)
         dens_y_copy[feat_range[1]:feat_range[2]] <- 0
 
         feat_idx <- which(pks[, "rt"] >= dens_x[feat_range[1]] &
