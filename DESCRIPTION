@@ -81,6 +81,7 @@ SystemRequirements: quarto
 biocViews: Metabolomics, MassSpectrometry, Visualization
 Collate:
     'utils.R'
+    'xcms-utils.R'
     'AllGenerics.R'
     'ghighlightChromPeaks-methods.R'
     'gplot-LamaParama-methods.R'
