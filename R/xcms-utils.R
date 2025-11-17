@@ -142,12 +142,20 @@ NULL
     idx_low <- which(x < rtraw[1])
     if (length(idx_low)) {
         first_adj <- idx_low[length(idx_low)] + 1
-        res[idx_low] <- x[idx_low] + res[first_adj] - x[first_adj]
+        ## Handle case where all values are below rtraw[1]
+        if (first_adj <= length(x))
+            res[idx_low] <- x[idx_low] + res[first_adj] - x[first_adj]
+        else
+            res[idx_low] <- x[idx_low] + rtadj[1] - rtraw[1]
     }
     idx_high <- which(x > rtraw[length(rtraw)])
     if (length(idx_high)) {
         last_adj <- idx_high[1] - 1
-        res[idx_high] <- x[idx_high] + res[last_adj] - x[last_adj]
+        ## Handle case where all values are above rtraw[length(rtraw)]
+        if (last_adj >= 1)
+            res[idx_high] <- x[idx_high] + res[last_adj] - x[last_adj]
+        else
+            res[idx_high] <- x[idx_high] + rtadj[length(rtadj)] - rtraw[length(rtraw)]
     }
     if (is.null(dim(res)))
         names(res) <- names(x)
@@ -207,11 +215,13 @@ NULL
                        weights = weights)
     ## compute outliers
     SSq <- resid(model)^2
-    meanSSq <- mean(SSq)
+    meanSSq <- mean(SSq, na.rm = TRUE)
     not_outlier <- (SSq / meanSSq) < resid_ratio
+    ## Handle NAs from poor fits
+    not_outlier[is.na(not_outlier)] <- TRUE
 
     ## re-run only if there is outliers and keep the zero.
-    if (any(!not_outlier)){
+    if (any(!not_outlier, na.rm = TRUE)){
         not_outlier[1] <- TRUE
         rt_map <- rt_map[not_outlier, , drop = FALSE]
         weights <- weights[not_outlier]

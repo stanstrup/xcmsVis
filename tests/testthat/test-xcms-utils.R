@@ -143,8 +143,11 @@ test_that(".applyRtAdjustment applies step function correctly", {
 
   expect_type(result, "double")
   expect_length(result, 3)
-  # Should be shifted by approximately +10
-  expect_true(all(abs(result - (x + 10)) < 1))
+  # Step function creates breakpoints at midpoints between rtraw values
+  # At x=150 (breakpoint between 100 and 200), returns rtadj[2]=210
+  # At x=250 (breakpoint between 200 and 300), returns rtadj[3]=310
+  # At x=350 (breakpoint between 300 and 400), returns rtadj[4]=410
+  expect_equal(result, c(210, 310, 410))
 })
 
 test_that(".applyRtAdjustment handles unsorted rtraw", {
@@ -207,9 +210,10 @@ test_that(".rt_model builds loess model", {
 test_that(".rt_model builds GAM model when mgcv available", {
   skip_if_not_installed("mgcv")
 
+  # GAM requires more data points - use at least 10
   rt_map <- data.frame(
-    ref = c(100, 200, 300, 400, 500),
-    obs = c(105, 210, 305, 410, 505)
+    ref = seq(100, 1000, by = 100),
+    obs = seq(105, 1005, by = 100)
   )
 
   model <- .rt_model(method = "gam", rt_map = rt_map)
