@@ -277,9 +277,8 @@ When you need to find the source code for an XCMS function to implement:
 - **XCMS Source Code**: https://github.com/sneumann/xcms/tree/devel/R
 - **Metabonaut Tutorials**: https://github.com/rformassspectrometry/Metabonaut
 - **Original Discussion**: https://github.com/sneumann/xcms/issues/551
-- **Package Structure Reference**: `/mnt/c/Users/tmh331/Desktop/gits/remoteUpdater`
-- **Function Reference**: `/mnt/c/Users/tmh331/Desktop/gits/_Introduction to Nutritional Metabolomics/inm-booklet/scripts/funs.R`
 - **S4 Implementation Guide**: `dev-docs/` - Comprehensive guides for implementing S4 methods like XCMS
+- **XCMS Utils Maintenance**: `dev-docs/XCMS_UTILS_MAINTENANCE.md` - Guide for maintaining copied XCMS functions
 
 ## Important Conventions
 
