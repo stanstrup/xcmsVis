@@ -2,12 +2,12 @@ pandoc: 3.1.11
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
-  01-raw-data-visualization: 01-raw-data-visualization.html
-  02-peak-detection: 02-peak-detection.html
-  03-peak-correspondence: 03-peak-correspondence.html
-  04-retention-time-alignment: 04-retention-time-alignment.html
-  05-feature-grouping: 05-feature-grouping.html
-last_built: 2025-11-16T21:25Z
+  step1-raw-data-visualization: step1-raw-data-visualization.html
+  step2-peak-detection: step2-peak-detection.html
+  step3-peak-correspondence: step3-peak-correspondence.html
+  step4-retention-time-alignment: step4-retention-time-alignment.html
+  step5-feature-grouping: step5-feature-grouping.html
+last_built: 2025-11-17T06:21Z
 urls:
   reference: https://stanstrup.github.io/xcmsVis/reference
   article: https://stanstrup.github.io/xcmsVis/articles
