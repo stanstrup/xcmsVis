@@ -256,7 +256,7 @@ xdata_lama <- xdata_grouped
 library(MsFeatures)
 xdata_filtered <- filterFeatures(
   xdata_lama,
-  PercentMissingFilter(threshold = 20)  # Allow max 20% missing
+  PercentMissingFilter(threshold = 20, f = sampleData(xdata_lama)$sample_group)  # Allow max 20% missing
 )
 
 # Extract filtered feature definitions to use as landmarks
