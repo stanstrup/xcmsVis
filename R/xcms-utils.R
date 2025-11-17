@@ -92,13 +92,13 @@ NULL
 #' @noRd
 .descendMin <- function(y, istart = which.max(y)) {
     if (!is.double(y)) y <- as.double(y)
-    unlist(.C("DescendMin",
-              y,
-              length(y),
-              as.integer(istart-1),
-              ilower = integer(1),
-              iupper = integer(1),
-              PACKAGE = "xcmsVis")[4:5]) + 1
+    as.integer(unname(unlist(.C("DescendMin",
+                                y,
+                                length(y),
+                                as.integer(istart-1),
+                                ilower = integer(1),
+                                iupper = integer(1),
+                                PACKAGE = "xcmsVis")[4:5])) + 1)
 }
 
 #' Apply retention time adjustment to a vector of retention times
