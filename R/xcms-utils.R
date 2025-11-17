@@ -1,13 +1,40 @@
 #' Internal XCMS utility functions
 #'
 #' These functions are copied from the xcms package to avoid using `:::` calls.
-#' They are pure R implementations and are reproduced here with attribution.
+#' Both R and C implementations are reproduced here with attribution.
 #'
 #' @source https://github.com/sneumann/xcms
 #' @author Original XCMS authors
 #' @keywords internal
 #' @name xcms-utils
 NULL
+
+#' Find local minima by descending from a peak
+#'
+#' Copied from xcms (R/c.R and src/util.c) to avoid `:::` usage.
+#' Wrapper around C function DescendMin that finds the boundaries of a
+#' minimum value region by descending in both directions from a starting position.
+#'
+#' @param y numeric vector of signal/intensity values
+#' @param istart integer starting position (defaults to position of maximum value)
+#'
+#' @return integer vector of length 2 with lower and upper indices defining
+#'   the region around the local minimum
+#'
+#' @source https://github.com/sneumann/xcms/blob/devel/R/c.R
+#' @source https://github.com/sneumann/xcms/blob/devel/src/util.c
+#' @keywords internal
+#' @noRd
+.descendMin <- function(y, istart = which.max(y)) {
+    if (!is.double(y)) y <- as.double(y)
+    unlist(.C("DescendMin",
+              y,
+              length(y),
+              as.integer(istart-1),
+              ilower = integer(1),
+              iupper = integer(1),
+              PACKAGE = "xcmsVis")[4:5]) + 1
+}
 
 #' Apply retention time adjustment to a vector of retention times
 #'
