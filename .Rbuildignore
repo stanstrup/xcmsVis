@@ -18,6 +18,7 @@
 ^docs$
 ^pkgdown$
 ^\.github$
+^codecov\.yml$
 ^vignettes/\.quarto$
 ^vignettes/.*\.html$
 ^doc$
