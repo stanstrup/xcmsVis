@@ -434,7 +434,7 @@ p_dist / p_density
 
 After visualizing detected peaks, proceed to:
 
-→ **[Step 3: Peak Correspondence](03-peak-correspondence.html)** - Group peaks across samples
+→ **[Step 3: Peak Correspondence](step3-peak-correspondence.html)** - Group peaks across samples
 
 # Comparison with Original XCMS
 

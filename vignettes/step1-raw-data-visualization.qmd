@@ -345,7 +345,7 @@ ggplotly(p_interactive)
 
 After visualizing and assessing your raw data, proceed to:
 
-→ **[Step 2: Peak Detection](02-peak-detection.html)** - Detect chromatographic peaks in your data
+→ **[Step 2: Peak Detection](step2-peak-detection.html)** - Detect chromatographic peaks in your data
 
 # Comparison with Original XCMS
 
