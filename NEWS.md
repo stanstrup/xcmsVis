@@ -1,3 +1,7 @@
+## Changes in v0.99.2 (commit: 30e6982)
+
+
+
 ## Changes in v0.99.1 (commit: 37c562d)
 
 
