@@ -57,7 +57,7 @@
       processHistory() %>%
       map(processParam) %>%
       pluck(which_is_groups) %>%
-      xcms:::peakGroupsMatrix() %>%
+      slot("peakGroupsMatrix") %>%
       as.data.frame()
 
     pkGroup <- pkGroup %>%
@@ -81,7 +81,7 @@
           function(feat, corr) {
             feat %>%
               mutate(
-                adjusted = xcms:::.applyRtAdjustment(
+                adjusted = .applyRtAdjustment(
                   rtime,
                   corr$raw,
                   corr$adjusted
