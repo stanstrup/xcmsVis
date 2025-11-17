@@ -47,10 +47,10 @@ prepare_lama_alignment <- function(xdata) {
 
   # Filter to high-quality features present in most samples
   # Using PercentMissingFilter to keep only features found in at least 80% of samples
-  # Note: filterFeatures is a generic S4 method made available by MsFeatures
+  # Note: filterFeatures and PercentMissingFilter are made available by loading MsFeatures
   xdata_filtered <- filterFeatures(
     xdata,
-    MsFeatures::PercentMissingFilter(
+    PercentMissingFilter(
       threshold = 20,  # Allow max 20% missing
       f = if (is(xdata, "XcmsExperiment")) {
         MsExperiment::sampleData(xdata)$sample_group
