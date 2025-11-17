@@ -31,4 +31,5 @@ xcms-reference/
 src/init.o
 src/util.o
 src/xcmsVis.dll
+src/xcmsVis.so
 DESCRIPTION
