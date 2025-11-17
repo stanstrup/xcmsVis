@@ -1,28 +1,91 @@
 #' Internal XCMS utility functions
 #'
-#' These functions are copied from the xcms package to avoid using `:::` calls.
-#' Both R and C implementations are reproduced here with attribution.
+#' @description
+#' These functions are copied from the XCMS package to avoid using `:::` calls,
+#' which would generate R CMD check NOTEs and fail Bioconductor standards.
 #'
-#' @source https://github.com/sneumann/xcms
-#' @author Original XCMS authors
+#' @section Why Copy Instead of Import:
+#' R packages cannot use `package:::function()` to access internal functions
+#' without generating a NOTE in R CMD check. Since Bioconductor requires
+#' 0 errors, 0 warnings, and 0 notes, we copy these stable utility functions
+#' rather than depending on XCMS internals.
+#'
+#' @section Maintenance:
+#' **Last synchronized:** 2024-11-17
+#'
+#' **XCMS source version:** devel branch (accessed 2024-11-17)
+#'
+#' **XCMS GitHub:** https://github.com/sneumann/xcms
+#'
+#' **Functions copied:**
+#' \itemize{
+#'   \item `.descendMin()` - C + R wrapper from `R/c.R` and `src/util.c`
+#'   \item `.applyRtAdjustment()` - Pure R from `R/do_adjustRtime-functions.R`
+#'   \item `.rt_model()` - Pure R from `R/do_adjustRtime-functions.R`
+#'   \item `.check_gam_library()` - Helper for `.rt_model()`
+#' }
+#'
+#' @section Update Process:
+#' To update these functions:
+#'
+#' 1. Check XCMS source at https://github.com/sneumann/xcms/tree/devel
+#' 2. Compare with current implementation in this file
+#' 3. Update both R wrapper and C code (if changed)
+#' 4. Run tests in `tests/testthat/test-xcms-utils.R`
+#' 5. Update "Last synchronized" date above
+#'
+#' @section Stability:
+#' These are low-level utility functions that have remained stable in XCMS
+#' for many years. Breaking changes are unlikely but should be monitored.
+#'
+#' @section Alternative Approach:
+#' If these functions are needed by multiple packages, consider requesting
+#' that XCMS maintainers export them officially. Open an issue at:
+#' https://github.com/sneumann/xcms/issues
+#'
+#' @source https://github.com/sneumann/xcms/blob/devel/R/c.R
+#' @source https://github.com/sneumann/xcms/blob/devel/R/do_adjustRtime-functions.R
+#' @source https://github.com/sneumann/xcms/blob/devel/src/util.c
+#' @author Original XCMS authors (Colin A. Smith, Ralf Tautenhahn, Steffen Neumann,
+#'   Johannes Rainer, et al.)
 #' @keywords internal
 #' @name xcms-utils
 NULL
 
 #' Find local minima by descending from a peak
 #'
-#' Copied from xcms (R/c.R and src/util.c) to avoid `:::` usage.
-#' Wrapper around C function DescendMin that finds the boundaries of a
-#' minimum value region by descending in both directions from a starting position.
+#' @description
+#' Copied from XCMS (R/c.R and src/util.c) to avoid `:::` usage.
+#'
+#' This function wraps the C function `DescendMin` (in src/util.c) that finds
+#' the boundaries of a local minimum region by descending in both directions
+#' from a starting position. It's used in peak density calculations to identify
+#' feature boundaries.
+#'
+#' @details
+#' **Algorithm:** Starting from `istart`, descend left until values stop decreasing,
+#' then descend right until values stop decreasing. Returns the indices defining
+#' this minimum region.
+#'
+#' **C Implementation:** See `src/util.c` for the C code (also copied from XCMS).
+#'
+#' **Original XCMS location:** `R/c.R` (wrapper) and `src/util.c` (C function)
+#'
+#' **Used by:** `.simulate_feature_groups()` in gplotChromPeakDensity
 #'
 #' @param y numeric vector of signal/intensity values
 #' @param istart integer starting position (defaults to position of maximum value)
 #'
-#' @return integer vector of length 2 with lower and upper indices defining
-#'   the region around the local minimum
+#' @return integer vector of length 2 with `c(ilower, iupper)` defining
+#'   the indices of the minimum region boundaries
+#'
+#' @section Maintenance Note:
+#' Both this R wrapper and the C code in `src/util.c` must be kept in sync
+#' with XCMS. The C implementation has been stable for years.
 #'
 #' @source https://github.com/sneumann/xcms/blob/devel/R/c.R
 #' @source https://github.com/sneumann/xcms/blob/devel/src/util.c
+#' @seealso `.simulate_feature_groups()` which uses this function
 #' @keywords internal
 #' @noRd
 .descendMin <- function(y, istart = which.max(y)) {
@@ -38,13 +101,28 @@ NULL
 
 #' Apply retention time adjustment to a vector of retention times
 #'
-#' Copied from xcms (do_adjustRtime-functions.R) to avoid `:::` usage.
+#' @description
+#' Copied from XCMS (do_adjustRtime-functions.R) to avoid `:::` usage.
+#'
+#' Applies retention time adjustment using a step function based on raw and
+#' adjusted RT pairs. Handles edge cases at the margins of the RT range.
+#'
+#' @details
+#' **Algorithm:** Creates a step function from raw/adjusted RT pairs, then
+#' applies it to input retention times. Special handling for times outside
+#' the calibration range (margins).
+#'
+#' **Pure R:** This implementation is pure R (no C code).
+#'
+#' **Original XCMS location:** `R/do_adjustRtime-functions.R`
+#'
+#' **Used by:** LamaParama alignment visualization
 #'
 #' @param x numeric vector of retention times to adjust
 #' @param rtraw numeric vector of raw retention times (from adjustment)
 #' @param rtadj numeric vector of adjusted retention times (from adjustment)
 #'
-#' @return numeric vector of adjusted retention times
+#' @return numeric vector of adjusted retention times with same length as `x`
 #'
 #' @source https://github.com/sneumann/xcms/blob/devel/R/do_adjustRtime-functions.R
 #' @keywords internal
@@ -76,16 +154,33 @@ NULL
 
 #' Build retention time model for LamaParama alignment
 #'
-#' Copied from xcms (do_adjustRtime-functions.R) to avoid `:::` usage.
+#' @description
+#' Copied from XCMS (do_adjustRtime-functions.R) to avoid `:::` usage.
+#'
+#' Builds a retention time correction model (loess or GAM) with automatic
+#' outlier detection and a fixed anchor point at (0,0).
+#'
+#' @details
+#' **Algorithm:**
+#' 1. Adds (0,0) anchor point with high weight
+#' 2. Fits loess or GAM model
+#' 3. Detects outliers based on residual ratio
+#' 4. Refits model excluding outliers (keeping anchor)
+#'
+#' **Pure R:** This implementation is pure R (no C code).
+#'
+#' **Original XCMS location:** `R/do_adjustRtime-functions.R`
+#'
+#' **Used by:** LamaParama alignment visualization
 #'
 #' @param method character, "loess" or "gam"
-#' @param rt_map data.frame with 'ref' and 'obs' columns
-#' @param span numeric, span parameter for loess
-#' @param resid_ratio numeric, residual ratio threshold for outlier detection
-#' @param zero_weight numeric, weight for the (0,0) anchor point
-#' @param bs character, basis for GAM spline
+#' @param rt_map data.frame with 'ref' and 'obs' columns (retention time pairs)
+#' @param span numeric, span parameter for loess (default: 0.5)
+#' @param resid_ratio numeric, residual ratio threshold for outlier detection (default: 3)
+#' @param zero_weight numeric, weight for the (0,0) anchor point (default: 10)
+#' @param bs character, basis for GAM spline (default: "tp")
 #'
-#' @return fitted model object (loess or gam)
+#' @return fitted model object (loess or gam class)
 #'
 #' @source https://github.com/sneumann/xcms/blob/devel/R/do_adjustRtime-functions.R
 #' @keywords internal
