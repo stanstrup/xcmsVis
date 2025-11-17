@@ -428,7 +428,7 @@ sessionInfo()
 #> other attached packages:
 #>  [1] viridisLite_0.4.2   glue_1.8.0          msdata_0.50.0      
 #>  [4] patchwork_1.3.2     plotly_4.11.0       ggplot2_4.0.0      
-#>  [7] MsExperiment_1.12.0 ProtGenerics_1.42.0 xcmsVis_0.99.3     
+#>  [7] MsExperiment_1.12.0 ProtGenerics_1.42.0 xcmsVis_0.99.4     
 #> [10] xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
