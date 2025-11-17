@@ -6,6 +6,7 @@ library(xcms)
 library(faahKO)
 library(MsExperiment)
 library(BiocParallel)
+library(MsFeatures)
 
 # Helper function to get shared test data
 get_shared_data <- function() {
@@ -46,8 +47,8 @@ prepare_lama_alignment <- function(xdata) {
 
   # Filter to high-quality features present in most samples
   # Using PercentMissingFilter to keep only features found in at least 80% of samples
-  # Note: filterFeatures is from xcms, PercentMissingFilter is from MsFeatures
-  xdata_filtered <- xcms::filterFeatures(
+  # Note: filterFeatures is a generic S4 method made available by MsFeatures
+  xdata_filtered <- filterFeatures(
     xdata,
     MsFeatures::PercentMissingFilter(
       threshold = 20,  # Allow max 20% missing
