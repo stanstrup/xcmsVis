@@ -50,6 +50,7 @@
 #'   Johannes Rainer, et al.)
 #' @keywords internal
 #' @name xcms-utils
+#' @importFrom stats loess resid stepfun
 #' @useDynLib xcmsVis, .registration = TRUE
 NULL
 
