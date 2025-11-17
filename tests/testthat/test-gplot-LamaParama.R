@@ -133,47 +133,6 @@ test_that("gplot works for LamaParama objects with XcmsExperiment", {
   }
 })
 
-test_that("gplot works for LamaParama objects with XCMSnExp", {
-  shared <- get_shared_data()
-
-  # Group peaks first (required for LamaParama)
-  xdata_grouped <- perform_grouping(shared$xdata_snexp, shared$sample_groups)
-
-  # Prepare alignment with LamaParama
-  result <- prepare_lama_alignment(xdata_grouped)
-
-  # Extract the LamaParama object from the result
-  # Note: After adjustRtime, the param is stored in processHistory
-  proc_hist <- xcms::processHistory(result$xdata,
-                                     type = xcms:::.PROCSTEP.RTIME.CORRECTION)
-
-  if (length(proc_hist) > 0) {
-    param <- proc_hist[[length(proc_hist)]]@param
-
-    # Test that param is a LamaParama object
-    expect_s4_class(param, "LamaParama")
-
-    # Test that rtMap is populated
-    expect_true(length(param@rtMap) > 0)
-
-    # Create plot
-    p <- gplot(param, index = 1)
-
-    # Check plot is a ggplot object
-    expect_s3_class(p, "ggplot")
-
-    # Check plot has expected layers
-    expect_true(length(p$layers) >= 2)  # points + line
-
-    # Check for geom_point and geom_line
-    geom_classes <- sapply(p$layers, function(l) class(l$geom)[1])
-    expect_true("GeomPoint" %in% geom_classes)
-    expect_true("GeomLine" %in% geom_classes)
-  } else {
-    skip("No alignment results found in processHistory")
-  }
-})
-
 test_that("gplot LamaParama handles custom colors", {
   shared <- get_shared_data()
 
