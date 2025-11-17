@@ -20,9 +20,14 @@ echo ""
 echo "Deleting all existing releases..."
 
 # Get all release tags and delete them
-gh release list --limit 50 | awk '{print $1}' | while read tag; do
-  echo "Deleting release $tag..."
-  gh release delete "$tag" --yes --cleanup-tag
+# gh release list output format: TITLE\tSTATE\tTAG\tPUBLISHED
+# We need the TAG column (3rd column, tab-separated)
+gh release list --limit 50 | awk -F'\t' '{print $3}' | while read tag; do
+  if [ -n "$tag" ] && [ "$tag" != "TAG NAME" ]; then
+    echo "Deleting release $tag..."
+    # Try to delete with cleanup-tag, but don't fail if tag doesn't exist
+    gh release delete "$tag" --yes --cleanup-tag 2>&1 | grep -v "Reference does not exist" || true
+  fi
 done
 
 echo ""
