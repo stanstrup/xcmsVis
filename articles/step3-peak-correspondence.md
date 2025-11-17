@@ -408,7 +408,7 @@ sessionInfo()
 #> 
 #> other attached packages:
 #> [1] xcmsVis_0.99.5      patchwork_1.3.2     plotly_4.11.0      
-#> [4] ggplot2_4.0.0       xcms_4.8.0          BiocParallel_1.44.0
+#> [4] ggplot2_4.0.1       xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] DBI_1.2.3                   rlang_1.1.6                
@@ -437,10 +437,10 @@ sessionInfo()
 #>  [47] codetools_0.2-20            affy_1.88.0                
 #>  [49] lattice_0.22-7              tibble_3.3.0               
 #>  [51] plyr_1.8.9                  Biobase_2.70.0             
-#>  [53] withr_3.0.2                 S7_0.2.0                   
+#>  [53] withr_3.0.2                 S7_0.2.1                   
 #>  [55] evaluate_1.0.5              Spectra_1.20.0             
 #>  [57] pillar_1.11.1               affyio_1.80.0              
-#>  [59] BiocManager_1.30.26         MatrixGenerics_1.22.0      
+#>  [59] BiocManager_1.30.27         MatrixGenerics_1.22.0      
 #>  [61] foreach_1.5.2               stats4_4.5.2               
 #>  [63] MSnbase_2.36.0              MALDIquant_1.22.3          
 #>  [65] ncdf4_1.24                  generics_0.1.4             
