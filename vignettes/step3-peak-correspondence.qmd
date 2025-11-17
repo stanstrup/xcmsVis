@@ -338,7 +338,7 @@ p4 <- gplot(chr_workflow[1, 1]) +
 
 After optimizing and performing peak correspondence, proceed to:
 
-→ **[Step 4: Retention Time Alignment](04-retention-time-alignment.html)** - Correct retention time shifts between samples
+→ **[Step 4: Retention Time Alignment](step4-retention-time-alignment.html)** - Correct retention time shifts between samples
 
 # Comparison with Original XCMS
 

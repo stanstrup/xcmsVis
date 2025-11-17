@@ -404,7 +404,7 @@ p_pg | p_lama
 
 After aligning retention times, proceed to:
 
-→ **[Step 5: Feature Grouping](05-feature-grouping.html)** - Group features (isotopes, adducts)
+→ **[Step 5: Feature Grouping](step5-feature-grouping.html)** - Group features (isotopes, adducts)
 
 # Comparison with Original XCMS
 
