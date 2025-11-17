@@ -245,18 +245,32 @@ LamaParama (Landmark-based Alignment Parameters) is an alignment method in XCMS 
 
 ## Landmark-Based Alignment
 
+LamaParama alignment works by using a subset of high-quality features as "landmarks" to model retention time shifts. The key is to select features that are reliably detected across samples.
+
 ```{r lama_alignment}
 # Work with fresh grouped data
 xdata_lama <- xdata_grouped
 
-# Extract feature definitions to use as landmarks
-fdef <- featureDefinitions(xdata_lama)
-
-# Create landmark matrix (mz and rt columns)
-lamas <- cbind(
-  mz = fdef$mzmed,
-  rt = fdef$rtmed
+# Filter to high-quality features present in most samples
+# Using PercentMissingFilter to keep only features found in at least 80% of samples
+library(MsFeatures)
+xdata_filtered <- filterFeatures(
+  xdata_lama,
+  PercentMissingFilter(threshold = 20)  # Allow max 20% missing
 )
+
+# Extract filtered feature definitions to use as landmarks
+fdef_filtered <- featureDefinitions(xdata_filtered)
+
+# Create landmark matrix (mz and rt columns) from the subset
+lamas <- cbind(
+  mz = fdef_filtered$mzmed,
+  rt = fdef_filtered$rtmed
+)
+
+# Show how many landmarks we're using vs total features
+cat("Using", nrow(lamas), "landmarks out of",
+    nrow(featureDefinitions(xdata_lama)), "total features\n")
 
 # Create LamaParama object
 lama_param <- LamaParama(
@@ -265,7 +279,7 @@ lama_param <- LamaParama(
   span = 0.4
 )
 
-# Perform alignment
+# Perform alignment on the original (unfiltered) data using the landmark subset
 xdata_lama <- adjustRtime(xdata_lama, param = lama_param)
 ```
 
@@ -307,7 +321,7 @@ library(patchwork)
 p1 / p2 / p3
 ```
 
-Note here that since we just took all the peaks from the samples it is essential a perfect match. When you bring your own landmarks it will look different.
+The plots show how well the filtered landmark features align between samples. Since we filtered to features present in at least 80% of samples, these landmarks represent robust, high-quality features suitable for modeling retention time shifts.
 
 
 ### Customization
