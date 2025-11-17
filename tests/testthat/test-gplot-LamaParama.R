@@ -46,7 +46,8 @@ prepare_lama_alignment <- function(xdata) {
 
   # Filter to high-quality features present in most samples
   # Using PercentMissingFilter to keep only features found in at least 80% of samples
-  xdata_filtered <- MsFeatures::filterFeatures(
+  # Note: filterFeatures is from xcms, PercentMissingFilter is from MsFeatures
+  xdata_filtered <- xcms::filterFeatures(
     xdata,
     MsFeatures::PercentMissingFilter(
       threshold = 20,  # Allow max 20% missing
