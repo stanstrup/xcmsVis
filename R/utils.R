@@ -152,3 +152,59 @@ utils::globalVariables(c(
   }
   invisible(TRUE)
 }
+
+#' Selectively suppress warnings matching a pattern
+#'
+#' Higher-order function that wraps another function to suppress only warnings
+#' that match a specific regex pattern. Other warnings are allowed through.
+#'
+#' @param .f Function to wrap
+#' @param pattern Regex pattern for warnings to suppress
+#' @return Modified function that selectively suppresses warnings
+#' @keywords internal
+#' @noRd
+.selectively_suppress_warnings <- function(.f, pattern) {
+  force(.f)  # ensure .f is evaluated once
+  function(...) {
+    withCallingHandlers(
+      .f(...),
+      warning = function(w) {
+        if (grepl(pattern, conditionMessage(w))) {
+          invokeRestart("muffleWarning")
+        }
+      }
+    )
+  }
+}
+
+#' Create ggplot2 geom wrappers that suppress plotly 'text' aesthetic warnings
+#'
+#' These wrapper functions suppress the "Ignoring unknown aesthetics: text" warning
+#' that occurs when using the 'text' aesthetic for plotly tooltips.
+#' The 'text' aesthetic is not recognized by ggplot2 but is used by plotly::ggplotly()
+#'
+#' @keywords internal
+#' @noRd
+#' @importFrom ggplot2 geom_point geom_rect geom_polygon geom_path
+NULL
+
+# Create wrapped versions that suppress the specific "unknown aesthetics: text" warning
+.geom_point_text <- .selectively_suppress_warnings(
+  ggplot2::geom_point,
+  "Ignoring unknown aesthetics: text"
+)
+
+.geom_rect_text <- .selectively_suppress_warnings(
+  ggplot2::geom_rect,
+  "Ignoring unknown aesthetics: text"
+)
+
+.geom_polygon_text <- .selectively_suppress_warnings(
+  ggplot2::geom_polygon,
+  "Ignoring unknown aesthetics: text"
+)
+
+.geom_path_text <- .selectively_suppress_warnings(
+  ggplot2::geom_path,
+  "Ignoring unknown aesthetics: text"
+)

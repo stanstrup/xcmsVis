@@ -111,7 +111,8 @@ NULL
 
             if (peakType == "point") {
                 # Add points at peak apex
-                p <- p + geom_point(
+                # Use wrapper that suppresses 'text' aesthetic warning (for plotly tooltips)
+                p <- p + .geom_point_text(
                     data = peaks_df,
                     aes(x = rt, y = maxo, text = peak_id),
                     color = peakCol,
@@ -120,7 +121,8 @@ NULL
                 )
             } else if (peakType == "rectangle") {
                 # Add rectangles spanning peak bounds
-                p <- p + geom_rect(
+                # Use wrapper that suppresses 'text' aesthetic warning (for plotly tooltips)
+                p <- p + .geom_rect_text(
                     data = peaks_df,
                     aes(xmin = rtmin, xmax = rtmax, ymin = 0, ymax = maxo, text = peak_id),
                     color = peakCol,
@@ -135,7 +137,8 @@ NULL
                 poly_df <- .add_polygon_peaks(x, peaks_df, peak_ids, peakCol, peakBg)
 
                 if (!is.null(poly_df)) {
-                    p <- p + geom_polygon(
+                    # Use wrapper that suppresses 'text' aesthetic warning (for plotly tooltips)
+                    p <- p + .geom_polygon_text(
                         data = poly_df,
                         aes(x = rt, y = intensity, text = peak_id),
                         color = peakCol,
