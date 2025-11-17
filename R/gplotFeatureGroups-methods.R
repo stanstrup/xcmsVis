@@ -96,11 +96,12 @@ utils::globalVariables(c("Retention Time", "m/z", "group", "feature_group"))
     # but we need to preserve the data order (sorted by m/z within groups)
     p <- ggplot(xy, aes(x = `Retention Time`, y = `m/z`, group = group, text = text))
 
+    # Suppress warning about 'text' aesthetic (used by plotly, not ggplot2)
     if (type %in% c("o", "l")) {
-        p <- p + geom_path(color = col, na.rm = FALSE, ...)
+        p <- p + suppressWarnings(geom_path(color = col, na.rm = FALSE, ...))
     }
     if (type %in% c("o", "p")) {
-        p <- p + geom_point(color = col, shape = pch, na.rm = TRUE, ...)
+        p <- p + suppressWarnings(geom_point(color = col, shape = pch, na.rm = TRUE, ...))
     }
 
     p <- p +
