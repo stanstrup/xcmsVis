@@ -7,6 +7,7 @@
 #' @author Original XCMS authors
 #' @keywords internal
 #' @name xcms-utils
+#' @useDynLib xcmsVis, .registration = TRUE
 NULL
 
 #' Find local minima by descending from a peak
