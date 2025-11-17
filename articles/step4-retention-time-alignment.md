@@ -500,7 +500,7 @@ sessionInfo()
 #> other attached packages:
 #>  [1] patchwork_1.3.2     MsFeatures_1.18.0   MsExperiment_1.12.0
 #>  [4] ProtGenerics_1.42.0 faahKO_1.50.0       plotly_4.11.0      
-#>  [7] ggplot2_4.0.0       xcmsVis_0.99.1      xcms_4.8.0         
+#>  [7] ggplot2_4.0.0       xcmsVis_0.99.2      xcms_4.8.0         
 #> [10] BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
