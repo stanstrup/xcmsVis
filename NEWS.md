@@ -1,3 +1,7 @@
+## Changes in v0.99.7 (commit: 708c942)
+
+
+
 ## Changes in v0.99.6 (commit: 357c057)
 
 
