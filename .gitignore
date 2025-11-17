@@ -4,15 +4,12 @@
 .RData
 .Ruserdata
 *.Rproj
-
 # Package build artifacts
 inst/doc
 ..Rcheck
 xcmsVis.BiocCheck
-
 # Documentation
 docs/
-
 # Vignettes
 vignettes/*_files/
 vignettes/*.html
@@ -21,17 +18,17 @@ vignettes/_quarto.yaml
 vignettes/.quarto/
 vignettes/.gitignore
 vignettes/peak-visualization.rmarkdown
-
 # Node.js (for semantic-release)
 node_modules/
 package-lock.json
-
 # Claude Code
 .claude/
-
 # R plots and temporary files
 Rplots.pdf
 tmp/
-
 # XCMS reference repository
 xcms-reference/
+src/init.o
+src/util.o
+src/xcmsVis.dll
+DESCRIPTION
