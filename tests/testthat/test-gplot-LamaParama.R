@@ -247,7 +247,7 @@ test_that("gplot LamaParama works with different index values", {
       expect_s3_class(p2, "ggplot")
 
       # Plots should be different (different data)
-      expect_false(identical(p1$data, p2$data))
+      expect_false(identical(p1@layers$geom_point$data, p2@layers$geom_point$data))
     }
   } else {
     skip("No alignment results found in processHistory")
