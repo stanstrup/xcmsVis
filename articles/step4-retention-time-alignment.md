@@ -228,18 +228,35 @@ quality assessment.
 
 ### Landmark-Based Alignment
 
+LamaParama alignment works by using a subset of high-quality features as
+“landmarks” to model retention time shifts. The key is to select
+features that are reliably detected across samples.
+
 ``` r
 # Work with fresh grouped data
 xdata_lama <- xdata_grouped
 
-# Extract feature definitions to use as landmarks
-fdef <- featureDefinitions(xdata_lama)
-
-# Create landmark matrix (mz and rt columns)
-lamas <- cbind(
-  mz = fdef$mzmed,
-  rt = fdef$rtmed
+# Filter to high-quality features present in most samples
+# Using PercentMissingFilter to keep only features found in at least 80% of samples
+library(MsFeatures)
+xdata_filtered <- filterFeatures(
+  xdata_lama,
+  PercentMissingFilter(threshold = 20, f = sampleData(xdata_lama)$sample_group)  # Allow max 20% missing
 )
+
+# Extract filtered feature definitions to use as landmarks
+fdef_filtered <- featureDefinitions(xdata_filtered)
+
+# Create landmark matrix (mz and rt columns) from the subset
+lamas <- cbind(
+  mz = fdef_filtered$mzmed,
+  rt = fdef_filtered$rtmed
+)
+
+# Show how many landmarks we're using vs total features
+cat("Using", nrow(lamas), "landmarks out of",
+    nrow(featureDefinitions(xdata_lama)), "total features\n")
+#> Using 451 landmarks out of 1600 total features
 
 # Create LamaParama object
 lama_param <- LamaParama(
@@ -248,7 +265,7 @@ lama_param <- LamaParama(
   span = 0.4
 )
 
-# Perform alignment
+# Perform alignment on the original (unfiltered) data using the landmark subset
 xdata_lama <- adjustRtime(xdata_lama, param = lama_param)
 ```
 
@@ -296,9 +313,10 @@ p1 / p2 / p3
 
 ![](step4-retention-time-alignment_files/figure-html/lama_multiple-1.png)
 
-Note here that since we just took all the peaks from the samples it is
-essential a perfect match. When you bring your own landmarks it will
-look different.
+The plots show how well the filtered landmark features align between
+samples. Since we filtered to features present in at least 80% of
+samples, these landmarks represent robust, high-quality features
+suitable for modeling retention time shifts.
 
 #### Customization
 
@@ -480,9 +498,10 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] patchwork_1.3.2     MsExperiment_1.12.0 ProtGenerics_1.42.0
-#> [4] faahKO_1.50.0       plotly_4.11.0       ggplot2_4.0.0      
-#> [7] xcmsVis_0.99.5      xcms_4.8.0          BiocParallel_1.44.0
+#>  [1] patchwork_1.3.2     MsFeatures_1.18.0   MsExperiment_1.12.0
+#>  [4] ProtGenerics_1.42.0 faahKO_1.50.0       plotly_4.11.0      
+#>  [7] ggplot2_4.0.0       xcmsVis_0.99.7      xcms_4.8.0         
+#> [10] BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] DBI_1.2.3                   rlang_1.1.6                
@@ -519,21 +538,21 @@ sessionInfo()
 #>  [63] MALDIquant_1.22.3           ncdf4_1.24                 
 #>  [65] generics_0.1.4              S4Vectors_0.48.0           
 #>  [67] hms_1.1.4                   scales_1.4.0               
-#>  [69] glue_1.8.0                  MsFeatures_1.18.0          
-#>  [71] lazyeval_0.2.2              tools_4.5.2                
-#>  [73] mzID_1.48.0                 data.table_1.17.8          
-#>  [75] QFeatures_1.20.0            vsn_3.78.0                 
-#>  [77] mzR_2.44.0                  fs_1.6.6                   
-#>  [79] XML_3.99-0.20               grid_4.5.2                 
-#>  [81] impute_1.84.0               tidyr_1.3.1                
-#>  [83] crosstalk_1.2.2             MsCoreUtils_1.21.0         
-#>  [85] PSMatch_1.14.0              cli_3.6.5                  
-#>  [87] viridisLite_0.4.2           S4Arrays_1.10.0            
-#>  [89] dplyr_1.1.4                 AnnotationFilter_1.34.0    
-#>  [91] pcaMethods_2.2.0            gtable_0.3.6               
-#>  [93] digest_0.6.38               BiocGenerics_0.56.0        
-#>  [95] SparseArray_1.10.1          htmlwidgets_1.6.4          
-#>  [97] farver_2.1.2                htmltools_0.5.8.1          
-#>  [99] lifecycle_1.0.4             httr_1.4.7                 
-#> [101] statmod_1.5.1               MASS_7.3-65
+#>  [69] glue_1.8.0                  lazyeval_0.2.2             
+#>  [71] tools_4.5.2                 mzID_1.48.0                
+#>  [73] data.table_1.17.8           QFeatures_1.20.0           
+#>  [75] vsn_3.78.0                  mzR_2.44.0                 
+#>  [77] fs_1.6.6                    XML_3.99-0.20              
+#>  [79] grid_4.5.2                  impute_1.84.0              
+#>  [81] tidyr_1.3.1                 crosstalk_1.2.2            
+#>  [83] MsCoreUtils_1.21.0          PSMatch_1.14.0             
+#>  [85] cli_3.6.5                   viridisLite_0.4.2          
+#>  [87] S4Arrays_1.10.0             dplyr_1.1.4                
+#>  [89] AnnotationFilter_1.34.0     pcaMethods_2.2.0           
+#>  [91] gtable_0.3.6                digest_0.6.38              
+#>  [93] BiocGenerics_0.56.0         SparseArray_1.10.1         
+#>  [95] htmlwidgets_1.6.4           farver_2.1.2               
+#>  [97] htmltools_0.5.8.1           lifecycle_1.0.4            
+#>  [99] httr_1.4.7                  statmod_1.5.1              
+#> [101] MASS_7.3-65
 ```
