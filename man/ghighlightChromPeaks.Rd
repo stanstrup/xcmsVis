@@ -4,7 +4,7 @@
 \alias{ghighlightChromPeaks}
 \alias{ghighlightChromPeaks,XCMSnExp-method}
 \alias{ghighlightChromPeaks,XcmsExperiment-method}
-\title{ggplot2 Version of highlightChromPeaks}
+\title{\emph{ggplot2} Version of \code{highlightChromPeaks()}}
 \usage{
 ghighlightChromPeaks(
   object,
@@ -42,43 +42,48 @@ ghighlightChromPeaks(
 \arguments{
 \item{object}{An \code{XCMSnExp} or \code{XcmsExperiment} object with detected peaks.}
 
-\item{rt}{Numeric vector of length 2 specifying retention time range for
+\item{rt}{\code{numeric(2)} vector of length 2 specifying retention time range for
 peak extraction (optional).}
 
-\item{mz}{Numeric vector of length 2 specifying m/z range for peak extraction (optional).}
+\item{mz}{\code{numeric(2)} vector of length 2 specifying m/z range for peak
+extraction (optional).}
 
-\item{peakIds}{Character vector of peak identifiers (rownames from chromPeaks)
-to highlight. If provided, \code{rt} and \code{mz} are ignored.}
+\item{peakIds}{\code{character} vector of peak identifiers (rownames from
+\code{\link[xcms:XCMSnExp-class]{xcms::chromPeaks()}} to highlight. If provided, \code{rt} and \code{mz} are
+ignored.}
 
 \item{border}{Color for peak borders (default: semi-transparent grey).}
 
-\item{fill}{Color for peak fills (default: NA).}
+\item{fill}{Color for peak fills (default: \code{NA}).}
 
-\item{type}{Character specifying visualization type: "rect" (rectangle),
-"point" (apex point), or "polygon" (peak shape). Default: "rect".}
+\item{type}{\code{character(1)} specifying visualization type: \code{"rect"}
+(rectangle), \code{"point"} (apex point), or \code{"polygon"} (peak shape).
+Default: \code{"rect"}.}
 
-\item{whichPeaks}{Character specifying peak selection: "any" (any overlap),
-"within" (fully contained), or "apex_within" (apex in range). Default: "any".}
+\item{whichPeaks}{\code{character(1)} specifying peak selection: \code{"any"} (any
+overlap), \code{"within"} (fully contained), or \code{"apex_within"} (apex in
+range). Default: \code{"any"}.}
 }
 \value{
-A list of ggplot2 layer objects that can be added to an existing
-ggplot chromatogram.
+A list of \emph{ggplot2} layer objects that can be added to an existing
+\code{ggplot} chromatogram.
 }
 \description{
 Adds chromatographic peak annotations to existing chromatogram plots.
-This is a ggplot2 implementation that works with XCMSnExp or XcmsExperiment objects,
-highlighting detected peaks with rectangles, points, or polygons.
+This is a \emph{ggplot2} implementation that works with \code{XCMSnExp} or
+\code{XcmsExperiment} objects, highlighting detected peaks with rectangles,
+points, or polygons.
 }
 \details{
-This function returns ggplot2 layers (geoms) that can be added to an
+This function returns \emph{ggplot2} layers (geoms) that can be added to an
 existing chromatogram plot using the \code{+} operator. Unlike the base R
 version which modifies an existing plot, this returns composable layers.
 
-Like the original \code{highlightChromPeaks}, this function takes the full
-XCMSnExp/XcmsExperiment object and searches ALL peaks across all samples,
-then filters by rt/mz. This means it can highlight peaks from multiple
-samples. To highlight only peaks from a specific sample, filter the object
-first using \code{filterFile()}.
+Like the original \code{\link[xcms:highlightChromPeaks]{xcms::highlightChromPeaks()}}, this function takes the full
+\code{XCMSnExp}/\code{XcmsExperiment} object and searches \strong{all} peaks across all
+samples, then filters by rt/mz. This means it can highlight peaks from
+multiple samples. To highlight only peaks from a specific sample, filter
+the object first using \code{filterFile()}.
 }
 \examples{
 \donttest{
@@ -90,25 +95,28 @@ library(ggplot2)
 
 # Load and process example data
 cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
-xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files,
-                                        BPPARAM = BiocParallel::SerialParam())
-xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam(),
-                               BPPARAM = BiocParallel::SerialParam())
+xdata <- readMsExperiment(spectraFiles = cdf_files,
+                          BPPARAM = BiocParallel::SerialParam())
+xdata <- findChromPeaks(xdata, param = xcms::CentWaveParam(),
+                        BPPARAM = BiocParallel::SerialParam())
 
 # Extract chromatogram for plotting
-chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
+chr <- chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
 
 # Highlight peaks from the full dataset (all samples in xdata)
 gplot(chr[1, 1], peakType = "none") +
   ghighlightChromPeaks(xdata, rt = c(2500, 3500), mz = c(200, 210))
 
 # Or filter to single sample first for cleaner visualization
-xdata_filtered <- xcms::filterFile(xdata, 1)
+xdata_filtered <- filterFile(xdata, 1)
 gplot(chr[1, 1], peakType = "none") +
   ghighlightChromPeaks(xdata_filtered, rt = c(2500, 3500), mz = c(200, 210))
 }
 
 }
 \seealso{
-\code{\link[xcms]{highlightChromPeaks}} for the original XCMS implementation
+\code{\link[xcms:highlightChromPeaks]{xcms::highlightChromPeaks()}} for the original \emph{xcms} implementation
+}
+\author{
+Jan Stanstrup
 }

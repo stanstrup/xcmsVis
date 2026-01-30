@@ -33,3 +33,4 @@ tests/testthat/_snap
 vignettes/*_files
 .bioc_version
 scripts/*
+.editorconfig

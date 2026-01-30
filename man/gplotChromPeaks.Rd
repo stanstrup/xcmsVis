@@ -4,7 +4,7 @@
 \alias{gplotChromPeaks}
 \alias{gplotChromPeaks,XCMSnExp-method}
 \alias{gplotChromPeaks,XcmsExperiment-method}
-\title{ggplot2 Version of plotChromPeaks}
+\title{\emph{ggplot2} Version of \code{plotChromPeaks()}}
 \usage{
 gplotChromPeaks(
   object,
@@ -40,19 +40,20 @@ gplotChromPeaks(
 \item{object}{An \code{XCMSnExp} or \code{XcmsExperiment} object with detected
 chromatographic peaks.}
 
-\item{file}{Integer specifying which file/sample to plot (default: 1).}
+\item{file}{\code{integer(1)} specifying which file/sample to plot (default: 1).}
 
-\item{xlim}{Numeric vector of length 2 specifying retention time range.
+\item{xlim}{\code{numeric(2)} vector of length 2 specifying retention time range.
 If \code{NULL} (default), uses full retention time range.}
 
-\item{ylim}{Numeric vector of length 2 specifying m/z range. If \code{NULL}
+\item{ylim}{\code{numeric(2)} vector of length 2 specifying m/z range. If \code{NULL}
 (default), uses full m/z range.}
 
-\item{border}{Color for peak rectangle borders (default: semi-transparent black).}
+\item{border}{Color for peak rectangle borders (default: semi-transparent
+black).}
 
-\item{fill}{Color for peak rectangle fills (default: NA for no fill).}
+\item{fill}{Color for peak rectangle fills (default: \code{NA} for no fill).}
 
-\item{msLevel}{Integer specifying MS level (default: 1).}
+\item{msLevel}{\code{integer(1)} specifying MS level (default: 1).}
 }
 \value{
 A \code{ggplot} object showing chromatographic peaks as rectangles in
@@ -60,9 +61,9 @@ retention time vs. m/z space.
 }
 \description{
 Visualizes identified chromatographic peaks as rectangles in the retention
-time vs. m/z plane. This is a ggplot2 implementation of XCMS's
-\code{plotChromPeaks()} function, enabling modern visualization and interactive
-plotting capabilities.
+time vs. m/z plane. This is a \emph{ggplot2} implementation of \emph{xcms}'s
+\code{\link[xcms:plotChromPeaks]{xcms::plotChromPeaks()}} function, enabling modern visualization and
+interactive plotting capabilities.
 }
 \details{
 The function:
@@ -96,5 +97,8 @@ print(p)
 
 }
 \seealso{
-\code{\link[xcms]{plotChromPeaks}} for the original XCMS implementation
+\code{\link[xcms:plotChromPeaks]{xcms::plotChromPeaks()}} for the original \emph{xcms} implementation
+}
+\author{
+Jan Stanstrup
 }
