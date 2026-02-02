@@ -4,7 +4,7 @@
 \alias{gplotFeatureGroups}
 \alias{gplotFeatureGroups,XCMSnExp-method}
 \alias{gplotFeatureGroups,XcmsExperiment-method}
-\title{ggplot2 Version of plotFeatureGroups}
+\title{\emph{ggplot2} Version of \code{plotFeatureGroups()}}
 \usage{
 gplotFeatureGroups(
   x,
@@ -40,33 +40,36 @@ gplotFeatureGroups(
 )
 }
 \arguments{
-\item{x}{An \code{XCMSnExp} or \code{XcmsExperiment} object with feature grouping results.}
+\item{x}{An \code{XCMSnExp} or \code{XcmsExperiment} object with feature grouping
+results.}
 
-\item{xlim}{Numeric vector of length 2 specifying retention time range.
-Default: numeric() (auto-calculate from data).}
+\item{xlim}{\code{numeric(2)} vector of length 2 specifying retention time range.
+Default: \code{numeric()} (auto-calculate from data).}
 
-\item{ylim}{Numeric vector of length 2 specifying m/z range.
-Default: numeric() (auto-calculate from data).}
+\item{ylim}{\code{numeric(2)} vector of length 2 specifying m/z range.
+Default: \code{numeric()} (auto-calculate from data).}
 
-\item{pch}{Point character for feature markers (default: 4).}
+\item{pch}{Point character for feature markers (default: \code{4}).}
 
-\item{col}{Color for feature points and connecting lines (default: "#00000060").}
+\item{col}{Color for feature points and connecting lines (default:
+\code{"#00000060"}).}
 
-\item{type}{Plot type (default: "o" for overplotted points and lines).}
+\item{type}{Plot type (default: \code{"o"} for overplotted points and lines).}
 
-\item{featureGroups}{Character vector of feature group identifiers to plot.
+\item{featureGroups}{\code{character} vector of feature group identifiers to plot.
 If empty (default), all feature groups are plotted.}
 
 \item{...}{Additional arguments passed to geom functions.}
 }
 \value{
-A ggplot object showing features connected by lines within each
+A \code{ggplot} object showing features connected by lines within each
 feature group across retention time and m/z dimensions.
 }
 \description{
-Visualizes feature groups by plotting features connected across retention time
-and m/z dimensions. This is a ggplot2 implementation of XCMS's \code{plotFeatureGroups()}
-function, enabling modern visualization and interactive plotting capabilities.
+Visualizes feature groups by plotting features connected across retention
+time and m/z dimensions. This is a \emph{ggplot2} implementation of \emph{xcms}'s
+\code{\link[xcms:plotFeatureGroups]{xcms::plotFeatureGroups()}} function, enabling modern visualization and
+interactive plotting capabilities.
 }
 \details{
 The function:
@@ -119,6 +122,8 @@ gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002"))
 
 }
 \seealso{
-\code{\link[xcms:plotFeatureGroups]{xcms::plotFeatureGroups()}} for the original XCMS implementation.
-See \code{MsFeatures::groupFeatures()} for creating feature groups.
+\code{\link[xcms:plotFeatureGroups]{xcms::plotFeatureGroups()}} for the original \emph{xcms} implementation.
+}
+\author{
+Jan Stanstrup
 }

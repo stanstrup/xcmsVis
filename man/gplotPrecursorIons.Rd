@@ -3,7 +3,7 @@
 \name{gplotPrecursorIons}
 \alias{gplotPrecursorIons}
 \alias{gplotPrecursorIons,MsExperiment-method}
-\title{ggplot2 Version of plotPrecursorIons}
+\title{\emph{ggplot2} Version of \code{plotPrecursorIons()}}
 \usage{
 gplotPrecursorIons(object, pch = 21, col = "#00000080", bg = "#00000020", ...)
 
@@ -12,38 +12,41 @@ gplotPrecursorIons(object, pch = 21, col = "#00000080", bg = "#00000020", ...)
 \arguments{
 \item{object}{An \code{MsExperiment} object containing MS/MS data.}
 
-\item{pch}{Point shape for precursor ions (default: 21 = filled circle).}
+\item{pch}{Point shape for precursor ions (default: \code{21} = filled circle).}
 
 \item{col}{Point color (default: semi-transparent black).}
 
 \item{bg}{Point background/fill color (default: very transparent black).}
 
-\item{...}{Additional arguments passed to ggplot2 functions.}
+\item{...}{Additional arguments passed to \emph{ggplot2} functions.}
 }
 \value{
-A ggplot object (or list of ggplot objects if multiple files).
+A \code{ggplot} object (or list of \code{ggplot} objects if multiple files).
 Use \code{+ labs()} to customize axis labels and titles.
 }
 \description{
-Creates a ggplot2 version of precursor ion visualization for MsExperiment objects.
-This function plots the m/z and retention time of all precursor ions in MS2 spectra,
-useful for visualizing DDA (Data-Dependent Acquisition) data.
+Creates a \emph{ggplot2} version of precursor ion visualization for
+\code{MsExperiment} objects. This function plots the m/z and retention time of
+all precursor ions in MS2 spectra, useful for visualizing DDA
+(Data-Dependent Acquisition) data.
 }
 \details{
-This function visualizes the precursor ions selected for fragmentation in MS/MS experiments.
-Each point represents a precursor ion, with:
+This function visualizes the precursor ions selected for fragmentation in
+MS/MS experiments. Each point represents a precursor ion, with:
 \itemize{
 \item X-axis: Retention time of the MS2 spectrum
 \item Y-axis: Precursor m/z value
 }
 
-For MsExperiment objects with multiple files, separate plots are created for each file.
+For \code{MsExperiment} objects with multiple files, separate plots are created
+for each file.
 
-The plot range includes all MS1 data to provide context, but only shows precursor ions
-from MS2 spectra.
+The plot range includes all MS1 data to provide context, but only shows
+precursor ions from MS2 spectra.
 
-Default labels are provided ("retention time", "m/z"), but can be customized using
-ggplot2's \code{labs()} function, e.g., \code{gplotPrecursorIons(x) + labs(x = "RT (s)")}.
+Default labels are provided (\code{"retention time"}, \code{"m/z"}), but can be
+customized using \emph{ggplot2}'s \code{labs()} function, e.g.,
+\code{gplotPrecursorIons(x) + labs(x = "RT (s)")}.
 }
 \examples{
 \donttest{
@@ -67,5 +70,8 @@ gplotPrecursorIons(pest_dda[1L])
 
 }
 \seealso{
-\code{\link[xcms]{plotPrecursorIons}} for the original XCMS implementation.
+\code{\link[xcms:plotPrecursorIons]{xcms::plotPrecursorIons()}} for the original \emph{xcms} implementation.
+}
+\author{
+Jan Stanstrup
 }

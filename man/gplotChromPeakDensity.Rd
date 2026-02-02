@@ -5,7 +5,7 @@
 \alias{gplotChromPeakDensity}
 \alias{gplotChromPeakDensity,XChromatograms-method}
 \alias{gplotChromPeakDensity,MChromatograms-method}
-\title{ggplot2 Version of plotChromPeakDensity}
+\title{\emph{ggplot2} Version of \code{plotChromPeakDensity()}}
 \usage{
 gplotChromPeakDensity(
   object,
@@ -47,28 +47,32 @@ gplotChromPeakDensity(
 \item{object}{An \code{XChromatograms} or \code{MChromatograms} object with detected
 chromatographic peaks.}
 
-\item{param}{A \code{PeakDensityParam} object defining the peak density correspondence
-parameters. If missing, the function will try to extract it from the object's
-process history (if correspondence has been performed).}
+\item{param}{A \code{PeakDensityParam} object defining the peak density
+correspondence parameters. If missing, the function will try to extract
+it from the object's process history (if correspondence has been
+performed).}
 
-\item{col}{Color for the chromatogram lines in the upper panel (default: "#00000060").}
+\item{col}{Color for the chromatogram lines in the upper panel (default:
+\code{"#00000060"}).}
 
-\item{peakType}{Type of peak annotation in upper panel: "polygon", "point",
-"rectangle", or "none" (default: "polygon").}
+\item{peakType}{\code{character(1)} defining the type of peak annotation in
+upper panel: \code{"polygon"}, \code{"point"}, \code{"rectangle"}, or \code{"none"}
+(default: \code{"polygon"}).}
 
-\item{peakCol}{Color for peak markers (default: "#00000060").}
+\item{peakCol}{Color for peak markers (default: \code{"#00000060"}).}
 
-\item{peakBg}{Background color for peak markers (default: "#00000020").}
+\item{peakBg}{Background color for peak markers (default: \code{"#00000020"}).}
 
-\item{peakPch}{Point character for peak markers when peakType = "point" (default: 1).}
+\item{peakPch}{Point character for peak markers when \code{peakType = "point"}
+(default: \code{1}).}
 
-\item{simulate}{Logical, whether to simulate correspondence analysis (TRUE) or
-display existing results (FALSE). Default: TRUE.}
+\item{simulate}{\code{logical(1)}, whether to simulate correspondence analysis
+(\code{TRUE}) or display existing results (\code{FALSE}). Default: \code{TRUE}.}
 
-\item{...}{Additional arguments passed to plot methods.}
+\item{...}{Additional arguments passed to \code{plot()} methods.}
 }
 \value{
-A ggplot object with two panels:
+A \code{ggplot} object with two panels:
 \itemize{
 \item Upper panel: Chromatogram(s) with identified peaks
 \item Lower panel: Peak density along retention time axis showing individual
@@ -78,25 +82,28 @@ a line. Grey rectangles indicate peaks grouped into features.
 }
 \description{
 Visualizes the density of chromatographic peaks along the retention time axis
-to help evaluate peak density correspondence analysis settings. This is a ggplot2
-implementation of XCMS's \code{plotChromPeakDensity()} function.
+to help evaluate peak density correspondence analysis settings. This is a
+\emph{ggplot2} implementation of \emph{xcms}'s \code{\link[xcms:plotChromPeakDensity]{xcms::plotChromPeakDensity()}} function.
 }
 \details{
 The function creates a two-panel visualization:
 \itemize{
 \item Upper panel shows the chromatographic data with detected peaks
-\item Lower panel shows each peak at its retention time (x-axis) and sample (y-axis)
+\item Lower panel shows each peak at its retention time (x-axis) and sample
+(y-axis)
 \item A kernel density estimate is shown as a line
-\item Grey rectangles indicate peaks that would be (simulate=TRUE) or have been
-(simulate=FALSE) grouped into features based on the peak density method
+\item Grey rectangles indicate peaks that would be (\code{simulate = TRUE}) or have
+been (\code{simulate = FALSE}) grouped into features based on the peak density
+method
 }
 
 This visualization is particularly useful for optimizing \code{PeakDensityParam}
-settings, especially the \code{bw} (bandwidth) parameter which controls the smoothing
-of the density estimate.
+settings, especially the \code{bw} (bandwidth) parameter which controls the
+smoothing of the density estimate.
 
-\strong{Note:} Currently only supports plotting a single row (m/z slice) across multiple
-samples. If \code{object} has multiple rows, please subset to one row first.
+\strong{Note:} Currently only supports plotting a single row (m/z slice) across
+multiple samples. If \code{object} has multiple rows, please subset to one row
+first.
 }
 \examples{
 \donttest{
@@ -129,5 +136,8 @@ gplotChromPeakDensity(chr, param = prm2)
 
 }
 \seealso{
-\code{\link[xcms]{plotChromPeakDensity}} for the original XCMS implementation
+\code{\link[xcms:plotChromPeakDensity]{xcms::plotChromPeakDensity()}} for the original \emph{xcms} implementation
+}
+\author{
+Jan Stanstrup
 }

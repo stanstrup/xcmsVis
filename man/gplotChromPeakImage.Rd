@@ -4,7 +4,7 @@
 \alias{gplotChromPeakImage}
 \alias{gplotChromPeakImage,XCMSnExp-method}
 \alias{gplotChromPeakImage,XcmsExperiment-method}
-\title{ggplot2 Version of plotChromPeakImage}
+\title{\emph{ggplot2} Version of \code{plotChromPeakImage()}}
 \usage{
 gplotChromPeakImage(
   object,
@@ -34,16 +34,16 @@ gplotChromPeakImage(
 \item{object}{An \code{XCMSnExp} or \code{XcmsExperiment} object with detected
 chromatographic peaks.}
 
-\item{binSize}{Numeric value specifying the bin size in seconds for the
+\item{binSize}{\code{numeric(1)} value specifying the bin size in seconds for the
 retention time axis (default: 30).}
 
-\item{xlim}{Numeric vector of length 2 specifying retention time range.
+\item{xlim}{\code{numeric(2)} vector of length 2 specifying retention time range.
 If \code{NULL} (default), uses full retention time range.}
 
-\item{log_transform}{Logical, whether to log2-transform the peak counts
-(default: FALSE).}
+\item{log_transform}{\code{logical(1)}, whether to log2-transform the peak counts
+(default: \code{FALSE}).}
 
-\item{msLevel}{Integer specifying MS level (default: 1).}
+\item{msLevel}{\code{integer(1)} specifying MS level (default: \code{1}).}
 }
 \value{
 A \code{ggplot} object showing peak counts as a heatmap with retention
@@ -51,8 +51,8 @@ time on x-axis, samples on y-axis, and color representing peak density.
 }
 \description{
 Creates an image/heatmap showing the number of detected chromatographic
-peaks per sample across retention time bins. This is a ggplot2 implementation
-of XCMS's \code{plotChromPeakImage()} function.
+peaks per sample across retention time bins. This is a \emph{ggplot2}
+implementation of \emph{xcms}'s \code{\link[xcms:plotChromPeaks]{xcms::plotChromPeakImage()}} function.
 }
 \details{
 The function:
@@ -87,5 +87,8 @@ print(p)
 
 }
 \seealso{
-\code{\link[xcms]{plotChromPeakImage}} for the original XCMS implementation
+\code{\link[xcms:plotChromPeaks]{xcms::plotChromPeakImage()}} for the original \emph{xcms} implementation
+}
+\author{
+Jan Stanstrup
 }

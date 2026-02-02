@@ -4,7 +4,7 @@
 \alias{gplotAdjustedRtime}
 \alias{gplotAdjustedRtime,XCMSnExp-method}
 \alias{gplotAdjustedRtime,XcmsExperiment-method}
-\title{ggplot2 Version of plotAdjustedRtime}
+\title{\emph{ggplot2} Version of \code{plotAdjustedRtime()}}
 \usage{
 gplotAdjustedRtime(
   object,
@@ -32,25 +32,26 @@ gplotAdjustedRtime(
 adjustment results.}
 
 \item{color_by}{Column name from sample metadata to use for coloring lines.
-This should be provided as an unquoted column name (e.g., \code{sample_group}).
-For XCMSnExp objects, this comes from \code{pData(object)}. For XcmsExperiment
-objects, this comes from \code{sampleData(object)}.}
+This should be provided as an unquoted column name (e.g.,
+\code{sample_group}). For \code{XCMSnExp} objects, this comes from \code{pData(object)},
+for \code{XcmsExperiment} objects from \code{sampleData(object)}.}
 
-\item{include_columns}{Character vector of column names from sample metadata
-to include in the tooltip text. If \code{NULL} (default), all columns are included.}
+\item{include_columns}{\code{character} vector of column names from sample
+metadata to include in the tooltip text. If \code{NULL} (default), all
+columns are included.}
 
-\item{adjustedRtime}{Logical, whether to use adjusted retention times on the
-x-axis. Default is \code{TRUE}.}
+\item{adjustedRtime}{\code{logical(1)}, whether to use adjusted retention times
+on the x-axis. Default is \code{TRUE}.}
 }
 \value{
 A \code{ggplot} object showing retention time adjustment. Each line
 represents one sample, and grey points/lines show the peak groups used
-for alignment (when using PeakGroupsParam).
+for alignment (when using \code{PeakGroupsParam}).
 }
 \description{
 Visualizes retention time correction by plotting the difference between
-adjusted and raw retention times across samples. This is a ggplot2
-implementation of XCMS's \code{plotAdjustedRtime()} function, enabling
+adjusted and raw retention times across samples. This is a \emph{ggplot2}
+implementation of \emph{xcms}'s \code{\link[xcms:plotAdjustedRtime]{xcms::plotAdjustedRtime()}} function, enabling
 modern visualization and interactive plotting capabilities.
 }
 \details{
@@ -79,7 +80,7 @@ cdf_files <- dir(system.file("cdf", package = "faahKO"),
 
 # Create XcmsExperiment and perform basic workflow
 xdata <- readMsExperiment(spectraFiles = cdf_files, BPPARAM = SerialParam())
-MsExperiment::sampleData(xdata)$sample_group <- c("KO", "KO", "WT")
+sampleData(xdata)$sample_group <- c("KO", "KO", "WT")
 
 # Peak detection
 cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)
@@ -101,5 +102,8 @@ print(p)
 
 }
 \seealso{
-\code{\link[xcms]{plotAdjustedRtime}} for the original XCMS implementation
+\code{\link[xcms:plotAdjustedRtime]{xcms::plotAdjustedRtime()}} for the original \emph{xcms} implementation
+}
+\author{
+Jan Stanstrup
 }

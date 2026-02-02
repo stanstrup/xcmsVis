@@ -5,7 +5,7 @@
 \alias{gplotChromatogramsOverlay}
 \alias{gplotChromatogramsOverlay,XChromatograms-method}
 \alias{gplotChromatogramsOverlay,MChromatograms-method}
-\title{ggplot2 Version of plotChromatogramsOverlay}
+\title{\emph{ggplot2} Version of \code{plotChromatogramsOverlay()}}
 \usage{
 gplotChromatogramsOverlay(
   object,
@@ -58,55 +58,61 @@ gplotChromatogramsOverlay(
 \arguments{
 \item{object}{An \code{XChromatograms} or \code{MChromatograms} object.}
 
-\item{col}{Color for the chromatogram lines (default: "#00000060").}
+\item{col}{Color for the chromatogram lines (default: \code{"#00000060"}).}
 
-\item{type}{Plot type (default: "l" for line).}
+\item{type}{Plot type (default: \code{"l"} for line).}
 
-\item{main}{Character vector of panel titles, one per row. If NULL (default), no titles are used.
-If length 1, the same title is used for all panels. Use \code{+ labs()} for ggplot2-style customization.}
+\item{main}{\code{character} vector of panel titles, one per row. If \code{NULL}
+(default), no titles are used. If length 1, the same title is used for
+all panels. Use \code{+ labs()} for \emph{ggplot2}-style customization.}
 
-\item{xlim}{Numeric vector of length 2 specifying retention time range.
-Default: numeric() (auto-calculate). Use \code{+ labs()} to customize axis labels and titles.}
+\item{xlim}{\code{numeric(2)} vector of length 2 specifying retention time range.
+Default: \code{numeric()} (auto-calculate). Use \code{+ labs()} to customize axis
+labels and titles.}
 
-\item{ylim}{Numeric vector of length 2 specifying intensity range.
-Default: numeric() (auto-calculate).}
+\item{ylim}{\code{numeric(2)} vector of length 2 specifying intensity range.
+Default: \code{numeric()} (auto-calculate).}
 
-\item{peakType}{Type of peak annotation: "polygon", "point", "rectangle", or "none"
-(default: "polygon").}
+\item{peakType}{\code{character(1)} defining the type of peak annotation:
+\code{"polygon"}, \code{"point"}, \code{"rectangle"}, or \code{"none"}
+(default: \code{"polygon"}).}
 
-\item{peakBg}{Background color for peak markers (default: NULL, uses peakCol with transparency).}
+\item{peakBg}{Background color for peak markers (default: \code{NULL}, uses
+\code{peakCol} with transparency).}
 
-\item{peakCol}{Color for peak markers (default: NULL, uses col).}
+\item{peakCol}{Color for peak markers (default: \code{NULL}, uses \code{col}).}
 
-\item{peakPch}{Point character for peak markers when peakType = "point" (default: 1).}
+\item{peakPch}{Point character for peak markers when \code{peakType = "point"}
+(default: \code{1}).}
 
-\item{stacked}{Numeric value for stacking offset. If > 0, chromatograms will be
-offset vertically by this amount for visual separation (default: 0).}
+\item{stacked}{Numeric value for stacking offset. If > 0, chromatograms will
+be offset vertically by this amount for visual separation (default: \code{0}).}
 
-\item{transform}{Function to transform intensity values (default: identity).
-Useful for log-transformations or other intensity scaling.}
+\item{transform}{Function to transform intensity values (default:
+\code{identity}). Useful for log-transformations or other intensity scaling.}
 
 \item{...}{Additional arguments (for compatibility).}
 }
 \value{
-If the object has one row: a single ggplot object.
-If the object has multiple rows: a patchwork object combining multiple ggplot objects.
+If the object has one row: a single \code{ggplot} object. If the object has
+multiple rows: a patchwork object combining multiple \code{ggplot} objects.
 }
 \description{
 Creates overlay plots of multiple chromatograms, with one plot per row in
-the \code{XChromatograms} or \code{MChromatograms} object. Each plot overlays all samples (columns)
-for that m/z slice (row). This is a ggplot2 implementation of XCMS's
-\code{plotChromatogramsOverlay()} function, enabling modern visualization and
-interactive plotting capabilities.
+the \code{XChromatograms} or \code{MChromatograms} object. Each plot overlays all
+samples (columns) for that m/z slice (row). This is a \emph{ggplot2}
+implementation of \emph{XCMS}'s \code{\link[xcms:plotChromatogramsOverlay]{xcms::plotChromatogramsOverlay()}} function,
+enabling modern visualization and interactive plotting capabilities.
 }
 \details{
 This function creates overlay plots where all samples (columns) in a given
 m/z slice (row) are overlaid in a single plot. If the object contains multiple
 rows, each row gets its own panel stacked vertically using patchwork.
 
-The function differs from \code{gplot} for XChromatograms in that:
+The function differs from \code{gplot()} for \code{XChromatograms} in that:
 \itemize{
-\item It explicitly handles multiple rows (whereas gplot warns and uses only the first)
+\item It explicitly handles multiple rows (whereas \code{gplot()} warns and uses only
+the first)
 \item It supports \code{stacked} parameter for vertical offset
 \item It supports \code{transform} parameter for intensity transformations
 }
@@ -143,6 +149,9 @@ gplotChromatogramsOverlay(chr, transform = log1p)
 
 }
 \seealso{
-\code{\link[xcms]{plotChromatogramsOverlay}} for the original XCMS implementation
-\code{\link{gplot}} for single-row overlay plots
+\code{\link[xcms:plotChromatogramsOverlay]{xcms::plotChromatogramsOverlay()}} for the original \emph{xcms} implementation or
+\code{\link[=gplot]{gplot()}} for single-row overlay plots
+}
+\author{
+Jan Stanstrup
 }

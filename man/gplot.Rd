@@ -7,7 +7,7 @@
 \alias{gplot,XChromatogram-method}
 \alias{gplot,XChromatograms-method}
 \alias{gplot,MChromatograms-method}
-\title{ggplot2 Version of plot for XChromatogram}
+\title{\emph{ggplot2} Version of \code{plot()} for \code{XChromatogram}}
 \usage{
 gplot(x, ...)
 
@@ -60,29 +60,31 @@ gplot(x, ...)
 
 \item{colFit}{Color for the fitted model line (default: semi-transparent black).}
 
-\item{col}{Color for the chromatogram line (default: "black").}
+\item{col}{Color for the chromatogram line (default: \code{"black"}).}
 
-\item{lty}{Line type for chromatogram (default: 1).}
+\item{lty}{Line type for chromatogram (default: \code{1}).}
 
-\item{type}{Plot type (default: "l" for line).}
+\item{type}{Plot type (default: \code{"l"} for line).}
 
-\item{peakType}{Type of peak annotation: "polygon", "point", "rectangle", or "none"
-(default: "polygon").}
+\item{peakType}{\code{character(1)} defining the type of peak annotation:
+\code{"polygon"}, \code{"point"}, \code{"rectangle"}, or \code{"none"}
+(default: \code{"polygon"}).}
 
-\item{peakCol}{Color for peak markers (default: "#00000060").}
+\item{peakCol}{Color for peak markers (default: \code{"#00000060"}).}
 
-\item{peakBg}{Background color for peak markers (default: "#00000020").}
+\item{peakBg}{Background color for peak markers (default: \code{"#00000020"}).}
 
-\item{peakPch}{Point character for peak markers when peakType = "point" (default: 1).}
+\item{peakPch}{Point character for peak markers when \code{peakType = "point"}
+(default: \code{1}).}
 }
 \value{
-A ggplot object.
+A \code{ggplot} object.
 
 A ggplot object.
 }
 \description{
-Creates a ggplot2 version of a chromatogram with detected peaks marked.
-This is equivalent to the base R \code{plot()} method for XChromatogram objects.
+Creates a \emph{ggplot2} version of a chromatogram with detected peaks marked.
+This is equivalent to the base R \code{plot()} method for \code{XChromatogram} objects.
 
 Creates a ggplot2 version of the retention time alignment model visualization for LamaParama objects.
 LamaParama objects contain parameters and results from landmark-based retention time alignment.
@@ -90,7 +92,7 @@ LamaParama objects contain parameters and results from landmark-based retention 
 \details{
 This function creates a complete chromatogram plot with detected peaks
 automatically marked, similar to the base R \code{plot()} method for
-XChromatogram objects. If the chromatogram contains detected peaks,
+\code{XChromatogram} objects. If the chromatogram contains detected peaks,
 they will be shown according to the \code{peakType} parameter.
 
 This function visualizes the retention time alignment model for a specific sample.
@@ -120,13 +122,13 @@ library(ggplot2)
 
 # Load and process example data
 cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
-xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files,
-                                        BPPARAM = BiocParallel::SerialParam())
-xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam(),
-                               BPPARAM = BiocParallel::SerialParam())
+xdata <- readMsExperiment(spectraFiles = cdf_files,
+                          BPPARAM = BiocParallel::SerialParam())
+xdata <- findChromPeaks(xdata, param = CentWaveParam(),
+                        BPPARAM = BiocParallel::SerialParam())
 
 # Extract chromatogram
-chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
+chr <- chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
 
 # Plot with ggplot2
 gplot(chr[1, 1])
@@ -164,7 +166,11 @@ gplot(lama_result, index = 1)
 
 }
 \seealso{
-\code{\link[xcms]{plot,XChromatogram,ANY-method}} for the original XCMS implementation
+\code{\link[xcms]{plot,XChromatogram,ANY-method}} for the original \emph{xcms}
+implementation
 
 \code{\link[xcms]{LamaParama}} for the parameter class.
+}
+\author{
+Jan Stanstrup
 }
