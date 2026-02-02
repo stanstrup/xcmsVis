@@ -1,10 +1,10 @@
-# ggplot2 Version of plotChromatogramsOverlay
+# *ggplot2* Version of `plotChromatogramsOverlay()`
 
 Creates overlay plots of multiple chromatograms, with one plot per row
 in the `XChromatograms` or `MChromatograms` object. Each plot overlays
-all samples (columns) for that m/z slice (row). This is a ggplot2
-implementation of XCMS's
-[`plotChromatogramsOverlay()`](https://rdrr.io/pkg/xcms/man/plotChromatogramsOverlay.html)
+all samples (columns) for that m/z slice (row). This is a *ggplot2*
+implementation of *XCMS*'s
+[`xcms::plotChromatogramsOverlay()`](https://rdrr.io/pkg/xcms/man/plotChromatogramsOverlay.html)
 function, enabling modern visualization and interactive plotting
 capabilities.
 
@@ -70,56 +70,57 @@ gplotChromatogramsOverlay(
 
 - col:
 
-  Color for the chromatogram lines (default: "#00000060").
+  Color for the chromatogram lines (default: `"#00000060"`).
 
 - type:
 
-  Plot type (default: "l" for line).
+  Plot type (default: `"l"` for line).
 
 - main:
 
-  Character vector of panel titles, one per row. If NULL (default), no
-  titles are used. If length 1, the same title is used for all panels.
-  Use `+ labs()` for ggplot2-style customization.
+  `character` vector of panel titles, one per row. If `NULL` (default),
+  no titles are used. If length 1, the same title is used for all
+  panels. Use `+ labs()` for *ggplot2*-style customization.
 
 - xlim:
 
-  Numeric vector of length 2 specifying retention time range. Default:
-  numeric() (auto-calculate). Use `+ labs()` to customize axis labels
-  and titles.
+  `numeric(2)` vector of length 2 specifying retention time range.
+  Default: [`numeric()`](https://rdrr.io/r/base/numeric.html)
+  (auto-calculate). Use `+ labs()` to customize axis labels and titles.
 
 - ylim:
 
-  Numeric vector of length 2 specifying intensity range. Default:
-  numeric() (auto-calculate).
+  `numeric(2)` vector of length 2 specifying intensity range. Default:
+  [`numeric()`](https://rdrr.io/r/base/numeric.html) (auto-calculate).
 
 - peakType:
 
-  Type of peak annotation: "polygon", "point", "rectangle", or "none"
-  (default: "polygon").
+  `character(1)` defining the type of peak annotation: `"polygon"`,
+  `"point"`, `"rectangle"`, or `"none"` (default: `"polygon"`).
 
 - peakBg:
 
-  Background color for peak markers (default: NULL, uses peakCol with
-  transparency).
+  Background color for peak markers (default: `NULL`, uses `peakCol`
+  with transparency).
 
 - peakCol:
 
-  Color for peak markers (default: NULL, uses col).
+  Color for peak markers (default: `NULL`, uses `col`).
 
 - peakPch:
 
-  Point character for peak markers when peakType = "point" (default: 1).
+  Point character for peak markers when `peakType = "point"` (default:
+  `1`).
 
 - stacked:
 
   Numeric value for stacking offset. If \> 0, chromatograms will be
-  offset vertically by this amount for visual separation (default: 0).
+  offset vertically by this amount for visual separation (default: `0`).
 
 - transform:
 
-  Function to transform intensity values (default: identity). Useful for
-  log-transformations or other intensity scaling.
+  Function to transform intensity values (default: `identity`). Useful
+  for log-transformations or other intensity scaling.
 
 - ...:
 
@@ -127,8 +128,8 @@ gplotChromatogramsOverlay(
 
 ## Value
 
-If the object has one row: a single ggplot object. If the object has
-multiple rows: a patchwork object combining multiple ggplot objects.
+If the object has one row: a single `ggplot` object. If the object has
+multiple rows: a patchwork object combining multiple `ggplot` objects.
 
 ## Details
 
@@ -137,10 +138,13 @@ given m/z slice (row) are overlaid in a single plot. If the object
 contains multiple rows, each row gets its own panel stacked vertically
 using patchwork.
 
-The function differs from `gplot` for XChromatograms in that:
+The function differs from
+[`gplot()`](https://stanstrup.github.io/xcmsVis/reference/gplot.md) for
+`XChromatograms` in that:
 
-- It explicitly handles multiple rows (whereas gplot warns and uses only
-  the first)
+- It explicitly handles multiple rows (whereas
+  [`gplot()`](https://stanstrup.github.io/xcmsVis/reference/gplot.md)
+  warns and uses only the first)
 
 - It supports `stacked` parameter for vertical offset
 
@@ -148,10 +152,14 @@ The function differs from `gplot` for XChromatograms in that:
 
 ## See also
 
-[`plotChromatogramsOverlay`](https://rdrr.io/pkg/xcms/man/plotChromatogramsOverlay.html)
-for the original XCMS implementation
-[`gplot`](https://stanstrup.github.io/xcmsVis/reference/gplot.md) for
+[`xcms::plotChromatogramsOverlay()`](https://rdrr.io/pkg/xcms/man/plotChromatogramsOverlay.html)
+for the original *xcms* implementation or
+[`gplot()`](https://stanstrup.github.io/xcmsVis/reference/gplot.md) for
 single-row overlay plots
+
+## Author
+
+Jan Stanstrup
 
 ## Examples
 

@@ -1,9 +1,9 @@
-# ggplot2 Version of plotChromPeakDensity
+# *ggplot2* Version of `plotChromPeakDensity()`
 
 Visualizes the density of chromatographic peaks along the retention time
 axis to help evaluate peak density correspondence analysis settings.
-This is a ggplot2 implementation of XCMS's
-[`plotChromPeakDensity()`](https://rdrr.io/pkg/xcms/man/plotChromPeakDensity.html)
+This is a *ggplot2* implementation of *xcms*'s
+[`xcms::plotChromPeakDensity()`](https://rdrr.io/pkg/xcms/man/plotChromPeakDensity.html)
 function.
 
 ## Usage
@@ -64,37 +64,40 @@ gplotChromPeakDensity(
 - col:
 
   Color for the chromatogram lines in the upper panel (default:
-  "#00000060").
+  `"#00000060"`).
 
 - peakType:
 
-  Type of peak annotation in upper panel: "polygon", "point",
-  "rectangle", or "none" (default: "polygon").
+  `character(1)` defining the type of peak annotation in upper panel:
+  `"polygon"`, `"point"`, `"rectangle"`, or `"none"` (default:
+  `"polygon"`).
 
 - peakCol:
 
-  Color for peak markers (default: "#00000060").
+  Color for peak markers (default: `"#00000060"`).
 
 - peakBg:
 
-  Background color for peak markers (default: "#00000020").
+  Background color for peak markers (default: `"#00000020"`).
 
 - peakPch:
 
-  Point character for peak markers when peakType = "point" (default: 1).
+  Point character for peak markers when `peakType = "point"` (default:
+  `1`).
 
 - simulate:
 
-  Logical, whether to simulate correspondence analysis (TRUE) or display
-  existing results (FALSE). Default: TRUE.
+  `logical(1)`, whether to simulate correspondence analysis (`TRUE`) or
+  display existing results (`FALSE`). Default: `TRUE`.
 
 - ...:
 
-  Additional arguments passed to plot methods.
+  Additional arguments passed to
+  [`plot()`](https://rdrr.io/r/graphics/plot.default.html) methods.
 
 ## Value
 
-A ggplot object with two panels:
+A `ggplot` object with two panels:
 
 - Upper panel: Chromatogram(s) with identified peaks
 
@@ -113,9 +116,9 @@ The function creates a two-panel visualization:
 
 - A kernel density estimate is shown as a line
 
-- Grey rectangles indicate peaks that would be (simulate=TRUE) or have
-  been (simulate=FALSE) grouped into features based on the peak density
-  method
+- Grey rectangles indicate peaks that would be (`simulate = TRUE`) or
+  have been (`simulate = FALSE`) grouped into features based on the peak
+  density method
 
 This visualization is particularly useful for optimizing
 `PeakDensityParam` settings, especially the `bw` (bandwidth) parameter
@@ -127,8 +130,12 @@ one row first.
 
 ## See also
 
-[`plotChromPeakDensity`](https://rdrr.io/pkg/xcms/man/plotChromPeakDensity.html)
-for the original XCMS implementation
+[`xcms::plotChromPeakDensity()`](https://rdrr.io/pkg/xcms/man/plotChromPeakDensity.html)
+for the original *xcms* implementation
+
+## Author
+
+Jan Stanstrup
 
 ## Examples
 

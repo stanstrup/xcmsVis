@@ -1,9 +1,9 @@
-# ggplot2 Version of plot for XChromatogram
+# *ggplot2* Version of `plot()` for `XChromatogram`
 
-Creates a ggplot2 version of a chromatogram with detected peaks marked.
-This is equivalent to the base R
+Creates a *ggplot2* version of a chromatogram with detected peaks
+marked. This is equivalent to the base R
 [`plot()`](https://rdrr.io/r/graphics/plot.default.html) method for
-XChromatogram objects.
+`XChromatogram` objects.
 
 Creates a ggplot2 version of the retention time alignment model
 visualization for LamaParama objects. LamaParama objects contain
@@ -82,36 +82,37 @@ gplot(
 
 - col:
 
-  Color for the chromatogram line (default: "black").
+  Color for the chromatogram line (default: `"black"`).
 
 - lty:
 
-  Line type for chromatogram (default: 1).
+  Line type for chromatogram (default: `1`).
 
 - type:
 
-  Plot type (default: "l" for line).
+  Plot type (default: `"l"` for line).
 
 - peakType:
 
-  Type of peak annotation: "polygon", "point", "rectangle", or "none"
-  (default: "polygon").
+  `character(1)` defining the type of peak annotation: `"polygon"`,
+  `"point"`, `"rectangle"`, or `"none"` (default: `"polygon"`).
 
 - peakCol:
 
-  Color for peak markers (default: "#00000060").
+  Color for peak markers (default: `"#00000060"`).
 
 - peakBg:
 
-  Background color for peak markers (default: "#00000020").
+  Background color for peak markers (default: `"#00000020"`).
 
 - peakPch:
 
-  Point character for peak markers when peakType = "point" (default: 1).
+  Point character for peak markers when `peakType = "point"` (default:
+  `1`).
 
 ## Value
 
-A ggplot object.
+A `ggplot` object.
 
 A ggplot object.
 
@@ -120,8 +121,8 @@ A ggplot object.
 This function creates a complete chromatogram plot with detected peaks
 automatically marked, similar to the base R
 [`plot()`](https://rdrr.io/r/graphics/plot.default.html) method for
-XChromatogram objects. If the chromatogram contains detected peaks, they
-will be shown according to the `peakType` parameter.
+`XChromatogram` objects. If the chromatogram contains detected peaks,
+they will be shown according to the `peakType` parameter.
 
 This function visualizes the retention time alignment model for a
 specific sample. The plot shows:
@@ -150,10 +151,14 @@ including:
 ## See also
 
 [`plot,XChromatogram,ANY-method`](https://rdrr.io/pkg/xcms/man/XChromatogram.html)
-for the original XCMS implementation
+for the original *xcms* implementation
 
 [`LamaParama`](https://rdrr.io/pkg/xcms/man/LamaParama.html) for the
 parameter class.
+
+## Author
+
+Jan Stanstrup
 
 ## Examples
 
@@ -167,13 +172,13 @@ library(ggplot2)
 
 # Load and process example data
 cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
-xdata <- MsExperiment::readMsExperiment(spectraFiles = cdf_files,
-                                        BPPARAM = BiocParallel::SerialParam())
-xdata <- xcms::findChromPeaks(xdata, param = xcms::CentWaveParam(),
-                               BPPARAM = BiocParallel::SerialParam())
+xdata <- readMsExperiment(spectraFiles = cdf_files,
+                          BPPARAM = BiocParallel::SerialParam())
+xdata <- findChromPeaks(xdata, param = CentWaveParam(),
+                        BPPARAM = BiocParallel::SerialParam())
 
 # Extract chromatogram
-chr <- xcms::chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
+chr <- chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
 #> Extracting chromatographic data
 #> Processing chromatographic peaks
 

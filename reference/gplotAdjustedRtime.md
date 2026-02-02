@@ -1,9 +1,9 @@
-# ggplot2 Version of plotAdjustedRtime
+# *ggplot2* Version of `plotAdjustedRtime()`
 
 Visualizes retention time correction by plotting the difference between
-adjusted and raw retention times across samples. This is a ggplot2
-implementation of XCMS's
-[`plotAdjustedRtime()`](https://rdrr.io/pkg/xcms/man/plotAdjustedRtime.html)
+adjusted and raw retention times across samples. This is a *ggplot2*
+implementation of *xcms*'s
+[`xcms::plotAdjustedRtime()`](https://rdrr.io/pkg/xcms/man/plotAdjustedRtime.html)
 function, enabling modern visualization and interactive plotting
 capabilities.
 
@@ -45,24 +45,24 @@ gplotAdjustedRtime(
 
   Column name from sample metadata to use for coloring lines. This
   should be provided as an unquoted column name (e.g., `sample_group`).
-  For XCMSnExp objects, this comes from `pData(object)`. For
-  XcmsExperiment objects, this comes from `sampleData(object)`.
+  For `XCMSnExp` objects, this comes from `pData(object)`, for
+  `XcmsExperiment` objects from `sampleData(object)`.
 
 - include_columns:
 
-  Character vector of column names from sample metadata to include in
+  `character` vector of column names from sample metadata to include in
   the tooltip text. If `NULL` (default), all columns are included.
 
 - adjustedRtime:
 
-  Logical, whether to use adjusted retention times on the x-axis.
+  `logical(1)`, whether to use adjusted retention times on the x-axis.
   Default is `TRUE`.
 
 ## Value
 
 A `ggplot` object showing retention time adjustment. Each line
 represents one sample, and grey points/lines show the peak groups used
-for alignment (when using PeakGroupsParam).
+for alignment (when using `PeakGroupsParam`).
 
 ## Details
 
@@ -83,8 +83,12 @@ across samples.
 
 ## See also
 
-[`plotAdjustedRtime`](https://rdrr.io/pkg/xcms/man/plotAdjustedRtime.html)
-for the original XCMS implementation
+[`xcms::plotAdjustedRtime()`](https://rdrr.io/pkg/xcms/man/plotAdjustedRtime.html)
+for the original *xcms* implementation
+
+## Author
+
+Jan Stanstrup
 
 ## Examples
 
@@ -102,7 +106,7 @@ cdf_files <- dir(system.file("cdf", package = "faahKO"),
 
 # Create XcmsExperiment and perform basic workflow
 xdata <- readMsExperiment(spectraFiles = cdf_files, BPPARAM = SerialParam())
-MsExperiment::sampleData(xdata)$sample_group <- c("KO", "KO", "WT")
+sampleData(xdata)$sample_group <- c("KO", "KO", "WT")
 
 # Peak detection
 cwp <- CentWaveParam(peakwidth = c(20, 80), ppm = 25)

@@ -1,8 +1,9 @@
-# ggplot2 Version of plotChromPeaks
+# *ggplot2* Version of `plotChromPeaks()`
 
 Visualizes identified chromatographic peaks as rectangles in the
-retention time vs. m/z plane. This is a ggplot2 implementation of XCMS's
-[`plotChromPeaks()`](https://rdrr.io/pkg/xcms/man/plotChromPeaks.html)
+retention time vs. m/z plane. This is a *ggplot2* implementation of
+*xcms*'s
+[`xcms::plotChromPeaks()`](https://rdrr.io/pkg/xcms/man/plotChromPeaks.html)
 function, enabling modern visualization and interactive plotting
 capabilities.
 
@@ -51,17 +52,17 @@ gplotChromPeaks(
 
 - file:
 
-  Integer specifying which file/sample to plot (default: 1).
+  `integer(1)` specifying which file/sample to plot (default: 1).
 
 - xlim:
 
-  Numeric vector of length 2 specifying retention time range. If `NULL`
-  (default), uses full retention time range.
+  `numeric(2)` vector of length 2 specifying retention time range. If
+  `NULL` (default), uses full retention time range.
 
 - ylim:
 
-  Numeric vector of length 2 specifying m/z range. If `NULL` (default),
-  uses full m/z range.
+  `numeric(2)` vector of length 2 specifying m/z range. If `NULL`
+  (default), uses full m/z range.
 
 - border:
 
@@ -69,11 +70,11 @@ gplotChromPeaks(
 
 - fill:
 
-  Color for peak rectangle fills (default: NA for no fill).
+  Color for peak rectangle fills (default: `NA` for no fill).
 
 - msLevel:
 
-  Integer specifying MS level (default: 1).
+  `integer(1)` specifying MS level (default: 1).
 
 ## Value
 
@@ -92,8 +93,12 @@ The function:
 
 ## See also
 
-[`plotChromPeaks`](https://rdrr.io/pkg/xcms/man/plotChromPeaks.html) for
-the original XCMS implementation
+[`xcms::plotChromPeaks()`](https://rdrr.io/pkg/xcms/man/plotChromPeaks.html)
+for the original *xcms* implementation
+
+## Author
+
+Jan Stanstrup
 
 ## Examples
 

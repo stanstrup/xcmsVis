@@ -1,9 +1,9 @@
-# ggplot2 Version of plotFeatureGroups
+# *ggplot2* Version of `plotFeatureGroups()`
 
 Visualizes feature groups by plotting features connected across
-retention time and m/z dimensions. This is a ggplot2 implementation of
-XCMS's
-[`plotFeatureGroups()`](https://rdrr.io/pkg/xcms/man/plotFeatureGroups.html)
+retention time and m/z dimensions. This is a *ggplot2* implementation of
+*xcms*'s
+[`xcms::plotFeatureGroups()`](https://rdrr.io/pkg/xcms/man/plotFeatureGroups.html)
 function, enabling modern visualization and interactive plotting
 capabilities.
 
@@ -55,29 +55,32 @@ gplotFeatureGroups(
 
 - xlim:
 
-  Numeric vector of length 2 specifying retention time range. Default:
-  numeric() (auto-calculate from data).
+  `numeric(2)` vector of length 2 specifying retention time range.
+  Default: [`numeric()`](https://rdrr.io/r/base/numeric.html)
+  (auto-calculate from data).
 
 - ylim:
 
-  Numeric vector of length 2 specifying m/z range. Default: numeric()
-  (auto-calculate from data).
+  `numeric(2)` vector of length 2 specifying m/z range. Default:
+  [`numeric()`](https://rdrr.io/r/base/numeric.html) (auto-calculate
+  from data).
 
 - pch:
 
-  Point character for feature markers (default: 4).
+  Point character for feature markers (default: `4`).
 
 - col:
 
-  Color for feature points and connecting lines (default: "#00000060").
+  Color for feature points and connecting lines (default:
+  `"#00000060"`).
 
 - type:
 
-  Plot type (default: "o" for overplotted points and lines).
+  Plot type (default: `"o"` for overplotted points and lines).
 
 - featureGroups:
 
-  Character vector of feature group identifiers to plot. If empty
+  `character` vector of feature group identifiers to plot. If empty
   (default), all feature groups are plotted.
 
 - ...:
@@ -86,8 +89,8 @@ gplotFeatureGroups(
 
 ## Value
 
-A ggplot object showing features connected by lines within each feature
-group across retention time and m/z dimensions.
+A `ggplot` object showing features connected by lines within each
+feature group across retention time and m/z dimensions.
 
 ## Details
 
@@ -113,9 +116,11 @@ relationships, or other criteria.
 ## See also
 
 [`xcms::plotFeatureGroups()`](https://rdrr.io/pkg/xcms/man/plotFeatureGroups.html)
-for the original XCMS implementation. See
-[`MsFeatures::groupFeatures()`](https://rdrr.io/pkg/MsFeatures/man/groupFeatures.html)
-for creating feature groups.
+for the original *xcms* implementation.
+
+## Author
+
+Jan Stanstrup
 
 ## Examples
 

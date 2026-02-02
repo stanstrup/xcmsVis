@@ -1,9 +1,9 @@
-# ggplot2 Version of plotChromPeakImage
+# *ggplot2* Version of `plotChromPeakImage()`
 
 Creates an image/heatmap showing the number of detected chromatographic
-peaks per sample across retention time bins. This is a ggplot2
-implementation of XCMS's
-[`plotChromPeakImage()`](https://rdrr.io/pkg/xcms/man/plotChromPeaks.html)
+peaks per sample across retention time bins. This is a *ggplot2*
+implementation of *xcms*'s
+[`xcms::plotChromPeakImage()`](https://rdrr.io/pkg/xcms/man/plotChromPeaks.html)
 function.
 
 ## Usage
@@ -45,21 +45,22 @@ gplotChromPeakImage(
 
 - binSize:
 
-  Numeric value specifying the bin size in seconds for the retention
-  time axis (default: 30).
+  `numeric(1)` value specifying the bin size in seconds for the
+  retention time axis (default: 30).
 
 - xlim:
 
-  Numeric vector of length 2 specifying retention time range. If `NULL`
-  (default), uses full retention time range.
+  `numeric(2)` vector of length 2 specifying retention time range. If
+  `NULL` (default), uses full retention time range.
 
 - log_transform:
 
-  Logical, whether to log2-transform the peak counts (default: FALSE).
+  `logical(1)`, whether to log2-transform the peak counts (default:
+  `FALSE`).
 
 - msLevel:
 
-  Integer specifying MS level (default: 1).
+  `integer(1)` specifying MS level (default: `1`).
 
 ## Value
 
@@ -80,8 +81,12 @@ The function:
 
 ## See also
 
-[`plotChromPeakImage`](https://rdrr.io/pkg/xcms/man/plotChromPeaks.html)
-for the original XCMS implementation
+[`xcms::plotChromPeakImage()`](https://rdrr.io/pkg/xcms/man/plotChromPeaks.html)
+for the original *xcms* implementation
+
+## Author
+
+Jan Stanstrup
 
 ## Examples
 
