@@ -40,13 +40,13 @@
 Source:
 [`DESCRIPTION`](https://github.com/stanstrup/xcmsVis/blob/main/DESCRIPTION)
 
-Jan S (2025). *xcmsVis: Modern Visualization for XCMS Data*. R package
+Jan S (2026). *xcmsVis: Modern Visualization for XCMS Data*. R package
 version 0.99.5, <https://stanstrup.github.io/xcmsVis>.
 
     @Manual{,
       title = {xcmsVis: Modern Visualization for XCMS Data},
       author = {Stanstrup Jan},
-      year = {2025},
+      year = {2026},
       note = {R package version 0.99.5},
       url = {https://stanstrup.github.io/xcmsVis},
     }
