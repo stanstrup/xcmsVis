@@ -4,7 +4,7 @@ NULL
 #' @title *ggplot2* Version of `plotAdjustedRtime()`
 #'
 #' @description
-#' 
+#'
 #' Visualizes retention time correction by plotting the difference between
 #' adjusted and raw retention times across samples. This is a *ggplot2*
 #' implementation of *xcms*'s [xcms::plotAdjustedRtime()] function, enabling
@@ -12,16 +12,16 @@ NULL
 #'
 #' @param object An `XCMSnExp` or `XcmsExperiment` object with retention time
 #'     adjustment results.
-#' 
+#'
 #' @param color_by Column name from sample metadata to use for coloring lines.
 #'     This should be provided as an unquoted column name (e.g.,
 #'     `sample_group`). For `XCMSnExp` objects, this comes from `pData(object)`,
 #'     for `XcmsExperiment` objects from `sampleData(object)`.
-#' 
+#'
 #' @param include_columns `character` vector of column names from sample
 #'     metadata to include in the tooltip text. If `NULL` (default), all
 #'     columns are included.
-#' 
+#'
 #' @param adjustedRtime `logical(1)`, whether to use adjusted retention times
 #'     on the x-axis. Default is `TRUE`.
 #'
@@ -30,15 +30,15 @@ NULL
 #'     for alignment (when using `PeakGroupsParam`).
 #'
 #' @details
-#' 
+#'
 #' The function:
 #'
 #' - Plots adjusted RT vs. the difference (adjusted RT - raw RT)
-#' 
+#'
 #' - Shows one line per sample colored by the specified variable
-#' 
+#'
 #' - Overlays peak groups used for alignment (grey circles and dashed lines)
-#' 
+#'
 #' - Includes tooltip-ready text for interactive plotting with plotly
 #'
 #' The grey circles represent individual peaks that were used for alignment,
@@ -79,9 +79,9 @@ NULL
 #' }
 #'
 #' @author Jan Stanstrup
-#' 
+#'
 #' @seealso
-#' 
+#'
 #' [xcms::plotAdjustedRtime()] for the original *xcms* implementation
 #'
 #' @export
@@ -94,7 +94,7 @@ setGeneric("gplotAdjustedRtime", function(object,
 #' @title *ggplot2* Version of `plotChromPeaks()`
 #'
 #' @description
-#' 
+#'
 #' Visualizes identified chromatographic peaks as rectangles in the retention
 #' time vs. m/z plane. This is a *ggplot2* implementation of *xcms*'s
 #' [xcms::plotChromPeaks()] function, enabling modern visualization and
@@ -102,33 +102,33 @@ setGeneric("gplotAdjustedRtime", function(object,
 #'
 #' @param object An `XCMSnExp` or `XcmsExperiment` object with detected
 #'     chromatographic peaks.
-#' 
+#'
 #' @param file `integer(1)` specifying which file/sample to plot (default: 1).
-#' 
+#'
 #' @param xlim `numeric(2)` vector of length 2 specifying retention time range.
 #'     If `NULL` (default), uses full retention time range.
-#' 
+#'
 #' @param ylim `numeric(2)` vector of length 2 specifying m/z range. If `NULL`
 #'     (default), uses full m/z range.
-#' 
+#'
 #' @param border Color for peak rectangle borders (default: semi-transparent
 #'     black).
-#' 
+#'
 #' @param fill Color for peak rectangle fills (default: `NA` for no fill).
-#' 
+#'
 #' @param msLevel `integer(1)` specifying MS level (default: 1).
 #'
 #' @return A `ggplot` object showing chromatographic peaks as rectangles in
 #'   retention time vs. m/z space.
 #'
 #' @details
-#' 
+#'
 #' The function:
-#' 
+#'
 #' - Plots each peak as a rectangle spanning its rt and m/z ranges
-#' 
+#'
 #' - Uses geom_rect to create the peak rectangles
-#' 
+#'
 #' - Supports interactive plotting through plotly conversion
 #'
 #' @examples
@@ -154,7 +154,7 @@ setGeneric("gplotAdjustedRtime", function(object,
 #' }
 #'
 #' @author Jan Stanstrup
-#' 
+#'
 #' @seealso
 #'
 #' [xcms::plotChromPeaks()] for the original *xcms* implementation
@@ -172,30 +172,30 @@ setGeneric("gplotChromPeaks", function(object,
 #' @title *ggplot2* Version of `plotChromPeakImage()`
 #'
 #' @description
-#' 
+#'
 #' Creates an image/heatmap showing the number of detected chromatographic
 #' peaks per sample across retention time bins. This is a *ggplot2*
 #' implementation of *xcms*'s [xcms::plotChromPeakImage()] function.
 #'
 #' @param object An `XCMSnExp` or `XcmsExperiment` object with detected
 #'     chromatographic peaks.
-#' 
+#'
 #' @param binSize `numeric(1)` value specifying the bin size in seconds for the
 #'     retention time axis (default: 30).
-#' 
+#'
 #' @param xlim `numeric(2)` vector of length 2 specifying retention time range.
 #'     If `NULL` (default), uses full retention time range.
-#' 
+#'
 #' @param log_transform `logical(1)`, whether to log2-transform the peak counts
 #'     (default: `FALSE`).
-#' 
+#'
 #' @param msLevel `integer(1)` specifying MS level (default: `1`).
 #'
 #' @return A `ggplot` object showing peak counts as a heatmap with retention
 #'     time on x-axis, samples on y-axis, and color representing peak density.
 #'
 #' @details
-#' 
+#'
 #' The function:
 #'
 #' - Bins peaks across retention time using specified bin size
@@ -207,7 +207,7 @@ setGeneric("gplotChromPeaks", function(object,
 #' - Optionally applies log2 transformation to counts
 #'
 #' @author Jan Stanstrup
-#' 
+#'
 #' @examples
 #' \donttest{
 #' library(xcmsVis)
@@ -244,32 +244,32 @@ setGeneric("gplotChromPeakImage", function(object,
 #' @title *ggplot2* Version of `highlightChromPeaks()`
 #'
 #' @description
-#' 
+#'
 #' Adds chromatographic peak annotations to existing chromatogram plots.
 #' This is a *ggplot2* implementation that works with `XCMSnExp` or
 #' `XcmsExperiment` objects, highlighting detected peaks with rectangles,
 #' points, or polygons.
 #'
 #' @param object An `XCMSnExp` or `XcmsExperiment` object with detected peaks.
-#' 
+#'
 #' @param rt `numeric(2)` vector of length 2 specifying retention time range for
 #'     peak extraction (optional).
-#' 
+#'
 #' @param mz `numeric(2)` vector of length 2 specifying m/z range for peak
 #'     extraction (optional).
-#' 
+#'
 #' @param peakIds `character` vector of peak identifiers (rownames from
 #'     [xcms::chromPeaks()] to highlight. If provided, `rt` and `mz` are
 #'     ignored.
-#' 
+#'
 #' @param border Color for peak borders (default: semi-transparent grey).
-#' 
+#'
 #' @param fill Color for peak fills (default: `NA`).
-#' 
+#'
 #' @param type `character(1)` specifying visualization type: `"rect"`
 #'     (rectangle), `"point"` (apex point), or `"polygon"` (peak shape).
 #'     Default: `"rect"`.
-#' 
+#'
 #' @param whichPeaks `character(1)` specifying peak selection: `"any"` (any
 #'     overlap), `"within"` (fully contained), or `"apex_within"` (apex in
 #'     range). Default: `"any"`.
@@ -278,7 +278,7 @@ setGeneric("gplotChromPeakImage", function(object,
 #'     `ggplot` chromatogram.
 #'
 #' @details
-#' 
+#'
 #' This function returns *ggplot2* layers (geoms) that can be added to an
 #' existing chromatogram plot using the `+` operator. Unlike the base R
 #' version which modifies an existing plot, this returns composable layers.
@@ -290,7 +290,7 @@ setGeneric("gplotChromPeakImage", function(object,
 #' the object first using `filterFile()`.
 #'
 #' @author Jan Stanstrup
-#' 
+#'
 #' @examples
 #' \donttest{
 #' library(xcmsVis)
@@ -320,14 +320,14 @@ setGeneric("gplotChromPeakImage", function(object,
 #' }
 #'
 #' @seealso
-#' 
+#'
 #' [xcms::highlightChromPeaks()] for the original *xcms* implementation
 #'
 #' @export
 setGeneric("ghighlightChromPeaks",
            function(object,
-                    rt,
-                    mz,
+                    rt = numeric(),
+                    mz = numeric(),
                     peakIds = character(),
                     border = "#00000040",
                     fill = NA,
@@ -338,42 +338,42 @@ setGeneric("ghighlightChromPeaks",
 #' @title *ggplot2* Version of `plot()` for `XChromatogram`
 #'
 #' @description
-#' 
+#'
 #' Creates a *ggplot2* version of a chromatogram with detected peaks marked.
 #' This is equivalent to the base R `plot()` method for `XChromatogram` objects.
 #'
 #' @param x An `XChromatogram` or `MChromatograms` object.
-#' 
+#'
 #' @param col Color for the chromatogram line (default: `"black"`).
-#' 
+#'
 #' @param lty Line type for chromatogram (default: `1`).
-#' 
+#'
 #' @param type Plot type (default: `"l"` for line).
-#' 
+#'
 #' @param peakType `character(1)` defining the type of peak annotation:
 #'     `"polygon"`, `"point"`, `"rectangle"`, or `"none"`
 #'     (default: `"polygon"`).
-#' 
+#'
 #' @param peakCol Color for peak markers (default: `"#00000060"`).
-#' 
+#'
 #' @param peakBg Background color for peak markers (default: `"#00000020"`).
-#' 
+#'
 #' @param peakPch Point character for peak markers when `peakType = "point"`
 #'     (default: `1`).
-#' 
+#'
 #' @param ... Additional arguments (for compatibility with plot).
 #'
 #' @return A `ggplot` object.
 #'
 #' @details
-#' 
+#'
 #' This function creates a complete chromatogram plot with detected peaks
 #' automatically marked, similar to the base R `plot()` method for
 #' `XChromatogram` objects. If the chromatogram contains detected peaks,
 #' they will be shown according to the `peakType` parameter.
 #'
 #' @author Jan Stanstrup
-#' 
+#'
 #' @examples
 #' \donttest{
 #' library(xcmsVis)
@@ -397,7 +397,7 @@ setGeneric("ghighlightChromPeaks",
 #' }
 #'
 #' @seealso
-#' 
+#'
 #' \code{\link[xcms]{plot,XChromatogram,ANY-method}} for the original *xcms*
 #' implementation
 #'
@@ -408,42 +408,42 @@ setGeneric("gplot", function(x, ...)
 #' @title *ggplot2* Version of `plotChromPeakDensity()`
 #'
 #' @description
-#' 
+#'
 #' Visualizes the density of chromatographic peaks along the retention time axis
 #' to help evaluate peak density correspondence analysis settings. This is a
 #' *ggplot2* implementation of *xcms*'s [xcms::plotChromPeakDensity()] function.
 #'
 #' @param object An `XChromatograms` or `MChromatograms` object with detected
 #'     chromatographic peaks.
-#' 
+#'
 #' @param param A `PeakDensityParam` object defining the peak density
 #'     correspondence parameters. If missing, the function will try to extract
 #'     it from the object's process history (if correspondence has been
 #'     performed).
-#' 
+#'
 #' @param col Color for the chromatogram lines in the upper panel (default:
 #'     `"#00000060"`).
-#' 
+#'
 #' @param peakType `character(1)` defining the type of peak annotation in
 #'     upper panel: `"polygon"`, `"point"`, `"rectangle"`, or `"none"`
 #'     (default: `"polygon"`).
-#' 
+#'
 #' @param peakCol Color for peak markers (default: `"#00000060"`).
-#' 
+#'
 #' @param peakBg Background color for peak markers (default: `"#00000020"`).
-#' 
+#'
 #' @param peakPch Point character for peak markers when `peakType = "point"`
 #'     (default: `1`).
-#' 
+#'
 #' @param simulate `logical(1)`, whether to simulate correspondence analysis
 #'     (`TRUE`) or display existing results (`FALSE`). Default: `TRUE`.
-#' 
+#'
 #' @param ... Additional arguments passed to `plot()` methods.
 #'
 #' @return A `ggplot` object with two panels:
-#' 
+#'
 #' - Upper panel: Chromatogram(s) with identified peaks
-#' 
+#'
 #' - Lower panel: Peak density along retention time axis showing individual
 #'   peaks as points (y-axis = sample) with density estimate overlaid as
 #'   a line. Grey rectangles indicate peaks grouped into features.
@@ -451,14 +451,14 @@ setGeneric("gplot", function(x, ...)
 #' @details
 #'
 #' The function creates a two-panel visualization:
-#' 
+#'
 #' - Upper panel shows the chromatographic data with detected peaks
-#' 
+#'
 #' - Lower panel shows each peak at its retention time (x-axis) and sample
 #'   (y-axis)
-#' 
+#'
 #' - A kernel density estimate is shown as a line
-#' 
+#'
 #' - Grey rectangles indicate peaks that would be (`simulate = TRUE`) or have
 #'   been (`simulate = FALSE`) grouped into features based on the peak density
 #'   method
@@ -472,7 +472,7 @@ setGeneric("gplot", function(x, ...)
 #' first.
 #'
 #' @author Jan Stanstrup
-#' 
+#'
 #' @examples
 #' \donttest{
 #' library(xcmsVis)
@@ -503,7 +503,7 @@ setGeneric("gplot", function(x, ...)
 #' }
 #'
 #' @seealso
-#' 
+#'
 #' [xcms::plotChromPeakDensity()] for the original *xcms* implementation
 #'
 #' @export
@@ -522,7 +522,7 @@ setGeneric("gplotChromPeakDensity",
 #' @title *ggplot2* Version of `plotChromatogramsOverlay()`
 #'
 #' @description
-#' 
+#'
 #' Creates overlay plots of multiple chromatograms, with one plot per row in
 #' the `XChromatograms` or `MChromatograms` object. Each plot overlays all
 #' samples (columns) for that m/z slice (row). This is a *ggplot2*
@@ -530,40 +530,40 @@ setGeneric("gplotChromPeakDensity",
 #' enabling modern visualization and interactive plotting capabilities.
 #'
 #' @param object An `XChromatograms` or `MChromatograms` object.
-#' 
+#'
 #' @param col Color for the chromatogram lines (default: `"#00000060"`).
-#' 
+#'
 #' @param type Plot type (default: `"l"` for line).
-#' 
+#'
 #' @param main `character` vector of panel titles, one per row. If `NULL`
 #'     (default), no titles are used. If length 1, the same title is used for
 #'     all panels. Use `+ labs()` for *ggplot2*-style customization.
-#' 
+#'
 #' @param xlim `numeric(2)` vector of length 2 specifying retention time range.
 #'     Default: `numeric()` (auto-calculate). Use `+ labs()` to customize axis
 #'     labels and titles.
-#' 
+#'
 #' @param ylim `numeric(2)` vector of length 2 specifying intensity range.
 #'     Default: `numeric()` (auto-calculate).
-#' 
+#'
 #' @param peakType `character(1)` defining the type of peak annotation:
 #'     `"polygon"`, `"point"`, `"rectangle"`, or `"none"`
 #'     (default: `"polygon"`).
-#' 
+#'
 #' @param peakBg Background color for peak markers (default: `NULL`, uses
 #'     `peakCol` with transparency).
-#' 
+#'
 #' @param peakCol Color for peak markers (default: `NULL`, uses `col`).
-#' 
+#'
 #' @param peakPch Point character for peak markers when `peakType = "point"`
 #'     (default: `1`).
-#' 
+#'
 #' @param stacked Numeric value for stacking offset. If > 0, chromatograms will
 #'     be offset vertically by this amount for visual separation (default: `0`).
-#' 
+#'
 #' @param transform Function to transform intensity values (default:
 #'     `identity`). Useful for log-transformations or other intensity scaling.
-#' 
+#'
 #' @param ... Additional arguments (for compatibility).
 #'
 #' @return
@@ -572,22 +572,22 @@ setGeneric("gplotChromPeakDensity",
 #' multiple rows: a patchwork object combining multiple `ggplot` objects.
 #'
 #' @details
-#' 
+#'
 #' This function creates overlay plots where all samples (columns) in a given
 #' m/z slice (row) are overlaid in a single plot. If the object contains multiple
 #' rows, each row gets its own panel stacked vertically using patchwork.
 #'
 #' The function differs from `gplot()` for `XChromatograms` in that:
-#' 
+#'
 #' - It explicitly handles multiple rows (whereas `gplot()` warns and uses only
 #'   the first)
-#' 
+#'
 #' - It supports `stacked` parameter for vertical offset
-#' 
+#'
 #' - It supports `transform` parameter for intensity transformations
-#' 
+#'
 #' @author Jan Stanstrup
-#' 
+#'
 #' @examples
 #' \donttest{
 #' library(xcmsVis)
@@ -643,7 +643,7 @@ setGeneric("gplotChromatogramsOverlay",
 #' @title *ggplot2* Version of `plotFeatureGroups()`
 #'
 #' @description
-#' 
+#'
 #' Visualizes feature groups by plotting features connected across retention
 #' time and m/z dimensions. This is a *ggplot2* implementation of *xcms*'s
 #' [xcms::plotFeatureGroups()] function, enabling modern visualization and
@@ -651,23 +651,23 @@ setGeneric("gplotChromatogramsOverlay",
 #'
 #' @param x An `XCMSnExp` or `XcmsExperiment` object with feature grouping
 #'     results.
-#' 
+#'
 #' @param xlim `numeric(2)` vector of length 2 specifying retention time range.
 #'     Default: `numeric()` (auto-calculate from data).
-#' 
+#'
 #' @param ylim `numeric(2)` vector of length 2 specifying m/z range.
 #'     Default: `numeric()` (auto-calculate from data).
-#' 
+#'
 #' @param pch Point character for feature markers (default: `4`).
-#' 
+#'
 #' @param col Color for feature points and connecting lines (default:
 #'     `"#00000060"`).
-#' 
+#'
 #' @param type Plot type (default: `"o"` for overplotted points and lines).
-#' 
+#'
 #' @param featureGroups `character` vector of feature group identifiers to plot.
 #'     If empty (default), all feature groups are plotted.
-#' 
+#'
 #' @param ... Additional arguments passed to geom functions.
 #'
 #' @return A `ggplot` object showing features connected by lines within each
@@ -675,13 +675,13 @@ setGeneric("gplotChromatogramsOverlay",
 #'
 #' @details
 #' The function:
-#' 
+#'
 #' - Extracts feature definitions and their grouping information
-#' 
+#'
 #' - Plots each feature as a point at (rtmed, mzmed)
-#' 
+#'
 #' - Connects features within the same group with lines
-#' 
+#'
 #' - Feature groups are created by `groupFeatures()` which identifies
 #'   features that likely represent the same compound (isotopes, adducts, etc.)
 #'
@@ -690,7 +690,7 @@ setGeneric("gplotChromatogramsOverlay",
 #' m/z relationships, or other criteria.
 #'
 #' @author Jan Stanstrup
-#' 
+#'
 #' @examples
 #' \donttest{
 #' library(xcmsVis)
@@ -727,7 +727,7 @@ setGeneric("gplotChromatogramsOverlay",
 #' }
 #'
 #' @seealso
-#' 
+#'
 #' [xcms::plotFeatureGroups()] for the original *xcms* implementation.
 #'
 #' @export
@@ -744,32 +744,32 @@ setGeneric("gplotFeatureGroups", function(x,
 #' @title *ggplot2* Version of `plotPrecursorIons()`
 #'
 #' @description
-#' 
+#'
 #' Creates a *ggplot2* version of precursor ion visualization for
 #' `MsExperiment` objects. This function plots the m/z and retention time of
 #' all precursor ions in MS2 spectra, useful for visualizing DDA
 #' (Data-Dependent Acquisition) data.
 #'
 #' @param object An `MsExperiment` object containing MS/MS data.
-#' 
+#'
 #' @param pch Point shape for precursor ions (default: `21` = filled circle).
-#' 
+#'
 #' @param col Point color (default: semi-transparent black).
-#' 
+#'
 #' @param bg Point background/fill color (default: very transparent black).
-#' 
+#'
 #' @param ... Additional arguments passed to *ggplot2* functions.
 #'
 #' @return A `ggplot` object (or list of `ggplot` objects if multiple files).
 #'   Use `+ labs()` to customize axis labels and titles.
 #'
 #' @details
-#' 
+#'
 #' This function visualizes the precursor ions selected for fragmentation in
 #' MS/MS experiments. Each point represents a precursor ion, with:
 #'
 #' - X-axis: Retention time of the MS2 spectrum
-#' 
+#'
 #' - Y-axis: Precursor m/z value
 #'
 #' For `MsExperiment` objects with multiple files, separate plots are created
@@ -783,7 +783,7 @@ setGeneric("gplotFeatureGroups", function(x,
 #' `gplotPrecursorIons(x) + labs(x = "RT (s)")`.
 #'
 #' @author Jan Stanstrup
-#' 
+#'
 #' @examples
 #' \donttest{
 #' library(xcmsVis)
@@ -805,7 +805,7 @@ setGeneric("gplotFeatureGroups", function(x,
 #' }
 #'
 #' @seealso
-#' 
+#'
 #' [xcms::plotPrecursorIons()] for the original *xcms* implementation.
 #'
 #' @export

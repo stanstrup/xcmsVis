@@ -8,8 +8,8 @@
 \usage{
 ghighlightChromPeaks(
   object,
-  rt,
-  mz,
+  rt = numeric(),
+  mz = numeric(),
   peakIds = character(),
   border = "#00000040",
   fill = NA,
@@ -19,8 +19,8 @@ ghighlightChromPeaks(
 
 \S4method{ghighlightChromPeaks}{XCMSnExp}(
   object,
-  rt,
-  mz,
+  rt = numeric(),
+  mz = numeric(),
   peakIds = character(),
   border = "#00000040",
   fill = NA,
@@ -30,8 +30,8 @@ ghighlightChromPeaks(
 
 \S4method{ghighlightChromPeaks}{XcmsExperiment}(
   object,
-  rt,
-  mz,
+  rt = numeric(),
+  mz = numeric(),
   peakIds = character(),
   border = "#00000040",
   fill = NA,
