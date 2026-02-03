@@ -160,16 +160,17 @@ test_that("ghighlightChromPeaks works with XcmsExperiment", {
     data <- get_shared_data()
     xdata <- data$xdata_exp
 
-    # Test with rt and mz ranges
+    ## Test with rt and mz ranges
     layers <- ghighlightChromPeaks(xdata, rt = c(2500, 3500), mz = c(200, 210))
     expect_type(layers, "list")
+    expect_true(inherits(layers[[1L]], "Layer"))
 })
 
 test_that("ghighlightChromPeaks works with XCMSnExp", {
     data <- get_shared_data()
     xdata <- data$xdata_snexp
 
-    # Test with rt and mz ranges
+    ## Test with rt and mz ranges
     layers <- ghighlightChromPeaks(xdata, rt = c(2500, 3500), mz = c(200, 210))
     expect_type(layers, "list")
 })
@@ -178,13 +179,13 @@ test_that("ghighlightChromPeaks handles different types", {
     data <- get_shared_data()
     xdata <- data$xdata_exp
 
-    # Test rect type
+    ## Test rect type
     layers_rect <- ghighlightChromPeaks(xdata,
                                         rt = c(2500, 3500), mz = c(200, 210),
                                         type = "rect")
     expect_type(layers_rect, "list")
 
-    # Test point type
+    ## Test point type
     layers_point <- ghighlightChromPeaks(xdata,
                                          rt = c(2500, 3500), mz = c(200, 210),
                                          type = "point")
@@ -195,7 +196,7 @@ test_that("ghighlightChromPeaks handles whichPeaks parameter", {
     data <- get_shared_data()
     xdata <- data$xdata_exp
 
-    # Test different whichPeaks options
+    ## Test different whichPeaks options
     layers_any <- ghighlightChromPeaks(xdata,
                                        rt = c(2500, 3500), mz = c(200, 210),
                                        whichPeaks = "any")
@@ -212,17 +213,42 @@ test_that("ghighlightChromPeaks handles whichPeaks parameter", {
     expect_type(layers_apex, "list")
 })
 
-test_that("ghighlightChromPeaks errors when no peaks in object", {
+test_that("ghighlightChromPeaks errors", {
     data <- get_shared_data()
+    xdata <- data$xdata_exp
 
-    # Load data without peak detection and convert to XcmsExperiment
+    ## Load data without peak detection and convert to XcmsExperiment
     xdata_no_peaks <- as(MsExperiment::readMsExperiment(
         spectraFiles = system.file("cdf/KO/ko15.CDF", package = "faahKO")
     ), "XcmsExperiment")
 
-    # Should error when trying to highlight peaks
+    ## Should error when trying to highlight peaks
     expect_error(
         ghighlightChromPeaks(xdata_no_peaks, rt = c(2500, 3500), mz = c(200, 210)),
         "No chromatographic peaks found"
+    )
+
+    expect_error(
+        ghighlightChromPeaks(xdata, peakIds = c("a", "b"),
+                             "do not match rownames")
+    )
+
+    xdata2 <- xdata
+    xdata2@chromPeaks <- xdata2@chromPeaks[, colnames(xdata2@chromPeaks) !=
+                                             "sample"]
+    expect_error(
+        ghighlightChromPeaks(xdata2, rt = c(2500, 3500), mz = c(200, 210),
+                             whichPeaks = "any", type = "polygon"),
+        "Cannot determine sample column")
+
+    expect_error(
+        ghighlightChromPeaks(xdata, rt = c(2500, 3500), mz = c(200, 210),
+                             whichPeaks = "other", type = "polygon"),
+        "should be one of"
+    )
+    expect_error(
+        ghighlightChromPeaks(xdata, rt = c(2500, 3500), mz = c(200, 210),
+                             whichPeaks = "any", type = "other"),
+        "should be one of"
     )
 })
