@@ -10,8 +10,8 @@ points, or polygons.
 ``` r
 ghighlightChromPeaks(
   object,
-  rt,
-  mz,
+  rt = numeric(),
+  mz = numeric(),
   peakIds = character(),
   border = "#00000040",
   fill = NA,
@@ -22,8 +22,8 @@ ghighlightChromPeaks(
 # S4 method for class 'XCMSnExp'
 ghighlightChromPeaks(
   object,
-  rt,
-  mz,
+  rt = numeric(),
+  mz = numeric(),
   peakIds = character(),
   border = "#00000040",
   fill = NA,
@@ -34,8 +34,8 @@ ghighlightChromPeaks(
 # S4 method for class 'XcmsExperiment'
 ghighlightChromPeaks(
   object,
-  rt,
-  mz,
+  rt = numeric(),
+  mz = numeric(),
   peakIds = character(),
   border = "#00000040",
   fill = NA,
