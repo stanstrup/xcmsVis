@@ -45,7 +45,8 @@ Imports:
     purrr,
     methods,
     Biobase,
-    grDevices
+    grDevices,
+    ProtGenerics
 Suggests:
     plotly,
     testthat (>= 3.0.0),

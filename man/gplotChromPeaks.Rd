@@ -74,7 +74,6 @@ The function:
 }
 }
 \examples{
-\donttest{
 library(xcmsVis)
 library(xcms)
 library(faahKO)
@@ -93,7 +92,6 @@ xdata <- findChromPeaks(xdata, param = cwp, BPPARAM = SerialParam())
 # Create plot
 p <- gplotChromPeaks(xdata, file = 1)
 print(p)
-}
 
 }
 \seealso{

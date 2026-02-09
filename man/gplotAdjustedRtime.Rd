@@ -67,7 +67,6 @@ The grey circles represent individual peaks that were used for alignment,
 and the grey dashed lines connect peaks from the same feature across samples.
 }
 \examples{
-\donttest{
 library(xcmsVis)
 library(xcms)
 library(faahKO)
@@ -98,7 +97,6 @@ xdata <- adjustRtime(xdata, param = pgp)
 # Create plot
 p <- gplotAdjustedRtime(xdata, color_by = sample_group)
 print(p)
-}
 
 }
 \seealso{

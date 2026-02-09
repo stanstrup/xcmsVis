@@ -106,7 +106,6 @@ multiple samples. If \code{object} has multiple rows, please subset to one row
 first.
 }
 \examples{
-\donttest{
 library(xcmsVis)
 library(xcms)
 library(faahKO)
@@ -132,7 +131,6 @@ gplotChromPeakDensity(chr, param = prm)
 # Try different bandwidth to see effect on peak grouping
 prm2 <- PeakDensityParam(sampleGroups = rep(1, 3), bw = 60)
 gplotChromPeakDensity(chr, param = prm2)
-}
 
 }
 \seealso{

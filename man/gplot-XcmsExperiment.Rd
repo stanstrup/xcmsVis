@@ -3,7 +3,7 @@
 \name{gplot,XcmsExperiment-method}
 \alias{gplot,XcmsExperiment-method}
 \alias{gplot,XCMSnExp-method}
-\title{ggplot2 Version of plot for XcmsExperiment and XCMSnExp}
+\title{\emph{ggplot2} Version of \code{plot()} for \code{XcmsExperiment} and \code{XCMSnExp}}
 \usage{
 \S4method{gplot}{XcmsExperiment}(
   x,
@@ -26,70 +26,71 @@
 )
 }
 \arguments{
-\item{x}{XcmsExperiment or XCMSnExp object}
+\item{x}{\code{XcmsExperiment} or \code{XCMSnExp} object}
 
-\item{msLevel}{integer(1) MS level to visualize (default: 1)}
+\item{msLevel}{\code{integer(1)} defining the MS level to visualize (default: \code{1})}
 
-\item{peakCol}{character(1) color for peak rectangles (default: "#ff000060")}
+\item{peakCol}{\code{character(1)} color to indicate identified chromatographic
+peaks (default: \code{"#ff000060"})}
 
-\item{col}{character(1) color for point borders (default: "grey")}
+\item{col}{\code{character(1)} color for point borders (default: \code{"grey"})}
 
-\item{colramp}{function color ramp for intensity mapping (default: grDevices::topo.colors)}
+\item{colramp}{function color ramp for intensity mapping (default:
+\code{grDevices::topo.colors})}
 
-\item{pch}{integer(1) point shape (default: 21 = filled circle)}
+\item{pch}{\code{integer(1)} point shape (default: \code{21} = filled circle)}
 
 \item{...}{additional arguments (for compatibility)}
 }
 \value{
-A ggplot or patchwork object showing the two-panel visualization.
+A \code{ggplot} or patchwork object showing the two-panel visualization.
 For single samples, returns a patchwork object with two panels.
-For multiple samples, returns a patchwork object with all sample plots stacked.
-Use \code{+ labs()} to customize axis labels and titles.
+For multiple samples, returns a patchwork object with all sample plots
+stacked. Use \code{+ labs()} to customize axis labels and titles.
 }
 \description{
 Creates a two-panel visualization of MS data showing:
 \itemize{
 \item Upper panel: Base Peak Intensity (BPI) chromatogram vs retention time
-\item Lower panel: m/z vs retention time scatter plot with intensity-based coloring
+\item Lower panel: m/z vs retention time scatter plot with intensity-based
+coloring
 }
 
-This is a ggplot2 implementation of XCMS's \code{plot()} method for MsExperiment objects,
-enabling modern visualization and interactive plotting capabilities.
+This is a \emph{ggplot2} implementation of \emph{xcms}'s \code{plot()} method for
+\code{MsExperiment} objects, enabling modern visualization and interactive
+plotting capabilities.
 }
 \details{
 The function:
 \itemize{
 \item Extracts spectra data filtered by MS level
 \item Applies adjusted retention times if available
-\item Upper panel: plots BPI (max intensity per retention time) with intensity-colored points
-\item Lower panel: plots m/z vs retention time scatter with intensity-colored points
-\item Overlays detected peaks as rectangles (if available)
+\item Upper panel: plots BPI (max intensity per retention time) with
+intensity-colored points
+\item Lower panel: plots m/z vs retention time scatter with intensity-colored
+points
+\item Overlays detected chromatographic peaks as rectangles (if available)
 \item Uses consistent color scale across both panels based on intensity
 }
 }
 \examples{
-\dontrun{
 library(xcmsVis)
 library(xcms)
 library(MsExperiment)
 
 # Load and filter data
-fticr_xdata <- readMSData2(...)
-mse <- filterRt(fticr_xdata, rt = c(175, 189)) \%>\%
-       filterMzRange(mz = c(106.02, 106.07))
+xmse <- loadXcmsData()
+xmse <- filterRt(xmse, rt = c(2620, 2740)) |>
+        filterMzRange(mz = c(342, 344))
 
 # Plot MS data
-gplot(mse)
-
-# With detected peaks
-mse_peaks <- findChromPeaks(mse, ...)
-gplot(mse_peaks, peakCol = "red")
+gplot(xmse[1L])
 
 # Multiple samples
-gplot(mse[1:3])
-}
+gplot(xmse[1:3])
 
 }
 \seealso{
-\code{\link[xcms]{plot,MsExperiment,missing-method}} for the original XCMS implementation
+\code{\link[xcms]{plot,MsExperiment,missing-method}} for the original
+\emph{xcms} implementation
 }

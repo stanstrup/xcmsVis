@@ -45,7 +45,6 @@ NULL
 #' and the grey dashed lines connect peaks from the same feature across samples.
 #'
 #' @examples
-#' \donttest{
 #' library(xcmsVis)
 #' library(xcms)
 #' library(faahKO)
@@ -76,7 +75,6 @@ NULL
 #' # Create plot
 #' p <- gplotAdjustedRtime(xdata, color_by = sample_group)
 #' print(p)
-#' }
 #'
 #' @author Jan Stanstrup
 #'
@@ -132,7 +130,6 @@ setGeneric("gplotAdjustedRtime", function(object,
 #' - Supports interactive plotting through plotly conversion
 #'
 #' @examples
-#' \donttest{
 #' library(xcmsVis)
 #' library(xcms)
 #' library(faahKO)
@@ -151,7 +148,6 @@ setGeneric("gplotAdjustedRtime", function(object,
 #' # Create plot
 #' p <- gplotChromPeaks(xdata, file = 1)
 #' print(p)
-#' }
 #'
 #' @author Jan Stanstrup
 #'
@@ -209,7 +205,6 @@ setGeneric("gplotChromPeaks", function(object,
 #' @author Jan Stanstrup
 #'
 #' @examples
-#' \donttest{
 #' library(xcmsVis)
 #' library(xcms)
 #' library(faahKO)
@@ -228,7 +223,6 @@ setGeneric("gplotChromPeaks", function(object,
 #' # Create plot
 #' p <- gplotChromPeakImage(xdata, binSize = 30)
 #' print(p)
-#' }
 #'
 #' @seealso
 #' [xcms::plotChromPeakImage()] for the original *xcms* implementation
@@ -292,7 +286,6 @@ setGeneric("gplotChromPeakImage", function(object,
 #' @author Jan Stanstrup
 #'
 #' @examples
-#' \donttest{
 #' library(xcmsVis)
 #' library(xcms)
 #' library(faahKO)
@@ -317,7 +310,6 @@ setGeneric("gplotChromPeakImage", function(object,
 #' xdata_filtered <- filterFile(xdata, 1)
 #' gplot(chr[1, 1], peakType = "none") +
 #'   ghighlightChromPeaks(xdata_filtered, rt = c(2500, 3500), mz = c(200, 210))
-#' }
 #'
 #' @seealso
 #'
@@ -375,7 +367,6 @@ setGeneric("ghighlightChromPeaks",
 #' @author Jan Stanstrup
 #'
 #' @examples
-#' \donttest{
 #' library(xcmsVis)
 #' library(xcms)
 #' library(faahKO)
@@ -394,7 +385,6 @@ setGeneric("ghighlightChromPeaks",
 #'
 #' # Plot with ggplot2
 #' gplot(chr[1, 1])
-#' }
 #'
 #' @seealso
 #'
@@ -474,7 +464,6 @@ setGeneric("gplot", function(x, ...)
 #' @author Jan Stanstrup
 #'
 #' @examples
-#' \donttest{
 #' library(xcmsVis)
 #' library(xcms)
 #' library(faahKO)
@@ -500,7 +489,6 @@ setGeneric("gplot", function(x, ...)
 #' # Try different bandwidth to see effect on peak grouping
 #' prm2 <- PeakDensityParam(sampleGroups = rep(1, 3), bw = 60)
 #' gplotChromPeakDensity(chr, param = prm2)
-#' }
 #'
 #' @seealso
 #'
@@ -589,7 +577,6 @@ setGeneric("gplotChromPeakDensity",
 #' @author Jan Stanstrup
 #'
 #' @examples
-#' \donttest{
 #' library(xcmsVis)
 #' library(xcms)
 #' library(faahKO)
@@ -616,7 +603,6 @@ setGeneric("gplotChromPeakDensity",
 #'
 #' # With log transformation
 #' gplotChromatogramsOverlay(chr, transform = log1p)
-#' }
 #'
 #' @seealso
 #'
@@ -692,7 +678,6 @@ setGeneric("gplotChromatogramsOverlay",
 #' @author Jan Stanstrup
 #'
 #' @examples
-#' \donttest{
 #' library(xcmsVis)
 #' library(xcms)
 #' library(faahKO)
@@ -724,7 +709,6 @@ setGeneric("gplotChromatogramsOverlay",
 #'
 #' # Visualize specific feature groups only
 #' gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002"))
-#' }
 #'
 #' @seealso
 #'
