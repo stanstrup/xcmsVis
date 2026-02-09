@@ -373,18 +373,16 @@ setGeneric("ghighlightChromPeaks",
 #' library(MsExperiment)
 #' library(ggplot2)
 #'
-#' # Load and process example data
-#' cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
-#' xdata <- readMsExperiment(spectraFiles = cdf_files,
-#'                           BPPARAM = BiocParallel::SerialParam())
-#' xdata <- findChromPeaks(xdata, param = CentWaveParam(),
-#'                         BPPARAM = BiocParallel::SerialParam())
-#'
+#' ## Load preprocessed data
+#' xdata <- loadXcmsData()
 #' # Extract chromatogram
 #' chr <- chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
 #'
 #' # Plot with ggplot2
 #' gplot(chr[1, 1])
+#'
+#' # Plot data for all samples
+#' gplot(chr)
 #'
 #' @seealso
 #'
