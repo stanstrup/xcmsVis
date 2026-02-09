@@ -1,7 +1,7 @@
 Package: xcmsVis
 Type: Package
 Title: Modern Visualization for *xcms* Data
-Version: 0.99.5
+Version: 0.99.6
 Authors@R: c(
     person("Stanstrup", "Jan", email = "stanstrup@gmail.com",
            role = c("aut", "cre"),
@@ -57,7 +57,7 @@ Suggests:
     faahKO,
     viridisLite,
     MsFeatures,
-    msdata,
+    MsDataHub,
     glue,
     mgcv
 VignetteBuilder: quarto
