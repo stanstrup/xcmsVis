@@ -59,6 +59,7 @@ Suggests:
     viridisLite,
     MsFeatures,
     MsDataHub,
+    msdata,
     glue,
     mgcv
 VignetteBuilder: quarto
