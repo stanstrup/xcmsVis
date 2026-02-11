@@ -94,9 +94,11 @@ NULL
 #' @export
 #'
 #' @rdname gplot
+#'
 #' @importFrom ggplot2 ggplot aes geom_point geom_line labs theme_bw
 #' @importFrom stats predict
 #' @importFrom methods is
+#' @importClassesFrom xcms LamaParama
 setMethod("gplot", "LamaParama",
           function(x, index = 1L,
                    colPoints = "#00000060",

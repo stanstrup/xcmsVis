@@ -7,10 +7,14 @@ utils::globalVariables(c("Retention Time", "m/z", "group", "feature_group"))
 # Shared implementation function for gplotFeatureGroups
 #'
 #' @importFrom xcms featureGroups featureDefinitions
-#' @importFrom ggplot2 ggplot aes geom_point geom_path theme_bw labs coord_cartesian
+#' @importFrom ggplot2 ggplot aes geom_point geom_path theme_bw labs
+#' @importFrom ggplot2 coord_cartesian
 #' @importFrom tibble tibble
 #' @importFrom methods is
+#'
 #' @keywords internal
+#'
+#' @noRd
 .gplotFeatureGroups_impl <- function(x,
                                      xlim = numeric(),
                                      ylim = numeric(),
@@ -19,45 +23,28 @@ utils::globalVariables(c("Retention Time", "m/z", "group", "feature_group"))
                                      type = "o",
                                      featureGroups = character(),
                                      ...) {
-
-    # Validate input object
-    if (!(inherits(x, "XCMSnExp") | inherits(x, "XcmsExperiment"))) {
-        stop("'x' is supposed to be an xcms result object", call. = FALSE)
-    }
-
-    # Check for feature groups
     fgs <- featureGroups(x)
-    if (!length(fgs)) {
+    if (!length(fgs))
         stop("No feature groups present. Please run 'groupFeatures' first",
              call. = FALSE)
-    }
-
-    # Convert to factor and filter to requested groups
     fts <- factor(fgs)
-    if (!length(featureGroups)) {
+    if (!length(featureGroups))
         featureGroups <- levels(fts)
-    }
     fts <- fts[fts %in% featureGroups]
     fts <- droplevels(fts)
-
-    if (!length(fts)) {
+    if (!length(fts))
         stop("None of the specified feature groups found", call. = FALSE)
-    }
-
-    # Get feature definitions for the selected groups
     fdef <- featureDefinitions(x)[featureGroups(x) %in% fts, ]
 
-    # Split rtmed and mzmed by feature group, then sort by m/z within each group
-    # This ensures lines go consistently from top to bottom (or bottom to top)
+    ## Split rtmed and mzmed by feature group and sort by m/z within each group
+    ## This ensures lines go consistently from top to bottom (or bottom to top)
     rts <- split(fdef$rtmed, fts)
     mzs <- split(fdef$mzmed, fts)
-
-    # Sort each group by m/z (descending, so lines go top to bottom)
-    # Also track the feature group names for tooltips
     fg_names <- names(rts)
     sorted_data <- lapply(seq_along(rts), function(i) {
         order_idx <- order(mzs[[i]], decreasing = TRUE)
-        list(rt = rts[[i]][order_idx], mz = mzs[[i]][order_idx], fg = fg_names[i])
+        list(rt = rts[[i]][order_idx], mz = mzs[[i]][order_idx],
+             fg = fg_names[i])
     })
     rts <- lapply(sorted_data, function(x) x$rt)
     mzs <- lapply(sorted_data, function(x) x$mz)
@@ -113,6 +100,7 @@ utils::globalVariables(c("Retention Time", "m/z", "group", "feature_group"))
 }
 
 #' @rdname gplotFeatureGroups
+#'
 #' @export
 setMethod("gplotFeatureGroups", "XCMSnExp",
           function(x, xlim = numeric(), ylim = numeric(),
@@ -123,6 +111,7 @@ setMethod("gplotFeatureGroups", "XCMSnExp",
           })
 
 #' @rdname gplotFeatureGroups
+#'
 #' @export
 setMethod("gplotFeatureGroups", "XcmsExperiment",
           function(x, xlim = numeric(), ylim = numeric(),

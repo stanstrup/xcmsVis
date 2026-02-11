@@ -77,7 +77,7 @@ NULL
 #' *xcms* implementation
 #'
 #' @importFrom ggplot2 ggplot aes geom_point geom_rect scale_fill_gradientn
-#'   labs theme_bw theme element_blank coord_cartesian margin
+#' @importFrom ggplot2 labs theme_bw theme element_blank coord_cartesian margin
 #' @importFrom patchwork plot_layout wrap_plots
 #' @importFrom xcms hasAdjustedRtime applyAdjustedRtime chromPeaks hasChromPeaks
 #' @importFrom dplyr group_by summarize
@@ -85,7 +85,9 @@ NULL
 #' @importFrom grDevices topo.colors
 #' @importFrom MsExperiment sampleData
 #' @importFrom ProtGenerics spectra filterMsLevel rtime
+#'
 #' @rdname gplot-XcmsExperiment
+#'
 #' @export
 setMethod("gplot", "XcmsExperiment",
           function(x, msLevel = 1L, peakCol = "#ff000060",
@@ -155,6 +157,7 @@ setMethod("gplot", "XcmsExperiment",
           })
 
 #' @rdname gplot-XcmsExperiment
+#'
 #' @export
 setMethod("gplot", "XCMSnExp",
           function(x, msLevel = 1L, peakCol = "#ff000060",
@@ -168,6 +171,7 @@ setMethod("gplot", "XCMSnExp",
 #' Helper function to create two-panel plot for a single sample
 #'
 #' @keywords internal
+#'
 #' @noRd
 .create_sample_plot <- function(df, pks, main = "", col = "grey",
                                 colramp = grDevices::topo.colors,

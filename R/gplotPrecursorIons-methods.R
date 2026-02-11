@@ -2,10 +2,12 @@
 NULL
 
 #' @rdname gplotPrecursorIons
+#'
 #' @importFrom ggplot2 ggplot aes geom_point labs theme_bw coord_cartesian
 #' @importFrom Spectra rtime precursorMz filterEmptySpectra mz dataOrigin
 #' @importFrom MsExperiment spectra
 #' @importFrom methods is
+#' @importClassesFrom MsExperiment MsExperiment
 setMethod("gplotPrecursorIons", "MsExperiment",
           function(object,
                    pch = 21,

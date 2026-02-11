@@ -52,6 +52,7 @@
 #' @name xcms-utils
 #' @importFrom stats loess resid stepfun
 #' @useDynLib xcmsVis, .registration = TRUE
+#' @noRd
 NULL
 
 #' Find local minima by descending from a peak

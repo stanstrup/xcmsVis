@@ -48,13 +48,16 @@ utils::globalVariables(c(
 #' Internal helper to handle both XCMSnExp and XcmsExperiment objects
 #'
 #' @param object XCMSnExp or XcmsExperiment object
+#'
 #' @return data.frame with sample metadata
+#'
 #' @keywords internal
 #' @importFrom MsExperiment sampleData
 #' @importFrom Biobase pData
 #' @importFrom MSnbase fileNames
 #' @importFrom methods is
-
+#'
+#' @noRd
 .get_sample_data <- function(object) {
   .validate_xcms_object(object)
 
@@ -86,14 +89,18 @@ utils::globalVariables(c(
 #' Internal helper to extract spectra/feature data from both XCMSnExp and XcmsExperiment objects
 #'
 #' @param object XCMSnExp or XcmsExperiment object
+#'
 #' @return data.frame with spectra data including retention times
+#'
 #' @keywords internal
+#'
 #' @importFrom MsExperiment spectra
 #' @importFrom Spectra spectraData
-#' @importFrom xcms rtime
 #' @importFrom MSnbase fData
 #' @importFrom dplyr mutate rename left_join n select
 #' @importFrom methods is
+#'
+#' @noRd
 .get_spectra_data <- function(object) {
   .validate_xcms_object(object)
 
@@ -142,9 +149,14 @@ utils::globalVariables(c(
 #' Validate XCMS object type
 #'
 #' @param object Object to validate
+#'
 #' @return TRUE if valid, stops with error otherwise
-#' @keywords internal
+#'
 #' @importFrom methods is
+#'
+#' @keywords internal
+#'
+#' @noRd
 .validate_xcms_object <- function(object) {
   if (!is(object, "XCMSnExp") && !is(object, "XcmsExperiment") && !is(object, "OnDiskMSnExp")) {
     stop("'object' must be an 'XCMSnExp', 'OnDiskMSnExp' or 'XcmsExperiment' object.",
@@ -159,9 +171,13 @@ utils::globalVariables(c(
 #' that match a specific regex pattern. Other warnings are allowed through.
 #'
 #' @param .f Function to wrap
+#'
 #' @param pattern Regex pattern for warnings to suppress
+#'
 #' @return Modified function that selectively suppresses warnings
+#'
 #' @keywords internal
+#'
 #' @noRd
 .selectively_suppress_warnings <- function(.f, pattern) {
   force(.f)  # ensure .f is evaluated once
@@ -183,9 +199,11 @@ utils::globalVariables(c(
 #' that occurs when using the 'text' aesthetic for plotly tooltips.
 #' The 'text' aesthetic is not recognized by ggplot2 but is used by plotly::ggplotly()
 #'
-#' @keywords internal
-#' @noRd
 #' @importFrom ggplot2 geom_point geom_rect geom_polygon geom_path
+#'
+#' @keywords internal
+#'
+#' @noRd
 NULL
 
 # Create wrapped versions that suppress the specific "unknown aesthetics: text" warning
