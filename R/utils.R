@@ -59,34 +59,24 @@ utils::globalVariables(c(
 #'
 #' @noRd
 .get_sample_data <- function(object) {
-  .validate_xcms_object(object)
-
-  if (is(object, "XcmsExperiment")) {
-    out <- object %>%
-      sampleData %>%
-      as.data.frame
-
-  } else if (is(object, "XCMSnExp") | is(object, "OnDiskMSnExp")) {
-
-    out <- pData(object)
-
-  }
-
-  if(is.null(out$spectraOrigin) && !(length(MSnbase::fileNames(object))>0) ) stop("No files defined in object!", call. = FALSE)
-
-
-  if(is.null(out$spectraOrigin)) out$spectraOrigin <- MSnbase::fileNames(object)
-
-
-
-   out$spectraOrigin_base <- basename(out$spectraOrigin)
-
-  return(out)
+    .validate_xcms_object(object)
+    if (inherits(object, "MsExperiment")) {
+        out <- as.data.frame(sampleData(object))
+    } else if (inherits(object, "OnDiskMSnExp")) {
+        out <- pData(object)
+    }
+    if(is.null(out$spectraOrigin) && !(length(fileNames(object)) > 0) )
+        stop("No files defined in object!", call. = FALSE)
+    if(is.null(out$spectraOrigin))
+        out$spectraOrigin <- fileNames(object)
+    out$spectraOrigin_base <- basename(out$spectraOrigin)
+    return(out)
 }
 
 #' Get spectra data from XCMS object
 #'
-#' Internal helper to extract spectra/feature data from both XCMSnExp and XcmsExperiment objects
+#' Internal helper to extract spectra/feature data from both XCMSnExp
+#' and XcmsExperiment objects
 #'
 #' @param object XCMSnExp or XcmsExperiment object
 #'
@@ -103,46 +93,35 @@ utils::globalVariables(c(
 #' @noRd
 .get_spectra_data <- function(object) {
   .validate_xcms_object(object)
-
-  if (is(object, "XcmsExperiment")) {
-    spec_data <- object %>%
-            spectra() %>%
-            spectraData() %>%
-            as.data.frame() %>%
-            mutate(spectraOrigin_base = basename(dataOrigin))
-
-    # Check if rtime_adjusted exists (before applyAdjustedRtime)
-    # After applyAdjustedRtime(), rtime_adjusted column is removed and rtime contains adjusted values
-    if ("rtime_adjusted" %in% names(spec_data)) {
-      out <- spec_data %>%
+  if (inherits(object, "MsExperiment")) {
+      spec_data <- object %>%
+          spectra() %>%
+          spectraData() %>%
+          as.data.frame() %>%
+          mutate(spectraOrigin_base = basename(dataOrigin))
+      if ("rtime_adjusted" %in% names(spec_data)) {
+          out <- spec_data %>%
               select(dataOrigin, spectraOrigin_base, rtime, rtime_adjusted)
-    } else {
-      # If rtime_adjusted doesn't exist, use rtime for both columns
-      # This happens after applyAdjustedRtime() has been called
-      out <- spec_data %>%
+      } else {
+          out <- spec_data %>%
               select(dataOrigin, spectraOrigin_base, rtime) %>%
               mutate(rtime_adjusted = rtime)
-    }
-
-  } else if (is(object, "XCMSnExp") | is(object, "OnDiskMSnExp")) {
-    # Get sample data for joining
-    sample_data <- .get_sample_data(object) %>%
-                    mutate(fileIdx = 1:n())
-
-    out <- fData(object)
-
-          if(!("retentionTime_adjusted" %in% names(object))){ # not sure why it is there sometimes and sometimes not
-           out <- out %>%
-                    mutate(retentionTime_adjusted = rtime(object, adjusted = TRUE))
-
-          }
-
-     out <- out %>%
-            left_join(sample_data, by = "fileIdx") %>%
-            rename(rtime = retentionTime, rtime_adjusted = retentionTime_adjusted, dataOrigin = "spectraOrigin") %>%
-            select(dataOrigin, spectraOrigin_base, rtime, rtime_adjusted)
+      }
+  } else if (inherits(object, "OnDiskMSnExp")) {
+      sample_data <- .get_sample_data(object) %>%
+          mutate(fileIdx = 1:n())
+      out <- fData(object)
+      if(!("retentionTime_adjusted" %in% names(object))){
+          out <- out %>%
+              mutate(retentionTime_adjusted = rtime(object, adjusted = TRUE))
+      }
+      out <- out %>%
+          left_join(sample_data, by = "fileIdx") %>%
+          rename(rtime = retentionTime,
+                 rtime_adjusted = retentionTime_adjusted,
+                 dataOrigin = "spectraOrigin") %>%
+          select(dataOrigin, spectraOrigin_base, rtime, rtime_adjusted)
   }
-
   return(out)
 }
 
@@ -158,11 +137,12 @@ utils::globalVariables(c(
 #'
 #' @noRd
 .validate_xcms_object <- function(object) {
-  if (!is(object, "XCMSnExp") && !is(object, "XcmsExperiment") && !is(object, "OnDiskMSnExp")) {
-    stop("'object' must be an 'XCMSnExp', 'OnDiskMSnExp' or 'XcmsExperiment' object.",
-         call. = FALSE)
-  }
-  invisible(TRUE)
+    if (!(inherits(object, "OnDiskMSnExp") |
+          inherits(object, "MsExperiment"))) {
+        stop("'object' must be an 'XCMSnExp', 'OnDiskMSnExp' or ",
+             "'XcmsExperiment' object.", call. = FALSE)
+    }
+    invisible(TRUE)
 }
 
 #' Selectively suppress warnings matching a pattern
@@ -180,24 +160,25 @@ utils::globalVariables(c(
 #'
 #' @noRd
 .selectively_suppress_warnings <- function(.f, pattern) {
-  force(.f)  # ensure .f is evaluated once
-  function(...) {
-    withCallingHandlers(
-      .f(...),
-      warning = function(w) {
-        if (grepl(pattern, conditionMessage(w))) {
-          invokeRestart("muffleWarning")
-        }
-      }
-    )
-  }
+    force(.f)  # ensure .f is evaluated once
+    function(...) {
+        withCallingHandlers(
+            .f(...),
+            warning = function(w) {
+                if (grepl(pattern, conditionMessage(w))) {
+                    invokeRestart("muffleWarning")
+                }
+            }
+        )
+    }
 }
 
 #' Create ggplot2 geom wrappers that suppress plotly 'text' aesthetic warnings
 #'
-#' These wrapper functions suppress the "Ignoring unknown aesthetics: text" warning
-#' that occurs when using the 'text' aesthetic for plotly tooltips.
-#' The 'text' aesthetic is not recognized by ggplot2 but is used by plotly::ggplotly()
+#' These wrapper functions suppress the "Ignoring unknown aesthetics: text"
+#' warning that occurs when using the 'text' aesthetic for plotly tooltips.
+#' The 'text' aesthetic is not recognized by ggplot2 but is used by
+#' plotly::ggplotly()
 #'
 #' @importFrom ggplot2 geom_point geom_rect geom_polygon geom_path
 #'
@@ -206,23 +187,18 @@ utils::globalVariables(c(
 #' @noRd
 NULL
 
-# Create wrapped versions that suppress the specific "unknown aesthetics: text" warning
 .geom_point_text <- .selectively_suppress_warnings(
-  ggplot2::geom_point,
-  "Ignoring unknown aesthetics: text"
+    geom_point, "Ignoring unknown aesthetics: text"
 )
 
 .geom_rect_text <- .selectively_suppress_warnings(
-  ggplot2::geom_rect,
-  "Ignoring unknown aesthetics: text"
+    geom_rect, "Ignoring unknown aesthetics: text"
 )
 
 .geom_polygon_text <- .selectively_suppress_warnings(
-  ggplot2::geom_polygon,
-  "Ignoring unknown aesthetics: text"
+    geom_polygon, "Ignoring unknown aesthetics: text"
 )
 
 .geom_path_text <- .selectively_suppress_warnings(
-  ggplot2::geom_path,
-  "Ignoring unknown aesthetics: text"
+    geom_path, "Ignoring unknown aesthetics: text"
 )

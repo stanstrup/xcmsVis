@@ -55,7 +55,6 @@ NULL
 #'
 #' @examples
 #'
-#' \dontrun{
 #' library(xcmsVis)
 #' library(xcms)
 #' library(MsExperiment)
@@ -85,7 +84,6 @@ NULL
 #'
 #' # Visualize the first sample's alignment
 #' gplot(lama_result, index = 1)
-#' }
 #'
 #' @seealso
 #'
@@ -104,12 +102,12 @@ setMethod("gplot", "LamaParama",
                    colPoints = "#00000060",
                    colFit = "#00000080", ...) {
   # Get the retention time model using internal function (copied from XCMS)
-  model <- .rt_model(method = x@method,
-                     rt_map = x@rtMap[[index]],
-                     span = x@span,
-                     resid_ratio = x@outlierTolerance,
-                     zero_weight = x@zeroWeight,
-                     bs = x@bs)
+  model <- xcms:::.rt_model(method = x@method,
+                            rt_map = x@rtMap[[index]],
+                            span = x@span,
+                            resid_ratio = x@outlierTolerance,
+                            zero_weight = x@zeroWeight,
+                            bs = x@bs)
   # Get the data points
   datap <- x@rtMap[[index]]
   point_data <- data.frame(

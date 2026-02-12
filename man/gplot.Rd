@@ -141,7 +141,6 @@ gplot(chr[1, 1])
 gplot(chr)
 
 
-\dontrun{
 library(xcmsVis)
 library(xcms)
 library(MsExperiment)
@@ -171,7 +170,6 @@ lama_result <- proc_hist[[length(proc_hist)]]@param
 
 # Visualize the first sample's alignment
 gplot(lama_result, index = 1)
-}
 
 }
 \seealso{

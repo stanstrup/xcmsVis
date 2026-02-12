@@ -79,4 +79,3 @@ Collate:
     'gplotChromatogramsOverlay-methods.R'
     'gplotFeatureGroups-methods.R'
     'gplotPrecursorIons-methods.R'
-    'xcms-utils.R'

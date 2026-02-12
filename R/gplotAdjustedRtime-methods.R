@@ -77,11 +77,11 @@
                     function(feat, corr) {
                         feat %>%
                             mutate(
-                                adjusted = .applyRtAdjustment(
-                                    rtime,
-                                    corr$raw,
-                                    corr$adjusted
-                                )
+                                adjusted = xcms:::.applyRtAdjustment(
+                                                      rtime,
+                                                      corr$raw,
+                                                      corr$adjusted
+                                                  )
                             ) %>%
                             select(adjusted)
                     }
