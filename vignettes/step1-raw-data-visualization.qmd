@@ -64,7 +64,7 @@ library(MsExperiment)
 library(ggplot2)
 library(plotly)
 library(patchwork)
-library(msdata)
+library(MsDataHub)
 ```
 
 # Part 1: Full MS Data Visualization
@@ -255,12 +255,11 @@ The `gplotPrecursorIons()` function plots where and which precursor ions were se
 
 ## Loading DDA Data
 
-We'll use example DDA data from the msdata package:
+We'll use example DDA data from the *MsDataHub* package:
 
 ```{r load_dda_data}
 # Load DDA MS/MS data
-fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML",
-                  package = "msdata")
+fl <- MsDataHub::PestMix1_DDA.mzML()
 
 pest_dda <- readMsExperiment(fl)
 

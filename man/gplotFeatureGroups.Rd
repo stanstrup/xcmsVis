@@ -86,7 +86,6 @@ Run \code{groupFeatures()} first to create feature groups based on retention tim
 m/z relationships, or other criteria.
 }
 \examples{
-\donttest{
 library(xcmsVis)
 library(xcms)
 library(faahKO)
@@ -118,7 +117,6 @@ gplotFeatureGroups(xdata)
 
 # Visualize specific feature groups only
 gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002"))
-}
 
 }
 \seealso{

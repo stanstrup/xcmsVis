@@ -50,15 +50,19 @@ gplot(x, ...)
 )
 }
 \arguments{
-\item{x}{A \code{LamaParama} object containing retention time alignment parameters and results.}
+\item{x}{A \code{LamaParama} object containing retention time alignment
+parameters and results.}
 
 \item{...}{Additional parameters (currently unused, for S4 compatibility).}
 
-\item{index}{Integer specifying which retention time map to plot (default: 1).}
+\item{index}{\code{integer(1)} specifying which retention time map to plot
+(default: \code{1}).}
 
-\item{colPoints}{Color for the matched peak points (default: semi-transparent black).}
+\item{colPoints}{Color for the matched peak points (default:
+semi-transparent black).}
 
-\item{colFit}{Color for the fitted model line (default: semi-transparent black).}
+\item{colFit}{Color for the fitted model line (default:
+semi-transparent black).}
 
 \item{col}{Color for the chromatogram line (default: \code{"black"}).}
 
@@ -80,14 +84,16 @@ gplot(x, ...)
 \value{
 A \code{ggplot} object.
 
-A ggplot object.
+A \code{ggplot} object.
 }
 \description{
 Creates a \emph{ggplot2} version of a chromatogram with detected peaks marked.
 This is equivalent to the base R \code{plot()} method for \code{XChromatogram} objects.
 
-Creates a ggplot2 version of the retention time alignment model visualization for LamaParama objects.
-LamaParama objects contain parameters and results from landmark-based retention time alignment.
+Creates a \emph{ggplot2} version of the retention time alignment model
+visualization for \code{\link[xcms:LamaParama]{xcms::LamaParama()}} objects.
+\code{LamaParama} objects contain parameters and results from landmark-based
+retention time alignment.
 }
 \details{
 This function creates a complete chromatogram plot with detected peaks
@@ -95,14 +101,18 @@ automatically marked, similar to the base R \code{plot()} method for
 \code{XChromatogram} objects. If the chromatogram contains detected peaks,
 they will be shown according to the \code{peakType} parameter.
 
-This function visualizes the retention time alignment model for a specific sample.
+This function visualizes the retention time alignment model for a specific
+sample.
+
 The plot shows:
 \itemize{
-\item Points representing matched chromatographic peaks between the sample and reference
+\item Points representing matched chromatographic peaks between the sample
+and reference
 \item A fitted line (loess or GAM) showing the retention time correction model
 }
 
-The LamaParama object contains parameters for landmark-based alignment including:
+The \code{LamaParama} object contains parameters for landmark-based alignment
+including:
 \itemize{
 \item \code{method}: The fitting method ("loess" or "gam")
 \item \code{span}: Span parameter for loess fitting
@@ -113,26 +123,23 @@ The LamaParama object contains parameters for landmark-based alignment including
 }
 }
 \examples{
-\donttest{
 library(xcmsVis)
 library(xcms)
 library(faahKO)
 library(MsExperiment)
 library(ggplot2)
 
-# Load and process example data
-cdf_files <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
-xdata <- readMsExperiment(spectraFiles = cdf_files,
-                          BPPARAM = BiocParallel::SerialParam())
-xdata <- findChromPeaks(xdata, param = CentWaveParam(),
-                        BPPARAM = BiocParallel::SerialParam())
-
+## Load preprocessed data
+xdata <- loadXcmsData()
 # Extract chromatogram
 chr <- chromatogram(xdata, mz = c(200, 210), rt = c(2500, 3500))
 
 # Plot with ggplot2
 gplot(chr[1, 1])
-}
+
+# Plot data for all samples
+gplot(chr)
+
 
 \dontrun{
 library(xcmsVis)
@@ -149,7 +156,8 @@ tst <- loadXcmsData("faahko_sub2")
 # Extract landmarks from QC samples in reference
 f <- sampleData(ref)$sample_type
 f[f != "QC"] <- NA
-ref_filtered <- filterFeatures(ref, PercentMissingFilter(threshold = 0, f = f))
+ref_filtered <- filterFeatures(
+    ref, PercentMissingFilter(threshold = 0, f = f))
 ref_mz_rt <- featureDefinitions(ref_filtered)[, c("mzmed", "rtmed")]
 
 # Create and apply LamaParama alignment
@@ -157,7 +165,8 @@ lama_param <- LamaParama(lamas = ref_mz_rt, method = "loess", span = 0.5)
 tst_adjusted <- adjustRtime(tst, param = lama_param)
 
 # Extract LamaParama result for visualization
-proc_hist <- processHistory(tst_adjusted, type = xcms:::.PROCSTEP.RTIME.CORRECTION)
+proc_hist <- processHistory(tst_adjusted,
+    type = xcms:::.PROCSTEP.RTIME.CORRECTION)
 lama_result <- proc_hist[[length(proc_hist)]]@param
 
 # Visualize the first sample's alignment
@@ -169,7 +178,7 @@ gplot(lama_result, index = 1)
 \code{\link[xcms]{plot,XChromatogram,ANY-method}} for the original \emph{xcms}
 implementation
 
-\code{\link[xcms]{LamaParama}} for the parameter class.
+\code{\link[xcms:LamaParama]{xcms::LamaParama()}}
 }
 \author{
 Jan Stanstrup

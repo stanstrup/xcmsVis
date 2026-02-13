@@ -1,6 +1,9 @@
-## Changes in v0.99.6 (commit: 84708e3)
+## Changes in v0.99.6
 
-
+- Load test data from *MsDataHub* dropping dependency from the deprecated
+  *msdata* package.
+- Reduce code duplication in `gplot,XChromatograms`/`gplot,XChromatogram`
+  functions.
 
 ## Changes in v0.99.5 (commit: b419691)
 

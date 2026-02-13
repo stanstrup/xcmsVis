@@ -1,7 +1,7 @@
 Package: xcmsVis
 Type: Package
 Title: Modern Visualization for *xcms* Data
-Version: 0.99.5
+Version: 0.99.6
 Authors@R: c(
     person("Stanstrup", "Jan", email = "stanstrup@gmail.com",
            role = c("aut", "cre"),
@@ -45,7 +45,8 @@ Imports:
     purrr,
     methods,
     Biobase,
-    grDevices
+    grDevices,
+    ProtGenerics
 Suggests:
     plotly,
     testthat (>= 3.0.0),
@@ -57,6 +58,7 @@ Suggests:
     faahKO,
     viridisLite,
     MsFeatures,
+    MsDataHub,
     msdata,
     glue,
     mgcv

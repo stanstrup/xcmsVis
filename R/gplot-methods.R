@@ -3,56 +3,49 @@ NULL
 
 # Helper function to add polygon peak annotations
 #'
-#' @param chr_obj Chromatogram object to extract data from (for single chromatogram)
+#' @param chr_obj Chromatogram object to extract data from (for single
+#'     chromatogram)
 #' @param peaks_df Data frame with peak information
 #' @param peak_ids Character vector of peak IDs (rownames from chromPeaks)
 #' @param peakCol Color for polygon border
 #' @param peakBg Color for polygon fill
 #' @keywords internal
+#'
+#' @importFrom ProtGenerics filterRt rtime intensity
+#'
 #' @noRd
 .add_polygon_peaks <- function(chr_obj, peaks_df, peak_ids, peakCol, peakBg) {
-    # Collect all polygons with NA breaks (matches XCMS behavior)
+    ## Collect all polygons with NA breaks (matches XCMS behavior)
     xs_all <- numeric()
     ys_all <- numeric()
     ids_all <- character()
-
     for (i in seq_len(nrow(peaks_df))) {
-        pk <- peaks_df[i, ]
-
-        # Use filterRt to extract peak region (matches XCMS exactly)
-        chr_filtered <- MSnbase::filterRt(chr_obj, rt = c(pk$rtmin, pk$rtmax))
-        xs <- xcms::rtime(chr_filtered)
-
-        # Check if we have any points
+        chr_filtered <- filterRt(chr_obj, rt = c(peaks_df$rtmin[i],
+                                                 peaks_df$rtmax[i]))
+        xs <- rtime(chr_filtered)
         if (!length(xs)) next
-
-        # Get intensities and handle infinite values
-        ints <- xcms::intensity(chr_filtered)
+        ## Get intensities and handle infinite values
+        ints <- intensity(chr_filtered)
         ints[is.infinite(ints)] <- 0
-
-        # Add baseline points at start and end
+        ## Add baseline points at start and end
         xs <- c(xs[1], xs, xs[length(xs)])
         ys <- c(0, ints, 0)
-
-        # Filter out NA values (both xs and ys together)
+        ## Filter out NA values (both xs and ys together)
         nona <- !is.na(ys)
-
-        # Get peak ID for this peak
-        peak_id <- if (i <= length(peak_ids)) peak_ids[i] else paste0("Peak_", i)
-
-        # Add NA break between peaks (not before first peak)
+        ## Get peak ID for this peak
+        peak_id <- if (i <= length(peak_ids)) peak_ids[i]
+                   else paste0("Peak_", i)
+        ## Add NA break between peaks (not before first peak)
         if (length(xs_all) > 0) {
             xs_all <- c(xs_all, NA)
             ys_all <- c(ys_all, NA)
             ids_all <- c(ids_all, NA)
         }
-
         xs_all <- c(xs_all, xs[nona])
         ys_all <- c(ys_all, ys[nona])
         ids_all <- c(ids_all, rep(peak_id, sum(nona)))
     }
-
-    # Return data frame for polygon, or NULL if no data
+    ## Return data frame for polygon, or NULL if no data
     if (length(xs_all) > 0) {
         data.frame(rt = xs_all, intensity = ys_all, peak_id = ids_all)
     } else {
@@ -60,7 +53,9 @@ NULL
     }
 }
 
-# Shared implementation function for gplot
+## Shared implementation function for gplot
+#'
+#' @param x `Chromatogram`/`XChromatogram` object.
 #'
 #' @importFrom xcms rtime intensity chromPeaks hasChromPeaks
 #' @importFrom ggplot2 ggplot aes geom_line geom_point theme_bw labs
@@ -77,20 +72,13 @@ NULL
                         peakBg = "#00000020",
                         peakPch = 1,
                         ...) {
-
     peakType <- match.arg(peakType)
-
-    # Extract chromatogram data
-    rt <- rtime(x)
-    int <- intensity(x)
-
-    # Create data frame
+    ## Create data frame
     chrom_df <- data.frame(
-        rt = rt,
-        intensity = int
+        rt = rtime(x),
+        intensity = intensity(x)
     )
-
-    # Create base plot
+    ## Create base plot
     p <- ggplot(chrom_df, aes(x = rt, y = intensity)) +
         geom_line(color = col, linetype = lty) +
         theme_bw() +
@@ -98,20 +86,17 @@ NULL
             x = "retention time",
             y = "intensity"
         )
-
-    # Add peak annotations if present
+    ## Add peak annotations if present
     if (hasChromPeaks(x) && peakType != "none") {
         peaks <- chromPeaks(x)
-
         if (nrow(peaks) > 0) {
             peaks_df <- as_tibble(peaks)
-
-            # Add peak IDs for tooltip support
+            ## Add peak IDs for tooltip support
             peaks_df$peak_id <- rownames(peaks)
-
             if (peakType == "point") {
-                # Add points at peak apex
-                # Use wrapper that suppresses 'text' aesthetic warning (for plotly tooltips)
+                ## Add points at peak apex
+                ## Use wrapper that suppresses 'text' aesthetic warning
+                ## (for plotly tooltips)
                 p <- p + .geom_point_text(
                     data = peaks_df,
                     aes(x = rt, y = maxo, text = peak_id),
@@ -120,8 +105,9 @@ NULL
                     inherit.aes = FALSE
                 )
             } else if (peakType == "rectangle") {
-                # Add rectangles spanning peak bounds
-                # Use wrapper that suppresses 'text' aesthetic warning (for plotly tooltips)
+                ## Add rectangles spanning peak bounds
+                ## Use wrapper that suppresses 'text' aesthetic warning
+                ## (for plotly tooltips)
                 p <- p + .geom_rect_text(
                     data = peaks_df,
                     aes(xmin = rtmin, xmax = rtmax, ymin = 0, ymax = maxo, text = peak_id),
@@ -130,14 +116,13 @@ NULL
                     inherit.aes = FALSE
                 )
             } else if (peakType == "polygon") {
-                # Get peak IDs from rownames
+                ## Get peak IDs from rownames
                 peak_ids <- rownames(peaks)
-
-                # Use helper function to generate polygon data
-                poly_df <- .add_polygon_peaks(x, peaks_df, peak_ids, peakCol, peakBg)
-
+                poly_df <- .add_polygon_peaks(x, peaks_df, peak_ids,
+                                              peakCol, peakBg)
                 if (!is.null(poly_df)) {
-                    # Use wrapper that suppresses 'text' aesthetic warning (for plotly tooltips)
+                    ## Use wrapper that suppresses 'text' aesthetic
+                    ## warning (for plotly tooltips)
                     p <- p + .geom_polygon_text(
                         data = poly_df,
                         aes(x = rt, y = intensity, text = peak_id),
@@ -149,7 +134,6 @@ NULL
             }
         }
     }
-
     return(p)
 }
 
@@ -165,12 +149,13 @@ setMethod("gplot", "XChromatogram",
                    peakBg = "#00000020",
                    peakPch = 1,
                    ...) {
-              .gplot_impl(x, col, lty, type, peakType, peakCol, peakBg, peakPch, ...)
+              .gplot_impl(x, col, lty, type, peakType, peakCol, peakBg,
+                          peakPch, ...)
           })
 
 #' @rdname gplot
 #' @importFrom ggplot2 ggplot aes geom_line theme_bw labs
-#' @importFrom xcms rtime intensity chromPeaks hasChromPeaks
+#' @importFrom xcms chromPeaks hasChromPeaks
 #' @export
 setMethod("gplot", "XChromatograms",
           function(x,
@@ -182,48 +167,25 @@ setMethod("gplot", "XChromatograms",
                    peakBg = "#00000020",
                    peakPch = 1,
                    ...) {
-
               peakType <- match.arg(peakType)
-
-              # For multi-row XChromatograms, we'll just plot the first row with all columns overlaid
-              # This matches the expected behavior for plotChromPeakDensity
+              ## For multi-row XChromatograms, we'll just plot the first row
+              ## with all columns overlaid
+              ## This matches the expected behavior for plotChromPeakDensity
               if (nrow(x) > 1) {
-                  warning("gplot for XChromatograms with multiple rows only plots the first row")
+                  warning("gplot for XChromatograms with multiple rows ",
+                          "only plots the first row")
                   x <- x[1, , drop = FALSE]
               }
-
-              # Collect data from all columns (samples)
-              chrom_list <- list()
-              for (i in seq_len(ncol(x))) {
-                  chr <- x[1, i]
-                  chrom_list[[i]] <- data.frame(
-                      rt = xcms::rtime(chr),
-                      intensity = xcms::intensity(chr),
-                      sample = i
-                  )
-              }
-              chrom_df <- do.call(rbind, chrom_list)
-
-              # Create base plot with all chromatograms
-              p <- ggplot(chrom_df, aes(x = rt, y = intensity, group = sample)) +
-                  geom_line(color = col, linetype = lty) +
-                  theme_bw() +
-                  labs(
-                      x = "retention time",
-                      y = "intensity"
-                  )
-
-              # Add peak annotations if present and requested
-              if (peakType != "none" && any(xcms::hasChromPeaks(x))) {
-                  pks <- xcms::chromPeaks(x)
+              p <- callNextMethod() # Create the basic chromatogram plot
+              ## Add peak annotations if present and requested
+              if (peakType != "none" && any(hasChromPeaks(x))) {
+                  pks <- chromPeaks(x)
                   if (nrow(pks) > 0) {
-                      # For XChromatograms, peaks have row and column indices
-                      # Filter to first row
+                      ## For XChromatograms, peaks have row and column indices
+                      ## Filter to first row
                       pks <- pks[pks[, "row"] == 1, , drop = FALSE]
-
                       if (nrow(pks) > 0) {
                           peaks_df <- as_tibble(pks)
-
                           if (peakType == "point") {
                               p <- p + geom_point(
                                   data = peaks_df,
@@ -235,52 +197,27 @@ setMethod("gplot", "XChromatograms",
                           } else if (peakType == "rectangle") {
                               p <- p + geom_rect(
                                   data = peaks_df,
-                                  aes(xmin = rtmin, xmax = rtmax, ymin = 0, ymax = maxo),
+                                  aes(xmin = rtmin, xmax = rtmax,
+                                      ymin = 0, ymax = maxo),
                                   color = peakCol,
                                   fill = peakBg,
                                   inherit.aes = FALSE
                               )
                           } else if (peakType == "polygon") {
-                              # Collect all polygons with NA breaks (matches XCMS behavior)
-                              xs_all <- numeric()
-                              ys_all <- numeric()
-
-                              for (i in seq_len(nrow(peaks_df))) {
-                                  pk <- peaks_df[i, ]
-                                  sample_idx <- pk$column
-                                  chr <- x[1, sample_idx]
-
-                                  # Use filterRt to extract peak region (matches XCMS exactly)
-                                  chr_filtered <- MSnbase::filterRt(chr, rt = c(pk$rtmin, pk$rtmax))
-                                  xs <- xcms::rtime(chr_filtered)
-
-                                  # Check if we have any points
-                                  if (!length(xs)) next
-
-                                  # Get intensities and handle infinite values
-                                  ints <- xcms::intensity(chr_filtered)
-                                  ints[is.infinite(ints)] <- 0
-
-                                  # Add baseline points at start and end
-                                  xs <- c(xs[1], xs, xs[length(xs)])
-                                  ys <- c(0, ints, 0)
-
-                                  # Filter out NA values (both xs and ys together)
-                                  nona <- !is.na(ys)
-
-                                  # Add NA break between peaks (not before first peak)
-                                  if (length(xs_all) > 0) {
-                                      xs_all <- c(xs_all, NA)
-                                      ys_all <- c(ys_all, NA)
+                              poly_df <- data.frame()
+                              for (j in seq_len(ncol(x))) {
+                                  chr <- x[1L, j]
+                                  pks <- chromPeaks(chr)
+                                  if (nrow(pks)) {
+                                      peaks_df <- as_tibble(pks)
+                                      poly_df <- rbind(
+                                          poly_df,
+                                          .add_polygon_peaks(chr, peaks_df,
+                                                             rownames(pks),
+                                                             peakCol, peakBg))
                                   }
-
-                                  xs_all <- c(xs_all, xs[nona])
-                                  ys_all <- c(ys_all, ys[nona])
                               }
-
-                              # Draw all polygons in one call with NA breaks
-                              if (length(xs_all) > 0) {
-                                  poly_df <- data.frame(rt = xs_all, intensity = ys_all)
+                              if (nrow(poly_df)) {
                                   p <- p + geom_polygon(
                                       data = poly_df,
                                       aes(x = rt, y = intensity),
@@ -293,7 +230,6 @@ setMethod("gplot", "XChromatograms",
                       }
                   }
               }
-
               return(p)
           })
 
@@ -309,41 +245,29 @@ setMethod("gplot", "MChromatograms",
                    peakBg = "#00000020",
                    peakPch = 1,
                    ...) {
-              # MChromatograms can be handled the same way as XChromatograms
-              # Convert to XChromatograms if it has peaks, otherwise treat as regular MChromatograms
-              if (is(x, "XChromatograms")) {
-                  gplot(x, col = col, lty = lty, type = type, peakType = peakType,
-                       peakCol = peakCol, peakBg = peakBg, peakPch = peakPch, ...)
-              } else {
-                  # Regular MChromatograms - plot as overlaid lines
-                  peakType <- match.arg(peakType)
-
-                  if (nrow(x) > 1) {
-                      warning("gplot for MChromatograms with multiple rows only plots the first row")
-                      x <- x[1, , drop = FALSE]
-                  }
-
-                  # Collect data from all columns
-                  chrom_list <- list()
-                  for (i in seq_len(ncol(x))) {
-                      chr <- x[1, i]
-                      chrom_list[[i]] <- data.frame(
-                          rt = xcms::rtime(chr),
-                          intensity = xcms::intensity(chr),
-                          sample = i
-                      )
-                  }
-                  chrom_df <- do.call(rbind, chrom_list)
-
-                  # Create plot
-                  p <- ggplot(chrom_df, aes(x = rt, y = intensity, group = sample)) +
-                      geom_line(color = col, linetype = lty) +
-                      theme_bw() +
-                      labs(
-                          x = "retention time",
-                          y = "intensity"
-                      )
-
-                  return(p)
+              if (nrow(x) > 1) {
+                  warning("gplot for MChromatograms with multiple rows only",
+                          " plots the first row")
+                  x <- x[1, , drop = FALSE]
               }
+              ## Collect data from all columns
+              chrom_list <- list()
+              for (i in seq_len(ncol(x))) {
+                  chr <- x[1, i]
+                  chrom_list[[i]] <- data.frame(
+                      rt = rtime(chr),
+                      intensity = intensity(chr),
+                      sample = i
+                  )
+              }
+              chrom_df <- do.call(rbind, chrom_list)
+              ## Create plot
+              p <- ggplot(chrom_df, aes(x = rt, y = intensity, group = sample))+
+                  geom_line(color = col, linetype = lty) +
+                  theme_bw() +
+                  labs(
+                      x = "retention time",
+                      y = "intensity"
+                  )
+              return(p)
           })

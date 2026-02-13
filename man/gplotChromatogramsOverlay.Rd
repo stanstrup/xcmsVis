@@ -118,7 +118,6 @@ the first)
 }
 }
 \examples{
-\donttest{
 library(xcmsVis)
 library(xcms)
 library(faahKO)
@@ -145,7 +144,6 @@ gplotChromatogramsOverlay(chr, stacked = 1e6)
 
 # With log transformation
 gplotChromatogramsOverlay(chr, transform = log1p)
-}
 
 }
 \seealso{

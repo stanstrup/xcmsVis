@@ -86,7 +86,6 @@ multiple samples. To highlight only peaks from a specific sample, filter
 the object first using \code{filterFile()}.
 }
 \examples{
-\donttest{
 library(xcmsVis)
 library(xcms)
 library(faahKO)
@@ -111,7 +110,6 @@ gplot(chr[1, 1], peakType = "none") +
 xdata_filtered <- filterFile(xdata, 1)
 gplot(chr[1, 1], peakType = "none") +
   ghighlightChromPeaks(xdata_filtered, rt = c(2500, 3500), mz = c(200, 210))
-}
 
 }
 \seealso{
