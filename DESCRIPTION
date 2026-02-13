@@ -1,7 +1,7 @@
 Package: xcmsVis
 Type: Package
 Title: Modern Visualization for *xcms* Data
-Version: 0.99.6
+Version: 0.99.7
 Authors@R: c(
     person("Stanstrup", "Jan", email = "stanstrup@gmail.com",
            role = c("aut", "cre"),
