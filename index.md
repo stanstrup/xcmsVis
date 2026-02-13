@@ -205,7 +205,7 @@ XCMS package, translating base R graphics implementations to ggplot2
 while preserving the original visualization logic and functionality.
 
 Original XCMS authors: - Colin A. Smith (original author) - Ralf
-Tautenhahn (original author) - Steffen Neumann (original author) - And
-many contributors
+Tautenhahn (original author) - Steffen Neumann (original author) -
+Johannes Rainer (current maintainer) - And many contributors
 
 When using xcmsVis, please also cite the original XCMS package.
