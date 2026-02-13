@@ -1,7 +1,7 @@
 #' @include AllGenerics.R
 NULL
 
-#' @title *ggplot2* Version of `plot()` for `XcmsExperiment` and `XCMSnExp`
+#' @title *ggplot2* Version of `plot()` for `MsExperiment`, `XcmsExperiment` and `XCMSnExp`
 #'
 #' @description
 #'
@@ -16,7 +16,7 @@ NULL
 #' `MsExperiment` objects, enabling modern visualization and interactive
 #' plotting capabilities.
 #'
-#' @param x `XcmsExperiment` or `XCMSnExp` object
+#' @param x `MsExperiment`, `XcmsExperiment` or `XCMSnExp` object
 #'
 #' @param msLevel `integer(1)` defining the MS level to visualize (default: `1`)
 #'
@@ -154,6 +154,17 @@ setMethod("gplot", "XcmsExperiment",
               } else {
                   return(wrap_plots(plot_list, ncol = 1))
               }
+          })
+
+#' @rdname gplot-XcmsExperiment
+#'
+#' @export
+setMethod("gplot", "MsExperiment",
+          function(x, msLevel = 1L,
+                   col = "grey", colramp = grDevices::topo.colors,
+                   pch = 21, ...) {
+              gplot(as(x, "XcmsExperiment"), msLevel = msLevel, col = col,
+                    colramp = colramp, pch = pch, ...)
           })
 
 #' @rdname gplot-XcmsExperiment
