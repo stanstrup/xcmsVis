@@ -140,7 +140,6 @@ Jan Stanstrup
 ## Examples
 
 ``` r
-# \donttest{
 library(xcmsVis)
 library(xcms)
 library(faahKO)
@@ -174,5 +173,4 @@ gplotChromPeakDensity(chr, param = prm2)
 #> Warning: Removed 240 rows containing missing values or values outside the scale range
 #> (`geom_line()`).
 
-# }
 ```

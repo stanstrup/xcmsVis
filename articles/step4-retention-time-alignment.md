@@ -500,7 +500,7 @@ sessionInfo()
 #> other attached packages:
 #>  [1] patchwork_1.3.2     MsFeatures_1.18.0   MsExperiment_1.12.0
 #>  [4] ProtGenerics_1.42.0 faahKO_1.50.0       plotly_4.12.0      
-#>  [7] ggplot2_4.0.1       xcmsVis_0.99.5      xcms_4.8.0         
+#>  [7] ggplot2_4.0.2       xcmsVis_0.99.6      xcms_4.8.0         
 #> [10] BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
@@ -524,7 +524,7 @@ sessionInfo()
 #>  [35] Seqinfo_1.0.0               SummarizedExperiment_1.40.0
 #>  [37] iterators_1.0.14            knitr_1.51                 
 #>  [39] IRanges_2.44.0              BiocBaseUtils_1.12.0       
-#>  [41] Matrix_1.7-4                igraph_2.2.1               
+#>  [41] Matrix_1.7-4                igraph_2.2.2               
 #>  [43] tidyselect_1.2.1            abind_1.4-8                
 #>  [45] yaml_2.3.12                 doParallel_1.0.17          
 #>  [47] codetools_0.2-20            affy_1.88.0                
@@ -543,12 +543,12 @@ sessionInfo()
 #>  [73] mzID_1.48.0                 data.table_1.18.2.1        
 #>  [75] QFeatures_1.20.0            vsn_3.78.1                 
 #>  [77] mzR_2.44.0                  fs_1.6.6                   
-#>  [79] XML_3.99-0.20               grid_4.5.2                 
+#>  [79] XML_3.99-0.22               grid_4.5.2                 
 #>  [81] impute_1.84.0               tidyr_1.3.2                
 #>  [83] crosstalk_1.2.2             MsCoreUtils_1.22.1         
 #>  [85] PSMatch_1.14.0              cli_3.6.5                  
-#>  [87] viridisLite_0.4.2           S4Arrays_1.10.1            
-#>  [89] dplyr_1.1.4                 AnnotationFilter_1.34.0    
+#>  [87] viridisLite_0.4.3           S4Arrays_1.10.1            
+#>  [89] dplyr_1.2.0                 AnnotationFilter_1.34.0    
 #>  [91] pcaMethods_2.2.0            gtable_0.3.6               
 #>  [93] digest_0.6.39               BiocGenerics_0.56.0        
 #>  [95] SparseArray_1.10.8          htmlwidgets_1.6.4          

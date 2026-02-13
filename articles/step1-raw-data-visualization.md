@@ -38,7 +38,7 @@ library(MsExperiment)
 library(ggplot2)
 library(plotly)
 library(patchwork)
-library(msdata)
+library(MsDataHub)
 ```
 
 ## Part 1: Full MS Data Visualization
@@ -255,12 +255,11 @@ LC-MS run.
 
 ### Loading DDA Data
 
-We’ll use example DDA data from the msdata package:
+We’ll use example DDA data from the *MsDataHub* package:
 
 ``` r
 # Load DDA MS/MS data
-fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML",
-                  package = "msdata")
+fl <- MsDataHub::PestMix1_DDA.mzML()
 
 pest_dda <- readMsExperiment(fl)
 
@@ -426,61 +425,70 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#>  [1] viridisLite_0.4.2   glue_1.8.0          msdata_0.50.0      
-#>  [4] patchwork_1.3.2     plotly_4.12.0       ggplot2_4.0.1      
-#>  [7] MsExperiment_1.12.0 ProtGenerics_1.42.0 xcmsVis_0.99.5     
+#>  [1] viridisLite_0.4.3   glue_1.8.0          MsDataHub_1.10.0   
+#>  [4] patchwork_1.3.2     plotly_4.12.0       ggplot2_4.0.2      
+#>  [7] MsExperiment_1.12.0 ProtGenerics_1.42.0 xcmsVis_0.99.6     
 #> [10] xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
-#>   [1] DBI_1.2.3                   rlang_1.1.7                
-#>   [3] magrittr_2.0.4              clue_0.3-66                
-#>   [5] MassSpecWavelet_1.76.0      otel_0.2.0                 
-#>   [7] matrixStats_1.5.0           compiler_4.5.2             
-#>   [9] vctrs_0.7.1                 reshape2_1.4.5             
-#>  [11] stringr_1.6.0               pkgconfig_2.0.3            
-#>  [13] MetaboCoreUtils_1.18.1      crayon_1.5.3               
-#>  [15] fastmap_1.2.0               XVector_0.50.0             
-#>  [17] labeling_0.4.3              rmarkdown_2.30             
-#>  [19] preprocessCore_1.72.0       purrr_1.2.1                
-#>  [21] xfun_0.56                   MultiAssayExperiment_1.36.1
-#>  [23] jsonlite_2.0.0              progress_1.2.3             
-#>  [25] DelayedArray_0.36.0         parallel_4.5.2             
-#>  [27] prettyunits_1.2.0           cluster_2.1.8.1            
-#>  [29] R6_2.6.1                    stringi_1.8.7              
-#>  [31] RColorBrewer_1.1-3          limma_3.66.0               
-#>  [33] GenomicRanges_1.62.1        Rcpp_1.1.1                 
-#>  [35] Seqinfo_1.0.0               SummarizedExperiment_1.40.0
-#>  [37] iterators_1.0.14            knitr_1.51                 
-#>  [39] IRanges_2.44.0              BiocBaseUtils_1.12.0       
-#>  [41] Matrix_1.7-4                igraph_2.2.1               
-#>  [43] tidyselect_1.2.1            abind_1.4-8                
-#>  [45] yaml_2.3.12                 doParallel_1.0.17          
-#>  [47] codetools_0.2-20            affy_1.88.0                
-#>  [49] lattice_0.22-7              tibble_3.3.1               
-#>  [51] plyr_1.8.9                  withr_3.0.2                
-#>  [53] Biobase_2.70.0              S7_0.2.1                   
-#>  [55] evaluate_1.0.5              Spectra_1.20.1             
-#>  [57] pillar_1.11.1               affyio_1.80.0              
-#>  [59] BiocManager_1.30.27         MatrixGenerics_1.22.0      
-#>  [61] foreach_1.5.2               stats4_4.5.2               
-#>  [63] MSnbase_2.36.0              MALDIquant_1.22.3          
-#>  [65] ncdf4_1.24                  generics_0.1.4             
-#>  [67] S4Vectors_0.48.0            hms_1.1.4                  
-#>  [69] scales_1.4.0                MsFeatures_1.18.0          
-#>  [71] lazyeval_0.2.2              tools_4.5.2                
-#>  [73] mzID_1.48.0                 data.table_1.18.2.1        
-#>  [75] QFeatures_1.20.0            vsn_3.78.1                 
-#>  [77] mzR_2.44.0                  fs_1.6.6                   
-#>  [79] XML_3.99-0.20               grid_4.5.2                 
-#>  [81] impute_1.84.0               tidyr_1.3.2                
-#>  [83] crosstalk_1.2.2             MsCoreUtils_1.22.1         
-#>  [85] PSMatch_1.14.0              cli_3.6.5                  
-#>  [87] S4Arrays_1.10.1             dplyr_1.1.4                
-#>  [89] AnnotationFilter_1.34.0     pcaMethods_2.2.0           
-#>  [91] gtable_0.3.6                digest_0.6.39              
-#>  [93] BiocGenerics_0.56.0         SparseArray_1.10.8         
-#>  [95] htmlwidgets_1.6.4           farver_2.1.2               
-#>  [97] htmltools_0.5.9             lifecycle_1.0.5            
-#>  [99] httr_1.4.7                  statmod_1.5.1              
-#> [101] MASS_7.3-65
+#>   [1] RColorBrewer_1.1-3          jsonlite_2.0.0             
+#>   [3] MultiAssayExperiment_1.36.1 magrittr_2.0.4             
+#>   [5] farver_2.1.2                MALDIquant_1.22.3          
+#>   [7] rmarkdown_2.30              fs_1.6.6                   
+#>   [9] vctrs_0.7.1                 memoise_2.0.1              
+#>  [11] htmltools_0.5.9             S4Arrays_1.10.1            
+#>  [13] BiocBaseUtils_1.12.0        progress_1.2.3             
+#>  [15] AnnotationHub_4.0.0         curl_7.0.0                 
+#>  [17] SparseArray_1.10.8          mzID_1.48.0                
+#>  [19] htmlwidgets_1.6.4           plyr_1.8.9                 
+#>  [21] httr2_1.2.2                 impute_1.84.0              
+#>  [23] cachem_1.1.0                igraph_2.2.2               
+#>  [25] lifecycle_1.0.5             iterators_1.0.14           
+#>  [27] pkgconfig_2.0.3             Matrix_1.7-4               
+#>  [29] R6_2.6.1                    fastmap_1.2.0              
+#>  [31] MatrixGenerics_1.22.0       clue_0.3-66                
+#>  [33] digest_0.6.39               pcaMethods_2.2.0           
+#>  [35] AnnotationDbi_1.72.0        S4Vectors_0.48.0           
+#>  [37] ExperimentHub_3.0.0         crosstalk_1.2.2            
+#>  [39] GenomicRanges_1.62.1        RSQLite_2.4.6              
+#>  [41] filelock_1.0.3              Spectra_1.20.1             
+#>  [43] labeling_0.4.3              httr_1.4.7                 
+#>  [45] abind_1.4-8                 compiler_4.5.2             
+#>  [47] bit64_4.6.0-1               withr_3.0.2                
+#>  [49] doParallel_1.0.17           S7_0.2.1                   
+#>  [51] DBI_1.2.3                   MASS_7.3-65                
+#>  [53] rappdirs_0.3.4              DelayedArray_0.36.0        
+#>  [55] mzR_2.44.0                  tools_4.5.2                
+#>  [57] PSMatch_1.14.0              otel_0.2.0                 
+#>  [59] QFeatures_1.20.0            grid_4.5.2                 
+#>  [61] cluster_2.1.8.1             reshape2_1.4.5             
+#>  [63] generics_0.1.4              gtable_0.3.6               
+#>  [65] preprocessCore_1.72.0       tidyr_1.3.2                
+#>  [67] data.table_1.18.2.1         hms_1.1.4                  
+#>  [69] MetaboCoreUtils_1.18.1      XVector_0.50.0             
+#>  [71] BiocGenerics_0.56.0         BiocVersion_3.22.0         
+#>  [73] foreach_1.5.2               pillar_1.11.1              
+#>  [75] stringr_1.6.0               limma_3.66.0               
+#>  [77] dplyr_1.2.0                 BiocFileCache_3.0.0        
+#>  [79] lattice_0.22-7              bit_4.6.0                  
+#>  [81] tidyselect_1.2.1            Biostrings_2.78.0          
+#>  [83] knitr_1.51                  IRanges_2.44.0             
+#>  [85] Seqinfo_1.0.0               SummarizedExperiment_1.40.0
+#>  [87] stats4_4.5.2                xfun_0.56                  
+#>  [89] Biobase_2.70.0              statmod_1.5.1              
+#>  [91] MSnbase_2.36.0              matrixStats_1.5.0          
+#>  [93] stringi_1.8.7               lazyeval_0.2.2             
+#>  [95] yaml_2.3.12                 evaluate_1.0.5             
+#>  [97] codetools_0.2-20            MsCoreUtils_1.22.1         
+#>  [99] tibble_3.3.1                BiocManager_1.30.27        
+#> [101] cli_3.6.5                   affyio_1.80.0              
+#> [103] Rcpp_1.1.1                  MassSpecWavelet_1.76.0     
+#> [105] dbplyr_2.5.1                png_0.1-8                  
+#> [107] XML_3.99-0.22               parallel_4.5.2             
+#> [109] blob_1.3.0                  prettyunits_1.2.0          
+#> [111] AnnotationFilter_1.34.0     MsFeatures_1.18.0          
+#> [113] scales_1.4.0                affy_1.88.0                
+#> [115] ncdf4_1.24                  purrr_1.2.1                
+#> [117] crayon_1.5.3                rlang_1.1.7                
+#> [119] vsn_3.78.1                  KEGGREST_1.50.0
 ```

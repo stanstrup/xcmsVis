@@ -164,7 +164,6 @@ Jan Stanstrup
 ## Examples
 
 ``` r
-# \donttest{
 library(xcmsVis)
 library(xcms)
 library(faahKO)
@@ -202,5 +201,4 @@ gplotChromatogramsOverlay(chr, transform = log1p)
 #> Warning: Removed 260 rows containing missing values or values outside the scale range
 #> (`geom_line()`).
 
-# }
 ```

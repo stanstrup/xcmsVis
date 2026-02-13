@@ -93,7 +93,6 @@ Jan Stanstrup
 ## Examples
 
 ``` r
-# \donttest{
 library(xcmsVis)
 library(xcms)
 library(faahKO)
@@ -126,5 +125,4 @@ xdata <- adjustRtime(xdata, param = pgp)
 p <- gplotAdjustedRtime(xdata, color_by = sample_group)
 print(p)
 
-# }
 ```

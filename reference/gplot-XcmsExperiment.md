@@ -1,4 +1,4 @@
-# ggplot2 Version of plot for XcmsExperiment and XCMSnExp
+# *ggplot2* Version of `plot()` for `XcmsExperiment` and `XCMSnExp`
 
 Creates a two-panel visualization of MS data showing:
 
@@ -7,9 +7,9 @@ Creates a two-panel visualization of MS data showing:
 - Lower panel: m/z vs retention time scatter plot with intensity-based
   coloring
 
-This is a ggplot2 implementation of XCMS's
+This is a *ggplot2* implementation of *xcms*'s
 [`plot()`](https://rdrr.io/r/graphics/plot.default.html) method for
-MsExperiment objects, enabling modern visualization and interactive
+`MsExperiment` objects, enabling modern visualization and interactive
 plotting capabilities.
 
 ## Usage
@@ -42,28 +42,29 @@ gplot(
 
 - x:
 
-  XcmsExperiment or XCMSnExp object
+  `XcmsExperiment` or `XCMSnExp` object
 
 - msLevel:
 
-  integer(1) MS level to visualize (default: 1)
+  `integer(1)` defining the MS level to visualize (default: `1`)
 
 - peakCol:
 
-  character(1) color for peak rectangles (default: "#ff000060")
+  `character(1)` color to indicate identified chromatographic peaks
+  (default: `"#ff000060"`)
 
 - col:
 
-  character(1) color for point borders (default: "grey")
+  `character(1)` color for point borders (default: `"grey"`)
 
 - colramp:
 
   function color ramp for intensity mapping (default:
-  grDevices::topo.colors)
+  [`grDevices::topo.colors`](https://rdrr.io/r/grDevices/palettes.html))
 
 - pch:
 
-  integer(1) point shape (default: 21 = filled circle)
+  `integer(1)` point shape (default: `21` = filled circle)
 
 - ...:
 
@@ -71,7 +72,7 @@ gplot(
 
 ## Value
 
-A ggplot or patchwork object showing the two-panel visualization. For
+A `ggplot` or patchwork object showing the two-panel visualization. For
 single samples, returns a patchwork object with two panels. For multiple
 samples, returns a patchwork object with all sample plots stacked. Use
 `+ labs()` to customize axis labels and titles.
@@ -90,36 +91,34 @@ The function:
 - Lower panel: plots m/z vs retention time scatter with
   intensity-colored points
 
-- Overlays detected peaks as rectangles (if available)
+- Overlays detected chromatographic peaks as rectangles (if available)
 
 - Uses consistent color scale across both panels based on intensity
 
 ## See also
 
 [`plot,MsExperiment,missing-method`](https://rdrr.io/pkg/xcms/man/XcmsExperiment.html)
-for the original XCMS implementation
+for the original *xcms* implementation
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 library(xcmsVis)
 library(xcms)
 library(MsExperiment)
 
 # Load and filter data
-fticr_xdata <- readMSData2(...)
-mse <- filterRt(fticr_xdata, rt = c(175, 189)) %>%
-       filterMzRange(mz = c(106.02, 106.07))
+xmse <- loadXcmsData()
+xmse <- filterRt(xmse, rt = c(2620, 2740)) |>
+        filterMzRange(mz = c(342, 344))
+#> Filter spectra
+#> Filter spectra
 
 # Plot MS data
-gplot(mse)
+gplot(xmse[1L])
 
-# With detected peaks
-mse_peaks <- findChromPeaks(mse, ...)
-gplot(mse_peaks, peakCol = "red")
 
 # Multiple samples
-gplot(mse[1:3])
-} # }
+gplot(xmse[1:3])
+
 ```

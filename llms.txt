@@ -232,7 +232,11 @@ graphics to ggplot2 while preserving the original visualization logic.
 
 - [`gplot(`*`<XcmsExperiment>`*`)`](https://stanstrup.github.io/xcmsVis/reference/gplot-XcmsExperiment.md)
   [`gplot(`*`<XCMSnExp>`*`)`](https://stanstrup.github.io/xcmsVis/reference/gplot-XcmsExperiment.md)
-  : ggplot2 Version of plot for XcmsExperiment and XCMSnExp
+  :
+
+  *ggplot2* Version of
+  [`plot()`](https://rdrr.io/r/graphics/plot.default.html) for
+  `XcmsExperiment` and `XCMSnExp`
 
 - [`gplotChromPeaks()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeaks.md)
   :

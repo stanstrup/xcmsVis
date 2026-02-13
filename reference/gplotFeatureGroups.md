@@ -125,7 +125,6 @@ Jan Stanstrup
 ## Examples
 
 ``` r
-# \donttest{
 library(xcmsVis)
 library(xcms)
 library(faahKO)
@@ -164,5 +163,4 @@ gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002"))
 #> Warning: Removed 2 rows containing missing values or values outside the scale range
 #> (`geom_path()`).
 
-# }
 ```

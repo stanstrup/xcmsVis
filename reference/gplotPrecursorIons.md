@@ -73,25 +73,31 @@ Jan Stanstrup
 ## Examples
 
 ``` r
-# \donttest{
 library(xcmsVis)
 library(MsExperiment)
 library(ggplot2)
+library(MsDataHub)
 
 ## Load a test data file with DDA LC-MS/MS data
-fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
+fl <- MsDataHub::PestMix1_DDA.mzML()
+#> 
+#> see ?MsDataHub and browseVignettes('MsDataHub') for documentation
+#> downloading 1 resources
+#> retrieving 1 resource
+#> 
+#> loading from cache
 pest_dda <- readMsExperiment(fl)
 
 gplotPrecursorIons(pest_dda)
 
 
 ## Customize labels with ggplot2
-gplotPrecursorIons(pest_dda) + labs(x = "RT (s)", y = "Precursor m/z", title = "DDA Analysis")
+gplotPrecursorIons(pest_dda) + labs(x = "RT (s)", y = "Precursor m/z",
+    title = "DDA Analysis")
 
 
 ## Subset the data object to plot the data specifically for one or
 ## selected file/sample:
 gplotPrecursorIons(pest_dda[1L])
 
-# }
 ```

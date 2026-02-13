@@ -91,7 +91,6 @@ Jan Stanstrup
 ## Examples
 
 ``` r
-# \donttest{
 library(xcmsVis)
 library(xcms)
 library(faahKO)
@@ -111,5 +110,4 @@ xdata <- findChromPeaks(xdata, param = cwp, BPPARAM = SerialParam())
 p <- gplotChromPeakImage(xdata, binSize = 30)
 print(p)
 
-# }
 ```

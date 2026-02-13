@@ -407,8 +407,8 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] xcmsVis_0.99.5      patchwork_1.3.2     plotly_4.12.0      
-#> [4] ggplot2_4.0.1       xcms_4.8.0          BiocParallel_1.44.0
+#> [1] xcmsVis_0.99.6      patchwork_1.3.2     plotly_4.12.0      
+#> [4] ggplot2_4.0.2       xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] DBI_1.2.3                   rlang_1.1.7                
@@ -432,7 +432,7 @@ sessionInfo()
 #>  [37] SummarizedExperiment_1.40.0 iterators_1.0.14           
 #>  [39] knitr_1.51                  IRanges_2.44.0             
 #>  [41] BiocBaseUtils_1.12.0        Matrix_1.7-4               
-#>  [43] igraph_2.2.1                tidyselect_1.2.1           
+#>  [43] igraph_2.2.2                tidyselect_1.2.1           
 #>  [45] abind_1.4-8                 yaml_2.3.12                
 #>  [47] doParallel_1.0.17           codetools_0.2-20           
 #>  [49] affy_1.88.0                 lattice_0.22-7             
@@ -451,12 +451,12 @@ sessionInfo()
 #>  [75] tools_4.5.2                 mzID_1.48.0                
 #>  [77] data.table_1.18.2.1         QFeatures_1.20.0           
 #>  [79] vsn_3.78.1                  mzR_2.44.0                 
-#>  [81] fs_1.6.6                    XML_3.99-0.20              
+#>  [81] fs_1.6.6                    XML_3.99-0.22              
 #>  [83] grid_4.5.2                  impute_1.84.0              
 #>  [85] tidyr_1.3.2                 crosstalk_1.2.2            
 #>  [87] MsCoreUtils_1.22.1          PSMatch_1.14.0             
-#>  [89] cli_3.6.5                   viridisLite_0.4.2          
-#>  [91] S4Arrays_1.10.1             dplyr_1.1.4                
+#>  [89] cli_3.6.5                   viridisLite_0.4.3          
+#>  [91] S4Arrays_1.10.1             dplyr_1.2.0                
 #>  [93] AnnotationFilter_1.34.0     pcaMethods_2.2.0           
 #>  [95] gtable_0.3.6                digest_0.6.39              
 #>  [97] BiocGenerics_0.56.0         SparseArray_1.10.8         

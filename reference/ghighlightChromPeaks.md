@@ -117,7 +117,6 @@ Jan Stanstrup
 ## Examples
 
 ``` r
-# \donttest{
 library(xcmsVis)
 library(xcms)
 #> Loading required package: BiocParallel
@@ -155,5 +154,4 @@ xdata_filtered <- filterFile(xdata, 1)
 gplot(chr[1, 1], peakType = "none") +
   ghighlightChromPeaks(xdata_filtered, rt = c(2500, 3500), mz = c(200, 210))
 
-# }
 ```
