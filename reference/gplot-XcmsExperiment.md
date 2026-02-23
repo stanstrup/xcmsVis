@@ -1,4 +1,4 @@
-# *ggplot2* Version of `plot()` for `XcmsExperiment` and `XCMSnExp`
+# *ggplot2* Version of `plot()` for `MsExperiment`, `XcmsExperiment` and `XCMSnExp`
 
 Creates a two-panel visualization of MS data showing:
 
@@ -26,6 +26,16 @@ gplot(
   ...
 )
 
+# S4 method for class 'MsExperiment'
+gplot(
+  x,
+  msLevel = 1L,
+  col = "grey",
+  colramp = grDevices::topo.colors,
+  pch = 21,
+  ...
+)
+
 # S4 method for class 'XCMSnExp'
 gplot(
   x,
@@ -42,7 +52,7 @@ gplot(
 
 - x:
 
-  `XcmsExperiment` or `XCMSnExp` object
+  `MsExperiment`, `XcmsExperiment` or `XCMSnExp` object
 
 - msLevel:
 

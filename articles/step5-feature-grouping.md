@@ -365,11 +365,11 @@ sessionInfo()
 #> other attached packages:
 #> [1] plotly_4.12.0       patchwork_1.3.2     ggplot2_4.0.2      
 #> [4] MsFeatures_1.18.0   MsExperiment_1.12.0 ProtGenerics_1.42.0
-#> [7] xcmsVis_0.99.6      xcms_4.8.0          BiocParallel_1.44.0
+#> [7] xcmsVis_0.99.7      xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] DBI_1.2.3                   rlang_1.1.7                
-#>   [3] magrittr_2.0.4              clue_0.3-66                
+#>   [3] magrittr_2.0.4              clue_0.3-67                
 #>   [5] MassSpecWavelet_1.76.0      otel_0.2.0                 
 #>   [7] matrixStats_1.5.0           compiler_4.5.2             
 #>   [9] vctrs_0.7.1                 reshape2_1.4.5             
@@ -417,6 +417,6 @@ sessionInfo()
 #>  [93] digest_0.6.39               BiocGenerics_0.56.0        
 #>  [95] SparseArray_1.10.8          htmlwidgets_1.6.4          
 #>  [97] farver_2.1.2                htmltools_0.5.9            
-#>  [99] lifecycle_1.0.5             httr_1.4.7                 
+#>  [99] lifecycle_1.0.5             httr_1.4.8                 
 #> [101] statmod_1.5.1               MASS_7.3-65
 ```

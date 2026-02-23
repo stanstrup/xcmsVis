@@ -231,12 +231,13 @@ graphics to ggplot2 while preserving the original visualization logic.
   `XChromatogram`
 
 - [`gplot(`*`<XcmsExperiment>`*`)`](https://stanstrup.github.io/xcmsVis/reference/gplot-XcmsExperiment.md)
+  [`gplot(`*`<MsExperiment>`*`)`](https://stanstrup.github.io/xcmsVis/reference/gplot-XcmsExperiment.md)
   [`gplot(`*`<XCMSnExp>`*`)`](https://stanstrup.github.io/xcmsVis/reference/gplot-XcmsExperiment.md)
   :
 
   *ggplot2* Version of
   [`plot()`](https://rdrr.io/r/graphics/plot.default.html) for
-  `XcmsExperiment` and `XCMSnExp`
+  `MsExperiment`, `XcmsExperiment` and `XCMSnExp`
 
 - [`gplotChromPeaks()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeaks.md)
   :

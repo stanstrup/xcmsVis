@@ -427,7 +427,7 @@ sessionInfo()
 #> other attached packages:
 #>  [1] viridisLite_0.4.3   glue_1.8.0          MsDataHub_1.10.0   
 #>  [4] patchwork_1.3.2     plotly_4.12.0       ggplot2_4.0.2      
-#>  [7] MsExperiment_1.12.0 ProtGenerics_1.42.0 xcmsVis_0.99.6     
+#>  [7] MsExperiment_1.12.0 ProtGenerics_1.42.0 xcmsVis_0.99.7     
 #> [10] xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
@@ -446,13 +446,13 @@ sessionInfo()
 #>  [25] lifecycle_1.0.5             iterators_1.0.14           
 #>  [27] pkgconfig_2.0.3             Matrix_1.7-4               
 #>  [29] R6_2.6.1                    fastmap_1.2.0              
-#>  [31] MatrixGenerics_1.22.0       clue_0.3-66                
+#>  [31] MatrixGenerics_1.22.0       clue_0.3-67                
 #>  [33] digest_0.6.39               pcaMethods_2.2.0           
 #>  [35] AnnotationDbi_1.72.0        S4Vectors_0.48.0           
 #>  [37] ExperimentHub_3.0.0         crosstalk_1.2.2            
 #>  [39] GenomicRanges_1.62.1        RSQLite_2.4.6              
 #>  [41] filelock_1.0.3              Spectra_1.20.1             
-#>  [43] labeling_0.4.3              httr_1.4.7                 
+#>  [43] labeling_0.4.3              httr_1.4.8                 
 #>  [45] abind_1.4-8                 compiler_4.5.2             
 #>  [47] bit64_4.6.0-1               withr_3.0.2                
 #>  [49] doParallel_1.0.17           S7_0.2.1                   
@@ -483,7 +483,7 @@ sessionInfo()
 #>  [99] tibble_3.3.1                BiocManager_1.30.27        
 #> [101] cli_3.6.5                   affyio_1.80.0              
 #> [103] Rcpp_1.1.1                  MassSpecWavelet_1.76.0     
-#> [105] dbplyr_2.5.1                png_0.1-8                  
+#> [105] dbplyr_2.5.2                png_0.1-8                  
 #> [107] XML_3.99-0.22               parallel_4.5.2             
 #> [109] blob_1.3.0                  prettyunits_1.2.0          
 #> [111] AnnotationFilter_1.34.0     MsFeatures_1.18.0          

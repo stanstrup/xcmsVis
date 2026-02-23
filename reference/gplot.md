@@ -191,7 +191,6 @@ gplot(chr)
 
 
 
-if (FALSE) { # \dontrun{
 library(xcmsVis)
 library(xcms)
 library(MsExperiment)
@@ -208,6 +207,7 @@ f <- sampleData(ref)$sample_type
 f[f != "QC"] <- NA
 ref_filtered <- filterFeatures(
     ref, PercentMissingFilter(threshold = 0, f = f))
+#> 4 features were removed
 ref_mz_rt <- featureDefinitions(ref_filtered)[, c("mzmed", "rtmed")]
 
 # Create and apply LamaParama alignment
@@ -221,5 +221,14 @@ lama_result <- proc_hist[[length(proc_hist)]]@param
 
 # Visualize the first sample's alignment
 gplot(lama_result, index = 1)
-} # }
+#> Warning: pseudoinverse used at -17.037
+#> Warning: neighborhood radius 2804.8
+#> Warning: reciprocal condition number  0
+#> Warning: There are other near singularities as well. 2.5061e+05
+#> Warning: span too small.   fewer data values than degrees of freedom.
+#> Warning: pseudoinverse used at -17.037
+#> Warning: neighborhood radius 2803.2
+#> Warning: reciprocal condition number  0
+#> Warning: There are other near singularities as well. 1641.2
+
 ```

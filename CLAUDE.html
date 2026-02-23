@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -347,11 +347,11 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Internal implementation function (single source of truth)</span></span>
 <span><span class="va">.gplot_function_impl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="reference/dot-validate_xcms_object.html">.validate_xcms_object</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span>  <span class="fu">.validate_xcms_object</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co"># Use helper functions that handle both object types</span></span>
-<span>  <span class="va">sample_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dot-get_sample_data.html">.get_sample_data</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
-<span>  <span class="va">spectra_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dot-get_spectra_data.html">.get_spectra_data</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span>  <span class="va">sample_data</span> <span class="op">&lt;-</span> <span class="fu">.get_sample_data</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span>  <span class="va">spectra_data</span> <span class="op">&lt;-</span> <span class="fu">.get_spectra_data</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co"># All plotting logic here</span></span>
 <span>  <span class="co"># ...</span></span>
