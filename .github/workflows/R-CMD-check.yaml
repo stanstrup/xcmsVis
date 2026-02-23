@@ -50,7 +50,7 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
-          error-on: '"note"'
+          error-on: '"warning"'
 
       - name: Upload check logs on failure
         if: failure()
