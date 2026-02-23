@@ -138,6 +138,9 @@ NULL
 }
 
 #' @rdname gplot
+#'
+#' @importClassesFrom xcms XChromatogram
+#'
 #' @export
 setMethod("gplot", "XChromatogram",
           function(x,
@@ -154,8 +157,11 @@ setMethod("gplot", "XChromatogram",
           })
 
 #' @rdname gplot
+#'
 #' @importFrom ggplot2 ggplot aes geom_line theme_bw labs
 #' @importFrom xcms chromPeaks hasChromPeaks
+#' @importClassesFrom xcms XChromatograms
+#'
 #' @export
 setMethod("gplot", "XChromatograms",
           function(x,
@@ -234,6 +240,9 @@ setMethod("gplot", "XChromatograms",
           })
 
 #' @rdname gplot
+#'
+#' @importClassesFrom MSnbase MChromatograms
+#'
 #' @export
 setMethod("gplot", "MChromatograms",
           function(x,

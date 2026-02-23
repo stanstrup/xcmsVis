@@ -2,13 +2,23 @@
 % Please edit documentation in R/gplot-XcmsExperiment-methods.R
 \name{gplot,XcmsExperiment-method}
 \alias{gplot,XcmsExperiment-method}
+\alias{gplot,MsExperiment-method}
 \alias{gplot,XCMSnExp-method}
-\title{\emph{ggplot2} Version of \code{plot()} for \code{XcmsExperiment} and \code{XCMSnExp}}
+\title{\emph{ggplot2} Version of \code{plot()} for \code{MsExperiment}, \code{XcmsExperiment} and \code{XCMSnExp}}
 \usage{
 \S4method{gplot}{XcmsExperiment}(
   x,
   msLevel = 1L,
   peakCol = "#ff000060",
+  col = "grey",
+  colramp = grDevices::topo.colors,
+  pch = 21,
+  ...
+)
+
+\S4method{gplot}{MsExperiment}(
+  x,
+  msLevel = 1L,
   col = "grey",
   colramp = grDevices::topo.colors,
   pch = 21,
@@ -26,7 +36,7 @@
 )
 }
 \arguments{
-\item{x}{\code{XcmsExperiment} or \code{XCMSnExp} object}
+\item{x}{\code{MsExperiment}, \code{XcmsExperiment} or \code{XCMSnExp} object}
 
 \item{msLevel}{\code{integer(1)} defining the MS level to visualize (default: \code{1})}
 

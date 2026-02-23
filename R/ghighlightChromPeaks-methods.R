@@ -7,7 +7,10 @@ NULL
 #' @importFrom ggplot2 geom_rect geom_point geom_polygon aes
 #' @importFrom tibble tibble
 #' @importFrom methods is
+#'
 #' @keywords internal
+#'
+#' @noRd
 .ghighlightChromPeaks_impl <- function(object,
                                        rt = numeric(),
                                        mz = numeric(),
@@ -155,6 +158,9 @@ NULL
 }
 
 #' @rdname ghighlightChromPeaks
+#'
+#' @importClassesFrom xcms XCMSnExp
+#'
 #' @export
 setMethod("ghighlightChromPeaks", "XCMSnExp",
           function(object, rt = numeric(), mz = numeric(),
@@ -167,6 +173,9 @@ setMethod("ghighlightChromPeaks", "XCMSnExp",
           })
 
 #' @rdname ghighlightChromPeaks
+#'
+#' @importClassesFrom xcms XcmsExperiment
+#'
 #' @export
 setMethod("ghighlightChromPeaks", "XcmsExperiment",
           function(object, rt = numeric(), mz = numeric(),
