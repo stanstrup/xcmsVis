@@ -207,25 +207,3 @@ setMethod("gplotChromPeakDensity", "XChromatograms",
                                           peakPch = peakPch,
                                           simulate = simulate, ...)
           })
-
-#' @rdname gplotChromPeakDensity
-#'
-#' @export
-setMethod("gplotChromPeakDensity", "MChromatograms",
-          function(object,
-                   param,
-                   col = "#00000060",
-                   peakType = c("polygon", "point", "rectangle", "none"),
-                   peakCol = "#00000060",
-                   peakBg = "#00000020",
-                   peakPch = 1,
-                   simulate = TRUE, ...) {
-              .gplotChromPeakDensity_impl(object = object,
-                                          param = param,
-                                          col = col,
-                                          peakType = peakType,
-                                          peakCol = peakCol,
-                                          peakBg = peakBg,
-                                          peakPch = peakPch,
-                                          simulate = simulate, ...)
-          })

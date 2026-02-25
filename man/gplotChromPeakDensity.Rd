@@ -4,7 +4,6 @@
 \name{gplotChromPeakDensity}
 \alias{gplotChromPeakDensity}
 \alias{gplotChromPeakDensity,XChromatograms-method}
-\alias{gplotChromPeakDensity,MChromatograms-method}
 \title{\emph{ggplot2} Version of \code{plotChromPeakDensity()}}
 \usage{
 gplotChromPeakDensity(
@@ -30,22 +29,9 @@ gplotChromPeakDensity(
   simulate = TRUE,
   ...
 )
-
-\S4method{gplotChromPeakDensity}{MChromatograms}(
-  object,
-  param,
-  col = "#00000060",
-  peakType = c("polygon", "point", "rectangle", "none"),
-  peakCol = "#00000060",
-  peakBg = "#00000020",
-  peakPch = 1,
-  simulate = TRUE,
-  ...
-)
 }
 \arguments{
-\item{object}{An \code{XChromatograms} or \code{MChromatograms} object with detected
-chromatographic peaks.}
+\item{object}{An \code{XChromatograms} object with detected chromatographic peaks.}
 
 \item{param}{A \code{PeakDensityParam} object defining the peak density
 correspondence parameters. If missing, the function will try to extract
