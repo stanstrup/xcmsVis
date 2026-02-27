@@ -1,6 +1,6 @@
 ---
 title: "Step 1: Raw Data Visualization"
-author: "xcmsVis Package"
+package: xcmsVis
 date: today
 format:
   html:
@@ -12,6 +12,7 @@ vignette: >
   %\VignetteIndexEntry{Step 1: Raw Data Visualization}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{xcmsVis,BiocStyle,xcms,viridisLite,MsExperiment,MsDataHub,ggplot2,plotly}
 ---
 
 ```{r setup}
@@ -23,19 +24,22 @@ knitr::opts_chunk$set(
   fig.height = 8,
   warning = FALSE,
   message = FALSE
-)
+  )
+library(BiocStyle)
 ```
 
 # Introduction
 
-This vignette covers the **first step** in the XCMS metabolomics workflow: **visualizing raw MS data** before any processing. These visualizations help you:
+This vignette covers the **first step** in the `r BiocStyle::Biocpkg("xcms")`
+metabolomics data analysis workflow: **visualizing raw MS data** before any
+processing. These visualizations help you:
 
 - Assess data quality before analysis
 - Understand the structure of your LC-MS acquisition
 - Identify potential issues early
 - Visualize MS/MS (DDA) experiment coverage
 
-## XCMS Workflow Context
+## *xcms* Workflow Context
 
 ```
 ┌───────────────────────────────┐
@@ -52,8 +56,8 @@ This vignette covers the **first step** in the XCMS metabolomics workflow: **vis
 
 | Function | Purpose | Input Type |
 |----------|---------|------------|
-| `gplot(XcmsExperiment)` | Visualize full MS data | XcmsExperiment, XCMSnExp |
-| `gplotPrecursorIons()` | Visualize MS/MS precursors | MsExperiment with MS2 |
+| `gplot(XcmsExperiment)` | Visualize full MS data | `XcmsExperiment`, `XCMSnExp` |
+| `gplotPrecursorIons()` | Visualize MS/MS precursors | `MsExperiment` with MS2 |
 
 # Setup
 
@@ -71,7 +75,8 @@ library(MsDataHub)
 
 ## Overview
 
-The `gplot()` method for XcmsExperiment and XCMSnExp objects creates a two-panel visualization:
+The `gplot()` method for `XcmsExperiment` and `XCMSnExp` objects creates a
+two-panel visualization:
 
 - **Upper panel**: Base Peak Intensity (BPI) chromatogram vs retention time
 - **Lower panel**: m/z vs retention time scatter plot
@@ -80,7 +85,7 @@ Both panels use intensity-based coloring, and detected peaks (if any) are automa
 
 ## Data Preparation
 
-We'll use pre-processed test data from XCMS:
+We'll use pre-processed test data from *xcms*:
 
 ```{r load_ms1_data}
 # Load pre-processed data
@@ -97,14 +102,6 @@ For visualization, we'll filter to a specific retention time and m/z region:
 # Filter to focused region
 mse <- filterRt(xdata, rt = c(2785-100, 2785+100))
 mse <- filterMzRange(mse, mz = c(278, 283))
-
-library(glue)
-rt_range <- range(rtime(spectra(mse[1])))
-n_spectra <- length(spectra(mse[1]))
-cat(glue("Filtered data:
-  RT range: {rt_range[1]} - {rt_range[2]}
-  Number of spectra in sample 1: {n_spectra}
-"))
 ```
 
 ## Basic Usage
@@ -122,7 +119,8 @@ gplot(mse[1])
 
 #### Upper Panel: BPI Chromatogram
 
-The **Base Peak Intensity (BPI)** shows the maximum intensity at each retention time across all m/z values in the filtered range.
+The **Base Peak Intensity (BPI)** shows the maximum intensity at each retention
+time across all m/z values in the filtered range.
 
 - Each point represents one retention time
 - Y-axis shows the maximum intensity observed at that time
@@ -135,7 +133,7 @@ The **m/z vs retention time scatter** shows the complete mass spectral data:
 
 - X-axis: retention time
 - Y-axis: m/z values
-- Each point represents one data point from the raw spectra
+- Each point represents one data point (mass peak) from the raw spectra
 - Color indicates intensity of that specific m/z at that retention time
 - Shows the full two-dimensional structure of the LC-MS data
 
@@ -149,7 +147,8 @@ If chromatographic peaks have been detected (via `findChromPeaks()`), they are a
 
 ## Multiple Samples
 
-When visualizing multiple samples, `gplot()` creates a vertically stacked layout:
+When visualizing multiple samples, `gplot()` creates a vertically stacked
+layout:
 
 ```{r multiple_samples}
 #| fig-height: 12
@@ -218,7 +217,8 @@ ggplotly(p)
 
 **Accessing Individual Panels:**
 
-Since `gplot()` returns a patchwork object combining two panels, you can access and make each panel interactive separately:
+Since `gplot()` returns a patchwork object combining two panels, you can access
+and make each panel interactive separately:
 
 ```{r interactive_panels}
 #| eval: false
@@ -229,14 +229,17 @@ ggplotly(p[[1]])
 ggplotly(p[[2]])
 ```
 
-This is useful when you want to customize each panel independently or embed them separately in reports.
+This is useful when you want to customize each panel independently or embed them
+separately in reports.
 
 
 # Part 2: MS/MS Precursor Ion Visualization
 
 ## Overview
 
-The `gplotPrecursorIons()` function visualizes precursor ions selected for fragmentation in MS/MS (tandem mass spectrometry) experiments. This is particularly useful for:
+The `gplotPrecursorIons()` function visualizes precursor ions selected for
+fragmentation in MS/MS (tandem mass spectrometry) experiments. This is
+particularly useful for:
 
 - Assessing DDA (Data-Dependent Acquisition) performance
 - Visualizing MS/MS coverage across the chromatographic run
@@ -248,10 +251,12 @@ The `gplotPrecursorIons()` function visualizes precursor ions selected for fragm
 In MS/MS experiments, the mass spectrometer:
 
 1. Performs MS1 scans to detect all ions
-2. Selects specific ions (precursors) based on criteria (intensity, exclusion lists, etc.)
+2. Selects specific ions (precursors) based on criteria (intensity, exclusion
+   lists, etc.)
 3. Fragments these precursors and records MS2 spectra
 
-The `gplotPrecursorIons()` function plots where and which precursor ions were selected across the LC-MS run.
+The `gplotPrecursorIons()` function plots where and which precursor ions were
+selected across the LC-MS run.
 
 ## Loading DDA Data
 
@@ -344,28 +349,29 @@ ggplotly(p_interactive)
 
 After visualizing and assessing your raw data, proceed to:
 
-→ **[Step 2: Peak Detection](step2-peak-detection.html)** - Detect chromatographic peaks in your data
+→ **[Step 2: Peak Detection](step2-peak-detection.html)** - Detect
+chromatographic peaks in your data
 
-# Comparison with Original XCMS
+# Comparison with Original *xcms*
 
 ## gplot(XcmsExperiment) vs plot()
 
 <div class="row">
 <div class="col-md-6">
 
-### Original XCMS
+### Original *xcms*
 
 ```{r original_plot}
 #| fig-height: 6
 #| fig-width: 5
-#| fig-alt: "XCMS base R plot showing two panels with traditional graphics."
+#| fig-alt: "*xcms* base R plot showing two panels with traditional graphics."
 plot(mse[1])
 ```
 
 </div>
 <div class="col-md-6">
 
-### xcmsVis ggplot2
+### *xcmsVis* ggplot2
 
 ```{r xcmsvis_plot}
 #| fig-height: 6
@@ -382,19 +388,19 @@ gplot(mse[1])
 <div class="row">
 <div class="col-md-6">
 
-### Original XCMS
+### Original *xcms*
 
 ```{r original_precursor}
 #| fig-height: 6
 #| fig-width: 5
-#| fig-alt: "XCMS plotPrecursorIons using base R graphics."
-xcms::plotPrecursorIons(pest_dda)
+#| fig-alt: "*xcms* plotPrecursorIons using base R graphics."
+plotPrecursorIons(pest_dda)
 ```
 
 </div>
 <div class="col-md-6">
 
-### xcmsVis ggplot2
+### *xcmsVis* ggplot2
 
 ```{r xcmsvis_precursor}
 #| fig-height: 6

@@ -1,6 +1,6 @@
 ---
 title: "Step 5: Feature Grouping Visualization"
-author: "xcmsVis Package"
+package: xcmsVis
 date: today
 format:
   html:
@@ -28,14 +28,15 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette covers the **final step** in the XCMS metabolomics workflow: **feature grouping**. After retention time alignment, these functions help you:
+This vignette covers the **final step** in the *xcms* metabolomics workflow:
+**feature grouping**. After retention time alignment, these functions help you:
 
 - Visualize relationships between features
 - Identify isotopes, adducts, and fragments
 - Assess feature annotation quality
 - Create publication-ready feature network plots
 
-## XCMS Workflow Context
+## *xcms* Workflow Context
 
 ```
 ┌───────────────────────────────┐
@@ -50,20 +51,24 @@ This vignette covers the **final step** in the XCMS metabolomics workflow: **fea
 
 ## What is Feature Grouping?
 
-Feature grouping identifies features that likely represent the same compound. After feature detection and correspondence, `groupFeatures()` connects features that may be:
+Feature grouping identifies features that likely represent the same
+compound. After feature detection and correspondence, `groupFeatures()` connects
+features that may be:
 
 - **Isotopes**: M+1, M+2 isotopic peaks
 - **Adducts**: [M+H]+, [M+Na]+, [M+K]+, etc.
 - **Fragments**: In-source fragmentation products
 - **Correlated features**: Compounds with similar abundance patterns
 
-The `gplotFeatureGroups()` function visualizes these relationships by plotting features connected by lines within each group across retention time and m/z dimensions.
+The `gplotFeatureGroups()` function visualizes these relationships by plotting
+features connected by lines within each group across retention time and m/z
+dimensions.
 
 ## Functions Covered
 
 | Function | Purpose | Input |
 |----------|---------|-------|
-| `gplotFeatureGroups()` | Visualize feature group relationships | XcmsExperiment, XCMSnExp |
+| `gplotFeatureGroups()` | Visualize feature group relationships | `XcmsExperiment`, `XCMSnExp` |
 
 # Setup
 
@@ -82,7 +87,9 @@ register(SerialParam())
 
 # Load and Process Data
 
-Feature grouping requires a complete XCMS workflow: peak detection, correspondence, retention time alignment, re-correspondence, and then feature grouping.
+Feature grouping requires a complete *xcms* workflow: peak detection,
+correspondence, retention time alignment, re-correspondence, and then feature
+grouping.
 
 We'll use pre-processed data with peaks already detected:
 
@@ -122,7 +129,8 @@ cat("Identified", length(unique(featureGroups(xdata))), "feature groups\n")
 
 # Basic Feature Group Visualization
 
-The default plot shows all feature groups, with features connected by lines within each group:
+The default plot shows all feature groups, with features connected by lines
+within each group:
 
 ```{r basic_plot}
 #| fig-height: 6
@@ -134,7 +142,8 @@ gplotFeatureGroups(xdata)
 
 - **Points**: Individual features (at their median RT and m/z across samples)
 - **Lines**: Connect features within the same group
-- **Groups**: Represent features likely from the same compound (isotopes, adducts, etc.)
+- **Groups**: Represent features likely from the same compound (isotopes,
+  adducts, etc.)
 
 # Filtering to Specific Feature Groups
 
@@ -214,7 +223,7 @@ gplotFeatureGroups(xdata,
 
 # Interactive Visualization
 
-Convert to interactive plotly plot for exploration:
+Convert to interactive *plotly* plot for exploration:
 
 ```{r interactive}
 #| fig-height: 6
@@ -228,7 +237,8 @@ ggplotly(p)
 
 # Understanding Feature Groups
 
-Feature groups represent features that are likely derived from the same compound. Common grouping parameters:
+Feature groups represent features that are likely derived from the same
+compound. Common grouping parameters:
 
 ## Similar Retention Time
 
@@ -248,7 +258,8 @@ gplotFeatureGroups(xdata_rt, featureGroups = fg_rt[1:5]) +
 
 ```{r correlation}
 # Group features with correlated abundances across samples
-xdata_cor <- groupFeatures(xdata, param = AbundanceSimilarityParam(threshold = 0.7))
+xdata_cor <- groupFeatures(
+    xdata, param = AbundanceSimilarityParam(threshold = 0.7))
 cat("AbundanceSimilarityParam (threshold=0.7):",
     length(unique(featureGroups(xdata_cor))), "groups\n")
 
@@ -262,11 +273,13 @@ gplotFeatureGroups(xdata_cor, featureGroups = fg_cor[1:5]) +
 
 ## Isotope Pattern Identification
 
-Features grouped by similar RT and abundance correlation may represent isotope patterns (e.g. M, M+1, M+2) or adducts (e.g. [M+H]+, [M+Na]+).
+Features grouped by similar RT and abundance correlation may represent isotope
+patterns (e.g. M, M+1, M+2) or adducts (e.g. [M+H]+, [M+Na]+).
 
 ## Adduct Identification
 
-Features with similar RT but different m/z values that correlate in abundance may be different adducts of the same compound.
+Features with similar RT but different m/z values that correlate in abundance
+may be different adducts of the same compound.
 
 ## Quality Control
 
@@ -288,7 +301,7 @@ Visualize feature groups to:
 
 ## Workflow Complete!
 
-You've now completed the full XCMS visualization workflow:
+You've now completed the full *xcms* visualization workflow:
 
 ```
 ✓ 1. Raw Data Visualization
@@ -298,12 +311,12 @@ You've now completed the full XCMS visualization workflow:
 ✓ 5. Feature Grouping
 ```
 
-# Comparison with Original XCMS
+# Comparison with Original *xmcs*
 
 <div class="row">
 <div class="col-md-6">
 
-## Original XCMS Version
+## Original *xcms* Version
 
 ```{r original_comparison}
 #| fig-height: 6
@@ -319,7 +332,7 @@ plotFeatureGroups(xdata, featureGroups = fg_compare)
 </div>
 <div class="col-md-6">
 
-## xcmsVis ggplot2 Version
+## *xcmsVis* ggplot2 Version
 
 ```{r xcmsvis_comparison}
 #| fig-height: 6
@@ -335,7 +348,9 @@ gplotFeatureGroups(xdata, featureGroups = fg_compare)
 ::: {.callout-note}
 ## API Differences
 
-Unlike the original XCMS `plotFeatureGroups()`, the ggplot2 version does not have `xlab`, `ylab`, or `main` parameters. Instead, use ggplot2's `labs()` function to customize labels after plot creation:
+Unlike the original *xcms* `plotFeatureGroups()`, the ggplot2 version does not
+have `xlab`, `ylab`, or `main` parameters. Instead, use ggplot2's `labs()`
+function to customize labels after plot creation:
 
 ```r
 # Customize labels with labs()
@@ -344,7 +359,8 @@ gplotFeatureGroups(xdata, featureGroups = fg_subset) +
   labs(x = "Retention Time (s)", y = "Mass/Charge", title = "My Custom Title")
 ```
 
-This follows ggplot2 conventions and makes the API more consistent with the broader ggplot2 ecosystem.
+This follows ggplot2 conventions and makes the API more consistent with the
+broader ggplot2 ecosystem.
 :::
 
 # Session Info
