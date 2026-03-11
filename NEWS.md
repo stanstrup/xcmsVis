@@ -1,24 +1,19 @@
 ## Changes in v0.99.10 (commit: ca9fab6)
 
 
-
 ### Bug Fixes
 
 * pass release notes to prepare-news.sh for NEWS.md entries ([c46971c](https://github.com/stanstrup/xcmsVis/commit/c46971c1f99e4e9b5589e760ccc82cd0b186b4c7))
 
-## Changes in v0.99.10
+## Changes in v0.99.9 (commit: 50be182)
 
-### Bug Fixes
-
-* Fix release notes not being written to NEWS.md by passing `${nextRelease.notes}` to `prepare-news.sh` in `.releaserc.json`.
-
-## Changes in v0.99.9
 
 ### Features
 
 * Add `include_columns` parameter to `gplot()` for XChromatograms and MChromatograms, enabling plotly tooltip support with sample metadata. Accepts `TRUE` (all pData columns) or a character vector of specific column names.
 
-## Changes in v0.99.8
+## Changes in v0.99.8 (commit: f36a3b1)
+
 
 ### Features
 
@@ -28,7 +23,16 @@
 
 * Use default static colors in XCMS comparison plots in step3 vignette for visual parity with original XCMS output.
 
-## Changes in v0.99.7
+## Changes in v0.99.7 (commit: f61c790)
+
+
+### Refactoring
+
+* Replace deprecated *msdata* with *MsDataHub* for test data loading.
+* Reduce code duplication in `gplot()` for XChromatograms/XChromatogram.
+* Call internal functions from xcms with `:::` instead of reimplementing them.
+* Enable examples and cosmetic source code improvements.
+* Update and expand unit tests.
 
 ### Bug Fixes
 
@@ -127,7 +131,7 @@
 * add gplot() method for XcmsExperiment and XCMSnExp ([8fd87fb](https://github.com/stanstrup/xcmsVis/commit/8fd87fbf5e2083b63352cd7ba80f119875629103))
 * add side-by-side comparison for correspondence results ([b0113ad](https://github.com/stanstrup/xcmsVis/commit/b0113ad8ed7a9feee2ef81568a32ccdc6bdf561b))
 * implement gplotChromatogramsOverlay for XChromatograms/MChromatograms ([acfe633](https://github.com/stanstrup/xcmsVis/commit/acfe633b604504cab5986a4bbe7e57a718f82af5))
-* implement gplotChromPeakDensity for XChromatograms/MChromatograms ([beff00d](https://github.com/stanstrup/xcmsVis/commit/beff00d0957815f462fe476d38350202b010427c)), closes [hi#priority](https://github.com/hi/issues/priority)
+* implement gplotChromPeakDensity for XChromatograms/MChromatograms ([beff00d](https://github.com/stanstrup/xcmsVis/commit/beff00d0957815f462fe476d38350202b010427c))
 
 
 ### BREAKING CHANGES
@@ -136,27 +140,12 @@
 multiple EICs (rows) from the same sample (column), not multiple
 samples across the same EIC. This matches the original XCMS behavior.
 
-Changes:
-- Now loops through columns (samples) instead of rows (EICs)
-- Overlays multiple rows (different EICs) in a single plot per sample
-- Uses facet_wrap for multiple samples instead of patchwork
-- Main titles now correspond to samples (columns) not EICs (rows)
-- Updated all tests to reflect correct XCMS behavior
-
-The key difference from XCMS plot():
-- plot() overlays same EIC across different samples
-- plotChromatogramsOverlay() overlays different EICs within same sample
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
-
 ## Changes in v0.99.13
 
 
 ### Bug Fixes
 
-* correct pkgdown deployment and documentation link ([a8f45ea](https://github.com/stanstrup/xcmsVis/commit/a8f45ea5ecc1d3c2ffa08fba3fa3fa9b13a459ab)), closes [#pages](https://github.com/stanstrup/xcmsVis/issues/pages)
+* correct pkgdown deployment and documentation link ([a8f45ea](https://github.com/stanstrup/xcmsVis/commit/a8f45ea5ecc1d3c2ffa08fba3fa3fa9b13a459ab))
 
 ## Changes in v0.99.12
 
