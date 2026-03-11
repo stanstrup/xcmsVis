@@ -172,3 +172,64 @@ test_that("gplot color mapping with variable passthrough", {
     expect_s3_class(p, "ggplot")
     expect_false("colour" %in% names(p$mapping))
 })
+
+## --- Tooltip / include_columns tests ---
+
+test_that("gplot,XChromatograms include_columns = TRUE adds tooltip", {
+    chr <- chromatogram(xdata_exp, mz = c(200, 210), rt = c(2500, 3500))
+
+    p <- gplot(chr, include_columns = TRUE)
+    expect_s3_class(p, "ggplot")
+    ## text column should be present in the plot data
+    expect_true("text" %in% colnames(p$data))
+    ## Tooltip should contain pData column names
+    expect_true(grepl("sample_group", p$data$text[1]))
+})
+
+test_that("gplot,XChromatograms include_columns with specific columns", {
+    chr <- chromatogram(xdata_exp, mz = c(200, 210), rt = c(2500, 3500))
+
+    p <- gplot(chr, include_columns = c("sample_group"))
+    expect_true("text" %in% colnames(p$data))
+    expect_true(grepl("sample_group", p$data$text[1]))
+    ## Should NOT contain other pData columns
+    expect_false(grepl("sample_index", p$data$text[1]))
+})
+
+test_that("gplot,XChromatograms include_columns = NULL has no tooltip", {
+    chr <- chromatogram(xdata_exp, mz = c(200, 210), rt = c(2500, 3500))
+
+    p <- gplot(chr, include_columns = NULL)
+    expect_false("text" %in% colnames(p$data))
+})
+
+test_that("gplot,XChromatograms peak layers get tooltip text", {
+    chr <- chromatogram(xdata_exp, mz = c(200, 210), rt = c(2500, 3500))
+
+    ## Point peaks with tooltips
+    p <- gplot(chr, include_columns = c("sample_group"), peakType = "point")
+    peak_data <- p$layers[[2]]$data
+    expect_true("text" %in% colnames(peak_data))
+    ## Peak tooltip should contain peak_id and metadata
+    expect_true(grepl("sample_group", peak_data$text[1]))
+
+    ## Polygon peaks with tooltips
+    p2 <- gplot(chr, include_columns = c("sample_group"), peakType = "polygon")
+    expect_s3_class(p2, "ggplot")
+
+    ## Rectangle peaks with tooltips
+    p3 <- gplot(chr, include_columns = c("sample_group"),
+                peakType = "rectangle")
+    expect_s3_class(p3, "ggplot")
+})
+
+test_that("gplot,MChromatograms include_columns works", {
+    chr <- chromatogram(xdata_exp, mz = c(200, 210), rt = c(2500, 3500))
+    chr_m <- as(chr, "MChromatograms")
+
+    p <- gplot(chr_m, include_columns = TRUE)
+    expect_true("text" %in% colnames(p$data))
+
+    p2 <- gplot(chr_m, include_columns = NULL)
+    expect_false("text" %in% colnames(p2$data))
+})

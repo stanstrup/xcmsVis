@@ -34,6 +34,7 @@ gplot(x, ...)
   peakCol = "#00000060",
   peakBg = "#00000020",
   peakPch = 1,
+  include_columns = NULL,
   ...
 )
 
@@ -46,6 +47,7 @@ gplot(x, ...)
   peakCol = "#00000060",
   peakBg = "#00000020",
   peakPch = 1,
+  include_columns = NULL,
   ...
 )
 }
@@ -88,6 +90,12 @@ For \code{XChromatograms} objects, this can also be a column name from
 
 \item{peakPch}{Point character for peak markers when \code{peakType = "point"}
 (default: \code{1}).}
+
+\item{include_columns}{For \code{XChromatograms} and \code{MChromatograms}: which
+\code{pData(x)} columns to include in plotly tooltips. \code{NULL} (default) for
+no metadata in tooltips, \code{TRUE} for all columns, or a \code{character} vector
+of specific column names. The tooltip text is stored in the \code{text}
+aesthetic and is used by \code{plotly::ggplotly()}.}
 }
 \value{
 A \code{ggplot} object.

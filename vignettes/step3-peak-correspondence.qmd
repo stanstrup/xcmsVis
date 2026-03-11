@@ -266,6 +266,21 @@ gplot(chr_one_eic, col = "sample_group",
 When `col`, `peakCol`, or `peakBg` match a column name in `Biobase::pData(x)`, the value is used as a *ggplot2* aesthetic mapping. Otherwise it is treated as a static color string (e.g. `col = "red"`). This lets you switch between static and data-driven coloring without changing the function call pattern.
 :::
 
+### Interactive Tooltips with Sample Metadata
+
+Use `include_columns` to add sample metadata to plotly tooltips. Pass `TRUE` for all columns, or a character vector to select specific ones:
+
+```{r interactive_gplot_tooltip}
+#| fig-height: 5
+#| fig-width: 8
+#| fig-alt: "Interactive chromatogram with sample metadata in tooltip."
+p <- gplot(chr_one_eic, col = "sample_group",
+           include_columns = c("sample_group", "sample_index"))
+ggplotly(p, tooltip = "text")
+```
+
+Hovering over a chromatogram line shows the sample metadata. Peak annotations also include their peak ID in the tooltip.
+
 ### Contrast: gplot() vs gplotChromatogramsOverlay()
 
 Here's a direct comparison showing the key difference:

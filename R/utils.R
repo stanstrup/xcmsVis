@@ -204,6 +204,47 @@ NULL
     geom_path, "Ignoring unknown aesthetics: text"
 )
 
+#' @importFrom ggplot2 geom_line
+#' @noRd
+.geom_line_text <- .selectively_suppress_warnings(
+    geom_line, "Ignoring unknown aesthetics: text"
+)
+
+#' Build tooltip text column from pData columns
+#'
+#' Constructs an HTML tooltip string (with \code{<br>} separators) for plotly
+#' from selected columns of a data frame.
+#'
+#' @param df A data frame that already contains the pData columns (e.g., after
+#'   a merge with pData).
+#' @param include_columns \code{TRUE} to include all pData columns,
+#'   a character vector to include specific columns, or \code{NULL} to skip.
+#' @param pdata_cols Character vector of all available pData column names
+#'   (used when \code{include_columns = TRUE}).
+#' @param extra A character vector of the same length as \code{nrow(df)} with
+#'   additional text to prepend (e.g., peak IDs).  \code{NULL} to skip.
+#'
+#' @return A character vector of tooltip strings, or \code{NULL} if
+#'   \code{include_columns} is \code{NULL}.
+#'
+#' @keywords internal
+#' @noRd
+.build_tooltip <- function(df, include_columns, pdata_cols,
+                           extra = NULL) {
+    if (is.null(include_columns)) return(NULL)
+    cols <- if (isTRUE(include_columns)) pdata_cols else include_columns
+    ## Keep only columns that exist in df
+    cols <- intersect(cols, colnames(df))
+    if (length(cols) == 0L) return(NULL)
+    ## Build "name: value" pairs per row
+    parts <- lapply(cols, function(cn) paste0(cn, ": ", df[[cn]]))
+    tooltip <- do.call(function(...) paste(..., sep = "<br>"), parts)
+    if (!is.null(extra)) {
+        tooltip <- paste0(extra, "<br>", tooltip)
+    }
+    tooltip
+}
+
 #' Resolve a color argument as either a static color or a pData column mapping
 #'
 #' Checks whether a string value matches a column name in pData, in which

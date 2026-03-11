@@ -361,6 +361,12 @@ setGeneric("ghighlightChromPeaks",
 #' @param peakPch Point character for peak markers when `peakType = "point"`
 #'     (default: `1`).
 #'
+#' @param include_columns For `XChromatograms` and `MChromatograms`: which
+#'     `pData(x)` columns to include in plotly tooltips. `NULL` (default) for
+#'     no metadata in tooltips, `TRUE` for all columns, or a `character` vector
+#'     of specific column names. The tooltip text is stored in the `text`
+#'     aesthetic and is used by `plotly::ggplotly()`.
+#'
 #' @param ... Additional arguments (for compatibility with plot).
 #'
 #' @return A `ggplot` object.

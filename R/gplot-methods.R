@@ -172,6 +172,7 @@ setMethod("gplot", "XChromatograms",
                    peakCol = "#00000060",
                    peakBg = "#00000020",
                    peakPch = 1,
+                   include_columns = NULL,
                    ...) {
               peakType <- match.arg(peakType)
               ## For multi-row XChromatograms, we'll just plot the first row
@@ -188,8 +189,11 @@ setMethod("gplot", "XChromatograms",
               col_info <- .resolve_color(col, pd_cols)
               peakCol_info <- .resolve_color(peakCol, pd_cols)
               peakBg_info <- .resolve_color(peakBg, pd_cols)
-              ## Build the base chromatogram plot (replicating MChromatograms
-              ## logic with color resolution)
+              any_mapping <- col_info$type == "mapping" ||
+                  peakCol_info$type == "mapping" ||
+                  peakBg_info$type == "mapping"
+              needs_pdata <- any_mapping || !is.null(include_columns)
+              ## Build the base chromatogram plot
               chrom_list <- list()
               for (i in seq_len(ncol(x))) {
                   chr <- x[1, i]
@@ -200,55 +204,81 @@ setMethod("gplot", "XChromatograms",
                   )
               }
               chrom_df <- do.call(rbind, chrom_list)
-              ## Join pData when any parameter uses column mapping
-              any_mapping <- col_info$type == "mapping" ||
-                  peakCol_info$type == "mapping" ||
-                  peakBg_info$type == "mapping"
-              if (any_mapping) {
+              ## Join pData when needed (color mapping or tooltips)
+              if (needs_pdata) {
                   pd$sample <- seq_len(nrow(pd))
                   chrom_df <- merge(chrom_df, pd, by = "sample")
               }
+              ## Build tooltip text for chromatogram lines
+              tooltip <- .build_tooltip(chrom_df, include_columns, pd_cols)
+              has_tooltip <- !is.null(tooltip)
+              if (has_tooltip) chrom_df$text <- tooltip
+              ## Create base plot
               if (col_info$type == "mapping") {
-                  p <- ggplot(chrom_df,
-                              aes(x = rt, y = intensity, group = sample,
-                                  color = .data[[col_info$value]])) +
-                      geom_line(linetype = lty) +
-                      theme_bw() +
-                      labs(x = "retention time", y = "intensity")
+                  if (has_tooltip) {
+                      p <- ggplot(chrom_df,
+                                  aes(x = rt, y = intensity, group = sample,
+                                      color = .data[[col_info$value]],
+                                      text = text)) +
+                          .geom_line_text(linetype = lty)
+                  } else {
+                      p <- ggplot(chrom_df,
+                                  aes(x = rt, y = intensity, group = sample,
+                                      color = .data[[col_info$value]])) +
+                          geom_line(linetype = lty)
+                  }
               } else {
-                  p <- ggplot(chrom_df,
-                              aes(x = rt, y = intensity, group = sample)) +
-                      geom_line(color = col_info$value, linetype = lty) +
-                      theme_bw() +
-                      labs(x = "retention time", y = "intensity")
+                  if (has_tooltip) {
+                      p <- ggplot(chrom_df,
+                                  aes(x = rt, y = intensity, group = sample,
+                                      text = text)) +
+                          .geom_line_text(color = col_info$value,
+                                          linetype = lty)
+                  } else {
+                      p <- ggplot(chrom_df,
+                                  aes(x = rt, y = intensity,
+                                      group = sample)) +
+                          geom_line(color = col_info$value, linetype = lty)
+                  }
               }
+              p <- p + theme_bw() +
+                  labs(x = "retention time", y = "intensity")
               ## Add peak annotations if present and requested
               if (peakType != "none" && any(hasChromPeaks(x))) {
                   pks <- chromPeaks(x)
                   if (nrow(pks) > 0) {
-                      ## For XChromatograms, peaks have row and column indices
                       ## Filter to first row
                       pks <- pks[pks[, "row"] == 1, , drop = FALSE]
                       if (nrow(pks) > 0) {
                           peaks_df <- as_tibble(pks)
-                          ## Join pData to peaks for column-mapped colors
-                          if (any_mapping) {
+                          peaks_df$peak_id <- rownames(pks)
+                          ## Join pData to peaks for colors or tooltips
+                          if (needs_pdata) {
                               peaks_df$sample <- peaks_df$column
                               peaks_df <- merge(peaks_df, pd, by = "sample")
                           }
+                          ## Build peak tooltip (peak_id + metadata)
+                          pk_tooltip <- .build_tooltip(
+                              peaks_df, include_columns, pd_cols,
+                              extra = peaks_df$peak_id)
+                          if (!is.null(pk_tooltip)) {
+                              peaks_df$text <- pk_tooltip
+                          } else {
+                              peaks_df$text <- peaks_df$peak_id
+                          }
                           if (peakType == "point") {
                               if (peakCol_info$type == "mapping") {
-                                  p <- p + geom_point(
+                                  p <- p + .geom_point_text(
                                       data = peaks_df,
-                                      aes(x = rt, y = maxo,
+                                      aes(x = rt, y = maxo, text = text,
                                           color = .data[[peakCol_info$value]]),
                                       shape = peakPch,
                                       inherit.aes = FALSE
                                   )
                               } else {
-                                  p <- p + geom_point(
+                                  p <- p + .geom_point_text(
                                       data = peaks_df,
-                                      aes(x = rt, y = maxo),
+                                      aes(x = rt, y = maxo, text = text),
                                       color = peakCol_info$value,
                                       shape = peakPch,
                                       inherit.aes = FALSE
@@ -256,10 +286,11 @@ setMethod("gplot", "XChromatograms",
                               }
                           } else if (peakType == "rectangle") {
                               if (peakBg_info$type == "mapping") {
-                                  p <- p + geom_rect(
+                                  p <- p + .geom_rect_text(
                                       data = peaks_df,
                                       aes(xmin = rtmin, xmax = rtmax,
                                           ymin = 0, ymax = maxo,
+                                          text = text,
                                           fill = .data[[peakBg_info$value]]),
                                       color = if (peakCol_info$type == "static")
                                                   peakCol_info$value
@@ -267,19 +298,21 @@ setMethod("gplot", "XChromatograms",
                                       inherit.aes = FALSE
                                   )
                               } else if (peakCol_info$type == "mapping") {
-                                  p <- p + geom_rect(
+                                  p <- p + .geom_rect_text(
                                       data = peaks_df,
                                       aes(xmin = rtmin, xmax = rtmax,
                                           ymin = 0, ymax = maxo,
+                                          text = text,
                                           color = .data[[peakCol_info$value]]),
                                       fill = peakBg_info$value,
                                       inherit.aes = FALSE
                                   )
                               } else {
-                                  p <- p + geom_rect(
+                                  p <- p + .geom_rect_text(
                                       data = peaks_df,
                                       aes(xmin = rtmin, xmax = rtmax,
-                                          ymin = 0, ymax = maxo),
+                                          ymin = 0, ymax = maxo,
+                                          text = text),
                                       color = peakCol_info$value,
                                       fill = peakBg_info$value,
                                       inherit.aes = FALSE
@@ -308,14 +341,24 @@ setMethod("gplot", "XChromatograms",
                                   }
                               }
                               if (nrow(poly_df) > 0) {
-                                  if (any_mapping) {
+                                  if (needs_pdata) {
                                       poly_df <- merge(poly_df, pd,
                                                        by = "sample")
                                   }
+                                  ## Build polygon tooltip
+                                  poly_tip <- .build_tooltip(
+                                      poly_df, include_columns, pd_cols,
+                                      extra = poly_df$peak_id)
+                                  if (!is.null(poly_tip)) {
+                                      poly_df$text <- poly_tip
+                                  } else {
+                                      poly_df$text <- poly_df$peak_id
+                                  }
                                   if (peakBg_info$type == "mapping") {
-                                      p <- p + geom_polygon(
+                                      p <- p + .geom_polygon_text(
                                           data = poly_df,
                                           aes(x = rt, y = intensity,
+                                              text = text,
                                               fill = .data[[peakBg_info$value]],
                                               group = interaction(
                                                   sample, peak_id)),
@@ -326,9 +369,10 @@ setMethod("gplot", "XChromatograms",
                                           inherit.aes = FALSE
                                       )
                                   } else if (peakCol_info$type == "mapping") {
-                                      p <- p + geom_polygon(
+                                      p <- p + .geom_polygon_text(
                                           data = poly_df,
                                           aes(x = rt, y = intensity,
+                                              text = text,
                                               color = .data[[
                                                   peakCol_info$value]],
                                               group = interaction(
@@ -337,9 +381,10 @@ setMethod("gplot", "XChromatograms",
                                           inherit.aes = FALSE
                                       )
                                   } else {
-                                      p <- p + geom_polygon(
+                                      p <- p + .geom_polygon_text(
                                           data = poly_df,
-                                          aes(x = rt, y = intensity),
+                                          aes(x = rt, y = intensity,
+                                              text = text),
                                           color = peakCol_info$value,
                                           fill = peakBg_info$value,
                                           inherit.aes = FALSE
@@ -369,6 +414,7 @@ setMethod("gplot", "MChromatograms",
                    peakCol = "#00000060",
                    peakBg = "#00000020",
                    peakPch = 1,
+                   include_columns = NULL,
                    ...) {
               if (nrow(x) > 1) {
                   warning("gplot for MChromatograms with multiple rows only",
@@ -379,6 +425,8 @@ setMethod("gplot", "MChromatograms",
               pd <- Biobase::pData(x)
               pd_cols <- colnames(pd)
               col_info <- .resolve_color(col, pd_cols)
+              needs_pdata <- col_info$type == "mapping" ||
+                  !is.null(include_columns)
               ## Collect data from all columns
               chrom_list <- list()
               for (i in seq_len(ncol(x))) {
@@ -390,22 +438,44 @@ setMethod("gplot", "MChromatograms",
                   )
               }
               chrom_df <- do.call(rbind, chrom_list)
-              ## Join pData when using column mapping
-              if (col_info$type == "mapping") {
+              ## Join pData when needed (color mapping or tooltips)
+              if (needs_pdata) {
                   pd$sample <- seq_len(nrow(pd))
                   chrom_df <- merge(chrom_df, pd, by = "sample")
-                  p <- ggplot(chrom_df,
-                              aes(x = rt, y = intensity, group = sample,
-                                  color = .data[[col_info$value]])) +
-                      geom_line(linetype = lty) +
-                      theme_bw() +
-                      labs(x = "retention time", y = "intensity")
-              } else {
-                  p <- ggplot(chrom_df,
-                              aes(x = rt, y = intensity, group = sample)) +
-                      geom_line(color = col_info$value, linetype = lty) +
-                      theme_bw() +
-                      labs(x = "retention time", y = "intensity")
               }
+              ## Build tooltip text
+              tooltip <- .build_tooltip(chrom_df, include_columns, pd_cols)
+              has_tooltip <- !is.null(tooltip)
+              if (has_tooltip) chrom_df$text <- tooltip
+              ## Create plot
+              if (col_info$type == "mapping") {
+                  if (has_tooltip) {
+                      p <- ggplot(chrom_df,
+                                  aes(x = rt, y = intensity, group = sample,
+                                      color = .data[[col_info$value]],
+                                      text = text)) +
+                          .geom_line_text(linetype = lty)
+                  } else {
+                      p <- ggplot(chrom_df,
+                                  aes(x = rt, y = intensity, group = sample,
+                                      color = .data[[col_info$value]])) +
+                          geom_line(linetype = lty)
+                  }
+              } else {
+                  if (has_tooltip) {
+                      p <- ggplot(chrom_df,
+                                  aes(x = rt, y = intensity, group = sample,
+                                      text = text)) +
+                          .geom_line_text(color = col_info$value,
+                                          linetype = lty)
+                  } else {
+                      p <- ggplot(chrom_df,
+                                  aes(x = rt, y = intensity,
+                                      group = sample)) +
+                          geom_line(color = col_info$value, linetype = lty)
+                  }
+              }
+              p <- p + theme_bw() +
+                  labs(x = "retention time", y = "intensity")
               return(p)
           })
