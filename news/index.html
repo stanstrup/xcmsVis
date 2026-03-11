@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">xcmsVis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.10</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,21 +41,21 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.10" id="changes-in-v09910">Changes in v0.99.10<a class="anchor" aria-label="anchor" href="#changes-in-v09910"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.99.10" id="changes-in-v09910-commit-ca9fab6">Changes in v0.99.10 (commit: ca9fab6)<a class="anchor" aria-label="anchor" href="#changes-in-v09910-commit-ca9fab6"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-0-99-10">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-99-10"></a></h3>
-<ul><li>Fix release notes not being written to NEWS.md by passing <code>${nextRelease.notes}</code> to <code>prepare-news.sh</code> in <code>.releaserc.json</code>.</li>
+<ul><li>pass release notes to prepare-news.sh for NEWS.md entries (<a href="https://github.com/stanstrup/xcmsVis/commit/c46971c1f99e4e9b5589e760ccc82cd0b186b4c7" class="external-link">c46971c</a>)</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.9" id="changes-in-v0999">Changes in v0.99.9<a class="anchor" aria-label="anchor" href="#changes-in-v0999"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.99.9" id="changes-in-v0999-commit-50be182">Changes in v0.99.9 (commit: 50be182)<a class="anchor" aria-label="anchor" href="#changes-in-v0999-commit-50be182"></a></h2>
 <div class="section level3">
 <h3 id="features-0-99-9">Features<a class="anchor" aria-label="anchor" href="#features-0-99-9"></a></h3>
 <ul><li>Add <code>include_columns</code> parameter to <code><a href="../reference/gplot.html">gplot()</a></code> for XChromatograms and MChromatograms, enabling plotly tooltip support with sample metadata. Accepts <code>TRUE</code> (all pData columns) or a character vector of specific column names.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.8" id="changes-in-v0998">Changes in v0.99.8<a class="anchor" aria-label="anchor" href="#changes-in-v0998"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.99.8" id="changes-in-v0998-commit-f36a3b1">Changes in v0.99.8 (commit: f36a3b1)<a class="anchor" aria-label="anchor" href="#changes-in-v0998-commit-f36a3b1"></a></h2>
 <div class="section level3">
 <h3 id="features-0-99-8">Features<a class="anchor" aria-label="anchor" href="#features-0-99-8"></a></h3>
 <ul><li>Add color mapping by pData columns in <code><a href="../reference/gplot.html">gplot()</a></code> for XChromatograms and MChromatograms. The <code>col</code>, <code>peakCol</code>, and <code>peakBg</code> parameters now accept either a static color string or a column name from <code><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html" class="external-link">Biobase::pData()</a></code> for data-driven coloring.</li>
@@ -66,7 +66,15 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.7" id="changes-in-v0997">Changes in v0.99.7<a class="anchor" aria-label="anchor" href="#changes-in-v0997"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.99.7" id="changes-in-v0997-commit-f61c790">Changes in v0.99.7 (commit: f61c790)<a class="anchor" aria-label="anchor" href="#changes-in-v0997-commit-f61c790"></a></h2>
+<div class="section level3">
+<h3 id="refactoring-0-99-7">Refactoring<a class="anchor" aria-label="anchor" href="#refactoring-0-99-7"></a></h3>
+<ul><li>Replace deprecated <em>msdata</em> with <em>MsDataHub</em> for test data loading.</li>
+<li>Reduce code duplication in <code><a href="../reference/gplot.html">gplot()</a></code> for XChromatograms/XChromatogram.</li>
+<li>Call internal functions from xcms with <code>:::</code> instead of reimplementing them.</li>
+<li>Enable examples and cosmetic source code improvements.</li>
+<li>Update and expand unit tests.</li>
+</ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-99-7">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-99-7"></a></h3>
 <ul><li>Update pkgdown navbar links to match renamed vignettes.</li>
@@ -159,24 +167,18 @@
 <ul><li>add gplot() method for XcmsExperiment and XCMSnExp (<a href="https://github.com/stanstrup/xcmsVis/commit/8fd87fbf5e2083b63352cd7ba80f119875629103" class="external-link">8fd87fb</a>)</li>
 <li>add side-by-side comparison for correspondence results (<a href="https://github.com/stanstrup/xcmsVis/commit/b0113ad8ed7a9feee2ef81568a32ccdc6bdf561b" class="external-link">b0113ad</a>)</li>
 <li>implement gplotChromatogramsOverlay for XChromatograms/MChromatograms (<a href="https://github.com/stanstrup/xcmsVis/commit/acfe633b604504cab5986a4bbe7e57a718f82af5" class="external-link">acfe633</a>)</li>
-<li>implement gplotChromPeakDensity for XChromatograms/MChromatograms (<a href="https://github.com/stanstrup/xcmsVis/commit/beff00d0957815f462fe476d38350202b010427c" class="external-link">beff00d</a>), closes <a href="https://github.com/hi/issues/priority" class="external-link">hi#priority</a>
-</li>
+<li>implement gplotChromPeakDensity for XChromatograms/MChromatograms (<a href="https://github.com/stanstrup/xcmsVis/commit/beff00d0957815f462fe476d38350202b010427c" class="external-link">beff00d</a>)</li>
 </ul></div>
 <div class="section level3">
 <h3 id="breaking-changes-0-99-14">BREAKING CHANGES<a class="anchor" aria-label="anchor" href="#breaking-changes-0-99-14"></a></h3>
 <ul><li>gplotChromatogramsOverlay now correctly overlays multiple EICs (rows) from the same sample (column), not multiple samples across the same EIC. This matches the original XCMS behavior.</li>
-</ul><p>Changes: - Now loops through columns (samples) instead of rows (EICs) - Overlays multiple rows (different EICs) in a single plot per sample - Uses facet_wrap for multiple samples instead of patchwork - Main titles now correspond to samples (columns) not EICs (rows) - Updated all tests to reflect correct XCMS behavior</p>
-<p>The key difference from XCMS plot(): - plot() overlays same EIC across different samples - plotChromatogramsOverlay() overlays different EICs within same sample</p>
-<p>🤖 Generated with <a href="https://claude.com/claude-code" class="external-link">Claude Code</a></p>
-<p>Co-Authored-By: Claude <a href="mailto:noreply@anthropic.com" class="email">noreply@anthropic.com</a></p>
-</div>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.99.13" id="changes-in-v09913">Changes in v0.99.13<a class="anchor" aria-label="anchor" href="#changes-in-v09913"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-0-99-13">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-99-13"></a></h3>
-<ul><li>correct pkgdown deployment and documentation link (<a href="https://github.com/stanstrup/xcmsVis/commit/a8f45ea5ecc1d3c2ffa08fba3fa3fa9b13a459ab" class="external-link">a8f45ea</a>), closes <a href="https://github.com/stanstrup/xcmsVis/issues/pages" class="external-link">#pages</a>
-</li>
+<ul><li>correct pkgdown deployment and documentation link (<a href="https://github.com/stanstrup/xcmsVis/commit/a8f45ea5ecc1d3c2ffa08fba3fa3fa9b13a459ab" class="external-link">a8f45ea</a>)</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -194,14 +196,14 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.10" id="changes-in-v09910-1">Changes in v0.99.10<a class="anchor" aria-label="anchor" href="#changes-in-v09910-1"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.99.10" id="changes-in-v09910">Changes in v0.99.10<a class="anchor" aria-label="anchor" href="#changes-in-v09910"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-0-99-10-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-99-10-1"></a></h3>
 <ul><li>add github-pages environment to pkgdown workflow (<a href="https://github.com/stanstrup/xcmsVis/commit/f2c20efc87ba58fe5f8e2c7bfd9b68ec9c80882a" class="external-link">f2c20ef</a>)</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.9" id="changes-in-v0999-1">Changes in v0.99.9<a class="anchor" aria-label="anchor" href="#changes-in-v0999-1"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.99.9" id="changes-in-v0999">Changes in v0.99.9<a class="anchor" aria-label="anchor" href="#changes-in-v0999"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-0-99-9">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-99-9"></a></h3>
 <ul><li>configure BiocParallel for serial processing in tests (<a href="https://github.com/stanstrup/xcmsVis/commit/e8b39796b2e25630385a4a515198620cc0c1c4c9" class="external-link">e8b3979</a>)</li>
@@ -209,7 +211,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.8" id="changes-in-v0998-1">Changes in v0.99.8<a class="anchor" aria-label="anchor" href="#changes-in-v0998-1"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.99.8" id="changes-in-v0998">Changes in v0.99.8<a class="anchor" aria-label="anchor" href="#changes-in-v0998"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-0-99-8-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-99-8-1"></a></h3>
 <ul><li>
@@ -219,7 +221,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.7" id="changes-in-v0997-1">Changes in v0.99.7<a class="anchor" aria-label="anchor" href="#changes-in-v0997-1"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.99.7" id="changes-in-v0997">Changes in v0.99.7<a class="anchor" aria-label="anchor" href="#changes-in-v0997"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-0-99-7-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-99-7-1"></a></h3>
 <ul><li>use GitHub Pages artifact deployment for pkgdown (<a href="https://github.com/stanstrup/xcmsVis/commit/1ce3fc8c773495ee399ae3ad96215a43086d4606" class="external-link">1ce3fc8</a>)</li>

@@ -17,12 +17,12 @@ Source:
 [`DESCRIPTION`](https://github.com/stanstrup/xcmsVis/blob/main/DESCRIPTION)
 
 Jan S (2026). *xcmsVis: Modern Visualization for \*xcms\* Data*. R
-package version 0.99.9, <https://stanstrup.github.io/xcmsVis>.
+package version 0.99.10, <https://stanstrup.github.io/xcmsVis>.
 
     @Manual{,
       title = {xcmsVis: Modern Visualization for *xcms* Data},
       author = {Stanstrup Jan},
       year = {2026},
-      note = {R package version 0.99.9},
+      note = {R package version 0.99.10},
       url = {https://stanstrup.github.io/xcmsVis},
     }
