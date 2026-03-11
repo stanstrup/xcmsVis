@@ -85,7 +85,11 @@ gplot(
 
 - col:
 
-  Color for the chromatogram line (default: `"black"`).
+  Color for the chromatogram line (default: `"black"`). For
+  `XChromatograms` and `MChromatograms` objects, this can also be a
+  **column name** from `pData(x)` to map color to sample metadata (e.g.,
+  `col = "sample_group"`). When a column name is used, ggplot2
+  automatically adds a color legend.
 
 - lty:
 
@@ -102,11 +106,15 @@ gplot(
 
 - peakCol:
 
-  Color for peak markers (default: `"#00000060"`).
+  Color for peak markers (default: `"#00000060"`). For `XChromatograms`
+  objects, this can also be a column name from `pData(x)` to map peak
+  border color to sample metadata.
 
 - peakBg:
 
-  Background color for peak markers (default: `"#00000020"`).
+  Background color for peak markers (default: `"#00000020"`). For
+  `XChromatograms` objects, this can also be a column name from
+  `pData(x)` to map peak fill color to sample metadata.
 
 - peakPch:
 
@@ -126,6 +134,22 @@ automatically marked, similar to the base R
 [`plot()`](https://rdrr.io/r/graphics/plot.default.html) method for
 `XChromatogram` objects. If the chromatogram contains detected peaks,
 they will be shown according to the `peakType` parameter.
+
+### Color Mapping for Multi-Sample Chromatograms
+
+When plotting `XChromatograms` or `MChromatograms` objects (multiple
+samples), the `col`, `peakCol`, and `peakBg` parameters accept either:
+
+- A **static color string** (e.g., `col = "red"`, `col = "#00000060"`) —
+  all samples use the same color (default behavior).
+
+- A **column name** from `pData(x)` as a quoted string (e.g.,
+  `col = "sample_group"`) — each sample is colored according to its
+  metadata value. The column must exist in `Biobase::pData(x)`, which
+  inherits from
+  [`sampleData()`](https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html)
+  of the parent `XcmsExperiment` object. The value is automatically
+  detected as a column name when it matches a column in `pData(x)`.
 
 This function visualizes the retention time alignment model for a
 specific sample.
@@ -189,6 +213,9 @@ gplot(chr[1, 1])
 # Plot data for all samples
 gplot(chr)
 
+
+# Color by sample metadata (requires pData column)
+# gplot(chr, col = "sample_group")
 
 
 library(xcmsVis)

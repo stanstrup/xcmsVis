@@ -538,7 +538,7 @@ sessionInfo()
 #> [7] ggplot2_4.0.2       xcms_4.8.0          BiocParallel_1.44.0
 #> 
 #> loaded via a namespace (and not attached):
-#>   [1] DBI_1.2.3                   rlang_1.1.7                
+#>   [1] DBI_1.3.0                   rlang_1.1.7                
 #>   [3] magrittr_2.0.4              clue_0.3-67                
 #>   [5] MassSpecWavelet_1.76.0      otel_0.2.0                 
 #>   [7] matrixStats_1.5.0           compiler_4.5.2             
@@ -577,7 +577,7 @@ sessionInfo()
 #>  [73] tools_4.5.2                 mzID_1.48.0                
 #>  [75] data.table_1.18.2.1         QFeatures_1.20.0           
 #>  [77] vsn_3.78.1                  mzR_2.44.0                 
-#>  [79] fs_1.6.6                    XML_3.99-0.22              
+#>  [79] fs_1.6.7                    XML_3.99-0.22              
 #>  [81] grid_4.5.2                  impute_1.84.0              
 #>  [83] tidyr_1.3.2                 crosstalk_1.2.2            
 #>  [85] MsCoreUtils_1.22.1          PSMatch_1.14.0             
@@ -585,7 +585,7 @@ sessionInfo()
 #>  [89] S4Arrays_1.10.1             dplyr_1.2.0                
 #>  [91] AnnotationFilter_1.34.0     pcaMethods_2.2.0           
 #>  [93] gtable_0.3.6                digest_0.6.39              
-#>  [95] BiocGenerics_0.56.0         SparseArray_1.10.8         
+#>  [95] BiocGenerics_0.56.0         SparseArray_1.10.9         
 #>  [97] htmlwidgets_1.6.4           farver_2.1.2               
 #>  [99] htmltools_0.5.9             lifecycle_1.0.5            
 #> [101] httr_1.4.8                  statmod_1.5.1              

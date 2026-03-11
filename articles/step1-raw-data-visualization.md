@@ -434,12 +434,12 @@ sessionInfo()
 #>   [1] RColorBrewer_1.1-3          jsonlite_2.0.0             
 #>   [3] MultiAssayExperiment_1.36.1 magrittr_2.0.4             
 #>   [5] farver_2.1.2                MALDIquant_1.22.3          
-#>   [7] rmarkdown_2.30              fs_1.6.6                   
+#>   [7] rmarkdown_2.30              fs_1.6.7                   
 #>   [9] vctrs_0.7.1                 memoise_2.0.1              
 #>  [11] htmltools_0.5.9             S4Arrays_1.10.1            
 #>  [13] BiocBaseUtils_1.12.0        progress_1.2.3             
 #>  [15] AnnotationHub_4.0.0         curl_7.0.0                 
-#>  [17] SparseArray_1.10.8          mzID_1.48.0                
+#>  [17] SparseArray_1.10.9          mzID_1.48.0                
 #>  [19] htmlwidgets_1.6.4           plyr_1.8.9                 
 #>  [21] httr2_1.2.2                 impute_1.84.0              
 #>  [23] cachem_1.1.0                igraph_2.2.2               
@@ -456,7 +456,7 @@ sessionInfo()
 #>  [45] abind_1.4-8                 compiler_4.5.2             
 #>  [47] bit64_4.6.0-1               withr_3.0.2                
 #>  [49] doParallel_1.0.17           S7_0.2.1                   
-#>  [51] DBI_1.2.3                   MASS_7.3-65                
+#>  [51] DBI_1.3.0                   MASS_7.3-65                
 #>  [53] rappdirs_0.3.4              DelayedArray_0.36.0        
 #>  [55] mzR_2.44.0                  tools_4.5.2                
 #>  [57] PSMatch_1.14.0              otel_0.2.0                 
