@@ -1,8 +1,44 @@
 # Changelog
 
-## Changes in v0.99.8 (commit: f36a3b1)
+## Changes in v0.99.10
 
-## Changes in v0.99.7 (commit: f61c790)
+### Bug Fixes
+
+- Fix release notes not being written to NEWS.md by passing
+  `${nextRelease.notes}` to `prepare-news.sh` in `.releaserc.json`.
+
+## Changes in v0.99.9
+
+### Features
+
+- Add `include_columns` parameter to
+  [`gplot()`](https://stanstrup.github.io/xcmsVis/reference/gplot.md)
+  for XChromatograms and MChromatograms, enabling plotly tooltip support
+  with sample metadata. Accepts `TRUE` (all pData columns) or a
+  character vector of specific column names.
+
+## Changes in v0.99.8
+
+### Features
+
+- Add color mapping by pData columns in
+  [`gplot()`](https://stanstrup.github.io/xcmsVis/reference/gplot.md)
+  for XChromatograms and MChromatograms. The `col`, `peakCol`, and
+  `peakBg` parameters now accept either a static color string or a
+  column name from
+  [`Biobase::pData()`](https://rdrr.io/pkg/Biobase/man/phenoData.html)
+  for data-driven coloring.
+
+### Bug Fixes
+
+- Use default static colors in XCMS comparison plots in step3 vignette
+  for visual parity with original XCMS output.
+
+## Changes in v0.99.7
+
+### Bug Fixes
+
+- Update pkgdown navbar links to match renamed vignettes.
 
 ## Changes in v0.99.6
 
@@ -10,20 +46,6 @@
   deprecated *msdata* package.
 - Reduce code duplication in
   `gplot,XChromatograms`/`gplot,XChromatogram` functions.
-
-## Changes in v0.99.5 (commit: b419691)
-
-## Changes in v0.99.4 (commit: 1ad5369)
-
-## Changes in v0.99.3 (commit: 0507311)
-
-## Changes in v0.99.2 (commit: 30e6982)
-
-## Changes in v0.99.1 (commit: 37c562d)
-
-## Changes in v0.99.7 (commit: ae0d7b8)
-
-## Changes in v0.99.6 (commit: a61f93a)
 
 ## Changes in v0.99.20
 
