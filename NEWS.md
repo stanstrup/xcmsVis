@@ -1,3 +1,11 @@
+## Changes in v0.99.10 (commit: ca9fab6)
+
+
+
+### Bug Fixes
+
+* pass release notes to prepare-news.sh for NEWS.md entries ([c46971c](https://github.com/stanstrup/xcmsVis/commit/c46971c1f99e4e9b5589e760ccc82cd0b186b4c7))
+
 ## Changes in v0.99.10
 
 ### Bug Fixes
