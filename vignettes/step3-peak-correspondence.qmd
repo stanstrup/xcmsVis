@@ -275,7 +275,7 @@ Here's a direct comparison showing the key difference:
 #| fig-width: 10
 #| fig-alt: "Side-by-side comparison of gplot() and gplotChromatogramsOverlay()."
 # LEFT: gplot() - same EIC across different samples
-p_left <- gplot(chr_one_eic, col = "sample_group") +
+p_left <- gplot(chr_one_eic) +
   ggtitle("gplot(): Same EIC, Different Samples")
 
 # RIGHT: gplotChromatogramsOverlay() - different EICs within one sample
@@ -425,13 +425,13 @@ plot(chr_one_eic)
 </div>
 <div class="col-md-6">
 
-### xcmsVis ggplot2 (with color mapping)
+### xcmsVis ggplot2
 
 ```{r xcmsvis_gplot}
 #| fig-height: 5
 #| fig-width: 5
-#| fig-alt: "ggplot2 version with color mapped to sample group."
-gplot(chr_one_eic, col = "sample_group")
+#| fig-alt: "ggplot2 version of XChromatograms plot."
+gplot(chr_one_eic)
 ```
 
 </div>
