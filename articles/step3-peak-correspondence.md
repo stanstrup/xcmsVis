@@ -273,6 +273,20 @@ group.](step3-peak-correspondence_files/figure-html/color_peaks_by_metadata-1.pn
 > (e.g. `col = "red"`). This lets you switch between static and
 > data-driven coloring without changing the function call pattern.
 
+#### Interactive Tooltips with Sample Metadata
+
+Use `include_columns` to add sample metadata to plotly tooltips. Pass
+`TRUE` for all columns, or a character vector to select specific ones:
+
+``` r
+p <- gplot(chr_one_eic, col = "sample_group",
+           include_columns = c("sample_group", "sample_index"))
+ggplotly(p, tooltip = "text")
+```
+
+Hovering over a chromatogram line shows the sample metadata. Peak
+annotations also include their peak ID in the tooltip.
+
 #### Contrast: gplot() vs gplotChromatogramsOverlay()
 
 Here’s a direct comparison showing the key difference:
@@ -481,7 +495,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] xcmsVis_0.99.7      patchwork_1.3.2     plotly_4.12.0      
+#> [1] xcmsVis_0.99.8      patchwork_1.3.2     plotly_4.12.0      
 #> [4] ggplot2_4.0.2       MsExperiment_1.12.0 ProtGenerics_1.42.0
 #> [7] xcms_4.8.0          BiocParallel_1.44.0
 #> 

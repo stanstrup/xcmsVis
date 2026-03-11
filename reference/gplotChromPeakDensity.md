@@ -163,6 +163,7 @@ chr <- chromatogram(xdata, mz = c(305.05, 305.15))
 # Visualize peak density with default settings
 prm <- PeakDensityParam(sampleGroups = rep(1, 3), bw = 30)
 gplotChromPeakDensity(chr, param = prm)
+#> Warning: Ignoring unknown aesthetics: text
 #> Warning: Removed 240 rows containing missing values or values outside the scale range
 #> (`geom_line()`).
 
@@ -170,6 +171,7 @@ gplotChromPeakDensity(chr, param = prm)
 # Try different bandwidth to see effect on peak grouping
 prm2 <- PeakDensityParam(sampleGroups = rep(1, 3), bw = 60)
 gplotChromPeakDensity(chr, param = prm2)
+#> Warning: Ignoring unknown aesthetics: text
 #> Warning: Removed 240 rows containing missing values or values outside the scale range
 #> (`geom_line()`).
 

@@ -42,6 +42,7 @@ gplot(
   peakCol = "#00000060",
   peakBg = "#00000020",
   peakPch = 1,
+  include_columns = NULL,
   ...
 )
 
@@ -55,6 +56,7 @@ gplot(
   peakCol = "#00000060",
   peakBg = "#00000020",
   peakPch = 1,
+  include_columns = NULL,
   ...
 )
 ```
@@ -120,6 +122,15 @@ gplot(
 
   Point character for peak markers when `peakType = "point"` (default:
   `1`).
+
+- include_columns:
+
+  For `XChromatograms` and `MChromatograms`: which `pData(x)` columns to
+  include in plotly tooltips. `NULL` (default) for no metadata in
+  tooltips, `TRUE` for all columns, or a `character` vector of specific
+  column names. The tooltip text is stored in the `text` aesthetic and
+  is used by
+  [`plotly::ggplotly()`](https://rdrr.io/pkg/plotly/man/ggplotly.html).
 
 ## Value
 
@@ -212,6 +223,7 @@ gplot(chr[1, 1])
 
 # Plot data for all samples
 gplot(chr)
+#> Warning: Ignoring unknown aesthetics: text
 
 
 # Color by sample metadata (requires pData column)

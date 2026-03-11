@@ -84,57 +84,20 @@ fl <- MsDataHub::PestMix1_DDA.mzML()
 #> see ?MsDataHub and browseVignettes('MsDataHub') for documentation
 #> downloading 1 resources
 #> retrieving 1 resource
-#> Warning: download failed
-#>   web resource path: ‘https://experimenthub.bioconductor.org/fetch/7861’
-#>   local file path: ‘/home/runner/.cache/R/ExperimentHub/71f6727f4423_7861’
-#>   reason: Failed to perform HTTP request.
-#> Caused by error in `curl::curl_fetch_disk()`:
-#> ! Timeout was reached [mghp.osn.xsede.org]:
-#> SSL connection timeout
-#> Warning: bfcadd() failed; resource removed
-#>   rid: BFC3
-#>   fpath: ‘https://experimenthub.bioconductor.org/fetch/7861’
-#>   reason: download failed
-#> Warning: download failed
-#>   hub path: ‘https://experimenthub.bioconductor.org/fetch/7861’
-#>   cache resource: ‘EH7811 : 7861’
-#>   reason: bfcadd() failed; see warnings()
-#> Error loading resource.
-#>  attempting to re-download
-#> downloading 1 resources
-#> retrieving 1 resource
-#> Warning: download failed
-#>   web resource path: ‘https://experimenthub.bioconductor.org/fetch/7861’
-#>   local file path: ‘/home/runner/.cache/R/ExperimentHub/71f631a9da5d_7861’
-#>   reason: Failed to perform HTTP request.
-#> Caused by error in `curl::curl_fetch_disk()`:
-#> ! Timeout was reached [mghp.osn.xsede.org]:
-#> SSL connection timeout
-#> Warning: bfcadd() failed; resource removed
-#>   rid: BFC4
-#>   fpath: ‘https://experimenthub.bioconductor.org/fetch/7861’
-#>   reason: download failed
-#> Warning: download failed
-#>   hub path: ‘https://experimenthub.bioconductor.org/fetch/7861’
-#>   cache resource: ‘EH7811 : 7861’
-#>   reason: bfcadd() failed; see warnings()
-#> Error: failed to load resource
-#>   name: EH7811
-#>   title: PestMix1_DDA.mzML
-#>   reason: 1 resources failed to download
+#> 
+#> loading from cache
 pest_dda <- readMsExperiment(fl)
-#> Error: object 'fl' not found
 
 gplotPrecursorIons(pest_dda)
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'gplotPrecursorIons': object 'pest_dda' not found
+
 
 ## Customize labels with ggplot2
 gplotPrecursorIons(pest_dda) + labs(x = "RT (s)", y = "Precursor m/z",
     title = "DDA Analysis")
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'gplotPrecursorIons': object 'pest_dda' not found
+
 
 ## Subset the data object to plot the data specifically for one or
 ## selected file/sample:
 gplotPrecursorIons(pest_dda[1L])
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'gplotPrecursorIons': object 'pest_dda' not found
+
 ```
