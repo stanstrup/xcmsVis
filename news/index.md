@@ -38,14 +38,16 @@
 
 ### Refactoring
 
-- Replace deprecated *msdata* with *MsDataHub* for test data loading.
+- Replace deprecated *msdata* with *MsDataHub* for test data loading
+  (Johannes Rainer).
 - Reduce code duplication in
   [`gplot()`](https://stanstrup.github.io/xcmsVis/reference/gplot.md)
-  for XChromatograms/XChromatogram.
+  for XChromatograms/XChromatogram (Johannes Rainer).
 - Call internal functions from xcms with `:::` instead of reimplementing
-  them.
-- Enable examples and cosmetic source code improvements.
-- Update and expand unit tests.
+  them (Johannes Rainer).
+- Enable examples and cosmetic source code improvements (Johannes
+  Rainer).
+- Update and expand unit tests (Johannes Rainer).
 
 ### Bug Fixes
 
@@ -54,9 +56,10 @@
 ## Changes in v0.99.6
 
 - Load test data from *MsDataHub* dropping dependency from the
-  deprecated *msdata* package.
+  deprecated *msdata* package (Johannes Rainer).
 - Reduce code duplication in
-  `gplot,XChromatograms`/`gplot,XChromatogram` functions.
+  `gplot,XChromatograms`/`gplot,XChromatogram` functions (Johannes
+  Rainer).
 
 ## Changes in v0.99.20
 
