@@ -182,7 +182,46 @@ setMethod("gplot", "XChromatograms",
                           "only plots the first row")
                   x <- x[1, , drop = FALSE]
               }
-              p <- callNextMethod() # Create the basic chromatogram plot
+              ## Resolve color parameters against pData columns
+              pd <- Biobase::pData(x)
+              pd_cols <- colnames(pd)
+              col_info <- .resolve_color(col, pd_cols)
+              peakCol_info <- .resolve_color(peakCol, pd_cols)
+              peakBg_info <- .resolve_color(peakBg, pd_cols)
+              ## Build the base chromatogram plot (replicating MChromatograms
+              ## logic with color resolution)
+              chrom_list <- list()
+              for (i in seq_len(ncol(x))) {
+                  chr <- x[1, i]
+                  chrom_list[[i]] <- data.frame(
+                      rt = rtime(chr),
+                      intensity = intensity(chr),
+                      sample = i
+                  )
+              }
+              chrom_df <- do.call(rbind, chrom_list)
+              ## Join pData when any parameter uses column mapping
+              any_mapping <- col_info$type == "mapping" ||
+                  peakCol_info$type == "mapping" ||
+                  peakBg_info$type == "mapping"
+              if (any_mapping) {
+                  pd$sample <- seq_len(nrow(pd))
+                  chrom_df <- merge(chrom_df, pd, by = "sample")
+              }
+              if (col_info$type == "mapping") {
+                  p <- ggplot(chrom_df,
+                              aes(x = rt, y = intensity, group = sample,
+                                  color = .data[[col_info$value]])) +
+                      geom_line(linetype = lty) +
+                      theme_bw() +
+                      labs(x = "retention time", y = "intensity")
+              } else {
+                  p <- ggplot(chrom_df,
+                              aes(x = rt, y = intensity, group = sample)) +
+                      geom_line(color = col_info$value, linetype = lty) +
+                      theme_bw() +
+                      labs(x = "retention time", y = "intensity")
+              }
               ## Add peak annotations if present and requested
               if (peakType != "none" && any(hasChromPeaks(x))) {
                   pks <- chromPeaks(x)
@@ -192,45 +231,120 @@ setMethod("gplot", "XChromatograms",
                       pks <- pks[pks[, "row"] == 1, , drop = FALSE]
                       if (nrow(pks) > 0) {
                           peaks_df <- as_tibble(pks)
+                          ## Join pData to peaks for column-mapped colors
+                          if (any_mapping) {
+                              peaks_df$sample <- peaks_df$column
+                              peaks_df <- merge(peaks_df, pd, by = "sample")
+                          }
                           if (peakType == "point") {
-                              p <- p + geom_point(
-                                  data = peaks_df,
-                                  aes(x = rt, y = maxo),
-                                  color = peakCol,
-                                  shape = peakPch,
-                                  inherit.aes = FALSE
-                              )
+                              if (peakCol_info$type == "mapping") {
+                                  p <- p + geom_point(
+                                      data = peaks_df,
+                                      aes(x = rt, y = maxo,
+                                          color = .data[[peakCol_info$value]]),
+                                      shape = peakPch,
+                                      inherit.aes = FALSE
+                                  )
+                              } else {
+                                  p <- p + geom_point(
+                                      data = peaks_df,
+                                      aes(x = rt, y = maxo),
+                                      color = peakCol_info$value,
+                                      shape = peakPch,
+                                      inherit.aes = FALSE
+                                  )
+                              }
                           } else if (peakType == "rectangle") {
-                              p <- p + geom_rect(
-                                  data = peaks_df,
-                                  aes(xmin = rtmin, xmax = rtmax,
-                                      ymin = 0, ymax = maxo),
-                                  color = peakCol,
-                                  fill = peakBg,
-                                  inherit.aes = FALSE
-                              )
+                              if (peakBg_info$type == "mapping") {
+                                  p <- p + geom_rect(
+                                      data = peaks_df,
+                                      aes(xmin = rtmin, xmax = rtmax,
+                                          ymin = 0, ymax = maxo,
+                                          fill = .data[[peakBg_info$value]]),
+                                      color = if (peakCol_info$type == "static")
+                                                  peakCol_info$value
+                                              else NA,
+                                      inherit.aes = FALSE
+                                  )
+                              } else if (peakCol_info$type == "mapping") {
+                                  p <- p + geom_rect(
+                                      data = peaks_df,
+                                      aes(xmin = rtmin, xmax = rtmax,
+                                          ymin = 0, ymax = maxo,
+                                          color = .data[[peakCol_info$value]]),
+                                      fill = peakBg_info$value,
+                                      inherit.aes = FALSE
+                                  )
+                              } else {
+                                  p <- p + geom_rect(
+                                      data = peaks_df,
+                                      aes(xmin = rtmin, xmax = rtmax,
+                                          ymin = 0, ymax = maxo),
+                                      color = peakCol_info$value,
+                                      fill = peakBg_info$value,
+                                      inherit.aes = FALSE
+                                  )
+                              }
                           } else if (peakType == "polygon") {
                               poly_df <- data.frame()
                               for (j in seq_len(ncol(x))) {
                                   chr <- x[1L, j]
-                                  pks <- chromPeaks(chr)
-                                  if (nrow(pks)) {
-                                      peaks_df <- as_tibble(pks)
-                                      poly_df <- rbind(
-                                          poly_df,
-                                          .add_polygon_peaks(chr, peaks_df,
-                                                             rownames(pks),
-                                                             peakCol, peakBg))
+                                  pks_j <- chromPeaks(chr)
+                                  if (nrow(pks_j)) {
+                                      pks_j_df <- as_tibble(pks_j)
+                                      pdf_j <- .add_polygon_peaks(
+                                          chr, pks_j_df,
+                                          rownames(pks_j),
+                                          if (peakCol_info$type == "static")
+                                              peakCol_info$value
+                                          else "#00000060",
+                                          if (peakBg_info$type == "static")
+                                              peakBg_info$value
+                                          else "#00000020")
+                                      if (!is.null(pdf_j)) {
+                                          pdf_j$sample <- j
+                                          poly_df <- rbind(poly_df, pdf_j)
+                                      }
                                   }
                               }
-                              if (nrow(poly_df)) {
-                                  p <- p + geom_polygon(
-                                      data = poly_df,
-                                      aes(x = rt, y = intensity),
-                                      color = peakCol,
-                                      fill = peakBg,
-                                      inherit.aes = FALSE
-                                  )
+                              if (nrow(poly_df) > 0) {
+                                  if (any_mapping) {
+                                      poly_df <- merge(poly_df, pd,
+                                                       by = "sample")
+                                  }
+                                  if (peakBg_info$type == "mapping") {
+                                      p <- p + geom_polygon(
+                                          data = poly_df,
+                                          aes(x = rt, y = intensity,
+                                              fill = .data[[peakBg_info$value]],
+                                              group = interaction(
+                                                  sample, peak_id)),
+                                          color = if (peakCol_info$type ==
+                                                      "static")
+                                                      peakCol_info$value
+                                                  else NA,
+                                          inherit.aes = FALSE
+                                      )
+                                  } else if (peakCol_info$type == "mapping") {
+                                      p <- p + geom_polygon(
+                                          data = poly_df,
+                                          aes(x = rt, y = intensity,
+                                              color = .data[[
+                                                  peakCol_info$value]],
+                                              group = interaction(
+                                                  sample, peak_id)),
+                                          fill = peakBg_info$value,
+                                          inherit.aes = FALSE
+                                      )
+                                  } else {
+                                      p <- p + geom_polygon(
+                                          data = poly_df,
+                                          aes(x = rt, y = intensity),
+                                          color = peakCol_info$value,
+                                          fill = peakBg_info$value,
+                                          inherit.aes = FALSE
+                                      )
+                                  }
                               }
                           }
                       }
@@ -242,6 +356,8 @@ setMethod("gplot", "XChromatograms",
 #' @rdname gplot
 #'
 #' @importClassesFrom MSnbase MChromatograms
+#' @importFrom Biobase pData
+#' @importFrom rlang .data
 #'
 #' @export
 setMethod("gplot", "MChromatograms",
@@ -259,6 +375,10 @@ setMethod("gplot", "MChromatograms",
                           " plots the first row")
                   x <- x[1, , drop = FALSE]
               }
+              ## Get pData and resolve color parameter
+              pd <- Biobase::pData(x)
+              pd_cols <- colnames(pd)
+              col_info <- .resolve_color(col, pd_cols)
               ## Collect data from all columns
               chrom_list <- list()
               for (i in seq_len(ncol(x))) {
@@ -270,13 +390,22 @@ setMethod("gplot", "MChromatograms",
                   )
               }
               chrom_df <- do.call(rbind, chrom_list)
-              ## Create plot
-              p <- ggplot(chrom_df, aes(x = rt, y = intensity, group = sample))+
-                  geom_line(color = col, linetype = lty) +
-                  theme_bw() +
-                  labs(
-                      x = "retention time",
-                      y = "intensity"
-                  )
+              ## Join pData when using column mapping
+              if (col_info$type == "mapping") {
+                  pd$sample <- seq_len(nrow(pd))
+                  chrom_df <- merge(chrom_df, pd, by = "sample")
+                  p <- ggplot(chrom_df,
+                              aes(x = rt, y = intensity, group = sample,
+                                  color = .data[[col_info$value]])) +
+                      geom_line(linetype = lty) +
+                      theme_bw() +
+                      labs(x = "retention time", y = "intensity")
+              } else {
+                  p <- ggplot(chrom_df,
+                              aes(x = rt, y = intensity, group = sample)) +
+                      geom_line(color = col_info$value, linetype = lty) +
+                      theme_bw() +
+                      labs(x = "retention time", y = "intensity")
+              }
               return(p)
           })

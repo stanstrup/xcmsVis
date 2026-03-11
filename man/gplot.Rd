@@ -64,7 +64,11 @@ semi-transparent black).}
 \item{colFit}{Color for the fitted model line (default:
 semi-transparent black).}
 
-\item{col}{Color for the chromatogram line (default: \code{"black"}).}
+\item{col}{Color for the chromatogram line (default: \code{"black"}). For
+\code{XChromatograms} and \code{MChromatograms} objects, this can also be a
+\strong{column name} from \code{pData(x)} to map color to sample metadata
+(e.g., \code{col = "sample_group"}). When a column name is used,
+ggplot2 automatically adds a color legend.}
 
 \item{lty}{Line type for chromatogram (default: \code{1}).}
 
@@ -74,9 +78,13 @@ semi-transparent black).}
 \code{"polygon"}, \code{"point"}, \code{"rectangle"}, or \code{"none"}
 (default: \code{"polygon"}).}
 
-\item{peakCol}{Color for peak markers (default: \code{"#00000060"}).}
+\item{peakCol}{Color for peak markers (default: \code{"#00000060"}). For
+\code{XChromatograms} objects, this can also be a column name from
+\code{pData(x)} to map peak border color to sample metadata.}
 
-\item{peakBg}{Background color for peak markers (default: \code{"#00000020"}).}
+\item{peakBg}{Background color for peak markers (default: \code{"#00000020"}).
+For \code{XChromatograms} objects, this can also be a column name from
+\code{pData(x)} to map peak fill color to sample metadata.}
 
 \item{peakPch}{Point character for peak markers when \code{peakType = "point"}
 (default: \code{1}).}
@@ -100,6 +108,21 @@ This function creates a complete chromatogram plot with detected peaks
 automatically marked, similar to the base R \code{plot()} method for
 \code{XChromatogram} objects. If the chromatogram contains detected peaks,
 they will be shown according to the \code{peakType} parameter.
+\subsection{Color Mapping for Multi-Sample Chromatograms}{
+
+When plotting \code{XChromatograms} or \code{MChromatograms} objects (multiple
+samples), the \code{col}, \code{peakCol}, and \code{peakBg} parameters accept either:
+\itemize{
+\item A \strong{static color string} (e.g., \code{col = "red"}, \code{col = "#00000060"})
+— all samples use the same color (default behavior).
+\item A \strong{column name} from \code{pData(x)} as a quoted string (e.g.,
+\code{col = "sample_group"}) — each sample is colored according to its
+metadata value. The column must exist in \code{Biobase::pData(x)}, which
+inherits from \code{sampleData()} of the parent \code{XcmsExperiment} object.
+The value is automatically detected as a column name when it matches
+a column in \code{pData(x)}.
+}
+}
 
 This function visualizes the retention time alignment model for a specific
 sample.
@@ -139,6 +162,9 @@ gplot(chr[1, 1])
 
 # Plot data for all samples
 gplot(chr)
+
+# Color by sample metadata (requires pData column)
+# gplot(chr, col = "sample_group")
 
 
 library(xcmsVis)

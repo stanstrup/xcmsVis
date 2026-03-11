@@ -40,7 +40,8 @@ utils::globalVariables(c(
   "Peak density",
   "peak_id",
   "obs",
-  "ref"
+  "ref",
+  "sample_label"
 ))
 
 #' Get sample data from XCMS object
@@ -202,3 +203,31 @@ NULL
 .geom_path_text <- .selectively_suppress_warnings(
     geom_path, "Ignoring unknown aesthetics: text"
 )
+
+#' Resolve a color argument as either a static color or a pData column mapping
+#'
+#' Checks whether a string value matches a column name in pData, in which
+#' case it is treated as an aesthetic mapping.  Otherwise the value is used
+#' as a static colour.
+#'
+#' @param value The evaluated value of the colour argument (a character
+#'   string).
+#' @param pdata_cols Character vector of column names available in pData.
+#'
+#' @return A list with two elements:
+#'   \describe{
+#'     \item{type}{\code{"mapping"} if \code{value} is a length-1 string
+#'       found in \code{pdata_cols}, or \code{"static"} otherwise.}
+#'     \item{value}{The original \code{value}, unchanged.}
+#'   }
+#'
+#' @keywords internal
+#' @noRd
+.resolve_color <- function(value, pdata_cols) {
+    if (is.character(value) && length(value) == 1L &&
+        value %in% pdata_cols) {
+        list(type = "mapping", value = value)
+    } else {
+        list(type = "static", value = value)
+    }
+}

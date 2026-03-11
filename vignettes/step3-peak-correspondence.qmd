@@ -65,6 +65,7 @@ Peak correspondence groups chromatographic peaks detected across different sampl
 
 ```{r libraries}
 library(xcms)
+library(MsExperiment)
 library(ggplot2)
 library(plotly)
 library(patchwork)
@@ -78,6 +79,9 @@ We'll use pre-processed test data from XCMS for faster execution:
 ```{r load_data}
 # Load pre-processed data with detected peaks
 xdata <- loadXcmsData("faahko_sub2")
+
+# Add sample group metadata (the files are all KO/KO/WT from faahKO)
+MsExperiment::sampleData(xdata)$sample_group <- c("KO", "KO", "WT")
 
 # Check data
 cat("Samples:", length(fileNames(xdata)), "\n")
@@ -226,6 +230,42 @@ gplotChromatogramsOverlay(chr_all,
                           main = c("Sample 1", "Sample 2", "Sample 3"))
 ```
 
+### Color by Sample Metadata
+
+When your `XcmsExperiment` has sample metadata (e.g., sample groups), this is automatically carried over to `pData()` of the extracted chromatograms. You can color each sample by a metadata column by passing the column name as a string to `col`:
+
+```{r color_by_metadata}
+#| fig-height: 5
+#| fig-width: 8
+#| fig-alt: "Chromatograms colored by sample group metadata."
+# Add sample metadata (if not already present)
+chr_one_eic <- chromatogram(xdata, mz = c(305.05, 305.15))
+
+# Check available metadata columns
+Biobase::pData(chr_one_eic)
+
+# Color lines by sample_group - just pass the column name as a string
+gplot(chr_one_eic, col = "sample_group") +
+  ggtitle("EIC Colored by Sample Group")
+```
+
+The same works for peak annotations — `peakCol` and `peakBg` also accept column names:
+
+```{r color_peaks_by_metadata}
+#| fig-height: 5
+#| fig-width: 8
+#| fig-alt: "Chromatograms with peak fill colored by sample group."
+# Color both lines and peak fills by sample group
+gplot(chr_one_eic, col = "sample_group",
+      peakBg = "sample_group", peakType = "polygon") +
+  ggtitle("Peaks Colored by Sample Group")
+```
+
+::: {.callout-tip}
+## How it works
+When `col`, `peakCol`, or `peakBg` match a column name in `Biobase::pData(x)`, the value is used as a *ggplot2* aesthetic mapping. Otherwise it is treated as a static color string (e.g. `col = "red"`). This lets you switch between static and data-driven coloring without changing the function call pattern.
+:::
+
 ### Contrast: gplot() vs gplotChromatogramsOverlay()
 
 Here's a direct comparison showing the key difference:
@@ -235,8 +275,7 @@ Here's a direct comparison showing the key difference:
 #| fig-width: 10
 #| fig-alt: "Side-by-side comparison of gplot() and gplotChromatogramsOverlay()."
 # LEFT: gplot() - same EIC across different samples
-chr_one_eic <- chromatogram(xdata, mz = c(305.05, 305.15))
-p_left <- gplot(chr_one_eic) +
+p_left <- gplot(chr_one_eic, col = "sample_group") +
   ggtitle("gplot(): Same EIC, Different Samples")
 
 # RIGHT: gplotChromatogramsOverlay() - different EICs within one sample
@@ -364,6 +403,35 @@ plotChromPeakDensity(chr, param = prm)
 #| fig-width: 5
 #| fig-alt: "ggplot2 version with clean aesthetics."
 gplotChromPeakDensity(chr, param = prm)
+```
+
+</div>
+</div>
+
+## gplot() vs plot() for XChromatograms
+
+<div class="row">
+<div class="col-md-6">
+
+### Original XCMS
+
+```{r original_gplot}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "XCMS plot for XChromatograms using base R graphics."
+plot(chr_one_eic)
+```
+
+</div>
+<div class="col-md-6">
+
+### xcmsVis ggplot2 (with color mapping)
+
+```{r xcmsvis_gplot}
+#| fig-height: 5
+#| fig-width: 5
+#| fig-alt: "ggplot2 version with color mapped to sample group."
+gplot(chr_one_eic, col = "sample_group")
 ```
 
 </div>

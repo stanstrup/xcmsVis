@@ -46,7 +46,8 @@ Imports:
     methods,
     Biobase,
     grDevices,
-    ProtGenerics
+    ProtGenerics,
+    rlang
 Suggests:
     plotly,
     testthat (>= 3.0.0),

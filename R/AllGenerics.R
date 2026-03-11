@@ -336,7 +336,11 @@ setGeneric("ghighlightChromPeaks",
 #'
 #' @param x An `XChromatogram` or `MChromatograms` object.
 #'
-#' @param col Color for the chromatogram line (default: `"black"`).
+#' @param col Color for the chromatogram line (default: `"black"`). For
+#'     `XChromatograms` and `MChromatograms` objects, this can also be a
+#'     **column name** from `pData(x)` to map color to sample metadata
+#'     (e.g., `col = "sample_group"`). When a column name is used,
+#'     ggplot2 automatically adds a color legend.
 #'
 #' @param lty Line type for chromatogram (default: `1`).
 #'
@@ -346,9 +350,13 @@ setGeneric("ghighlightChromPeaks",
 #'     `"polygon"`, `"point"`, `"rectangle"`, or `"none"`
 #'     (default: `"polygon"`).
 #'
-#' @param peakCol Color for peak markers (default: `"#00000060"`).
+#' @param peakCol Color for peak markers (default: `"#00000060"`). For
+#'     `XChromatograms` objects, this can also be a column name from
+#'     `pData(x)` to map peak border color to sample metadata.
 #'
 #' @param peakBg Background color for peak markers (default: `"#00000020"`).
+#'     For `XChromatograms` objects, this can also be a column name from
+#'     `pData(x)` to map peak fill color to sample metadata.
 #'
 #' @param peakPch Point character for peak markers when `peakType = "point"`
 #'     (default: `1`).
@@ -363,6 +371,21 @@ setGeneric("ghighlightChromPeaks",
 #' automatically marked, similar to the base R `plot()` method for
 #' `XChromatogram` objects. If the chromatogram contains detected peaks,
 #' they will be shown according to the `peakType` parameter.
+#'
+#' ## Color Mapping for Multi-Sample Chromatograms
+#'
+#' When plotting `XChromatograms` or `MChromatograms` objects (multiple
+#' samples), the `col`, `peakCol`, and `peakBg` parameters accept either:
+#'
+#' - A **static color string** (e.g., `col = "red"`, `col = "#00000060"`)
+#'   — all samples use the same color (default behavior).
+#'
+#' - A **column name** from `pData(x)` as a quoted string (e.g.,
+#'   `col = "sample_group"`) — each sample is colored according to its
+#'   metadata value. The column must exist in `Biobase::pData(x)`, which
+#'   inherits from `sampleData()` of the parent `XcmsExperiment` object.
+#'   The value is automatically detected as a column name when it matches
+#'   a column in `pData(x)`.
 #'
 #' @author Jan Stanstrup
 #'
@@ -383,6 +406,9 @@ setGeneric("ghighlightChromPeaks",
 #'
 #' # Plot data for all samples
 #' gplot(chr)
+#'
+#' # Color by sample metadata (requires pData column)
+#' # gplot(chr, col = "sample_group")
 #'
 #' @seealso
 #'
