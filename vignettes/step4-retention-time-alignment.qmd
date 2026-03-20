@@ -1,6 +1,6 @@
 ---
 title: "Step 4: Retention Time Alignment Visualization"
-author: "xcmsVis Package"
+package: xcmsVis
 date: today
 format:
   html:
@@ -28,14 +28,16 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette covers the **fourth step** in the XCMS metabolomics workflow: **retention time alignment**. After peak correspondence, these functions help you:
+This vignette covers the **fourth step** in the *xcms* metabolomics workflow:
+**retention time alignment**. After peak correspondence, these functions help
+you:
 
 - Visualize retention time corrections across samples
 - Assess alignment quality
 - Compare different alignment methods
 - Examine alignment model parameters (LamaParama)
 
-## XCMS Workflow Context
+## *xcms* Workflow Context
 
 ```
 ┌───────────────────────────────┐
@@ -51,14 +53,17 @@ This vignette covers the **fourth step** in the XCMS metabolomics workflow: **re
 
 ## What is Retention Time Alignment?
 
-Retention time alignment (also called retention time correction) adjusts for systematic shifts in retention time between samples. This improves feature detection by ensuring that the same compound elutes at consistent times across all samples.
+Retention time alignment (also called retention time correction) adjusts for
+systematic shifts in retention time between samples. This improves feature
+detection by ensuring that the same compound elutes at consistent times across
+all samples.
 
 ## Functions Covered
 
 | Function | Purpose | Input Type |
 |----------|---------|------------|
-| `gplotAdjustedRtime()` | General RT alignment visualization | XcmsExperiment, XCMSnExp |
-| `gplot(LamaParama)` | LamaParama-specific model visualization | LamaParama object |
+| `gplotAdjustedRtime()` | General RT alignment visualization | `XcmsExperiment`, `XCMSnExp` |
+| `gplot(LamaParama)` | LamaParama-specific model visualization | `LamaParama` object |
 
 # Setup
 
@@ -74,7 +79,7 @@ library(BiocParallel)
 
 # Data Preparation
 
-We'll use the faahKO package data:
+We'll use the *faahKO* package data:
 
 ```{r load_data}
 # Get example CDF files
@@ -213,7 +218,8 @@ gplotAdjustedRtime(xdata_filtered, color_by = sample_group)
 
 ### With subset Parameter
 
-You can use only specific samples for alignment calculation while keeping all samples in the dataset:
+You can use only specific samples for alignment calculation while keeping all
+samples in the dataset:
 
 ```{r with_subset}
 # Work with a fresh copy of grouped data
@@ -241,22 +247,28 @@ gplotAdjustedRtime(xdata_subset, color_by = sample_group)
 
 ## What is LamaParama?
 
-LamaParama (Landmark-based Alignment Parameters) is an alignment method in XCMS that uses feature groups as "landmarks" to correct retention time shifts. Unlike other methods, it explicitly models the RT relationship and stores the alignment parameters for visualization and quality assessment.
+LamaParama (Landmark-based Alignment Parameters) is an alignment method in
+*xcms* that uses feature groups as "landmarks" to correct retention time
+shifts. Unlike other methods, it explicitly models the RT relationship and
+stores the alignment parameters for visualization and quality assessment.
 
 ## Landmark-Based Alignment
 
-LamaParama alignment works by using a subset of high-quality features as "landmarks" to model retention time shifts. The key is to select features that are reliably detected across samples.
+`LamaParama` alignment works by using a subset of high-quality features as
+"landmarks" to model retention time shifts. The key is to select features that
+are reliably detected across samples.
 
 ```{r lama_alignment}
 # Work with fresh grouped data
 xdata_lama <- xdata_grouped
 
 # Filter to high-quality features present in most samples
-# Using PercentMissingFilter to keep only features found in at least 80% of samples
+# Using PercentMissingFilter to keep only features found in at least 80%
+# of samples
 library(MsFeatures)
 xdata_filtered <- filterFeatures(
   xdata_lama,
-  PercentMissingFilter(threshold = 20, f = sampleData(xdata_lama)$sample_group)  # Allow max 20% missing
+  PercentMissingFilter(threshold = 20, f = sampleData(xdata_lama)$sample_group)
 )
 
 # Extract filtered feature definitions to use as landmarks
@@ -289,7 +301,8 @@ xdata_lama <- adjustRtime(xdata_lama, param = lama_param)
 
 ```{r extract_lama}
 # Extract LamaParama from process history
-proc_hist <- processHistory(xdata_lama, type = xcms:::.PROCSTEP.RTIME.CORRECTION)
+proc_hist <- processHistory(xdata_lama,
+                            type = xcms:::.PROCSTEP.RTIME.CORRECTION)
 lama_result <- proc_hist[[length(proc_hist)]]@param
 ```
 
@@ -306,7 +319,9 @@ p <- gplot(lama_result, index = 1)
 p
 ```
 
-The x-axis shows the observed retention times in the sample, while the y-axis shows the reference (or "Lama") retention times. The fitted line shows how retention times should be adjusted.
+The x-axis shows the observed retention times in the sample, while the y-axis
+shows the reference (or "Lama") retention times. The fitted line shows how
+retention times should be adjusted.
 
 ### Multiple Samples
 
@@ -321,7 +336,10 @@ library(patchwork)
 p1 / p2 / p3
 ```
 
-The plots show how well the filtered landmark features align between samples. Since we filtered to features present in at least 80% of samples, these landmarks represent robust, high-quality features suitable for modeling retention time shifts.
+The plots show how well the filtered landmark features align between
+samples. Since we filtered to features present in at least 80% of samples, these
+landmarks represent robust, high-quality features suitable for modeling
+retention time shifts.
 
 
 ### Customization
@@ -372,14 +390,16 @@ A good alignment shows:
 
 Watch for:
 
-- **Few matched points**: May indicate poor peak grouping or too strict tolerance
+- **Few matched points**: May indicate poor peak grouping or too strict
+  tolerance
 - **Non-smooth fit**: Could indicate overfitting or poor parameter choice
 - **Many outliers**: May suggest RT shifts that are too complex for the model
 - **Gaps in coverage**: Some RT regions may not be well-represented
 
 ## Comparing with Overall Alignment
 
-You can use `gplotAdjustedRtime()` to visualize the overall LamaParama alignment result:
+You can use `gplotAdjustedRtime()` to visualize the overall LamaParama alignment
+result:
 
 ```{r lama_overall}
 gplotAdjustedRtime(xdata_lama, color_by = sample_group) +
@@ -418,19 +438,20 @@ p_pg | p_lama
 
 After aligning retention times, proceed to:
 
-→ **[Step 5: Feature Grouping](step5-feature-grouping.html)** - Group features (isotopes, adducts)
+→ **[Step 5: Feature Grouping](step5-feature-grouping.html)** - Group features
+(isotopes, adducts)
 
-# Comparison with Original XCMS
+# Comparison with Original *xcms*
 
 <div class="row">
 <div class="col-md-6">
 
-## Original XCMS
+## Original *xcms*
 
 ```{r original_rt}
 #| fig-height: 4
 #| fig-width: 5
-#| fig-alt: "XCMS plotAdjustedRtime using base R graphics."
+#| fig-alt: "*xcms* plotAdjustedRtime using base R graphics."
 sample_data <- sampleData(xdata)
 
 plotAdjustedRtime(
@@ -443,7 +464,7 @@ plotAdjustedRtime(
 </div>
 <div class="col-md-6">
 
-## xcmsVis ggplot2
+## *xcmsVis* ggplot2
 
 ```{r xcmsvis_rt}
 #| fig-height: 4
@@ -460,19 +481,19 @@ gplotAdjustedRtime(xdata, color_by = sample_group)
 <div class="row">
 <div class="col-md-6">
 
-### Original XCMS
+### Original *xcms*
 
 ```{r original_lama}
 #| fig-height: 5
 #| fig-width: 5
-#| fig-alt: "XCMS plot(LamaParama) using base R graphics."
+#| fig-alt: "*xcms* plot(LamaParama) using base R graphics."
 plot(lama_result, index = 1)
 ```
 
 </div>
 <div class="col-md-6">
 
-### xcmsVis ggplot2
+### *xcmsVis* ggplot2
 
 ```{r xcmsvis_lama}
 #| fig-height: 5

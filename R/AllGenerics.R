@@ -433,8 +433,7 @@ setGeneric("gplot", function(x, ...)
 #' to help evaluate peak density correspondence analysis settings. This is a
 #' *ggplot2* implementation of *xcms*'s [xcms::plotChromPeakDensity()] function.
 #'
-#' @param object An `XChromatograms` or `MChromatograms` object with detected
-#'     chromatographic peaks.
+#' @param object An `XChromatograms` object with detected chromatographic peaks.
 #'
 #' @param param A `PeakDensityParam` object defining the peak density
 #'     correspondence parameters. If missing, the function will try to extract

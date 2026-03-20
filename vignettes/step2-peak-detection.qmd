@@ -1,6 +1,6 @@
 ---
 title: "Step 2: Peak Detection Visualization"
-author: "xcmsVis Package"
+package: xcmsVis
 date: today
 format:
   html:
@@ -28,14 +28,16 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette covers the **second step** in the XCMS metabolomics workflow: **visualizing detected chromatographic peaks**. After running `findChromPeaks()`, these functions help you:
+This vignette covers the **second step** in the *xcms* metabolomics workflow:
+**visualizing detected chromatographic peaks**. After running
+`findChromPeaks()`, these functions help you:
 
 - Assess peak detection quality
 - Visualize peak distribution across samples
 - Examine individual peak shapes
 - Annotate chromatograms with detected peaks
 
-## XCMS Workflow Context
+## *xcms* Workflow Context
 
 ```
 ┌───────────────────────────────┐
@@ -53,9 +55,9 @@ This vignette covers the **second step** in the XCMS metabolomics workflow: **vi
 
 | Function | Purpose | Input |
 |----------|---------|-------|
-| `gplotChromPeaks()` | Show peaks in RT/m/z space | XcmsExperiment |
-| `gplotChromPeakImage()` | Peak density heatmap | XcmsExperiment |
-| `gplot(XChromatogram)` | Chromatogram with peaks | XChromatogram |
+| `gplotChromPeaks()` | Show peaks in RT/m/z space | `XcmsExperiment` |
+| `gplotChromPeakImage()` | Peak density heatmap | `XcmsExperiment` |
+| `gplot(XChromatogram)` | Chromatogram with peaks | `XChromatogram` |
 | `ghighlightChromPeaks()` | Add peak annotations | Layer for ggplot |
 
 # Setup
@@ -92,7 +94,8 @@ cat("Total peaks detected:", nrow(chromPeaks(xdata)), "\n")
 
 ## gplotChromPeaks(): Peak Rectangles in RT/m/z Space
 
-The `gplotChromPeaks()` function creates a scatter plot showing detected peaks as rectangles in retention time vs m/z space.
+The `gplotChromPeaks()` function creates a scatter plot showing detected peaks
+as rectangles in retention time vs m/z space.
 
 ### Basic Usage
 
@@ -154,7 +157,8 @@ p_s1 + p_s2 + p_s3
 
 ## gplotChromPeakImage(): Peak Density Heatmap
 
-The `gplotChromPeakImage()` function creates a heatmap showing the number of detected peaks per sample across retention time bins.
+The `gplotChromPeakImage()` function creates a heatmap showing the number of
+detected peaks per sample across retention time bins.
 
 ### Basic Usage
 
@@ -253,7 +257,8 @@ ggplotly(gplot(chr[1, 1]))
 
 ## ghighlightChromPeaks(): Adding Peak Layers
 
-For more control, `ghighlightChromPeaks()` returns ggplot2 layers that can be added to any chromatogram plot:
+For more control, `ghighlightChromPeaks()` returns ggplot2 layers that can be
+added to any chromatogram plot:
 
 ```{r highlight_rect}
 #| fig-height: 5
@@ -283,7 +288,8 @@ p_chrom + peak_layers
 
 ## Understanding Peak Highlighting Behavior
 
-The `ghighlightChromPeaks()` function searches **all peaks across all samples**. For cleaner visualization, filter to a single sample:
+The `ghighlightChromPeaks()` function searches **all peaks across all
+samples**. For cleaner visualization, filter to a single sample:
 
 ```{r highlight_filtered}
 #| fig-height: 5
@@ -434,26 +440,27 @@ p_dist / p_density
 
 After visualizing detected peaks, proceed to:
 
-→ **[Step 3: Peak Correspondence](step3-peak-correspondence.html)** - Group peaks across samples
+→ **[Step 3: Peak Correspondence](step3-peak-correspondence.html)** - Group
+peaks across samples
 
-# Comparison with Original XCMS
+# Comparison with Original *xcms*
 
 <div class="row">
 <div class="col-md-6">
 
-## Original XCMS
+## Original *xcms*
 
 ```{r original_chrompeaks}
 #| fig-height: 5
 #| fig-width: 5
-#| fig-alt: "XCMS plotChromPeaks using base R graphics."
+#| fig-alt: "*xcms* plotChromPeaks using base R graphics."
 plotChromPeaks(xdata, file = 1, xlim = c(2600, 2750), ylim = c(325,460))
 ```
 
 </div>
 <div class="col-md-6">
 
-## xcmsVis ggplot2
+## *xcmsVis* ggplot2
 
 ```{r ggplot_chrompeaks_supp}
 #| fig-height: 5
@@ -470,19 +477,19 @@ gplotChromPeaks(xdata, file = 1, xlim = c(2600, 2750), ylim = c(325,460))
 <div class="row">
 <div class="col-md-6">
 
-### Original XCMS
+### Original *xcms*
 
 ```{r original_peakimage}
 #| fig-height: 4
 #| fig-width: 5
-#| fig-alt: "XCMS plotChromPeakImage using base R graphics."
+#| fig-alt: "*xcms* plotChromPeakImage using base R graphics."
 plotChromPeakImage(xdata, binSize = 30)
 ```
 
 </div>
 <div class="col-md-6">
 
-### xcmsVis ggplot2
+### *xcmsVis* ggplot2
 
 ```{r xcmsvis_peakimage}
 #| fig-height: 4
@@ -499,19 +506,19 @@ gplotChromPeakImage(xdata, binSize = 30)
 <div class="row">
 <div class="col-md-6">
 
-### Original XCMS
+### Original *xcms*
 
 ```{r original_chromatogram}
 #| fig-height: 5
 #| fig-width: 5
-#| fig-alt: "XCMS plot for Chromatogram using base R graphics."
+#| fig-alt: "*xcms* plot for Chromatogram using base R graphics."
 plot(chr[1, 1])
 ```
 
 </div>
 <div class="col-md-6">
 
-### xcmsVis ggplot2
+### *xcmsVis* ggplot2
 
 ```{r xcmsvis_chromatogram}
 #| fig-height: 5
@@ -528,12 +535,12 @@ gplot(chr[1, 1])
 <div class="row">
 <div class="col-md-6">
 
-### Original XCMS
+### Original *xcms*
 
 ```{r original_highlight}
 #| fig-height: 5
 #| fig-width: 5
-#| fig-alt: "XCMS highlightChromPeaks using base R graphics."
+#| fig-alt: "*xcms* highlightChromPeaks using base R graphics."
 xdata_filtered <- filterFile(xdata, 1)
 # Convert to XCMSnExp for original XCMS function
 xdata_xcmsnexp <- as(xdata_filtered, "XCMSnExp")
@@ -545,7 +552,7 @@ highlightChromPeaks(xdata_xcmsnexp, rt = rt_range, mz = mz_range,
 </div>
 <div class="col-md-6">
 
-### xcmsVis ggplot2
+### *xcmsVis* ggplot2
 
 ```{r xcmsvis_highlight}
 #| fig-height: 5

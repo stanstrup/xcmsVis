@@ -1,6 +1,6 @@
 ---
 title: "Step 3: Peak Correspondence Visualization"
-author: "xcmsVis Package"
+package: xcmsVis
 date: today
 format:
   html:
@@ -28,14 +28,16 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette covers the **third step** in the XCMS metabolomics workflow: **peak correspondence** (also called peak grouping or alignment). After detecting peaks in individual samples, these functions help you:
+This vignette covers the **third step** in the *xcms* metabolomics workflow:
+**peak correspondence** (also called peak grouping or alignment). After
+detecting peaks in individual samples, these functions help you:
 
 - Optimize parameters for grouping peaks across samples
 - Visualize how peaks will be grouped into features
 - Compare multiple extracted ion chromatograms (EICs)
 - Assess correspondence quality
 
-## XCMS Workflow Context
+## *xcms* Workflow Context
 
 ```
 ┌─────────────────────────────────────┐
@@ -51,7 +53,10 @@ This vignette covers the **third step** in the XCMS metabolomics workflow: **pea
 
 ## What is Peak Correspondence?
 
-Peak correspondence groups chromatographic peaks detected across different samples that represent the same compound. The goal is to create **features** - groups of peaks with similar m/z and retention time that likely derive from the same molecule.
+Peak correspondence groups chromatographic peaks detected across different
+samples that represent the same compound. The goal is to create **features** -
+groups of peaks with similar m/z and retention time that likely derive from the
+same molecule.
 
 ## Functions Covered
 
@@ -74,7 +79,7 @@ library(xcmsVis)
 
 # Data Preparation
 
-We'll use pre-processed test data from XCMS for faster execution:
+We'll use pre-processed test data from *xcms* for faster execution:
 
 ```{r load_data}
 # Load pre-processed data with detected peaks
@@ -92,7 +97,8 @@ cat("Total peaks detected:", nrow(chromPeaks(xdata)), "\n")
 
 ## gplotChromPeakDensity(): Parameter Optimization
 
-The `gplotChromPeakDensity()` function helps optimize peak density correspondence parameters by visualizing how peaks would be grouped.
+The `gplotChromPeakDensity()` function helps optimize peak density
+correspondence parameters by visualizing how peaks would be grouped.
 
 ### Basic Usage
 
@@ -113,11 +119,13 @@ gplotChromPeakDensity(chr, param = prm)
 The plot shows:
 
 - **Upper panel**: Overlaid chromatograms from all samples
-- **Lower panel**: Peak positions as points with density curve and feature grouping regions (grey rectangles)
+- **Lower panel**: Peak positions as points with density curve and feature
+  grouping regions (grey rectangles)
 
 ### Optimizing Bandwidth Parameter
 
-The bandwidth (`bw`) parameter controls the smoothing of the density estimate. Larger values group more distant peaks together:
+The bandwidth (`bw`) parameter controls the smoothing of the density
+estimate. Larger values group more distant peaks together:
 
 ```{r bandwidth_comparison}
 #| fig-height: 8
@@ -139,13 +147,16 @@ p1 | p2 | p3
 
 **Interpretation**:
 
-- **Small bandwidth (15)**: More sensitive, creates more feature groups, may split real features
+- **Small bandwidth (15)**: More sensitive, creates more feature groups, may
+  split real features
 - **Medium bandwidth (30)**: Balanced approach
-- **Large bandwidth (60)**: Less sensitive, merges nearby peaks, may combine distinct features
+- **Large bandwidth (60)**: Less sensitive, merges nearby peaks, may combine
+  distinct features
 
 ### Showing Actual Correspondence Results
 
-After running correspondence analysis, you can visualize the actual feature grouping by setting `simulate = FALSE`:
+After running correspondence analysis, you can visualize the actual feature
+grouping by setting `simulate = FALSE`:
 
 ```{r actual_correspondence}
 #| fig-height: 6
@@ -169,7 +180,9 @@ gplotChromPeakDensity(chr_grouped, simulate = FALSE) +
 ::: {.callout-note}
 ## Feature Annotations
 
-When `simulate = FALSE`, the plot shows the actual feature groupings determined by the correspondence algorithm. Vertical dashed lines indicate the median retention time for each detected feature across samples.
+When `simulate = FALSE`, the plot shows the actual feature groupings determined
+by the correspondence algorithm. Vertical dashed lines indicate the median
+retention time for each detected feature across samples.
 :::
 
 ### Interactive Exploration
@@ -186,15 +199,18 @@ ggplotly(p)
 
 ## gplotChromatogramsOverlay(): Comparing Multiple EICs
 
-The `gplotChromatogramsOverlay()` function overlays **different EICs (rows)** from the **same sample (column)** in one plot.
+The `gplotChromatogramsOverlay()` function overlays **different EICs (rows)**
+from the **same sample (column)** in one plot.
 
 ### Understanding the Difference
 
 ::: {.callout-important}
 ## Key Concept
 
-- **`gplot(XChromatogram)`**: Overlays the SAME m/z range across DIFFERENT samples
-- **`gplotChromatogramsOverlay()`**: Overlays DIFFERENT m/z ranges within the SAME sample
+- **`gplot(XChromatogram)`**: Overlays the SAME m/z range across DIFFERENT
+  samples
+- **`gplotChromatogramsOverlay()`**: Overlays DIFFERENT m/z ranges within the
+  SAME sample
 :::
 
 ### Single Sample: Multiple EICs Overlaid
@@ -214,7 +230,8 @@ gplotChromatogramsOverlay(chr_multi, main = "Sample 1")
 
 ### Multiple Samples: Faceted Layout
 
-When you have multiple samples, `gplotChromatogramsOverlay()` creates a faceted plot with one panel per sample:
+When you have multiple samples, `gplotChromatogramsOverlay()` creates a faceted
+plot with one panel per sample:
 
 ```{r overlay_multi}
 #| fig-height: 7
@@ -345,7 +362,8 @@ gplotChromatogramsOverlay(
 
 # Complete Workflow Example
 
-Here's a complete workflow demonstrating how these functions work together for correspondence optimization:
+Here's a complete workflow demonstrating how these functions work together for
+correspondence optimization:
 
 ```{r workflow}
 #| fig-height: 12
@@ -384,34 +402,38 @@ p4 <- gplot(chr_workflow[1, 1]) +
 
 ## Use Cases
 
-1. **Parameter optimization**: `gplotChromPeakDensity()` helps tune correspondence parameters
-2. **Quality control**: `gplotChromatogramsOverlay()` reveals co-eluting compounds within samples
-3. **Sample comparison**: `gplot()` shows retention time shifts and intensity variations between samples
+1. **Parameter optimization**: `gplotChromPeakDensity()` helps tune
+   correspondence parameters
+2. **Quality control**: `gplotChromatogramsOverlay()` reveals co-eluting
+   compounds within samples
+3. **Sample comparison**: `gplot()` shows retention time shifts and intensity
+   variations between samples
 
 ## Next Steps
 
 After optimizing and performing peak correspondence, proceed to:
 
-→ **[Step 4: Retention Time Alignment](step4-retention-time-alignment.html)** - Correct retention time shifts between samples
+→ **[Step 4: Retention Time Alignment](step4-retention-time-alignment.html)** -
+Correct retention time shifts between samples
 
-# Comparison with Original XCMS
+# Comparison with Original *xcms*
 
 <div class="row">
 <div class="col-md-6">
 
-## Original XCMS
+## Original *xcms*
 
 ```{r original_density}
 #| fig-height: 6
 #| fig-width: 5
-#| fig-alt: "XCMS plotChromPeakDensity using base R graphics."
+#| fig-alt: "*xcms* plotChromPeakDensity using base R graphics."
 plotChromPeakDensity(chr, param = prm)
 ```
 
 </div>
 <div class="col-md-6">
 
-## xcmsVis ggplot2
+## *xcmsVis* ggplot2
 
 ```{r xcmsvis_density}
 #| fig-height: 6
@@ -457,19 +479,19 @@ gplot(chr_one_eic)
 <div class="row">
 <div class="col-md-6">
 
-### Original XCMS
+### Original *xcms*
 
 ```{r original_overlay}
 #| fig-height: 5
 #| fig-width: 5
-#| fig-alt: "XCMS plotChromatogramsOverlay using base R graphics."
+#| fig-alt: "*xcms* plotChromatogramsOverlay using base R graphics."
 plotChromatogramsOverlay(chr_multi)
 ```
 
 </div>
 <div class="col-md-6">
 
-### xcmsVis ggplot2
+### *xcmsVis* ggplot2
 
 ```{r xcmsvis_overlay}
 #| fig-height: 5

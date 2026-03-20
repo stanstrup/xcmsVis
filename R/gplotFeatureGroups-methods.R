@@ -24,7 +24,7 @@ utils::globalVariables(c("Retention Time", "m/z", "group", "feature_group"))
                                      featureGroups = character(),
                                      ...) {
     fgs <- featureGroups(x)
-    if (!length(fgs))
+    if (all(is.na(fgs)))
         stop("No feature groups present. Please run 'groupFeatures' first",
              call. = FALSE)
     fts <- factor(fgs)

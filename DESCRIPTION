@@ -60,7 +60,6 @@ Suggests:
     viridisLite,
     MsFeatures,
     MsDataHub,
-    glue,
     mgcv
 VignetteBuilder: quarto
 SystemRequirements: quarto
