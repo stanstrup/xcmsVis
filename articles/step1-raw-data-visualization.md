@@ -2,16 +2,17 @@
 
 ## Introduction
 
-This vignette covers the **first step** in the XCMS metabolomics
-workflow: **visualizing raw MS data** before any processing. These
-visualizations help you:
+This vignette covers the **first step** in the
+*[xcms](https://bioconductor.org/packages/3.22/xcms)* metabolomics data
+analysis workflow: **visualizing raw MS data** before any processing.
+These visualizations help you:
 
 - Assess data quality before analysis
 - Understand the structure of your LC-MS acquisition
 - Identify potential issues early
 - Visualize MS/MS (DDA) experiment coverage
 
-### XCMS Workflow Context
+### *xcms* Workflow Context
 
     ┌───────────────────────────────┐
     │ 1. RAW DATA VISUALIZATION     | ← YOU ARE HERE
@@ -24,10 +25,10 @@ visualizations help you:
 
 ### Functions Covered
 
-| Function                                                                                      | Purpose                    | Input Type               |
-|-----------------------------------------------------------------------------------------------|----------------------------|--------------------------|
-| `gplot(XcmsExperiment)`                                                                       | Visualize full MS data     | XcmsExperiment, XCMSnExp |
-| [`gplotPrecursorIons()`](https://stanstrup.github.io/xcmsVis/reference/gplotPrecursorIons.md) | Visualize MS/MS precursors | MsExperiment with MS2    |
+| Function                                                                                      | Purpose                    | Input Type                   |
+|-----------------------------------------------------------------------------------------------|----------------------------|------------------------------|
+| `gplot(XcmsExperiment)`                                                                       | Visualize full MS data     | `XcmsExperiment`, `XCMSnExp` |
+| [`gplotPrecursorIons()`](https://stanstrup.github.io/xcmsVis/reference/gplotPrecursorIons.md) | Visualize MS/MS precursors | `MsExperiment` with MS2      |
 
 ## Setup
 
@@ -46,7 +47,7 @@ library(MsDataHub)
 ### Overview
 
 The [`gplot()`](https://stanstrup.github.io/xcmsVis/reference/gplot.md)
-method for XcmsExperiment and XCMSnExp objects creates a two-panel
+method for `XcmsExperiment` and `XCMSnExp` objects creates a two-panel
 visualization:
 
 - **Upper panel**: Base Peak Intensity (BPI) chromatogram vs retention
@@ -58,7 +59,7 @@ are automatically overlaid as rectangles.
 
 ### Data Preparation
 
-We’ll use pre-processed test data from XCMS:
+We’ll use pre-processed test data from *xcms*:
 
 ``` r
 # Load pre-processed data
@@ -78,17 +79,6 @@ region:
 # Filter to focused region
 mse <- filterRt(xdata, rt = c(2785-100, 2785+100))
 mse <- filterMzRange(mse, mz = c(278, 283))
-
-library(glue)
-rt_range <- range(rtime(spectra(mse[1])))
-n_spectra <- length(spectra(mse[1]))
-cat(glue("Filtered data:
-  RT range: {rt_range[1]} - {rt_range[2]}
-  Number of spectra in sample 1: {n_spectra}
-"))
-#> Filtered data:
-#> RT range: 2686.043 - 2884.792
-#> Number of spectra in sample 1: 128
 ```
 
 ### Basic Usage
@@ -122,7 +112,7 @@ data:
 
 - X-axis: retention time
 - Y-axis: m/z values
-- Each point represents one data point from the raw spectra
+- Each point represents one data point (mass peak) from the raw spectra
 - Color indicates intensity of that specific m/z at that retention time
 - Shows the full two-dimensional structure of the LC-MS data
 
@@ -358,20 +348,20 @@ After visualizing and assessing your raw data, proceed to:
 Detection](https://stanstrup.github.io/xcmsVis/articles/step2-peak-detection.md)** -
 Detect chromatographic peaks in your data
 
-## Comparison with Original XCMS
+## Comparison with Original *xcms*
 
 ### gplot(XcmsExperiment) vs plot()
 
-#### Original XCMS
+#### Original *xcms*
 
 ``` r
 plot(mse[1])
 ```
 
-![XCMS base R plot showing two panels with traditional
+![\*xcms\* base R plot showing two panels with traditional
 graphics.](step1-raw-data-visualization_files/figure-html/original_plot-1.png)
 
-#### xcmsVis ggplot2
+#### *xcmsVis* ggplot2
 
 ``` r
 gplot(mse[1])
@@ -382,16 +372,16 @@ options.](step1-raw-data-visualization_files/figure-html/xcmsvis_plot-1.png)
 
 ### gplotPrecursorIons() vs plotPrecursorIons()
 
-#### Original XCMS
+#### Original *xcms*
 
 ``` r
-xcms::plotPrecursorIons(pest_dda)
+plotPrecursorIons(pest_dda)
 ```
 
-![XCMS plotPrecursorIons using base R
+![\*xcms\* plotPrecursorIons using base R
 graphics.](step1-raw-data-visualization_files/figure-html/original_precursor-1.png)
 
-#### xcmsVis ggplot2
+#### *xcmsVis* ggplot2
 
 ``` r
 gplotPrecursorIons(pest_dda)
@@ -404,7 +394,7 @@ API.](step1-raw-data-visualization_files/figure-html/xcmsvis_precursor-1.png)
 
 ``` r
 sessionInfo()
-#> R version 4.5.2 (2025-10-31)
+#> R version 4.5.3 (2026-03-11)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 24.04.3 LTS
 #> 
@@ -425,10 +415,10 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#>  [1] viridisLite_0.4.3   glue_1.8.0          MsDataHub_1.10.0   
-#>  [4] patchwork_1.3.2     plotly_4.12.0       ggplot2_4.0.2      
-#>  [7] MsExperiment_1.12.0 ProtGenerics_1.42.0 xcmsVis_0.99.10    
-#> [10] xcms_4.8.0          BiocParallel_1.44.0
+#>  [1] viridisLite_0.4.3   MsDataHub_1.10.0    patchwork_1.3.2    
+#>  [4] plotly_4.12.0       ggplot2_4.0.2       MsExperiment_1.12.0
+#>  [7] ProtGenerics_1.42.0 xcmsVis_0.99.10     xcms_4.8.0         
+#> [10] BiocParallel_1.44.0 BiocStyle_2.38.0   
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] RColorBrewer_1.1-3          jsonlite_2.0.0             
@@ -453,42 +443,43 @@ sessionInfo()
 #>  [39] GenomicRanges_1.62.1        RSQLite_2.4.6              
 #>  [41] filelock_1.0.3              Spectra_1.20.1             
 #>  [43] labeling_0.4.3              httr_1.4.8                 
-#>  [45] abind_1.4-8                 compiler_4.5.2             
+#>  [45] abind_1.4-8                 compiler_4.5.3             
 #>  [47] bit64_4.6.0-1               withr_3.0.2                
 #>  [49] doParallel_1.0.17           S7_0.2.1                   
 #>  [51] DBI_1.3.0                   MASS_7.3-65                
 #>  [53] rappdirs_0.3.4              DelayedArray_0.36.0        
-#>  [55] mzR_2.44.0                  tools_4.5.2                
+#>  [55] mzR_2.44.0                  tools_4.5.3                
 #>  [57] PSMatch_1.14.0              otel_0.2.0                 
-#>  [59] QFeatures_1.20.0            grid_4.5.2                 
-#>  [61] cluster_2.1.8.1             reshape2_1.4.5             
-#>  [63] generics_0.1.4              gtable_0.3.6               
-#>  [65] preprocessCore_1.72.0       tidyr_1.3.2                
-#>  [67] data.table_1.18.2.1         hms_1.1.4                  
-#>  [69] MetaboCoreUtils_1.18.1      XVector_0.50.0             
-#>  [71] BiocGenerics_0.56.0         BiocVersion_3.22.0         
-#>  [73] foreach_1.5.2               pillar_1.11.1              
-#>  [75] stringr_1.6.0               limma_3.66.0               
-#>  [77] dplyr_1.2.0                 BiocFileCache_3.0.0        
-#>  [79] lattice_0.22-7              bit_4.6.0                  
-#>  [81] tidyselect_1.2.1            Biostrings_2.78.0          
-#>  [83] knitr_1.51                  IRanges_2.44.0             
-#>  [85] Seqinfo_1.0.0               SummarizedExperiment_1.40.0
-#>  [87] stats4_4.5.2                xfun_0.56                  
-#>  [89] Biobase_2.70.0              statmod_1.5.1              
-#>  [91] MSnbase_2.36.0              matrixStats_1.5.0          
-#>  [93] stringi_1.8.7               lazyeval_0.2.2             
-#>  [95] yaml_2.3.12                 evaluate_1.0.5             
-#>  [97] codetools_0.2-20            MsCoreUtils_1.22.1         
-#>  [99] tibble_3.3.1                BiocManager_1.30.27        
-#> [101] cli_3.6.5                   affyio_1.80.0              
-#> [103] Rcpp_1.1.1                  MassSpecWavelet_1.76.0     
-#> [105] dbplyr_2.5.2                png_0.1-8                  
-#> [107] XML_3.99-0.22               parallel_4.5.2             
-#> [109] blob_1.3.0                  prettyunits_1.2.0          
-#> [111] AnnotationFilter_1.34.0     MsFeatures_1.18.0          
-#> [113] scales_1.4.0                affy_1.88.0                
-#> [115] ncdf4_1.24                  purrr_1.2.1                
-#> [117] crayon_1.5.3                rlang_1.1.7                
-#> [119] vsn_3.78.1                  KEGGREST_1.50.0
+#>  [59] glue_1.8.0                  QFeatures_1.20.0           
+#>  [61] grid_4.5.3                  cluster_2.1.8.2            
+#>  [63] reshape2_1.4.5              generics_0.1.4             
+#>  [65] gtable_0.3.6                preprocessCore_1.72.0      
+#>  [67] tidyr_1.3.2                 data.table_1.18.2.1        
+#>  [69] hms_1.1.4                   MetaboCoreUtils_1.18.1     
+#>  [71] XVector_0.50.0              BiocGenerics_0.56.0        
+#>  [73] BiocVersion_3.22.0          foreach_1.5.2              
+#>  [75] pillar_1.11.1               stringr_1.6.0              
+#>  [77] limma_3.66.0                dplyr_1.2.0                
+#>  [79] BiocFileCache_3.0.0         lattice_0.22-9             
+#>  [81] bit_4.6.0                   tidyselect_1.2.1           
+#>  [83] Biostrings_2.78.0           knitr_1.51                 
+#>  [85] IRanges_2.44.0              Seqinfo_1.0.0              
+#>  [87] SummarizedExperiment_1.40.0 stats4_4.5.3               
+#>  [89] xfun_0.56                   Biobase_2.70.0             
+#>  [91] statmod_1.5.1               MSnbase_2.36.0             
+#>  [93] matrixStats_1.5.0           stringi_1.8.7              
+#>  [95] lazyeval_0.2.2              yaml_2.3.12                
+#>  [97] evaluate_1.0.5              codetools_0.2-20           
+#>  [99] MsCoreUtils_1.22.1          tibble_3.3.1               
+#> [101] BiocManager_1.30.27         cli_3.6.5                  
+#> [103] affyio_1.80.0               Rcpp_1.1.1                 
+#> [105] MassSpecWavelet_1.76.0      dbplyr_2.5.2               
+#> [107] png_0.1-9                   XML_3.99-0.22              
+#> [109] parallel_4.5.3              blob_1.3.0                 
+#> [111] prettyunits_1.2.0           AnnotationFilter_1.34.0    
+#> [113] MsFeatures_1.18.0           scales_1.4.0               
+#> [115] affy_1.88.0                 ncdf4_1.24                 
+#> [117] purrr_1.2.1                 crayon_1.5.3               
+#> [119] rlang_1.1.7                 vsn_3.78.1                 
+#> [121] KEGGREST_1.50.0
 ```

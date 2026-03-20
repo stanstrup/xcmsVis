@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This vignette covers the **final step** in the XCMS metabolomics
+This vignette covers the **final step** in the *xcms* metabolomics
 workflow: **feature grouping**. After retention time alignment, these
 functions help you:
 
@@ -11,7 +11,7 @@ functions help you:
 - Assess feature annotation quality
 - Create publication-ready feature network plots
 
-### XCMS Workflow Context
+### *xcms* Workflow Context
 
     ┌───────────────────────────────┐
     │ 1. Raw Data Visualization     │
@@ -41,9 +41,9 @@ by lines within each group across retention time and m/z dimensions.
 
 ### Functions Covered
 
-| Function                                                                                      | Purpose                               | Input                    |
-|-----------------------------------------------------------------------------------------------|---------------------------------------|--------------------------|
-| [`gplotFeatureGroups()`](https://stanstrup.github.io/xcmsVis/reference/gplotFeatureGroups.md) | Visualize feature group relationships | XcmsExperiment, XCMSnExp |
+| Function                                                                                      | Purpose                               | Input                        |
+|-----------------------------------------------------------------------------------------------|---------------------------------------|------------------------------|
+| [`gplotFeatureGroups()`](https://stanstrup.github.io/xcmsVis/reference/gplotFeatureGroups.md) | Visualize feature group relationships | `XcmsExperiment`, `XCMSnExp` |
 
 ## Setup
 
@@ -62,7 +62,7 @@ register(SerialParam())
 
 ## Load and Process Data
 
-Feature grouping requires a complete XCMS workflow: peak detection,
+Feature grouping requires a complete *xcms* workflow: peak detection,
 correspondence, retention time alignment, re-correspondence, and then
 feature grouping.
 
@@ -205,7 +205,7 @@ gplotFeatureGroups(xdata,
 
 ## Interactive Visualization
 
-Convert to interactive plotly plot for exploration:
+Convert to interactive *plotly* plot for exploration:
 
 ``` r
 library(plotly)
@@ -241,7 +241,8 @@ gplotFeatureGroups(xdata_rt, featureGroups = fg_rt[1:5]) +
 
 ``` r
 # Group features with correlated abundances across samples
-xdata_cor <- groupFeatures(xdata, param = AbundanceSimilarityParam(threshold = 0.7))
+xdata_cor <- groupFeatures(
+    xdata, param = AbundanceSimilarityParam(threshold = 0.7))
 cat("AbundanceSimilarityParam (threshold=0.7):",
     length(unique(featureGroups(xdata_cor))), "groups\n")
 #> AbundanceSimilarityParam (threshold=0.7): 139 groups
@@ -286,7 +287,7 @@ Visualize feature groups to:
 
 ### Workflow Complete!
 
-You’ve now completed the full XCMS visualization workflow:
+You’ve now completed the full *xcms* visualization workflow:
 
     ✓ 1. Raw Data Visualization
     ✓ 2. Peak Detection
@@ -294,9 +295,9 @@ You’ve now completed the full XCMS visualization workflow:
     ✓ 4. Retention Time Alignment
     ✓ 5. Feature Grouping
 
-## Comparison with Original XCMS
+## Comparison with Original *xmcs*
 
-### Original XCMS Version
+### Original *xcms* Version
 
 ``` r
 # Get first 5 feature groups for comparison
@@ -309,7 +310,7 @@ plotFeatureGroups(xdata, featureGroups = fg_compare)
 ![XCMS plotFeatureGroups using base R
 graphics.](step5-feature-grouping_files/figure-html/original_comparison-1.png)
 
-### xcmsVis ggplot2 Version
+### *xcmsVis* ggplot2 Version
 
 ``` r
 # xcmsVis version (ggplot2)
@@ -321,7 +322,7 @@ API.](step5-feature-grouping_files/figure-html/xcmsvis_comparison-1.png)
 
 > **API Differences**
 >
-> Unlike the original XCMS
+> Unlike the original *xcms*
 > [`plotFeatureGroups()`](https://rdrr.io/pkg/xcms/man/plotFeatureGroups.html),
 > the ggplot2 version does not have `xlab`, `ylab`, or `main`
 > parameters. Instead, use ggplot2’s
@@ -342,7 +343,7 @@ API.](step5-feature-grouping_files/figure-html/xcmsvis_comparison-1.png)
 
 ``` r
 sessionInfo()
-#> R version 4.5.2 (2025-10-31)
+#> R version 4.5.3 (2026-03-11)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 24.04.3 LTS
 #> 
@@ -371,7 +372,7 @@ sessionInfo()
 #>   [1] DBI_1.3.0                   rlang_1.1.7                
 #>   [3] magrittr_2.0.4              clue_0.3-67                
 #>   [5] MassSpecWavelet_1.76.0      otel_0.2.0                 
-#>   [7] matrixStats_1.5.0           compiler_4.5.2             
+#>   [7] matrixStats_1.5.0           compiler_4.5.3             
 #>   [9] vctrs_0.7.1                 reshape2_1.4.5             
 #>  [11] stringr_1.6.0               pkgconfig_2.0.3            
 #>  [13] MetaboCoreUtils_1.18.1      crayon_1.5.3               
@@ -380,8 +381,8 @@ sessionInfo()
 #>  [19] preprocessCore_1.72.0       purrr_1.2.1                
 #>  [21] xfun_0.56                   MultiAssayExperiment_1.36.1
 #>  [23] jsonlite_2.0.0              progress_1.2.3             
-#>  [25] DelayedArray_0.36.0         parallel_4.5.2             
-#>  [27] prettyunits_1.2.0           cluster_2.1.8.1            
+#>  [25] DelayedArray_0.36.0         parallel_4.5.3             
+#>  [27] prettyunits_1.2.0           cluster_2.1.8.2            
 #>  [29] R6_2.6.1                    stringi_1.8.7              
 #>  [31] RColorBrewer_1.1-3          limma_3.66.0               
 #>  [33] GenomicRanges_1.62.1        Rcpp_1.1.1                 
@@ -392,22 +393,22 @@ sessionInfo()
 #>  [43] tidyselect_1.2.1            abind_1.4-8                
 #>  [45] yaml_2.3.12                 doParallel_1.0.17          
 #>  [47] codetools_0.2-20            affy_1.88.0                
-#>  [49] lattice_0.22-7              tibble_3.3.1               
+#>  [49] lattice_0.22-9              tibble_3.3.1               
 #>  [51] plyr_1.8.9                  withr_3.0.2                
 #>  [53] Biobase_2.70.0              S7_0.2.1                   
 #>  [55] evaluate_1.0.5              Spectra_1.20.1             
 #>  [57] pillar_1.11.1               affyio_1.80.0              
 #>  [59] BiocManager_1.30.27         MatrixGenerics_1.22.0      
-#>  [61] foreach_1.5.2               stats4_4.5.2               
+#>  [61] foreach_1.5.2               stats4_4.5.3               
 #>  [63] MSnbase_2.36.0              MALDIquant_1.22.3          
 #>  [65] ncdf4_1.24                  generics_0.1.4             
 #>  [67] S4Vectors_0.48.0            hms_1.1.4                  
 #>  [69] scales_1.4.0                glue_1.8.0                 
-#>  [71] lazyeval_0.2.2              tools_4.5.2                
+#>  [71] lazyeval_0.2.2              tools_4.5.3                
 #>  [73] mzID_1.48.0                 data.table_1.18.2.1        
 #>  [75] QFeatures_1.20.0            vsn_3.78.1                 
 #>  [77] mzR_2.44.0                  fs_1.6.7                   
-#>  [79] XML_3.99-0.22               grid_4.5.2                 
+#>  [79] XML_3.99-0.22               grid_4.5.3                 
 #>  [81] impute_1.84.0               tidyr_1.3.2                
 #>  [83] crosstalk_1.2.2             MsCoreUtils_1.22.1         
 #>  [85] PSMatch_1.14.0              cli_3.6.5                  

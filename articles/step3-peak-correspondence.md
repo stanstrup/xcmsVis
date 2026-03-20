@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This vignette covers the **third step** in the XCMS metabolomics
+This vignette covers the **third step** in the *xcms* metabolomics
 workflow: **peak correspondence** (also called peak grouping or
 alignment). After detecting peaks in individual samples, these functions
 help you:
@@ -12,7 +12,7 @@ help you:
 - Compare multiple extracted ion chromatograms (EICs)
 - Assess correspondence quality
 
-### XCMS Workflow Context
+### *xcms* Workflow Context
 
     ┌─────────────────────────────────────┐
     │ 1. Raw Data Visualization           │
@@ -52,7 +52,7 @@ library(xcmsVis)
 
 ## Data Preparation
 
-We’ll use pre-processed test data from XCMS for faster execution:
+We’ll use pre-processed test data from *xcms* for faster execution:
 
 ``` r
 # Load pre-processed data with detected peaks
@@ -410,18 +410,18 @@ After optimizing and performing peak correspondence, proceed to:
 Alignment](https://stanstrup.github.io/xcmsVis/articles/step4-retention-time-alignment.md)** -
 Correct retention time shifts between samples
 
-## Comparison with Original XCMS
+## Comparison with Original *xcms*
 
-### Original XCMS
+### Original *xcms*
 
 ``` r
 plotChromPeakDensity(chr, param = prm)
 ```
 
-![XCMS plotChromPeakDensity using base R
+![\*xcms\* plotChromPeakDensity using base R
 graphics.](step3-peak-correspondence_files/figure-html/original_density-1.png)
 
-### xcmsVis ggplot2
+### *xcmsVis* ggplot2
 
 ``` r
 gplotChromPeakDensity(chr, param = prm)
@@ -452,16 +452,16 @@ plot.](step3-peak-correspondence_files/figure-html/xcmsvis_gplot-1.png)
 
 ### gplotChromatogramsOverlay() vs plotChromatogramsOverlay()
 
-#### Original XCMS
+#### Original *xcms*
 
 ``` r
 plotChromatogramsOverlay(chr_multi)
 ```
 
-![XCMS plotChromatogramsOverlay using base R
+![\*xcms\* plotChromatogramsOverlay using base R
 graphics.](step3-peak-correspondence_files/figure-html/original_overlay-1.png)
 
-#### xcmsVis ggplot2
+#### *xcmsVis* ggplot2
 
 ``` r
 gplotChromatogramsOverlay(chr_multi)
@@ -474,7 +474,7 @@ aesthetics.](step3-peak-correspondence_files/figure-html/xcmsvis_overlay-1.png)
 
 ``` r
 sessionInfo()
-#> R version 4.5.2 (2025-10-31)
+#> R version 4.5.3 (2026-03-11)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 24.04.3 LTS
 #> 
@@ -503,7 +503,7 @@ sessionInfo()
 #>   [1] DBI_1.3.0                   rlang_1.1.7                
 #>   [3] magrittr_2.0.4              clue_0.3-67                
 #>   [5] MassSpecWavelet_1.76.0      otel_0.2.0                 
-#>   [7] matrixStats_1.5.0           compiler_4.5.2             
+#>   [7] matrixStats_1.5.0           compiler_4.5.3             
 #>   [9] vctrs_0.7.1                 reshape2_1.4.5             
 #>  [11] stringr_1.6.0               pkgconfig_2.0.3            
 #>  [13] MetaboCoreUtils_1.18.1      crayon_1.5.3               
@@ -512,8 +512,8 @@ sessionInfo()
 #>  [19] preprocessCore_1.72.0       purrr_1.2.1                
 #>  [21] xfun_0.56                   MultiAssayExperiment_1.36.1
 #>  [23] jsonlite_2.0.0              progress_1.2.3             
-#>  [25] DelayedArray_0.36.0         parallel_4.5.2             
-#>  [27] prettyunits_1.2.0           cluster_2.1.8.1            
+#>  [25] DelayedArray_0.36.0         parallel_4.5.3             
+#>  [27] prettyunits_1.2.0           cluster_2.1.8.2            
 #>  [29] R6_2.6.1                    stringi_1.8.7              
 #>  [31] RColorBrewer_1.1-3          limma_3.66.0               
 #>  [33] GenomicRanges_1.62.1        Rcpp_1.1.1                 
@@ -524,23 +524,23 @@ sessionInfo()
 #>  [43] tidyselect_1.2.1            abind_1.4-8                
 #>  [45] yaml_2.3.12                 doParallel_1.0.17          
 #>  [47] codetools_0.2-20            affy_1.88.0                
-#>  [49] lattice_0.22-7              tibble_3.3.1               
+#>  [49] lattice_0.22-9              tibble_3.3.1               
 #>  [51] plyr_1.8.9                  Biobase_2.70.0             
 #>  [53] withr_3.0.2                 S7_0.2.1                   
 #>  [55] evaluate_1.0.5              Spectra_1.20.1             
 #>  [57] pillar_1.11.1               affyio_1.80.0              
 #>  [59] BiocManager_1.30.27         MatrixGenerics_1.22.0      
-#>  [61] foreach_1.5.2               stats4_4.5.2               
+#>  [61] foreach_1.5.2               stats4_4.5.3               
 #>  [63] MSnbase_2.36.0              MALDIquant_1.22.3          
 #>  [65] ncdf4_1.24                  generics_0.1.4             
 #>  [67] S4Vectors_0.48.0            hms_1.1.4                  
 #>  [69] scales_1.4.0                glue_1.8.0                 
 #>  [71] MsFeatures_1.18.0           lazyeval_0.2.2             
-#>  [73] tools_4.5.2                 mzID_1.48.0                
+#>  [73] tools_4.5.3                 mzID_1.48.0                
 #>  [75] data.table_1.18.2.1         QFeatures_1.20.0           
 #>  [77] vsn_3.78.1                  mzR_2.44.0                 
 #>  [79] fs_1.6.7                    XML_3.99-0.22              
-#>  [81] grid_4.5.2                  impute_1.84.0              
+#>  [81] grid_4.5.3                  impute_1.84.0              
 #>  [83] tidyr_1.3.2                 crosstalk_1.2.2            
 #>  [85] MsCoreUtils_1.22.1          PSMatch_1.14.0             
 #>  [87] cli_3.6.5                   viridisLite_0.4.3          
