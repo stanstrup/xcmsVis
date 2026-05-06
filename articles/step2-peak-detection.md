@@ -561,7 +561,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] xcmsVis_0.99.10     patchwork_1.3.2     MsExperiment_1.14.0
+#> [1] xcmsVis_0.99.11     patchwork_1.3.2     MsExperiment_1.14.0
 #> [4] ProtGenerics_1.44.0 faahKO_1.52.0       plotly_4.12.0      
 #> [7] ggplot2_4.0.3       xcms_4.10.0         BiocParallel_1.46.0
 #> 
