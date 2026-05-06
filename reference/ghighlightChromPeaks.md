@@ -121,7 +121,7 @@ library(xcmsVis)
 library(xcms)
 #> Loading required package: BiocParallel
 #> 
-#> This is xcms version 4.8.0 
+#> This is xcms version 4.10.0 
 library(faahKO)
 library(MsExperiment)
 #> Loading required package: ProtGenerics

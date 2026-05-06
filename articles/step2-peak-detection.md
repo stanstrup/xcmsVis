@@ -26,16 +26,17 @@ these functions help you:
 
 ### Functions Covered
 
-| Function                                                                                          | Purpose                    | Input            |
-|---------------------------------------------------------------------------------------------------|----------------------------|------------------|
-| [`gplotChromPeaks()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeaks.md)           | Show peaks in RT/m/z space | `XcmsExperiment` |
-| [`gplotChromPeakImage()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeakImage.md)   | Peak density heatmap       | `XcmsExperiment` |
-| `gplot(XChromatogram)`                                                                            | Chromatogram with peaks    | `XChromatogram`  |
-| [`ghighlightChromPeaks()`](https://stanstrup.github.io/xcmsVis/reference/ghighlightChromPeaks.md) | Add peak annotations       | Layer for ggplot |
+| Function | Purpose | Input |
+|----|----|----|
+| [`gplotChromPeaks()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeaks.md) | Show peaks in RT/m/z space | `XcmsExperiment` |
+| [`gplotChromPeakImage()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeakImage.md) | Peak density heatmap | `XcmsExperiment` |
+| `gplot(XChromatogram)` | Chromatogram with peaks | `XChromatogram` |
+| [`ghighlightChromPeaks()`](https://stanstrup.github.io/xcmsVis/reference/ghighlightChromPeaks.md) | Add peak annotations | Layer for ggplot |
 
 ## Setup
 
 ``` r
+
 library(xcms)
 library(ggplot2)
 library(plotly)
@@ -51,6 +52,7 @@ library(xcmsVis)
 We’ll use pre-processed example data with peaks already detected:
 
 ``` r
+
 # Load pre-processed data with detected peaks
 # This dataset contains 248 detected peaks from 3 samples
 xdata <- loadXcmsData("faahko_sub2")
@@ -76,6 +78,7 @@ retention time vs m/z space.
 #### Basic Usage
 
 ``` r
+
 gplotChromPeaks(xdata, file = 1)
 ```
 
@@ -86,6 +89,7 @@ space.](step2-peak-detection_files/figure-html/gplot_chrompeaks-1.png)
 #### Focusing on a Region
 
 ``` r
+
 # Focus on a specific RT and m/z region
 gplotChromPeaks(
                 xdata,
@@ -101,6 +105,7 @@ region.](step2-peak-detection_files/figure-html/zoom_chrompeaks-1.png)
 #### Customizing the Plot
 
 ``` r
+
 gplotChromPeaks(xdata, file = 1, 
                 xlim = c(2600, 2750),
                 ylim = c(325,460),
@@ -121,6 +126,7 @@ styling.](step2-peak-detection_files/figure-html/custom_chrompeaks-1.png)
 #### Comparing Multiple Samples
 
 ``` r
+
 p_s1 <- gplotChromPeaks(xdata, file = 1) + labs(title = "Sample 1 (KO)")
 p_s2 <- gplotChromPeaks(xdata, file = 2) + labs(title = "Sample 2 (KO)")
 p_s3 <- gplotChromPeaks(xdata, file = 3) + labs(title = "Sample 3 (WT)")
@@ -141,6 +147,7 @@ sample across retention time bins.
 #### Basic Usage
 
 ``` r
+
 gplotChromPeakImage(xdata, binSize = 30)
 ```
 
@@ -150,6 +157,7 @@ scale.](step2-peak-detection_files/figure-html/gplot_peakimage-1.png)
 #### With Different Bin Sizes
 
 ``` r
+
 p_b15 <- gplotChromPeakImage(xdata, binSize = 15) +
   labs(title = "Bin Size: 15s")
 p_b30 <- gplotChromPeakImage(xdata, binSize = 30) +
@@ -166,6 +174,7 @@ sizes.](step2-peak-detection_files/figure-html/different_bins-1.png)
 #### Log-Transformed View
 
 ``` r
+
 p_linear <- gplotChromPeakImage(xdata, log_transform = FALSE) +
   labs(title = "Linear Scale")
 p_log <- gplotChromPeakImage(xdata, log_transform = TRUE) +
@@ -180,6 +189,7 @@ heatmaps.](step2-peak-detection_files/figure-html/log_transform-1.png)
 #### Interactive Version
 
 ``` r
+
 p3 <- gplotChromPeakImage(xdata, binSize = 30)
 ggplotly(p3)
 ```
@@ -191,6 +201,7 @@ ggplotly(p3)
 First, let’s extract a chromatogram for a specific m/z range:
 
 ``` r
+
 # Extract chromatogram for m/z 200-210
 mz_range <- c(343-0.2,343+0.2)
 rt_range <- c(2600, 2750)
@@ -200,6 +211,7 @@ chr <- chromatogram(xdata, mz = mz_range, rt = rt_range)
 ```
 
 ``` r
+
 gplot(chr[1, 1]) +
   labs(title = "Chromatogram with Detected Peaks")
 ```
@@ -210,6 +222,7 @@ marked.](step2-peak-detection_files/figure-html/gplot_chromatogram-1.png)
 #### Multiple Peak Types
 
 ``` r
+
 p1 <- gplot(chr[1, 1], peakType = "polygon") + ggtitle("Polygon")
 p2 <- gplot(chr[1, 1], peakType = "point") + ggtitle("Point")
 p3 <- gplot(chr[1, 1], peakType = "rectangle") + ggtitle("Rectangle")
@@ -224,6 +237,7 @@ styles.](step2-peak-detection_files/figure-html/peak_types-1.png)
 #### Interactive Chromatogram
 
 ``` r
+
 ggplotly(gplot(chr[1, 1]))
 ```
 
@@ -236,6 +250,7 @@ For more control,
 returns ggplot2 layers that can be added to any chromatogram plot:
 
 ``` r
+
 # Start with gplot() which creates the chromatogram
 p_chrom <- gplot(chr[1, 1], peakType = "none") +
   labs(
@@ -269,6 +284,7 @@ function searches **all peaks across all samples**. For cleaner
 visualization, filter to a single sample:
 
 ``` r
+
 # Without filtering: shows peaks from ALL samples
 p_all <- gplot(chr[1, 1], peakType = "none") +
   ghighlightChromPeaks(xdata,
@@ -301,6 +317,7 @@ filtering.](step2-peak-detection_files/figure-html/highlight_filtered-1.png)
 ### Different Visualization Types
 
 ``` r
+
 xdata_filtered <- filterFile(xdata, 1)
 
 # Type: Rectangle
@@ -350,6 +367,7 @@ styles.](step2-peak-detection_files/figure-html/highlight_types-1.png)
 ### Peak Selection Criteria
 
 ``` r
+
 # whichPeaks: "any" - peaks that overlap the range
 p_any <- gplot(chr[1, 1], peakType = "none") +
   labs(title = "whichPeaks = 'any'", x = "RT (s)", y = "Intensity")
@@ -389,6 +407,7 @@ methods.](step2-peak-detection_files/figure-html/peak_selection-1.png)
 Create comprehensive peak detection summaries:
 
 ``` r
+
 # Peak distribution for one sample
 p_dist <- gplotChromPeaks(xdata, file = 1) +
   labs(title = "Peak Distribution - Sample 1")
@@ -426,6 +445,7 @@ Group peaks across samples
 ### Original *xcms*
 
 ``` r
+
 plotChromPeaks(xdata, file = 1, xlim = c(2600, 2750), ylim = c(325,460))
 ```
 
@@ -435,6 +455,7 @@ graphics.](step2-peak-detection_files/figure-html/original_chrompeaks-1.png)
 ### *xcmsVis* ggplot2
 
 ``` r
+
 gplotChromPeaks(xdata, file = 1, xlim = c(2600, 2750), ylim = c(325,460))
 ```
 
@@ -446,6 +467,7 @@ aesthetics.](step2-peak-detection_files/figure-html/ggplot_chrompeaks_supp-1.png
 #### Original *xcms*
 
 ``` r
+
 plotChromPeakImage(xdata, binSize = 30)
 ```
 
@@ -455,6 +477,7 @@ graphics.](step2-peak-detection_files/figure-html/original_peakimage-1.png)
 #### *xcmsVis* ggplot2
 
 ``` r
+
 gplotChromPeakImage(xdata, binSize = 30)
 ```
 
@@ -466,6 +489,7 @@ scale.](step2-peak-detection_files/figure-html/xcmsvis_peakimage-1.png)
 #### Original *xcms*
 
 ``` r
+
 plot(chr[1, 1])
 ```
 
@@ -475,6 +499,7 @@ graphics.](step2-peak-detection_files/figure-html/original_chromatogram-1.png)
 #### *xcmsVis* ggplot2
 
 ``` r
+
 gplot(chr[1, 1])
 ```
 
@@ -486,6 +511,7 @@ peaks.](step2-peak-detection_files/figure-html/xcmsvis_chromatogram-1.png)
 #### Original *xcms*
 
 ``` r
+
 xdata_filtered <- filterFile(xdata, 1)
 # Convert to XCMSnExp for original XCMS function
 xdata_xcmsnexp <- as(xdata_filtered, "XCMSnExp")
@@ -500,6 +526,7 @@ graphics.](step2-peak-detection_files/figure-html/original_highlight-1.png)
 #### *xcmsVis* ggplot2
 
 ``` r
+
 gplot(chr[1, 1]) +
   ghighlightChromPeaks(xdata_filtered, rt = rt_range, mz = mz_range,
                        type = "rect", border = "red", fill = NA)
@@ -511,10 +538,11 @@ layers.](step2-peak-detection_files/figure-html/xcmsvis_highlight-1.png)
 ## Session Info
 
 ``` r
+
 sessionInfo()
-#> R version 4.5.3 (2026-03-11)
+#> R version 4.6.0 (2026-04-24)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.3 LTS
+#> Running under: Ubuntu 24.04.4 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -533,59 +561,59 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] xcmsVis_0.99.10     patchwork_1.3.2     MsExperiment_1.12.0
-#> [4] ProtGenerics_1.42.0 faahKO_1.50.0       plotly_4.12.0      
-#> [7] ggplot2_4.0.2       xcms_4.8.0          BiocParallel_1.44.0
+#> [1] xcmsVis_0.99.10     patchwork_1.3.2     MsExperiment_1.14.0
+#> [4] ProtGenerics_1.44.0 faahKO_1.52.0       plotly_4.12.0      
+#> [7] ggplot2_4.0.3       xcms_4.10.0         BiocParallel_1.46.0
 #> 
 #> loaded via a namespace (and not attached):
-#>   [1] DBI_1.3.0                   rlang_1.1.7                
-#>   [3] magrittr_2.0.4              clue_0.3-67                
-#>   [5] MassSpecWavelet_1.76.0      otel_0.2.0                 
-#>   [7] matrixStats_1.5.0           compiler_4.5.3             
-#>   [9] vctrs_0.7.1                 reshape2_1.4.5             
-#>  [11] stringr_1.6.0               pkgconfig_2.0.3            
-#>  [13] MetaboCoreUtils_1.18.1      crayon_1.5.3               
-#>  [15] fastmap_1.2.0               XVector_0.50.0             
-#>  [17] labeling_0.4.3              rmarkdown_2.30             
-#>  [19] preprocessCore_1.72.0       purrr_1.2.1                
-#>  [21] xfun_0.56                   MultiAssayExperiment_1.36.1
-#>  [23] jsonlite_2.0.0              progress_1.2.3             
-#>  [25] DelayedArray_0.36.0         parallel_4.5.3             
-#>  [27] prettyunits_1.2.0           cluster_2.1.8.2            
-#>  [29] R6_2.6.1                    stringi_1.8.7              
-#>  [31] RColorBrewer_1.1-3          limma_3.66.0               
-#>  [33] GenomicRanges_1.62.1        Rcpp_1.1.1                 
-#>  [35] Seqinfo_1.0.0               SummarizedExperiment_1.40.0
-#>  [37] iterators_1.0.14            knitr_1.51                 
-#>  [39] IRanges_2.44.0              BiocBaseUtils_1.12.0       
-#>  [41] Matrix_1.7-4                igraph_2.2.2               
+#>   [1] DBI_1.3.0                   rlang_1.2.0                
+#>   [3] magrittr_2.0.5              clue_0.3-68                
+#>   [5] MassSpecWavelet_1.78.0      otel_0.2.0                 
+#>   [7] matrixStats_1.5.0           compiler_4.6.0             
+#>   [9] PTMods_1.0.0                vctrs_0.7.3                
+#>  [11] reshape2_1.4.5              stringr_1.6.0              
+#>  [13] pkgconfig_2.0.3             MetaboCoreUtils_1.20.1     
+#>  [15] crayon_1.5.3                fastmap_1.2.0              
+#>  [17] XVector_0.52.0              labeling_0.4.3             
+#>  [19] rmarkdown_2.31              preprocessCore_1.74.0      
+#>  [21] purrr_1.2.2                 xfun_0.57                  
+#>  [23] MultiAssayExperiment_1.38.0 jsonlite_2.0.0             
+#>  [25] progress_1.2.3              DelayedArray_0.38.1        
+#>  [27] parallel_4.6.0              prettyunits_1.2.0          
+#>  [29] cluster_2.1.8.2             R6_2.6.1                   
+#>  [31] stringi_1.8.7               RColorBrewer_1.1-3         
+#>  [33] limma_3.68.1                GenomicRanges_1.64.0       
+#>  [35] Rcpp_1.1.1-1.1              Seqinfo_1.2.0              
+#>  [37] SummarizedExperiment_1.42.0 iterators_1.0.14           
+#>  [39] knitr_1.51                  IRanges_2.46.0             
+#>  [41] Matrix_1.7-5                igraph_2.3.1               
 #>  [43] tidyselect_1.2.1            abind_1.4-8                
 #>  [45] yaml_2.3.12                 doParallel_1.0.17          
-#>  [47] codetools_0.2-20            affy_1.88.0                
+#>  [47] codetools_0.2-20            affy_1.90.0                
 #>  [49] lattice_0.22-9              tibble_3.3.1               
-#>  [51] plyr_1.8.9                  Biobase_2.70.0             
-#>  [53] withr_3.0.2                 S7_0.2.1                   
-#>  [55] evaluate_1.0.5              Spectra_1.20.1             
-#>  [57] pillar_1.11.1               affyio_1.80.0              
-#>  [59] BiocManager_1.30.27         MatrixGenerics_1.22.0      
-#>  [61] foreach_1.5.2               stats4_4.5.3               
-#>  [63] MSnbase_2.36.0              MALDIquant_1.22.3          
+#>  [51] plyr_1.8.9                  Biobase_2.72.0             
+#>  [53] withr_3.0.2                 S7_0.2.2                   
+#>  [55] evaluate_1.0.5              Spectra_1.22.0             
+#>  [57] pillar_1.11.1               affyio_1.82.0              
+#>  [59] BiocManager_1.30.27         MatrixGenerics_1.24.0      
+#>  [61] foreach_1.5.2               stats4_4.6.0               
+#>  [63] MSnbase_2.37.0              MALDIquant_1.22.3          
 #>  [65] ncdf4_1.24                  generics_0.1.4             
-#>  [67] S4Vectors_0.48.0            hms_1.1.4                  
-#>  [69] scales_1.4.0                glue_1.8.0                 
-#>  [71] MsFeatures_1.18.0           lazyeval_0.2.2             
-#>  [73] tools_4.5.3                 mzID_1.48.0                
-#>  [75] data.table_1.18.2.1         QFeatures_1.20.0           
-#>  [77] vsn_3.78.1                  mzR_2.44.0                 
-#>  [79] fs_1.6.7                    XML_3.99-0.22              
-#>  [81] grid_4.5.3                  impute_1.84.0              
+#>  [67] S4Vectors_0.50.0            hms_1.1.4                  
+#>  [69] scales_1.4.0                glue_1.8.1                 
+#>  [71] MsFeatures_1.20.0           lazyeval_0.2.3             
+#>  [73] tools_4.6.0                 mzID_1.50.0                
+#>  [75] data.table_1.18.2.1         QFeatures_1.22.0           
+#>  [77] vsn_3.80.0                  mzR_2.46.0                 
+#>  [79] fs_2.1.0                    XML_3.99-0.23              
+#>  [81] grid_4.6.0                  impute_1.86.0              
 #>  [83] tidyr_1.3.2                 crosstalk_1.2.2            
-#>  [85] MsCoreUtils_1.22.1          PSMatch_1.14.0             
-#>  [87] cli_3.6.5                   viridisLite_0.4.3          
-#>  [89] S4Arrays_1.10.1             dplyr_1.2.0                
-#>  [91] AnnotationFilter_1.34.0     pcaMethods_2.2.0           
+#>  [85] MsCoreUtils_1.24.0          PSMatch_1.16.0             
+#>  [87] cli_3.6.6                   viridisLite_0.4.3          
+#>  [89] S4Arrays_1.12.0             dplyr_1.2.1                
+#>  [91] AnnotationFilter_1.36.0     pcaMethods_2.4.0           
 #>  [93] gtable_0.3.6                digest_0.6.39              
-#>  [95] BiocGenerics_0.56.0         SparseArray_1.10.9         
+#>  [95] BiocGenerics_0.58.0         SparseArray_1.12.2         
 #>  [97] htmlwidgets_1.6.4           farver_2.1.2               
 #>  [99] htmltools_0.5.9             lifecycle_1.0.5            
 #> [101] httr_1.4.8                  statmod_1.5.1              

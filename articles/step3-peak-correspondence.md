@@ -33,15 +33,16 @@ time that likely derive from the same molecule.
 
 ### Functions Covered
 
-| Function                                                                                                    | Purpose                              | What it Overlays                |
-|-------------------------------------------------------------------------------------------------------------|--------------------------------------|---------------------------------|
-| [`gplotChromPeakDensity()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeakDensity.md)         | Optimize correspondence parameters   | Density of peaks across samples |
-| [`gplotChromatogramsOverlay()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromatogramsOverlay.md) | Compare different EICs within sample | DIFFERENT m/z, SAME sample      |
-| `gplot(XChromatogram)`                                                                                      | Compare same EIC across samples      | SAME m/z, DIFFERENT samples     |
+| Function | Purpose | What it Overlays |
+|----|----|----|
+| [`gplotChromPeakDensity()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromPeakDensity.md) | Optimize correspondence parameters | Density of peaks across samples |
+| [`gplotChromatogramsOverlay()`](https://stanstrup.github.io/xcmsVis/reference/gplotChromatogramsOverlay.md) | Compare different EICs within sample | DIFFERENT m/z, SAME sample |
+| `gplot(XChromatogram)` | Compare same EIC across samples | SAME m/z, DIFFERENT samples |
 
 ## Setup
 
 ``` r
+
 library(xcms)
 library(MsExperiment)
 library(ggplot2)
@@ -55,6 +56,7 @@ library(xcmsVis)
 We’ll use pre-processed test data from *xcms* for faster execution:
 
 ``` r
+
 # Load pre-processed data with detected peaks
 xdata <- loadXcmsData("faahko_sub2")
 
@@ -80,6 +82,7 @@ visualizing how peaks would be grouped.
 #### Basic Usage
 
 ``` r
+
 # Extract chromatogram for visualization
 chr <- chromatogram(xdata, mz = c(305.05, 305.15))
 
@@ -105,6 +108,7 @@ The bandwidth (`bw`) parameter controls the smoothing of the density
 estimate. Larger values group more distant peaks together:
 
 ``` r
+
 prm_small <- PeakDensityParam(sampleGroups = rep(1, 3), bw = 15)
 prm_medium <- PeakDensityParam(sampleGroups = rep(1, 3), bw = 30)
 prm_large <- PeakDensityParam(sampleGroups = rep(1, 3), bw = 60)
@@ -137,6 +141,7 @@ After running correspondence analysis, you can visualize the actual
 feature grouping by setting `simulate = FALSE`:
 
 ``` r
+
 # Perform correspondence
 xdata_grouped <- groupChromPeaks(xdata, param = PeakDensityParam(
   sampleGroups = rep(1, 3),
@@ -165,6 +170,7 @@ correspondence.](step3-peak-correspondence_files/figure-html/actual_corresponden
 #### Interactive Exploration
 
 ``` r
+
 p <- gplotChromPeakDensity(chr, param = prm)
 ggplotly(p)
 ```
@@ -190,6 +196,7 @@ function overlays **different EICs (rows)** from the **same sample
 #### Single Sample: Multiple EICs Overlaid
 
 ``` r
+
 # Extract multiple EICs from ONE sample
 chr_multi <- chromatogram(xdata[1,], mz = rbind(
   c(305.05, 305.15),
@@ -209,6 +216,7 @@ When you have multiple samples,
 creates a faceted plot with one panel per sample:
 
 ``` r
+
 # Extract multiple EICs from ALL samples
 chr_all <- chromatogram(xdata, mz = rbind(
   c(305.05, 305.15),
@@ -230,6 +238,7 @@ chromatograms. You can color each sample by a metadata column by passing
 the column name as a string to `col`:
 
 ``` r
+
 # Add sample metadata (if not already present)
 chr_one_eic <- chromatogram(xdata, mz = c(305.05, 305.15))
 
@@ -256,6 +265,7 @@ The same works for peak annotations — `peakCol` and `peakBg` also accept
 column names:
 
 ``` r
+
 # Color both lines and peak fills by sample group
 gplot(chr_one_eic, col = "sample_group",
       peakBg = "sample_group", peakType = "polygon") +
@@ -279,6 +289,7 @@ Use `include_columns` to add sample metadata to plotly tooltips. Pass
 `TRUE` for all columns, or a character vector to select specific ones:
 
 ``` r
+
 p <- gplot(chr_one_eic, col = "sample_group",
            include_columns = c("sample_group", "sample_index"))
 ggplotly(p, tooltip = "text")
@@ -292,6 +303,7 @@ annotations also include their peak ID in the tooltip.
 Here’s a direct comparison showing the key difference:
 
 ``` r
+
 # LEFT: gplot() - same EIC across different samples
 p_left <- gplot(chr_one_eic) +
   ggtitle("gplot(): Same EIC, Different Samples")
@@ -315,6 +327,7 @@ gplotChromatogramsOverlay().](step3-peak-correspondence_files/figure-html/compar
 For better visual separation, chromatograms can be vertically offset:
 
 ``` r
+
 gplotChromatogramsOverlay(chr_multi, stacked = 0.1, main = "Sample 1")
 ```
 
@@ -327,6 +340,7 @@ Apply transformations for better visualization of low-intensity
 features:
 
 ``` r
+
 gplotChromatogramsOverlay(chr_multi, transform = log1p, main = "Sample 1") +
   ggtitle("Log-Transformed Intensities")
 ```
@@ -337,6 +351,7 @@ intensities.](step3-peak-correspondence_files/figure-html/transformed-1.png)
 #### Custom Colors and Peak Styles
 
 ``` r
+
 gplotChromatogramsOverlay(
   chr_multi,
   col = "blue",
@@ -356,6 +371,7 @@ Here’s a complete workflow demonstrating how these functions work
 together for correspondence optimization:
 
 ``` r
+
 # 1. Extract chromatogram for one m/z
 chr_workflow <- chromatogram(xdata, mz = c(344.0, 344.2))
 
@@ -415,6 +431,7 @@ Correct retention time shifts between samples
 ### Original *xcms*
 
 ``` r
+
 plotChromPeakDensity(chr, param = prm)
 ```
 
@@ -424,6 +441,7 @@ graphics.](step3-peak-correspondence_files/figure-html/original_density-1.png)
 ### *xcmsVis* ggplot2
 
 ``` r
+
 gplotChromPeakDensity(chr, param = prm)
 ```
 
@@ -435,6 +453,7 @@ aesthetics.](step3-peak-correspondence_files/figure-html/xcmsvis_density-1.png)
 #### Original XCMS
 
 ``` r
+
 plot(chr_one_eic)
 ```
 
@@ -444,6 +463,7 @@ graphics.](step3-peak-correspondence_files/figure-html/original_gplot-1.png)
 #### xcmsVis ggplot2
 
 ``` r
+
 gplot(chr_one_eic)
 ```
 
@@ -455,6 +475,7 @@ plot.](step3-peak-correspondence_files/figure-html/xcmsvis_gplot-1.png)
 #### Original *xcms*
 
 ``` r
+
 plotChromatogramsOverlay(chr_multi)
 ```
 
@@ -464,6 +485,7 @@ graphics.](step3-peak-correspondence_files/figure-html/original_overlay-1.png)
 #### *xcmsVis* ggplot2
 
 ``` r
+
 gplotChromatogramsOverlay(chr_multi)
 ```
 
@@ -473,10 +495,11 @@ aesthetics.](step3-peak-correspondence_files/figure-html/xcmsvis_overlay-1.png)
 ## Session Info
 
 ``` r
+
 sessionInfo()
-#> R version 4.5.3 (2026-03-11)
+#> R version 4.6.0 (2026-04-24)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.3 LTS
+#> Running under: Ubuntu 24.04.4 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -496,58 +519,58 @@ sessionInfo()
 #> 
 #> other attached packages:
 #> [1] xcmsVis_0.99.10     patchwork_1.3.2     plotly_4.12.0      
-#> [4] ggplot2_4.0.2       MsExperiment_1.12.0 ProtGenerics_1.42.0
-#> [7] xcms_4.8.0          BiocParallel_1.44.0
+#> [4] ggplot2_4.0.3       MsExperiment_1.14.0 ProtGenerics_1.44.0
+#> [7] xcms_4.10.0         BiocParallel_1.46.0
 #> 
 #> loaded via a namespace (and not attached):
-#>   [1] DBI_1.3.0                   rlang_1.1.7                
-#>   [3] magrittr_2.0.4              clue_0.3-67                
-#>   [5] MassSpecWavelet_1.76.0      otel_0.2.0                 
-#>   [7] matrixStats_1.5.0           compiler_4.5.3             
-#>   [9] vctrs_0.7.1                 reshape2_1.4.5             
-#>  [11] stringr_1.6.0               pkgconfig_2.0.3            
-#>  [13] MetaboCoreUtils_1.18.1      crayon_1.5.3               
-#>  [15] fastmap_1.2.0               XVector_0.50.0             
-#>  [17] labeling_0.4.3              rmarkdown_2.30             
-#>  [19] preprocessCore_1.72.0       purrr_1.2.1                
-#>  [21] xfun_0.56                   MultiAssayExperiment_1.36.1
-#>  [23] jsonlite_2.0.0              progress_1.2.3             
-#>  [25] DelayedArray_0.36.0         parallel_4.5.3             
-#>  [27] prettyunits_1.2.0           cluster_2.1.8.2            
-#>  [29] R6_2.6.1                    stringi_1.8.7              
-#>  [31] RColorBrewer_1.1-3          limma_3.66.0               
-#>  [33] GenomicRanges_1.62.1        Rcpp_1.1.1                 
-#>  [35] Seqinfo_1.0.0               SummarizedExperiment_1.40.0
-#>  [37] iterators_1.0.14            knitr_1.51                 
-#>  [39] IRanges_2.44.0              BiocBaseUtils_1.12.0       
-#>  [41] Matrix_1.7-4                igraph_2.2.2               
+#>   [1] DBI_1.3.0                   rlang_1.2.0                
+#>   [3] magrittr_2.0.5              clue_0.3-68                
+#>   [5] MassSpecWavelet_1.78.0      otel_0.2.0                 
+#>   [7] matrixStats_1.5.0           compiler_4.6.0             
+#>   [9] PTMods_1.0.0                vctrs_0.7.3                
+#>  [11] reshape2_1.4.5              stringr_1.6.0              
+#>  [13] pkgconfig_2.0.3             MetaboCoreUtils_1.20.1     
+#>  [15] crayon_1.5.3                fastmap_1.2.0              
+#>  [17] XVector_0.52.0              labeling_0.4.3             
+#>  [19] rmarkdown_2.31              preprocessCore_1.74.0      
+#>  [21] purrr_1.2.2                 xfun_0.57                  
+#>  [23] MultiAssayExperiment_1.38.0 jsonlite_2.0.0             
+#>  [25] progress_1.2.3              DelayedArray_0.38.1        
+#>  [27] parallel_4.6.0              prettyunits_1.2.0          
+#>  [29] cluster_2.1.8.2             R6_2.6.1                   
+#>  [31] stringi_1.8.7               RColorBrewer_1.1-3         
+#>  [33] limma_3.68.1                GenomicRanges_1.64.0       
+#>  [35] Rcpp_1.1.1-1.1              Seqinfo_1.2.0              
+#>  [37] SummarizedExperiment_1.42.0 iterators_1.0.14           
+#>  [39] knitr_1.51                  IRanges_2.46.0             
+#>  [41] Matrix_1.7-5                igraph_2.3.1               
 #>  [43] tidyselect_1.2.1            abind_1.4-8                
 #>  [45] yaml_2.3.12                 doParallel_1.0.17          
-#>  [47] codetools_0.2-20            affy_1.88.0                
+#>  [47] codetools_0.2-20            affy_1.90.0                
 #>  [49] lattice_0.22-9              tibble_3.3.1               
-#>  [51] plyr_1.8.9                  Biobase_2.70.0             
-#>  [53] withr_3.0.2                 S7_0.2.1                   
-#>  [55] evaluate_1.0.5              Spectra_1.20.1             
-#>  [57] pillar_1.11.1               affyio_1.80.0              
-#>  [59] BiocManager_1.30.27         MatrixGenerics_1.22.0      
-#>  [61] foreach_1.5.2               stats4_4.5.3               
-#>  [63] MSnbase_2.36.0              MALDIquant_1.22.3          
+#>  [51] plyr_1.8.9                  Biobase_2.72.0             
+#>  [53] withr_3.0.2                 S7_0.2.2                   
+#>  [55] evaluate_1.0.5              Spectra_1.22.0             
+#>  [57] pillar_1.11.1               affyio_1.82.0              
+#>  [59] BiocManager_1.30.27         MatrixGenerics_1.24.0      
+#>  [61] foreach_1.5.2               stats4_4.6.0               
+#>  [63] MSnbase_2.37.0              MALDIquant_1.22.3          
 #>  [65] ncdf4_1.24                  generics_0.1.4             
-#>  [67] S4Vectors_0.48.0            hms_1.1.4                  
-#>  [69] scales_1.4.0                glue_1.8.0                 
-#>  [71] MsFeatures_1.18.0           lazyeval_0.2.2             
-#>  [73] tools_4.5.3                 mzID_1.48.0                
-#>  [75] data.table_1.18.2.1         QFeatures_1.20.0           
-#>  [77] vsn_3.78.1                  mzR_2.44.0                 
-#>  [79] fs_1.6.7                    XML_3.99-0.22              
-#>  [81] grid_4.5.3                  impute_1.84.0              
+#>  [67] S4Vectors_0.50.0            hms_1.1.4                  
+#>  [69] scales_1.4.0                glue_1.8.1                 
+#>  [71] MsFeatures_1.20.0           lazyeval_0.2.3             
+#>  [73] tools_4.6.0                 mzID_1.50.0                
+#>  [75] data.table_1.18.2.1         QFeatures_1.22.0           
+#>  [77] vsn_3.80.0                  mzR_2.46.0                 
+#>  [79] fs_2.1.0                    XML_3.99-0.23              
+#>  [81] grid_4.6.0                  impute_1.86.0              
 #>  [83] tidyr_1.3.2                 crosstalk_1.2.2            
-#>  [85] MsCoreUtils_1.22.1          PSMatch_1.14.0             
-#>  [87] cli_3.6.5                   viridisLite_0.4.3          
-#>  [89] S4Arrays_1.10.1             dplyr_1.2.0                
-#>  [91] AnnotationFilter_1.34.0     pcaMethods_2.2.0           
+#>  [85] MsCoreUtils_1.24.0          PSMatch_1.16.0             
+#>  [87] cli_3.6.6                   viridisLite_0.4.3          
+#>  [89] S4Arrays_1.12.0             dplyr_1.2.1                
+#>  [91] AnnotationFilter_1.36.0     pcaMethods_2.4.0           
 #>  [93] gtable_0.3.6                digest_0.6.39              
-#>  [95] BiocGenerics_0.56.0         SparseArray_1.10.9         
+#>  [95] BiocGenerics_0.58.0         SparseArray_1.12.2         
 #>  [97] htmlwidgets_1.6.4           farver_2.1.2               
 #>  [99] htmltools_0.5.9             lifecycle_1.0.5            
 #> [101] httr_1.4.8                  statmod_1.5.1              

@@ -31,6 +31,7 @@ graphics plots using ggplot2.
 ## Installation
 
 ``` r
+
 # Install from GitHub
 devtools::install_github("stanstrup/xcmsVis")
 ```
@@ -79,6 +80,7 @@ All functions work with both legacy (XCMSnExp) and modern
 ## Quick Start
 
 ``` r
+
 library(xcmsVis)
 library(xcms)
 library(MsExperiment)
@@ -110,24 +112,28 @@ p +
 ### Retention Time Alignment
 
 ``` r
+
 gplotAdjustedRtime(xdata, color_by = sample_group)
 ```
 
 ### Chromatographic Peaks
 
 ``` r
+
 gplotChromPeaks(xdata)
 ```
 
 ### Feature Groups
 
 ``` r
+
 gplotFeatureGroups(xdata, featureGroups = c("FG.0001", "FG.0002"))
 ```
 
 ### Extract Ion Chromatograms
 
 ``` r
+
 chr <- chromatogram(xdata, mz = c(305, 306), rt = c(2500, 3500))
 gplot(chr)
 ```
@@ -157,6 +163,7 @@ All plots are ggplot2 objects that seamlessly convert to interactive
 plotly visualizations:
 
 ``` r
+
 p <- gplotAdjustedRtime(xdata)
 ggplotly(p)  # Instant interactivity with zoom, pan, hover tooltips
 ```
@@ -166,6 +173,7 @@ ggplotly(p)  # Instant interactivity with zoom, pan, hover tooltips
 Use patchwork to create custom layouts:
 
 ``` r
+
 library(patchwork)
 p1 <- gplotAdjustedRtime(xdata)
 p2 <- gplotChromPeaks(xdata)
@@ -177,6 +185,7 @@ p1 / p2  # Stack vertically
 Full ggplot2 customization:
 
 ``` r
+
 gplotAdjustedRtime(xdata) +
   theme_minimal() +
   scale_color_brewer(palette = "Set1") +
