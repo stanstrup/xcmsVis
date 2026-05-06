@@ -13,6 +13,7 @@ utils::globalVariables(c(
   "retentionTime",
   "retentionTime_adjusted",
   "dataOrigin",
+  "spectraOrigin",
   "spectraOrigin_base",
   "fileIdx",
   "n",

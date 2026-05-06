@@ -35,11 +35,16 @@
       warning("No alignment/retention time correction results present.")
     ## Get sample metadata - helper handles both object types
     sample_data <- .get_sample_data(object)
-    ## Get spectra data - helper handles both object types
+    ## Get spectra data - helper handles both object types.
+    ## Join on the full path (spectraOrigin) not the basename so that datasets
+    ## with duplicate filenames in different directories produce correct 1:1
+    ## matches rather than a Cartesian-product explosion.
     rts <- .get_spectra_data(object) %>%
-        left_join(sample_data, by = "spectraOrigin_base") %>%
+        rename(spectraOrigin = dataOrigin) %>%
+        select(-spectraOrigin_base) %>%
+        left_join(sample_data, by = "spectraOrigin") %>%
         as_tibble() %>%
-        select(colnames(sample_data), spectraOrigin_base,
+        select(all_of(colnames(sample_data)),
                raw = rtime, adjusted = rtime_adjusted)
     ## Get the peak groups matrix and prepare for plotting (optional -
     ## only for PeakGroupsParam)
@@ -50,26 +55,37 @@
         which()
     good_peaks <- NULL
     if (length(which_is_groups) > 0) {
-        pkGroup <- object %>%
+        prm <- object %>%
             processHistory() %>%
             map(processParam) %>%
-            pluck(which_is_groups) %>%
+            pluck(which_is_groups)
+        pkGroup <- prm %>%
             slot("peakGroupsMatrix") %>%
             as.data.frame()
+        ## Replace column names (basenames) with full file paths so that
+        ## duplicate filenames in different directories don't cause tibble to
+        ## reject the data frame with a "must have unique names" error.
+        subset_idx <- prm@subset
+        used_files <- if (length(subset_idx) > 0) {
+            sample_data$spectraOrigin[subset_idx]
+        } else {
+            sample_data$spectraOrigin
+        }
+        colnames(pkGroup) <- used_files
         pkGroup <- pkGroup %>%
             rownames_to_column("feature") %>%
             as_tibble() %>%
-            pivot_longer(-feature, names_to = "spectraOrigin_base",
+            pivot_longer(-feature, names_to = "spectraOrigin",
                          values_to = "rtime") %>%
-            group_by(spectraOrigin_base) %>%
+            group_by(spectraOrigin) %>%
             group_nest(.key = "feature")
         ## Calculate adjusted retention times for peak groups
         good_peaks <- rts %>%
-            select(spectraOrigin_base, raw, adjusted) %>%
-            filter(spectraOrigin_base %in% pkGroup$spectraOrigin_base) %>%
-            group_by(spectraOrigin_base) %>%
+            select(spectraOrigin, raw, adjusted) %>%
+            filter(spectraOrigin %in% pkGroup$spectraOrigin) %>%
+            group_by(spectraOrigin) %>%
             group_nest(.key = "correction") %>%
-            inner_join(pkGroup, by = "spectraOrigin_base") %>%
+            inner_join(pkGroup, by = "spectraOrigin") %>%
             mutate(
                 feature_correct = map2(
                     feature,
@@ -105,7 +121,7 @@
         data = rts,
         aes(x = adjusted,
             y = adjusted - raw,
-            group = spectraOrigin_base,
+            group = spectraOrigin,
             color = {{ color_by }},
             text = text)
     ) +
