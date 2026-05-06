@@ -1,3 +1,11 @@
+## Changes in v0.99.11 (commit: 4d07616)
+
+
+
+### Bug Fixes
+
+* use full file paths as join/group key in gplotAdjustedRtime ([4d07616](https://github.com/stanstrup/xcmsVis/commit/4d076164c2fe8db18cd3cb15893ec54c6ddeeabb))
+
 ## Changes in v0.99.10 (commit: ca9fab6)
 
 
