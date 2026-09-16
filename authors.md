@@ -14,7 +14,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/stanstrup/xcmsVis/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/stanstrup/xcmsVis/blob/0.99.11/DESCRIPTION)
 
 Jan S (2026). *xcmsVis: Modern Visualization for \*xcms\* Data*. R
 package version 0.99.11, <https://stanstrup.github.io/xcmsVis>.
