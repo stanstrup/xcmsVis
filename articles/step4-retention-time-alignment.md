@@ -504,13 +504,13 @@ aesthetics.](step4-retention-time-alignment_files/figure-html/xcmsvis_lama-1.png
 ``` r
 
 sessionInfo()
-#> R version 4.6.1 (2026-06-24)
+#> R version 4.6.2 (2026-10-29)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.5 LTS
+#> Running under: Ubuntu 26.04.1 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
 #> 
 #> locale:
 #>  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
@@ -533,53 +533,53 @@ sessionInfo()
 #> loaded via a namespace (and not attached):
 #>   [1] DBI_1.3.0                   rlang_1.3.0                
 #>   [3] magrittr_2.0.5              clue_0.3-68                
-#>   [5] MassSpecWavelet_1.78.2      otel_0.2.0                 
-#>   [7] matrixStats_1.5.0           compiler_4.6.1             
+#>   [5] MassSpecWavelet_1.78.2      otel_0.3.0                 
+#>   [7] matrixStats_1.5.0           compiler_4.6.2             
 #>   [9] PTMods_1.0.0                vctrs_0.7.3                
 #>  [11] reshape2_1.4.5              stringr_1.6.0              
 #>  [13] pkgconfig_2.0.3             MetaboCoreUtils_1.20.1     
 #>  [15] crayon_1.5.3                fastmap_1.2.0              
 #>  [17] XVector_0.52.0              labeling_0.4.3             
 #>  [19] rmarkdown_2.32              preprocessCore_1.74.0      
-#>  [21] purrr_1.2.2                 xfun_0.60                  
+#>  [21] purrr_1.2.2                 xfun_0.62                  
 #>  [23] MultiAssayExperiment_1.38.0 jsonlite_2.0.0             
 #>  [25] progress_1.2.3              DelayedArray_0.38.2        
-#>  [27] parallel_4.6.1              prettyunits_1.2.0          
-#>  [29] cluster_2.1.8.2             R6_2.6.1                   
+#>  [27] parallel_4.6.2              prettyunits_1.2.0          
+#>  [29] cluster_2.1.8.3             R6_2.6.1                   
 #>  [31] stringi_1.8.9               RColorBrewer_1.1-3         
 #>  [33] limma_3.68.5                GenomicRanges_1.64.0       
 #>  [35] Rcpp_1.1.2                  Seqinfo_1.2.0              
 #>  [37] SummarizedExperiment_1.42.0 iterators_1.0.14           
 #>  [39] knitr_1.52                  IRanges_2.46.0             
-#>  [41] Matrix_1.7-5                igraph_2.3.3               
+#>  [41] Matrix_1.7-6                igraph_2.3.4               
 #>  [43] tidyselect_1.2.1            abind_1.4-8                
 #>  [45] yaml_2.3.12                 doParallel_1.0.17          
 #>  [47] codetools_0.2-20            affy_1.90.0                
-#>  [49] lattice_0.22-9              tibble_3.3.1               
+#>  [49] lattice_0.23-1              tibble_3.3.1               
 #>  [51] plyr_1.8.9                  withr_3.0.3                
 #>  [53] Biobase_2.72.0              S7_0.2.2                   
 #>  [55] evaluate_1.0.5              Spectra_1.22.2             
 #>  [57] pillar_1.11.1               affyio_1.82.0              
 #>  [59] BiocManager_1.30.27         MatrixGenerics_1.24.0      
-#>  [61] foreach_1.5.2               stats4_4.6.1               
+#>  [61] foreach_1.5.2               stats4_4.6.2               
 #>  [63] MSnbase_2.38.1              MALDIquant_1.22.3          
 #>  [65] ncdf4_1.24                  generics_0.1.4             
-#>  [67] S4Vectors_0.50.2            hms_1.1.4                  
+#>  [67] S4Vectors_0.50.3            hms_1.1.4                  
 #>  [69] scales_1.4.0                glue_1.8.1                 
-#>  [71] lazyeval_0.2.3              tools_4.6.1                
+#>  [71] lazyeval_0.2.3              tools_4.6.2                
 #>  [73] mzID_1.50.0                 data.table_1.18.6.1        
 #>  [75] QFeatures_1.22.0            vsn_3.80.0                 
 #>  [77] mzR_2.46.0                  fs_2.1.0                   
-#>  [79] XML_3.99-0.24               grid_4.6.1                 
+#>  [79] XML_3.99-0.25               grid_4.6.2                 
 #>  [81] impute_1.86.0               tidyr_1.3.2                
 #>  [83] crosstalk_1.2.2             MsCoreUtils_1.24.0         
 #>  [85] PSMatch_1.16.0              cli_3.6.6                  
-#>  [87] viridisLite_0.4.3           S4Arrays_1.12.0            
+#>  [87] viridisLite_0.4.3           S4Arrays_1.12.1            
 #>  [89] dplyr_1.2.1                 AnnotationFilter_1.36.0    
 #>  [91] pcaMethods_2.4.0            gtable_0.3.6               
 #>  [93] digest_0.6.39               BiocGenerics_0.58.1        
-#>  [95] SparseArray_1.12.2          htmlwidgets_1.6.4          
+#>  [95] SparseArray_1.12.3          htmlwidgets_1.6.4          
 #>  [97] farver_2.1.2                htmltools_0.5.9            
 #>  [99] lifecycle_1.0.5             httr_1.4.9                 
-#> [101] statmod_1.5.2               MASS_7.3-65
+#> [101] statmod_1.5.2               MASS_7.3-66
 ```

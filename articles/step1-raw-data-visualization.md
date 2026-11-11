@@ -414,13 +414,13 @@ API.](step1-raw-data-visualization_files/figure-html/xcmsvis_precursor-1.png)
 ``` r
 
 sessionInfo()
-#> R version 4.6.1 (2026-06-24)
+#> R version 4.6.2 (2026-10-29)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.5 LTS
+#> Running under: Ubuntu 26.04.1 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
 #> 
 #> locale:
 #>  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
@@ -446,32 +446,32 @@ sessionInfo()
 #>   [5] farver_2.1.2                MALDIquant_1.22.3          
 #>   [7] rmarkdown_2.32              fs_2.1.0                   
 #>   [9] vctrs_0.7.3                 memoise_2.0.1              
-#>  [11] htmltools_0.5.9             S4Arrays_1.12.0            
+#>  [11] htmltools_0.5.9             S4Arrays_1.12.1            
 #>  [13] progress_1.2.3              AnnotationHub_4.2.2        
-#>  [15] curl_8.0.0                  SparseArray_1.12.2         
+#>  [15] curl_8.1.0                  SparseArray_1.12.3         
 #>  [17] mzID_1.50.0                 htmlwidgets_1.6.4          
 #>  [19] plyr_1.8.9                  httr2_1.3.0                
 #>  [21] impute_1.86.0               cachem_1.1.0               
-#>  [23] igraph_2.3.3                lifecycle_1.0.5            
+#>  [23] igraph_2.3.4                lifecycle_1.0.5            
 #>  [25] iterators_1.0.14            pkgconfig_2.0.3            
-#>  [27] Matrix_1.7-5                R6_2.6.1                   
+#>  [27] Matrix_1.7-6                R6_2.6.1                   
 #>  [29] fastmap_1.2.0               MatrixGenerics_1.24.0      
 #>  [31] clue_0.3-68                 digest_0.6.39              
 #>  [33] pcaMethods_2.4.0            AnnotationDbi_1.74.0       
-#>  [35] S4Vectors_0.50.2            ExperimentHub_3.2.2        
+#>  [35] S4Vectors_0.50.3            ExperimentHub_3.2.2        
 #>  [37] crosstalk_1.2.2             GenomicRanges_1.64.0       
 #>  [39] RSQLite_3.53.3              labeling_0.4.3             
 #>  [41] filelock_1.0.3              Spectra_1.22.2             
 #>  [43] httr_1.4.9                  abind_1.4-8                
-#>  [45] compiler_4.6.1              bit64_4.8.6                
+#>  [45] compiler_4.6.2              bit64_4.8.6                
 #>  [47] withr_3.0.3                 doParallel_1.0.17          
 #>  [49] S7_0.2.2                    PTMods_1.0.0               
-#>  [51] DBI_1.3.0                   MASS_7.3-65                
+#>  [51] DBI_1.3.0                   MASS_7.3-66                
 #>  [53] rappdirs_0.3.4              DelayedArray_0.38.2        
-#>  [55] mzR_2.46.0                  tools_4.6.1                
-#>  [57] PSMatch_1.16.0              otel_0.2.0                 
+#>  [55] mzR_2.46.0                  tools_4.6.2                
+#>  [57] PSMatch_1.16.0              otel_0.3.0                 
 #>  [59] glue_1.8.1                  QFeatures_1.22.0           
-#>  [61] grid_4.6.1                  cluster_2.1.8.2            
+#>  [61] grid_4.6.2                  cluster_2.1.8.3            
 #>  [63] reshape2_1.4.5              generics_0.1.4             
 #>  [65] gtable_0.3.6                preprocessCore_1.74.0      
 #>  [67] tidyr_1.3.2                 data.table_1.18.6.1        
@@ -480,12 +480,12 @@ sessionInfo()
 #>  [73] BiocVersion_3.23.1          foreach_1.5.2              
 #>  [75] pillar_1.11.1               stringr_1.6.0              
 #>  [77] limma_3.68.5                dplyr_1.2.1                
-#>  [79] BiocFileCache_3.2.0         lattice_0.22-9             
+#>  [79] BiocFileCache_3.2.0         lattice_0.23-1             
 #>  [81] bit_4.6.0                   tidyselect_1.2.1           
 #>  [83] Biostrings_2.80.2           knitr_1.52                 
 #>  [85] IRanges_2.46.0              Seqinfo_1.2.0              
-#>  [87] SummarizedExperiment_1.42.0 stats4_4.6.1               
-#>  [89] xfun_0.60                   Biobase_2.72.0             
+#>  [87] SummarizedExperiment_1.42.0 stats4_4.6.2               
+#>  [89] xfun_0.62                   Biobase_2.72.0             
 #>  [91] statmod_1.5.2               MSnbase_2.38.1             
 #>  [93] matrixStats_1.5.0           stringi_1.8.9              
 #>  [95] lazyeval_0.2.3              yaml_2.3.12                
@@ -494,8 +494,8 @@ sessionInfo()
 #> [101] BiocManager_1.30.27         cli_3.6.6                  
 #> [103] affyio_1.82.0               Rcpp_1.1.2                 
 #> [105] MassSpecWavelet_1.78.2      dbplyr_2.6.0               
-#> [107] png_0.1-9                   XML_3.99-0.24              
-#> [109] parallel_4.6.1              blob_1.3.0                 
+#> [107] png_0.1-9                   XML_3.99-0.25              
+#> [109] parallel_4.6.2              blob_1.3.0                 
 #> [111] prettyunits_1.2.0           AnnotationFilter_1.36.0    
 #> [113] MsFeatures_1.20.0           scales_1.4.0               
 #> [115] affy_1.90.0                 ncdf4_1.24                 
