@@ -11,6 +11,8 @@ name: R-CMD-check
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
+    # Only the Bioconductor devel job runs in a container (empty = run on the host)
+    container: ${{ matrix.config.image }}
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
@@ -22,7 +24,11 @@ jobs:
           # Windows build disabled due to upstream bug with Quarto vignettes
           # See: https://github.com/rstudio/rstudio/issues/15805
           # - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
+          # Bioconductor devel is checked in the official Bioconductor devel
+          # image. Plain R-devel installs a mix of Bioconductor release and
+          # devel packages that do not work together (e.g. xcms release with a
+          # newer MSnbase, where fData() is defunct).
+          - {os: ubuntu-latest,   r: 'bioc-devel', image: 'bioconductor/bioconductor_docker:devel'}
           - {os: ubuntu-latest,   r: 'release'}
 
     env:
@@ -32,11 +38,15 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # The Bioconductor image already has R, pandoc and quarto
       - uses: r-lib/actions/setup-pandoc@v2
+        if: ${{ !matrix.config.image }}
 
       - uses: quarto-dev/quarto-actions/setup@v2
+        if: ${{ !matrix.config.image }}
 
       - uses: r-lib/actions/setup-r@v2
+        if: ${{ !matrix.config.image }}
         with:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
