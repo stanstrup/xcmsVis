@@ -22,7 +22,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -46,7 +46,7 @@ jobs:
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@v4.9.0
         with:
           clean: true
           branch: gh-pages
